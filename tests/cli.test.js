@@ -363,6 +363,11 @@ test("update downloads the newest release from GitHub, and says so when there is
   assert.match(clone.join("\n"), /git pull/, "a git clone is updated with git");
 });
 
+test("a used-up GitHub rate limit is reported as such", async () => {
+  const fetchImpl = async () => ({ ok: false, status: 403, headers: new Headers({ "x-ratelimit-remaining": "0" }), json: async () => ({}) });
+  await assert.rejects(update.fetchLatestRelease({ owner: "example", repo: "startup-tracker" }, { fetchImpl }), (error) => error.code === "rateLimited" && /Try again in an hour/.test(error.message));
+});
+
 test("the update check is cached for a day and follows the network switch unless asked now", async () => {
   const { paths } = installedCopy();
   const pkg = { version: "0.1.0", repository: "github:example/startup-tracker" };

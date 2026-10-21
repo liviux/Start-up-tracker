@@ -4,6 +4,9 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+### Fixed
+- The update check says when GitHub's hourly limit for your network is used up, instead of "GitHub answered 403".
+
 ## [0.1.0] - 2026-10-21
 
 The first public release.
