@@ -391,7 +391,8 @@ function manager() {
   return { store, startup, runs, harness, waitStatus, cleanup: async () => {
     await runs.shutdown();
     store.close();
-    fs.rmSync(home, { recursive: true, force: true });
+    // Windows keeps a stopped agent's folder busy for a moment after it exits.
+    fs.rmSync(home, { recursive: true, force: true, maxRetries: 20, retryDelay: 100 });
   } };
 }
 

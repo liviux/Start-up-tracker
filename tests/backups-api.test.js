@@ -517,7 +517,9 @@ async function setUpUnsafeRestore(url) {
   return { startup, backup, token: prepared.payload.token };
 }
 
-test("a restore or import whose safety backup cannot be written changes nothing", { skip: process.getuid?.() === 0 ? "root ignores folder permissions" : false }, async () => {
+// Folder permissions are the lever here; the next test reaches the same
+// failure through a file in the way, which works for root and on Windows.
+test("a restore or import whose safety backup cannot be written changes nothing", { skip: process.getuid?.() === 0 ? "root ignores folder permissions" : process.platform === "win32" ? "Windows ignores POSIX folder modes" : false }, async () => {
   const server = await startServer();
   const backupDir = path.join(server.home, "backups");
   try {

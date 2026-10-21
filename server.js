@@ -1607,7 +1607,9 @@ function resolveEditableMarkdownPath(payload, folder) {
     if (!localPath) {
       throw new security.HttpError(400, "No file path is saved for this media item.", "noPath");
     }
-    if (pathLooksLikeWindows(localPath)) {
+    // A Windows path sent to a tracker on macOS or Linux is on another
+    // computer's drive. On Windows every path looks like this.
+    if (process.platform !== "win32" && pathLooksLikeWindows(localPath)) {
       throw new security.HttpError(403, "Files on other drives can be opened in their default app, but only files in the media folder can be saved here.", "outsideMedia");
     }
     // Only files inside the media folder can be written, whatever path is sent.
@@ -1671,11 +1673,19 @@ function isMarkdownFilePath(filePath) {
   return /\.(md|markdown)$/i.test(String(filePath || ""));
 }
 
+// The address of a file in the media folder. The file may come back with
+// symlinks resolved (/private/var on macOS, long folder names on Windows), so
+// the media folder is compared both as configured and resolved.
 function mediaWebPath(filePath) {
-  if (!isInsidePath(filePath, mediaDir)) {
-    return "";
+  let realMediaDir = mediaDir;
+  try {
+    realMediaDir = fs.realpathSync.native(mediaDir);
+  } catch {
+    // Not created yet; the configured path is all there is.
   }
-  const relativePath = path.relative(mediaDir, filePath);
+  const root = [mediaDir, realMediaDir].find((candidate) => isInsidePath(filePath, candidate));
+  if (!root) return "";
+  const relativePath = path.relative(root, filePath);
   return `/media/${relativePath.split(path.sep).map(encodeURIComponent).join("/")}`;
 }
 

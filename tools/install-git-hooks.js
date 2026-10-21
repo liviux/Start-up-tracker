@@ -36,7 +36,8 @@ function hookScript(prefix) {
 
 function install({ root = ROOT, force = false } = {}) {
   const topLevel = git(["rev-parse", "--show-toplevel"], root);
-  const prefix = path.relative(fs.realpathSync(topLevel), fs.realpathSync(root)).split(path.sep).join("/");
+  // .native also expands Windows short names (RUNNER~1), which git never uses.
+  const prefix = path.relative(fs.realpathSync.native(topLevel), fs.realpathSync.native(root)).split(path.sep).join("/");
   const hooksDir = path.resolve(root, git(["rev-parse", "--git-path", "hooks"], root));
   const hookFile = path.join(hooksDir, "pre-commit");
   fs.mkdirSync(hooksDir, { recursive: true });

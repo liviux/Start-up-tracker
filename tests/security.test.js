@@ -303,7 +303,7 @@ test("host, origin and link checks", () => {
 test("the data folder comes from --data-dir, then STARTUP_TRACKER_HOME, then the default", () => {
   const home = "/home/example";
   assert.equal(resolveDataRoot({ argv: ["--data-dir", "/srv/tracker"], env: { STARTUP_TRACKER_HOME: "/x" }, homedir: home }).root, path.resolve("/srv/tracker"));
-  assert.equal(resolveDataRoot({ argv: ["--data-dir=~/t"], env: {}, homedir: home }).root, path.join(home, "t"));
+  assert.equal(resolveDataRoot({ argv: ["--data-dir=~/t"], env: {}, homedir: home }).root, path.resolve(home, "t"));
   assert.equal(resolveDataRoot({ argv: [], env: { STARTUP_TRACKER_HOME: "/x" }, homedir: home }).root, path.resolve("/x"));
   assert.equal(resolveDataRoot({ argv: ["--dev"], env: {}, homedir: home }).root, path.join(home, ".startup-tracker-dev"));
   assert.equal(resolveDataRoot({ argv: [], env: {}, homedir: home }).root, path.join(home, ".startup-tracker"));
