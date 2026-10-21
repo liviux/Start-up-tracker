@@ -124,7 +124,7 @@ jobs:
           node-version: 22
       # Scans the whole git history. Repositories owned by an organization also
       # need a GITLEAKS_LICENSE secret; personal repositories do not.
-      - uses: gitleaks/gitleaks-action@v2
+      - uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: check-leaks on the repository, docs/ included
