@@ -111,7 +111,8 @@ test("the pre-commit hook runs the staged check for a project inside a larger re
     const hook = fs.readFileSync(hookFile, "utf8");
     assert.ok(hook.includes(MARKER));
     assert.match(hook, /node "startup-tracker\/tools\/check-leaks\.js" --staged/);
-    assert.ok(fs.statSync(hookFile).mode & 0o100, "hook must be executable");
+    // Windows has no executable bit; Git for Windows runs hooks regardless.
+    if (process.platform !== "win32") assert.ok(fs.statSync(hookFile).mode & 0o100, "hook must be executable");
     // Reinstalling over our own hook is fine.
     install({ root: project });
   } finally {
