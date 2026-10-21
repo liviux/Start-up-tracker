@@ -4,6 +4,10 @@ Marketing, Programs and Funding share one category library with three levels: **
 
 The library ships in `content/taxonomy/` (`mk.json`, `po.json`, `fu.json`). It is written to fit any startup in any country and industry, and it names no brands; brands appear only as examples inside descriptions.
 
+![Extra > Categories: the three-level library for Marketing, with counts and the on/off switch for this startup](assets/screenshot-categories.png)
+
+*Extra > Categories. The checkbox turns an entry on or off for the startup you are in; the counts show how many targets use it.*
+
 ## A target's categories
 
 A target can sit in several places at once: a write-up of your product design can be both a blog article and a forum post. Pick as many entries as fit, from the target's own section. The first one is the **primary**: it is shown first and decides the target's place in sorted lists. "Make primary" moves another one to the front.

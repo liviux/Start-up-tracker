@@ -2,6 +2,10 @@
 
 The Company tab (COMP on badges) tracks the legal entity behind the startup: how it was set up, what it has to file and when, what it spends, and a short summary to paste into forms. It is not legal or tax advice; every page says so.
 
+![The Company Setup tab: completed steps, their authorities, dates, notes and official sources, and the next steps](assets/screenshot-company.png)
+
+*Setup for the demo startup's UK Ltd: each step names its authority, dates and official sources.*
+
 ## Templates
 
 Pick the country and legal form in **Profile**. Each template brings setup steps, recurring obligations with their due dates, the fields a company of that form has, the roles of its people and the expense categories.
@@ -20,13 +24,13 @@ Pick the country and legal form in **Profile**. Each template brings setup steps
 | Brazil | Ltda (including the single-member SLU), S.A. |
 | Romania | SRL |
 
-The countries are the ten largest economies by nominal GDP in the IMF World Economic Outlook (October 2026), without Russia, plus Romania. The picker says so and links to the IMF data.
+The countries are the ten largest economies by nominal GDP in 2025 in the IMF World Economic Outlook (October 2026), without Russia, plus Romania. The picker says so and links to the IMF data.
 
 **Generic** covers every other country or form. You name the legal form and the country, and add your own steps and obligations.
 
 ### Sources
 
-Every step and obligation names the official page it comes from (a government, a registry or the law itself) and the date it was checked. Where the official pages did not settle a point, or could not be reached when the template was written, the entry says **check locally**: ask the authority or an accountant. Amounts carry the date they were seen on.
+Every template step and obligation names the official page it comes from (a government, a registry or the law itself) and the date it was checked. Where the official pages did not settle a point, or could not be reached when the template was written, the entry says **check locally**: ask the authority or an accountant. Amounts carry the date they were seen on.
 
 Due dates follow the rule on the official page. When a date falls on a weekend or a holiday, most authorities move it to the next working day; the tracker shows the nominal date.
 

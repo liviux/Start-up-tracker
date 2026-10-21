@@ -6,6 +6,14 @@ The three section pages work the same way and use the same names.
 
 The section name in its colour, a one-line description and the numbers: how many targets there are, how many sit in each status group (Planned, In progress, Done, Closed) and how many are due in the next 7 days. Funding adds the pipeline (what open deals ask for), what is committed and what was received. Programs adds the expected value: the cash on offer in open applications, times their probability when you set one.
 
+![The Marketing page: target counts, the focus queue and the next actions](assets/screenshot-marketing.png)
+
+*The Marketing page of the demo startup. The focus queue starts with what is due today or overdue.*
+
+![The Funding page: pipeline, committed and received totals, and the deals due next](assets/screenshot-funding.png)
+
+*Funding adds the money columns and keeps its open deals in the focus queue.*
+
 ## Focus queue
 
 The targets with a next action date. **On this day** shows the ones dated on the chosen day, **Due by** the ones dated on or before it; the numbers on the two buttons count both. Use the arrows, **Today** or **Any date** to move. The status filter starts with Planned and In progress, so Done and Closed stay out of the way. Click a card to open the target.
@@ -17,6 +25,10 @@ The same fields everywhere: name, organization, link, categories, status (New), 
 ## Targets
 
 A read-only table with the same columns in every section: priority, name and organization, category (the primary one, with "+N" when there are more), status, next action, campaign and tags. Programs add the cash on offer and Funding the ask. Click a row, or its name, to open the target; a link in the row opens that link instead. Column headers sort.
+
+![The Programs & Opportunities targets table, with category tabs, filters and the cash on offer](assets/screenshot-programs.png)
+
+*Programs & Opportunities: the category tabs count targets, and the table shows the cash on offer.*
 
 Filters:
 

@@ -8,6 +8,15 @@ Startup Tracker keeps track of a startup's marketing (MK), programs and opportun
 - **Prompts** filled with your startup's details, and **AI agents** on your computer (Claude Code, Codex, Gemini CLI and others) that save what they find straight into the tracker, with undo.
 - Automatic **backups**, a recycle bin, and export and import.
 
+![The Marketing page of the fictional demo startup: counts per status group and the focus queue with the next targets](assets/screenshot-marketing.png)
+
+*The Marketing page of the demo startup, "Northwind Robotics".*
+
+| | |
+|---|---|
+| ![The calendar with dated work across every section](assets/screenshot-calendar.png) | ![The company setup steps with their official sources](assets/screenshot-company.png) |
+| ![A prompt filled with the startup's profile, ready to copy or run](assets/screenshot-prompts.png) | ![An agent run and the target it saved](assets/screenshot-agents.png) |
+
 ## Your data stays on your computer
 
 The server listens on 127.0.0.1, so only your computer can reach it. Everything you enter goes into one SQLite database in a data folder in your home directory, next to your uploads and backups. The code folder never holds data, so updating or removing the app leaves your data alone. [Privacy](privacy.md) lists the two things the tracker fetches from the internet and the switch that turns them off.

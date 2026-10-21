@@ -2,6 +2,10 @@
 
 Extra > Prompts builds the prompt you give an AI agent or chat to find and add targets. It fills in your startup's details, the scope you pick and the instructions you choose, so the same prompt works for every startup.
 
+![Prompts: the variables panel on the left and the prompt preview on the right, filled with the startup profile](assets/screenshot-prompts.png)
+
+*The variables panel and the prompt preview. The startup context comes from Settings > Startup profile and the AI context text.*
+
 ## Presets
 
 The presets sit at the top of the page, grouped by section: Marketing, Programs, Funding and General. Each says what it does and when to use it (hover or focus it to read both). Picking one sets the prompt, the section, the categories and the examples. You can change any of them before you copy.

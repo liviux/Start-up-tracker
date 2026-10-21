@@ -11,6 +11,10 @@ Every target in Marketing, Programs and Funding opens in the same window, with t
 | Extras | Your own fields (Extra > Fields), and "Other fields": values the target holds that no field describes. |
 | History | Every change to the target, with "Restore this value" on each field. |
 
+![The target window's Overview tab, with All details open on the filled fields](assets/screenshot-target.png)
+
+*The target window: status and dates, and every filled field by group under "All details".*
+
 Changes stay in the window until you press **Save**. **Cancel**, **Esc** or the close button ask before dropping them. **Enter** in a one-line box saves. **Move to recycle bin** deletes the target; you can restore it from Settings > Recycle bin.
 
 ## Fields

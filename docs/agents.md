@@ -4,6 +4,10 @@ You can run a prompt from the Prompts page with an AI coding agent installed on 
 
 The tracker talks to agents over the [Agent Client Protocol](https://agentclientprotocol.com) (ACP), version 1. It starts the agent as a program on your computer and exchanges messages with it; there is no cloud service in between. What the agent itself sends to its model provider is between you and that provider.
 
+![An agent run on the Agents page: the conversation and plan on the right, the run list on the left, and the target it saved](assets/screenshot-agents.png)
+
+*An agent run in the demo startup. The conversation, plan and tool calls are saved with the run; the target it created is already in the tracker.*
+
 ## Before you start
 
 Agents can read and change files and run commands on this computer with your user account's rights. The tracker gives an agent no file or terminal access of its own, and it runs the agent in a working folder inside the data folder, but that folder is not a sandbox: the agent's own tools can reach anything your account can. Pick the permission policy (below) with that in mind; [AI agents and safety](agent-safety.md) explains the risks and the choices.

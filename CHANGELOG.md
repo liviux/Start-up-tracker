@@ -4,8 +4,12 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+### Changed
+- The demo startup now has a full set of linked marketing, program, funding and company records, two funding rounds and a UK Ltd company profile, and the README and documentation use ten screenshots of it.
+
 ### Fixed
 - The update check says when GitHub's hourly limit for your network is used up, instead of "GitHub answered 403".
+- The Generic company template no longer says it was checked against its sources on "?".
 
 ## [0.1.0] - 2026-10-21
 

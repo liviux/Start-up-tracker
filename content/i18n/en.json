@@ -2321,6 +2321,7 @@
     "ranking": "Countries with a template: {title} ({year}).",
     "rankingSource": "Source",
     "templateVerified": "Template checked against its sources on {date}.",
+    "templateGeneric": "Generic template: add the steps and obligations that apply to you, from your own official sources.",
     "sources": "Sources:",
     "verifiedOn": "checked {date}",
     "checkLocally": "check locally",

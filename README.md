@@ -39,6 +39,16 @@ npm start
 - **Prompts** filled with your startup's details, to paste into a chat or run with an **AI agent** on your computer (Claude Code, Codex, Gemini CLI, OpenCode and others that speak the Agent Client Protocol). Agents save targets straight into the tracker, and each run can be undone.
 - **Backups**: automatic and pinned, restorable per record, per startup or whole, plus a recycle bin and export and import.
 
+## Screenshots
+
+The same fictional startup, Northwind Robotics, in Programs & Opportunities, Funding, Company, the target window, Prompts and an agent run.
+
+| | |
+|---|---|
+| ![Programs & Opportunities: the category tabs and the targets table with the cash on offer](docs/assets/screenshot-programs.png) | ![Funding: pipeline, committed and received money, and the deals due next](docs/assets/screenshot-funding.png) |
+| ![Company: the UK Ltd setup steps with their authorities, dates and official sources](docs/assets/screenshot-company.png) | ![The target window: status, dates and every filled field by group under All details](docs/assets/screenshot-target.png) |
+| ![Prompts: the variables filled from the startup profile and the prompt as it will be sent](docs/assets/screenshot-prompts.png) | ![An AI agent run: the conversation, its plan and the target it saved](docs/assets/screenshot-agents.png) |
+
 ## Your data stays on your computer
 
 The tracker listens only on `127.0.0.1` and has no accounts and no analytics. Your data lives in `~/.startup-tracker`, never in the code folder. The tracker goes online only to fetch the AI agent registry and to check for updates, and one switch turns both off. AI agents you run talk to their own providers. [Privacy](docs/privacy.md) has the details.

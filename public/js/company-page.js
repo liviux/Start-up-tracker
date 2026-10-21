@@ -355,7 +355,7 @@
         <section class="company-card">
           <h3>${escapeHtml(t("company.profile.entity"))}</h3>
           <div class="field-grid">
-            ${row(t("company.profile.template"), `<select id="companyTemplate" data-company-profile="templateId">${options}</select>`, ranking + (template ? `<p class="field-help">${escapeHtml(t("company.templateVerified", { date: template.verifiedOn || "?" }))}</p>` : ""))}
+            ${row(t("company.profile.template"), `<select id="companyTemplate" data-company-profile="templateId">${options}</select>`, ranking + (template ? `<p class="field-help">${escapeHtml(template.verifiedOn ? t("company.templateVerified", { date: template.verifiedOn }) : t("company.templateGeneric"))}</p>` : ""))}
             ${isGeneric ? row(t("company.profile.legalForm"), `<input type="text" data-company-profile="legalForm" value="${escapeHtml(p.legalForm)}" maxlength="120">`, `<p class="field-help">${escapeHtml(t("company.profile.legalFormHelp"))}</p>`) : ""}
             ${isGeneric ? row(t("company.profile.countryName"), `<input type="text" data-company-profile="countryName" value="${escapeHtml(p.countryName)}" maxlength="120">`) : ""}
             ${template?.subdivision ? row(text(template.subdivision.label), `<select data-company-profile="subdivision"><option value="">${escapeHtml(t("company.profile.pickSubdivision"))}</option>${template.subdivision.options.map((option) => `<option value="${escapeHtml(option.code)}"${option.code === p.subdivision ? " selected" : ""}>${escapeHtml(text(option.name))}</option>`).join("")}</select>`, template.subdivision.required && !p.subdivision ? `<p class="field-help is-warning">${escapeHtml(t("company.profile.subdivisionNeeded"))}</p>` : "") : ""}

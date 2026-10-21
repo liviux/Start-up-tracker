@@ -20,7 +20,24 @@ test("demo data is fictional: example.com links only, nothing the leak check fla
   assert.deepEqual(scanText(text), []);
   const total = ["items", "programs", "funding", "fundingRounds", "campaigns", "feedbackItems", "dailyLinks", "mediaItems"]
     .reduce((sum, key) => sum + state[key].length, 0);
-  assert.ok(total >= 40, `about 40 records, got ${total}`);
+  assert.ok(total >= 40, `more than 40 records, got ${total}`);
+});
+
+test("the demo covers every section, with a filled profile and linked records", () => {
+  const state = buildDemoState({ now: new Date("2026-10-17T12:00:00Z") });
+  assert.ok(state.items.length >= 24);
+  assert.ok(state.programs.length >= 20);
+  assert.ok(state.funding.length >= 12);
+  assert.ok(state.fundingRounds.length >= 2);
+  assert.ok(state.feedbackItems.length >= 8);
+  assert.ok(state.dailyLinks.length >= 6);
+  assert.ok(state.mediaItems.length >= 6);
+  assert.ok(state.links.length >= 8);
+  assert.equal(state.companyProfile.templateId, "uk-ltd");
+  assert.ok(state.companySteps.length >= 10);
+  assert.equal(state.profile.currency, "GBP");
+  assert.ok(state.profile.oneLiner);
+  assert.ok(state.profile.aiContext);
 });
 
 test("the large size adds more than 1,000 records", () => {

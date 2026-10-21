@@ -4,7 +4,13 @@ The first time you open the tracker with an empty data folder, a setup opens in 
 
 Only two things are required: the startup's name and your time zone. Every other step has **Skip**, and everything the setup asks for can be changed later in **Settings**.
 
+![The setup's Your startup step, with the name, one-liner, description, country, company template and currency filled in](assets/screenshot-setup.png)
+
+*The "Your startup" step. The country suggests a currency and puts that country's company templates first.*
+
 ## The steps
+
+The setup has eleven screens. The three "What to track" pages are grouped under step 6 here.
 
 1. **Welcome**: what the tracker does, and that your data stays on this computer.
 2. **Basics**, shared by every startup: time zone (the one your browser reports is filled in; confirm it or pick another), date format, theme, light or dark, and language (English for now).
@@ -24,7 +30,7 @@ A tracker that already had startups before the setup existed counts as set up, s
 
 ## The demo startup
 
-**Add a demo startup to explore** adds a fictional startup, "Northwind Robotics", with marketing, program and funding targets, funding rounds, feedback, media records, company steps and expenses, and three shared campaigns, so you can see how the pages look with data in them. **Delete the demo startup** on the same page removes it and its three campaigns in one click, after the usual safety backup. Nothing of yours is touched.
+**Add a demo startup to explore** adds a fictional startup, "Northwind Robotics", with a full marketing pipeline, program and funding targets, two funding rounds, linked records, feedback, research links, media records, and a UK Ltd company profile with setup steps, obligations and expenses, plus three shared campaigns. It is there so you can see how the pages look with data in them. **Delete the demo startup** on the same page removes it and its three campaigns in one click, after the usual safety backup. Nothing of yours is touched.
 
 ## Adding another startup
 

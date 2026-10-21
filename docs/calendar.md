@@ -2,6 +2,10 @@
 
 The calendar shows the dated moments of your records: marketing target dates, program next actions, deadlines and milestones, funding next actions, expected closes, payments and commitments, Company deadlines, and, if you turn them on, campaign start and end dates.
 
+![The calendar on a Wednesday: the nine-day strip, section and event filters, and the day's work grouped by section](assets/screenshot-calendar.png)
+
+*The day strip, then the events of the chosen day, grouped by section. The letters count events per section.*
+
 ## The day strip
 
 Nine days around the chosen one. Each day shows one count per section, as the section's letter and number in its colour: `M2 P4 F1 C1` means two marketing events, four program events, one funding event and one Company event. Sections without events that day are left out. Hover a count to see it split by status group; screen readers hear the section names and counts.

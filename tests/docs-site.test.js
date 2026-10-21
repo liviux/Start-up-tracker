@@ -20,6 +20,10 @@ function sidebarLinks(markdown) {
   return [...markdown.matchAll(/\]\(([^)\s]+)\)/g)].map((m) => m[1]);
 }
 
+function imageRefs(markdown) {
+  return [...markdown.matchAll(/!\[[^\]]*\]\(([^)\s]+)\)/g)].map((m) => m[1]);
+}
+
 test("docs/index.html loads only local files, and each of them exists", () => {
   const html = read("index.html");
   const refs = htmlReferences(html);
@@ -47,6 +51,18 @@ test("every page in docs/_sidebar.md exists, and .nojekyll and the home page are
   }
   assert.ok(fs.existsSync(path.join(DOCS, ".nojekyll")));
   assert.ok(fs.existsSync(path.join(DOCS, "README.md")));
+});
+
+test("every image in the docs and the README exists", () => {
+  const root = path.resolve(DOCS, "..");
+  const pages = fs.readdirSync(DOCS).filter((file) => file.endsWith(".md")).map((file) => ({ file, markdown: read(file), base: DOCS }));
+  pages.push({ file: "README.md", markdown: fs.readFileSync(path.join(root, "README.md"), "utf8"), base: root });
+  for (const page of pages) {
+    for (const ref of imageRefs(page.markdown)) {
+      assert.doesNotMatch(ref, /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i, `${page.file}: ${ref} is a local image`);
+      assert.ok(fs.existsSync(path.join(page.base, ref)), `${page.file}: ${ref} exists`);
+    }
+  }
 });
 
 test("the install scripts published with the docs are the same as the ones in the repository root", () => {
