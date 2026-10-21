@@ -1,0 +1,286 @@
+/* Record picker (js/components/item-picker.js) and the Links panel of record
+   windows (app.js renderLinksPanel). */
+
+.picker-field {
+  display: grid;
+  gap: 6px;
+  grid-column: 1 / -1;
+}
+
+.inline-picker {
+  min-width: 220px;
+}
+
+.item-picker {
+  position: relative;
+  display: grid;
+  gap: 6px;
+}
+
+.item-picker-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item-picker-chips:empty {
+  display: none;
+}
+
+.item-picker-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 2px 4px 2px 8px;
+  border: 1px solid var(--section-border, var(--border-strong));
+  border-radius: var(--radius-pill);
+  background: var(--section-bg, var(--surface-strong));
+  color: var(--section-fg, var(--text));
+  font-size: 12.5px;
+}
+
+.item-picker-chip-kind {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  opacity: 0.8;
+}
+
+.item-picker-chip-title {
+  overflow-wrap: anywhere;
+}
+
+.item-picker-chip-missing {
+  color: var(--muted-strong);
+  font-style: italic;
+}
+
+.item-picker-chip-remove {
+  min-width: 22px;
+  min-height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.item-picker-chip-remove:hover,
+.item-picker-chip-remove:focus-visible {
+  background: var(--surface);
+}
+
+.item-picker-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.item-picker-kind {
+  flex: none;
+  width: auto;
+}
+
+.item-picker-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-picker-listbox {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 60;
+  max-height: 320px;
+  margin-top: 4px;
+  overflow-y: auto;
+  padding: 4px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.12));
+}
+
+.item-picker-group-label {
+  padding: 6px 8px 2px;
+  color: var(--muted-strong);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.item-picker-option,
+.item-picker-more {
+  display: grid;
+  gap: 2px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.item-picker-option.is-active,
+.item-picker-more.is-active,
+.item-picker-option:hover,
+.item-picker-more:hover {
+  background: var(--accent-soft);
+}
+
+.item-picker-option[aria-selected="true"] {
+  font-weight: 600;
+}
+
+.item-picker-option-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.item-picker-option-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-picker-option-status {
+  color: var(--muted-strong);
+  font-size: 11.5px;
+}
+
+.item-picker-option-check {
+  margin-left: auto;
+  color: var(--accent);
+}
+
+.item-picker-option-sub {
+  color: var(--muted-strong);
+  font-size: 11.5px;
+}
+
+.item-picker-more {
+  color: var(--accent);
+  font-size: 12.5px;
+}
+
+.item-picker-empty {
+  padding: 8px;
+  color: var(--muted-strong);
+  font-size: 12.5px;
+}
+
+/* Links panel */
+
+.links-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.links-group h5 {
+  margin: 0 0 6px;
+  color: var(--muted-strong);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.links-group ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.links-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.links-row:hover {
+  background: var(--surface-strong);
+}
+
+.links-kind {
+  color: var(--muted-strong);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.links-open {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.links-open:hover,
+.links-open:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.links-context {
+  color: var(--muted-strong);
+  font-size: 12px;
+}
+
+.links-remove {
+  margin-left: auto;
+}
+
+.links-add {
+  display: grid;
+  grid-template-columns: minmax(140px, auto) 1fr;
+  gap: 8px;
+  align-items: end;
+}
+
+.links-relation {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .links-add {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pills in table rows and cards */
+
+.link-pill {
+  border-color: var(--section-border, var(--border-strong));
+  background: var(--section-bg, var(--surface-strong));
+  color: var(--section-fg, var(--text));
+  cursor: pointer;
+}
+
+.media-target-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.media-target-filter-row .item-picker {
+  flex: 1;
+  min-width: 220px;
+}

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "defaultStatus": "new",
+  "groups": [
+    { "id": "planned", "label": "Planned", "description": "Not started yet: new, being researched, scheduled or kept for later." },
+    { "id": "in_progress", "label": "In progress", "description": "Work is under way, waiting for an answer, accepted with follow-up work, or paused." },
+    { "id": "done", "label": "Done", "description": "Finished: published, received in full, or completed." },
+    { "id": "closed", "label": "Closed", "description": "Ended without being done: rejected, dropped, not eligible, expired or no answer." }
+  ],
+  "statuses": [
+    { "id": "new", "group": "planned", "label": "New", "description": "Just added. Nobody has looked at it properly yet." },
+    { "id": "researching", "group": "planned", "label": "Researching", "description": "You are checking fit, rules, eligibility or details." },
+    { "id": "scheduled", "group": "planned", "label": "Scheduled", "description": "You decided to go for it and it has a next action date." },
+    { "id": "later", "group": "planned", "label": "Later", "description": "A good fit, but not now: it opens later, the next cohort, worth a second look." },
+    { "id": "preparing", "group": "in_progress", "label": "Preparing", "description": "You are working on it: drafting the post, application, pitch or documents." },
+    { "id": "in_contact", "group": "in_progress", "label": "In contact", "description": "You reached out or you are in a conversation." },
+    { "id": "submitted", "group": "in_progress", "label": "Submitted", "description": "You did your part (applied, posted, pitched, sent). Waiting for their answer." },
+    { "id": "interview_pitch", "group": "in_progress", "label": "Interview / pitch", "description": "They shortlisted you: an interview, a pitch or a demo is planned or done." },
+    { "id": "due_diligence", "group": "in_progress", "label": "Due diligence", "description": "They are checking you in depth: documents, references, legal or financial review." },
+    { "id": "negotiating", "group": "in_progress", "label": "Negotiating", "description": "Terms are on the table and being discussed." },
+    { "id": "won", "group": "in_progress", "label": "Won", "description": "They said yes: accepted, approved, awarded or committed. Follow-up work comes next." },
+    { "id": "active", "group": "in_progress", "label": "Active", "description": "You take part and it is still running: a program, payments still coming, a recurring activity." },
+    { "id": "blocked", "group": "in_progress", "label": "Blocked", "description": "You cannot continue until something else happens: a document, a reply, a decision." },
+    { "id": "on_hold", "group": "in_progress", "label": "On hold", "description": "Paused for now; you or they will pick it up again." },
+    { "id": "published", "group": "done", "label": "Published", "description": "Your listing, post, article or launch is live." },
+    { "id": "received", "group": "done", "label": "Received", "description": "The money or benefit arrived in full." },
+    { "id": "completed", "group": "done", "label": "Completed", "description": "Finished from start to end." },
+    { "id": "rejected", "group": "closed", "label": "Rejected", "description": "They said no." },
+    { "id": "not_pursuing", "group": "closed", "label": "Not pursuing", "description": "You decided to stop, withdrew or cancelled." },
+    { "id": "not_eligible", "group": "closed", "label": "Not eligible", "description": "You do not meet the requirements, or it does not apply to you." },
+    { "id": "expired", "group": "closed", "label": "Expired", "description": "The deadline passed or the offer closed before you finished." },
+    { "id": "no_response", "group": "closed", "label": "No response", "description": "No answer after your follow-ups." }
+  ],
+  "waitingStatuses": ["submitted", "interview_pitch", "due_diligence"],
+  "campaignStatuses": [
+    { "id": "planned", "label": "Planned", "description": "Decided on, not started." },
+    { "id": "active", "label": "Active", "description": "Running now." },
+    { "id": "paused", "label": "Paused", "description": "Stopped for now, to be picked up again." },
+    { "id": "done", "label": "Done", "description": "Finished." },
+    { "id": "archived", "label": "Archived", "description": "Kept for reference, no longer shown in active lists." }
+  ]
+}

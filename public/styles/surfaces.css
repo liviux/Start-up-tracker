@@ -1,0 +1,662 @@
+/* Working surfaces share the shell tokens; record status colors stay semantic. */
+html:root {
+}
+
+html:root label,
+html:root .manager-form-v2 label,
+html:root .editing-card label,
+html:root .facet-label {
+  color: var(--text-soft);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root :is(.facet-label, .linked-target-section-title, .media-used-title,
+  .manager-focus-filter-shell-title, .focus-filter-shell-title,
+  .manager-focus-filter-panel-title) {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-soft);
+}
+
+html:root :is(input, select, textarea) {
+  border-color: var(--border-strong);
+  border-radius: 8px;
+  color: var(--text);
+  background-color: var(--surface);
+  box-shadow: none;
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+html:root :is(input, textarea)::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+html:root :is(input, select, textarea):focus {
+  border-color: var(--accent);
+  background-color: var(--surface);
+  box-shadow: var(--accent-ring);
+}
+
+html:root :is(input[type="checkbox"], input[type="radio"]) {
+  accent-color: var(--accent);
+}
+
+html:root :is(button, a, summary, input, select, textarea):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+html:root :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: none;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+html:root .primary-button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html:root .primary-button:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--accent-contrast);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root :is(.secondary-button, .ghost-button) {
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--text-soft);
+}
+
+html:root :is(.secondary-button, .ghost-button):hover {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+  color: var(--text);
+  transform: none;
+}
+
+html:root .secondary-button[aria-expanded="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+html:root :is(.icon-button, .small-btn, .panel-toggle, .close-modal-btn, .settings-close) {
+  border-radius: 8px;
+  box-shadow: none;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+html:root .icon-button:where(:not(.danger-hover):not(.success-btn):not(.active-pin):not(.global-search-toggle):not(.prompt-var-example-select.selected)),
+html:root .small-btn:where(:not(.delete-button):not(.danger-button):not(.primary-button):not(.is-active):not(.active)),
+html:root :is(.panel-toggle, .close-modal-btn, .settings-close) {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-soft);
+}
+
+html:root .icon-button:where(:not(.danger-hover):not(.success-btn):not(.active-pin):not(.global-search-toggle):not(.prompt-var-example-select.selected)):hover,
+html:root .small-btn:where(:not(.delete-button):not(.danger-button):not(.primary-button):not(.is-active):not(.active)):hover,
+html:root :is(.panel-toggle, .close-modal-btn, .settings-close):hover {
+  background: var(--accent-soft);
+  border-color: var(--border-strong);
+  color: var(--accent);
+  transform: none;
+}
+
+html:root :is(.panel, .manager-sidebar .form-panel) {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root .panel {
+  padding: 24px;
+}
+
+html:root .panel:has(.panel-body.collapsed) {
+  padding: 16px 24px;
+}
+
+html:root .panel-heading {
+  border-color: var(--border);
+}
+
+html:root .panel h2 {
+  color: var(--text);
+}
+
+html:root .panel-heading .eyebrow {
+  display: none;
+}
+
+html:root .panel-toggle {
+  width: 36px;
+  height: 36px;
+}
+
+html:root :is(.focus-item, .linked-target-main) {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: 10px;
+  box-shadow: none;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+html:root .focus-item {
+  padding: 16px;
+}
+
+html:root :is(.focus-item, .linked-target-main):hover {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root .focus-item strong {
+  color: var(--text);
+  font-weight: 650;
+}
+
+html:root :is(.focus-link-open, .linked-target-open):hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  transform: none;
+}
+
+html:root :is(.focus-empty-state, .empty-state) {
+  background: var(--surface-strong);
+  border-color: var(--border);
+  border-radius: 10px;
+  box-shadow: none;
+  color: var(--muted-strong);
+}
+
+html:root :is(.focus-date-mode, .prompt-editor-tabs) {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  box-shadow: none;
+}
+
+html:root .focus-date-mode-btn {
+  color: var(--text-soft);
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+html:root .focus-date-mode-btn.active {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+html:root .focus-date-mode-btn.active .tab-count {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+html:root :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn) {
+  border-color: var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html:root :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn):hover {
+  border-color: var(--border-strong);
+  background: var(--accent-soft);
+  color: var(--accent);
+  transform: none;
+}
+
+html:root :is(.focus-filter-shell-summary, .manager-focus-filter-shell-summary) {
+  min-height: 42px;
+  border-color: var(--border);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  box-shadow: none;
+}
+
+html:root :is(.focus-filter-shell, .manager-focus-filter-shell):is(:hover, [open]) > summary {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+  box-shadow: none;
+}
+
+html:root .manager-focus-filter-group summary {
+  border-color: var(--border);
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root .manager-focus-filter-group:is(:hover, [open]) summary {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+  box-shadow: none;
+}
+
+html:root .manager-focus-filter-group[data-selection-state="all"] summary {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+html:root :is(.focus-filter-shell-state, .manager-focus-filter-shell-state),
+html:root .manager-focus-filter-group[data-selection-state="some"] .manager-focus-filter-summary-state {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+html:root .manager-focus-filter-group[data-selection-state="all"] .manager-focus-filter-summary-state {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html:root .manager-focus-filter-panel {
+  border-color: var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root :is(.filters, .facet-filters) {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 16px;
+}
+
+html:root .facet-filters {
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+html:root .category-tabs {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+html:root :is(.tab-button, .subtab-button) {
+  border-radius: 8px;
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html:root :is(.tab-button, .subtab-button)[aria-selected="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: none;
+}
+
+html:root :is(.tab-button, .subtab-button)[aria-selected="true"] .tab-count {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html:root .table-wrap {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: 10px;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root :is(.table-wrap, .company-table-wrap) th {
+  background: var(--surface-strong);
+  color: var(--text-soft);
+  border-bottom: 1px solid var(--border-strong);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  backdrop-filter: none;
+}
+
+html:root :is(.table-wrap, .company-table-wrap) td {
+  border-bottom-color: var(--border);
+}
+
+html:root :is(.table-wrap, .company-table-wrap) tbody tr:hover {
+  background: var(--surface-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root .table-wrap tbody tr.target-row-highlight {
+  background: var(--accent-soft);
+}
+
+html:root :is(.notes-preview-container, .form-notes-preview-container) {
+  border-radius: 8px;
+  border-color: var(--border);
+  background: var(--surface-strong);
+}
+
+html:root :is(.notes-preview-container, .form-notes-preview-container):hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+html:root .pagination {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+html:root :is(.extra-subnav, .oc-subnav, .company-subnav) {
+  border-radius: 10px;
+  border-color: var(--border);
+  padding: 7px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root :is(.extra-subnav-btn, .oc-subnav-btn, .company-subnav-btn) {
+  border-color: transparent;
+  border-radius: 7px;
+  min-height: 36px;
+  color: var(--text-soft);
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root :is(.extra-subnav-btn, .oc-subnav-btn, .company-subnav-btn, .prompt-tab-btn):hover:not(.active) {
+  color: var(--text);
+  background: var(--surface-strong);
+  border-color: transparent;
+}
+
+/* Legacy module navigation declares its brand colors with !important. */
+html:root :is(.extra-subnav-btn[data-extra-tab], .oc-subnav-btn, .company-subnav-btn, .prompt-tab-btn).active {
+  color: var(--accent) !important;
+  background: var(--accent-soft) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html:root :is(.extra-subnav-btn, .oc-subnav-btn, .prompt-tab-btn).active svg {
+  stroke: currentColor !important;
+}
+
+html:root .extra-subnav-btn.active[data-shortname]::after {
+  color: var(--accent);
+  border-color: var(--border);
+  background: var(--surface);
+}
+
+html:root :is(.manager-card, .manager-group, .read-only-card, .company-card) {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+html:root .read-only-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root .manager-card-header strong {
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+html:root #campaignList { grid-template-columns: minmax(0, 1fr); }
+html:root #campaignList .manager-card { min-width: 0; overflow-wrap: anywhere; }
+html:root .campaign-status-filters-wrapper { min-width: 0; flex-wrap: wrap; }
+html:root .campaign-status-filters { min-width: 0; flex-wrap: wrap; }
+html:root .campaign-status-filters .filter-pill { min-height: 36px; }
+
+html:root .manager-content {
+  min-width: 0;
+  container-type: inline-size;
+  container-name: manager-content;
+}
+
+html:root .manager-group-list {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+
+html:root .editing-card {
+  border-color: var(--accent);
+  box-shadow: var(--accent-ring);
+}
+
+html:root .media-preview {
+  background: var(--surface-strong);
+  border-color: var(--border);
+  border-radius: 8px;
+}
+
+html:root :is(.feedback-quote, .feedback-evidence-details, .feedback-strategy-summary) {
+  background: var(--surface-strong);
+  border-color: var(--border);
+  border-radius: 8px;
+  color: var(--text-soft);
+}
+
+html:root :is(.feedback-action-block, .feedback-strategy-block) {
+  background: var(--accent-soft);
+  border-color: var(--border);
+}
+
+html:root .feedback-action-block .action-title {
+  color: var(--accent);
+}
+
+html:root .ai-groups {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 680px), 1fr));
+  gap: 20px;
+}
+
+html:root :is(.ai-table, .ai-flow-table) {
+  border-radius: 10px;
+  border-color: var(--border);
+  background: var(--surface);
+}
+
+html:root :is(.ai-column-head, .ai-flow-column-head) {
+  border-radius: 9px 9px 0 0;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  background: var(--surface-strong);
+  color: var(--text-soft);
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+html:root :is(.ai-compact-card, .ai-flow-compact-card) {
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root :is(.ai-compact-card, .ai-flow-compact-card):hover {
+  background: var(--surface-strong);
+  border-color: var(--border);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root .ai-total-row {
+  background: var(--surface-strong);
+}
+
+html:root .ai-slim-separator {
+  height: 1px;
+  background: var(--border-strong);
+}
+
+html:root :is(.prompts-header-panel, .prompt-vars-panel, .prompt-editor-panel,
+  .prompt-custom-var-card) {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+html:root .prompt-editor-header {
+  background: var(--surface-strong);
+}
+
+html:root .prompt-textarea {
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root .modal-card {
+  border-color: var(--border-strong);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+html:root .modal-header {
+  border-color: var(--border);
+  padding: 20px 24px;
+}
+
+html:root .modal-header h2 {
+  font-size: 1.125rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+html:root .modal-footer {
+  border-color: var(--border);
+  border-radius: 0 0 16px 16px;
+  background: var(--surface-strong);
+}
+
+html:root :is(.close-modal-btn, .settings-close) {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+html:root .notes-editor-tabs {
+  border-color: var(--border);
+  background: var(--surface);
+}
+
+/* Keep font and spacing controlled by the existing one-line notes tab fitter. */
+html:root .notes-editor-tab {
+  border-color: transparent;
+  border-radius: 7px;
+  background: var(--surface-strong);
+  color: var(--text-soft);
+}
+
+html:root .notes-editor-tab.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root .grid-header {
+  color: var(--text);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Sidebar space changes the usable column width independently of the viewport. */
+@container manager-content (max-width: 680px) {
+  html:root .media-card-body {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html:root :is(.campaign-details-grid, .feedback-strategy-grid.two-col) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1279px) {
+  html:root .manager-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html:root .manager-sidebar {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 900px) {
+  html:root .table-wrap {
+    background: transparent;
+    border: 0;
+  }
+
+  html:root .table-wrap tr {
+    border-radius: 10px;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 768px) {
+  html:root .panel-heading { flex-direction: row; align-items: center; }
+
+  html:root .panel,
+  html:root .panel:has(.panel-body.collapsed) {
+    padding: 18px;
+  }
+
+  html:root :is(.filters, .facet-filters) {
+    padding: 12px;
+  }
+
+  html:root .modal-header {
+    padding: 16px;
+  }
+
+  html:root .modal-footer {
+    gap: 8px;
+    padding: 14px 16px;
+  }
+}
+
+@media (pointer: coarse) {
+  html:root :is(.panel-toggle, .close-modal-btn, .settings-close,
+    .extra-subnav-btn, .oc-subnav-btn, .company-subnav-btn,
+    .focus-nav-btn, .focus-today-btn, .focus-clear-btn,
+    .primary-button, .secondary-button, .ghost-button, .danger-button) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:root :is(.modal-card, .settings-panel, .modal-overlay,
+    .focus-item, .linked-target-main, .panel-toggle svg) {
+    transition: none;
+  }
+}

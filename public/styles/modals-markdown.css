@@ -1,0 +1,2912 @@
+/* ==========================================
+   MODAL OVERLAY & CARD STYLES
+   ========================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(9, 13, 22, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-card {
+  width: min(560px, 90%);
+  max-height: min(820px, 90vh);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95) translateY(12px);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.modal-card form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.modal-overlay.open .modal-card {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+  font-size: 1.2rem;
+  font-weight: 750;
+  color: var(--text);
+  margin: 0;
+}
+
+.close-modal-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted-strong);
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.close-modal-btn:hover {
+  border-color: var(--border-strong);
+  color: var(--accent);
+  background: var(--surface-strong);
+}
+
+.close-modal-btn:active {
+  transform: scale(0.95);
+}
+
+.modal-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.modal-subtitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted-strong);
+}
+
+#modalNotesInput,
+#mediaDocumentInput {
+  width: 100%;
+  min-height: 180px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#modalNotesInput:focus,
+#mediaDocumentInput:focus {
+  border-color: var(--accent);
+  box-shadow: var(--accent-ring);
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-strong);
+  border-radius: 0 0 var(--radius) var(--radius);
+  flex-shrink: 0;
+}
+
+.record-conflict-modal-card {
+  width: min(920px, 95%);
+  max-height: min(760px, 92vh);
+}
+
+.record-conflict-modal-card .modal-header > div {
+  min-width: 0;
+}
+
+.record-conflict-modal-card .modal-header .modal-subtitle {
+  margin: 4px 0 0;
+  font-weight: 500;
+}
+
+.record-conflict-modal-body {
+  gap: 16px;
+}
+
+.record-conflict-record {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  overflow: hidden;
+}
+
+.record-conflict-record-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.record-conflict-record-header h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.record-conflict-summary {
+  display: grid;
+  gap: 6px;
+  padding: 12px 16px;
+  color: var(--muted-strong);
+  font-size: 0.82rem;
+}
+
+.record-conflict-summary strong {
+  color: var(--text);
+}
+
+.record-conflict-field {
+  padding: 0 16px 16px;
+}
+
+.record-conflict-field-name {
+  margin: 0 0 7px;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.record-conflict-comparison {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.record-conflict-version {
+  min-width: 0;
+}
+
+.record-conflict-version-label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--muted-strong);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.record-conflict-value {
+  max-height: 180px;
+  margin: 0;
+  padding: 10px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font: 0.75rem/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  .record-conflict-comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .record-conflict-modal-card .modal-footer {
+    flex-wrap: wrap;
+  }
+}
+
+/* Wider modal card for notes with preview */
+.modal-card-notes {
+  width: min(900px, 95%);
+  height: 700px;
+  max-height: 90vh;
+}
+
+.modal-card-notes .modal-body {
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-id-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-id-field .input-with-button-row input {
+  flex: 1 1 auto;
+}
+
+.modal-card-notes .notes-editor-panes {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* The 12px flex gap of .modal-body is the whole distance to the tab row. */
+  margin-top: 0;
+}
+
+.modal-card-notes .notes-editor-pane {
+  display: none;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 8px; /* space for scrollbar */
+}
+
+.modal-card-notes .notes-editor-pane.active {
+  display: flex;
+}
+
+/* Make all full-page note edit textareas fill the edit pane height dynamically */
+#notesPaneEdit textarea,
+#programPaneEdit textarea,
+#fundingPaneEdit textarea,
+#mediaDocumentPaneEdit textarea,
+.notes-editor-pane-full textarea {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 380px;
+  resize: none;
+  margin: 0;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#notesPaneEdit textarea:focus,
+#programPaneEdit textarea:focus,
+#fundingPaneEdit textarea:focus,
+#mediaDocumentPaneEdit textarea:focus,
+.notes-editor-pane-full textarea:focus {
+  border-color: var(--accent);
+  box-shadow: var(--accent-ring);
+}
+
+/* Auto-expanding note & metadata fields across modals */
+.auto-expand-field,
+.metadata-form-grid textarea,
+.program-update-form-grid textarea,
+.modal-card-manager-notes textarea,
+.manager-form-v2 textarea,
+.manager-extra-row textarea,
+.funding-add-row textarea,
+.milestone-add-row textarea,
+.modal-card textarea:not(#notesPaneEdit textarea):not(#programPaneEdit textarea):not(#fundingPaneEdit textarea):not(#mediaDocumentPaneEdit textarea):not(.notes-editor-pane-full textarea):not(#modalNotesInput):not(#modalProgNotes):not(#modalFundingNotes):not(#mediaDocumentInput):not(#promptMarkdownTextarea) {
+  width: 100%;
+  min-height: 38px;
+  max-height: 360px;
+  height: auto;
+  flex: 0 0 auto;
+  field-sizing: content;
+  resize: vertical;
+  line-height: 1.5;
+  font-family: inherit;
+  font-size: 0.88rem;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
+  transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.auto-expand-field:focus,
+.metadata-form-grid textarea:focus,
+.program-update-form-grid textarea:focus,
+.modal-card-manager-notes textarea:focus,
+.manager-form-v2 textarea:focus,
+.manager-extra-row textarea:focus,
+.funding-add-row textarea:focus,
+.milestone-add-row textarea:focus,
+.modal-card textarea:not(#notesPaneEdit textarea):not(#programPaneEdit textarea):not(#fundingPaneEdit textarea):not(#mediaDocumentPaneEdit textarea):not(.notes-editor-pane-full textarea):not(#modalNotesInput):not(#modalProgNotes):not(#modalFundingNotes):not(#mediaDocumentInput):not(#promptMarkdownTextarea):focus {
+  border-color: var(--accent);
+  box-shadow: var(--accent-ring), inset 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+[data-theme="dark"] .auto-expand-field,
+[data-theme="dark"] .metadata-form-grid textarea,
+[data-theme="dark"] .program-update-form-grid textarea,
+[data-theme="dark"] .modal-card-manager-notes textarea,
+[data-theme="dark"] .manager-form-v2 textarea,
+[data-theme="dark"] .manager-extra-row textarea,
+[data-theme="dark"] .funding-add-row textarea,
+[data-theme="dark"] .milestone-add-row textarea,
+[data-theme="dark"] .modal-card textarea:not(#notesPaneEdit textarea):not(#programPaneEdit textarea):not(#fundingPaneEdit textarea):not(#mediaDocumentPaneEdit textarea):not(.notes-editor-pane-full textarea):not(#modalNotesInput):not(#modalProgNotes):not(#modalFundingNotes):not(#mediaDocumentInput):not(#promptMarkdownTextarea) {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* Ensure markdown-rendered preview containers expand naturally without internal scrollbars */
+.modal-card-notes .notes-editor-pane .markdown-rendered,
+.modal-card-program .notes-editor-pane .markdown-rendered,
+.modal-card-funding .notes-editor-pane .markdown-rendered {
+  flex: 0 0 auto !important;
+  min-height: 40px !important;
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+  margin-bottom: 20px;
+}
+
+/* All Details View in Preview Tab - Anti-Slop / Taste-Skill Directives */
+.all-details-container {
+  margin-top: 14px;
+  padding-top: 24px;
+  border-top: 2px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.all-details-disclosure {
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+
+.all-details-disclosure summary.all-details-main-title {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.all-details-disclosure summary.all-details-main-title::-webkit-details-marker {
+  display: none;
+}
+
+.all-details-disclosure summary.all-details-main-title:hover {
+  background: var(--surface-hover, var(--surface));
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.all-details-main-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2px;
+  padding: 10px 16px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+}
+
+.all-details-main-title svg {
+  color: var(--accent);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.all-details-title-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.all-details-main-heading {
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-heading);
+  line-height: 1.25;
+}
+
+.all-details-summary-line {
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--muted, #71717a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.all-details-summary-part {
+  display: inline;
+}
+
+.all-details-summary-label {
+  font-weight: 600;
+  color: var(--text-body, var(--text));
+}
+
+.all-details-summary-sep {
+  margin: 0 6px;
+  color: var(--border, #d4d4d8);
+  font-weight: normal;
+}
+
+.all-details-chevron {
+  color: var(--muted);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.all-details-disclosure summary.all-details-main-title:hover .all-details-chevron {
+  color: var(--accent);
+}
+
+.all-details-disclosure[open] .all-details-chevron {
+  transform: rotate(180deg);
+}
+
+.all-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 16px;
+  animation: allDetailsSlideDown 0.2s ease-out;
+}
+
+@keyframes allDetailsSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.all-details-section {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.all-details-section-header {
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.80rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.all-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px 20px;
+}
+
+/* Individual Field Card */
+.all-details-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.all-details-field:hover {
+  border-color: var(--accent);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.all-details-field-full {
+  grid-column: 1 / -1;
+}
+
+/* Distinct Monospace Field Name / Label */
+.all-details-field-label {
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.70rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-strong);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+}
+
+/* High-Legibility Sans-Serif Field Content */
+.all-details-field-value {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.90rem;
+  font-weight: 400;
+  color: var(--text-heading);
+  word-break: break-word;
+  white-space: pre-wrap;
+  line-height: 1.55;
+}
+
+.all-details-field-value a {
+  color: var(--accent);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.all-details-badges-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.all-details-badge {
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-heading);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.all-details-table-wrapper {
+  overflow-x: auto;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.all-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.all-details-table th,
+.all-details-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.all-details-table tr:last-child td {
+  border-bottom: none;
+}
+
+.all-details-table th {
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  background: var(--surface-soft);
+  font-weight: 700;
+  color: var(--muted-strong);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.all-details-empty {
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--muted);
+  padding: 10px 14px;
+}
+
+.modal-card-document #mediaDocumentInput {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  resize: none;
+  margin: 0;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.84rem;
+}
+
+.modal-card-document #mediaDocumentPreview.markdown-rendered {
+  flex: 1 1 auto;
+  height: 100%;
+  max-height: none;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.media-document-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 260px;
+  padding: 40px 20px;
+  color: var(--muted-strong);
+  font-size: 0.92rem;
+  font-weight: 600;
+  animation: doc-fade-in 0.2s ease-out;
+}
+
+.media-document-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: doc-spin 0.75s linear infinite;
+  box-sizing: border-box;
+}
+
+@keyframes doc-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes doc-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.media-document-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  min-height: 260px;
+  padding: 36px 24px;
+  color: var(--text);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle);
+  animation: doc-fade-in 0.2s ease-out;
+}
+
+.media-document-error svg {
+  color: #ef4444;
+  margin-bottom: 4px;
+}
+
+.media-document-error h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 750;
+  color: var(--text);
+}
+
+.media-document-error p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted-strong);
+  max-width: 440px;
+  line-height: 1.45;
+}
+
+.media-document-error button {
+  margin-top: 10px;
+}
+
+.metadata-tab-container {
+  padding: 4px 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  margin-top: 0;
+}
+
+.metadata-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+  }
+
+  .modal-card,
+  .modal-card-notes,
+  .modal-card-program,
+  .modal-card-funding,
+  .modal-card-program-update,
+  .modal-card-manager-notes {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .modal-header {
+    padding: 12px 14px;
+  }
+
+  .modal-body {
+    padding: 10px 12px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .record-conflict-modal-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-footer {
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .notes-editor-tabs {
+    padding-bottom: 2px;
+    gap: calc(4px * var(--tab-fit));
+  }
+
+  .notes-editor-tab {
+    padding: 6px calc(10px * var(--tab-fit));
+    font-size: calc(0.78rem * var(--tab-fit));
+    min-height: 32px;
+  }
+
+  .modal-card-notes .notes-editor-panes,
+  .modal-card-program .notes-editor-panes,
+  .modal-card-funding .notes-editor-panes {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .modal-card-notes .notes-editor-pane,
+  .modal-card-program .notes-editor-pane,
+  .modal-card-funding .notes-editor-pane {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 2px;
+  }
+
+  /* The History pane is the exception: its rows do not wrap, so it needs the
+     sideways scroll the rule above takes away from every other pane. Needs the
+     extra class and the !important to outrank it. */
+  .modal-card-notes .notes-editor-pane.record-history-pane,
+  .modal-card-program .notes-editor-pane.record-history-pane,
+  .modal-card-funding .notes-editor-pane.record-history-pane {
+    overflow-x: auto !important;
+  }
+
+  #notesPaneEdit textarea,
+  #programPaneEdit textarea,
+  #fundingPaneEdit textarea,
+  #mediaDocumentPaneEdit textarea,
+  .notes-editor-pane-full textarea {
+    min-height: 160px !important;
+    height: 100% !important;
+    flex: 1 1 auto;
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+
+  .auto-expand-field,
+  .metadata-form-grid textarea,
+  .program-update-form-grid textarea,
+  .modal-card-manager-notes textarea,
+  .manager-form-v2 textarea {
+    min-height: 44px !important;
+    max-height: 280px !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+    font-size: 0.92rem;
+    padding: 10px 12px;
+  }
+
+  .modal-card-notes .notes-editor-pane .markdown-rendered,
+  .modal-card-program .notes-editor-pane .markdown-rendered,
+  .modal-card-funding .notes-editor-pane .markdown-rendered {
+    min-height: 40px !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    flex: 0 0 auto !important;
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+
+  .metadata-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .program-update-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .program-update-span-2 {
+    grid-column: 1 / -1 !important;
+  }
+
+  .metadata-form-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .col-span-2,
+  .col-span-3 {
+    grid-column: 1 / -1 !important;
+  }
+
+  .checkbox-options-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
+.metadata-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metadata-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.input-with-button-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input-with-button-row .icon-button {
+  height: 44px;
+  width: 44px;
+  flex-shrink: 0;
+}
+
+/* Notes Editor Tabs (Edit / Preview / Metadata / etc.) */
+.notes-editor-tabs {
+  /* Set by fitTabRowToOneLine() when the row is too wide for its modal. The
+     font, the padding and the gap all come off this one number, so a row that
+     runs long gets tighter as a whole rather than losing its shape. */
+  --tab-fit: 1;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--surface);
+  display: flex;
+  flex-wrap: nowrap;
+  gap: calc(6px * var(--tab-fit));
+  border-bottom: 1px solid var(--border);
+  /* No margin of its own. The modal body is a flex column with a 12px gap, so a
+     margin here stacked on top of that and left a band under the row wide enough
+     to read as an element in its own right. */
+  margin-bottom: 0;
+  padding-bottom: 6px;
+  max-width: 100%;
+  flex-shrink: 0;
+  /* Only reachable when even the smallest size does not fit, which takes a very
+     narrow window. Scrolling keeps the row on one line; clipping would put a tab
+     out of reach altogether. The scrollbar itself stays hidden. */
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+}
+
+.notes-editor-tab {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 6px calc(14px * var(--tab-fit));
+  min-height: 36px;
+  touch-action: manipulation;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-size: calc(0.82rem * var(--tab-fit));
+  font-weight: 600;
+  cursor: pointer;
+  /* Not "all": the fitter measures the row right after it changes the font
+     size, and a transition on that would have it reading a size the row is
+     still animating towards. */
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  outline: none;
+}
+
+.notes-editor-tab:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--surface-strong);
+}
+
+.notes-editor-tab.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 700;
+}
+
+/* On only while fitTabRowToOneLine() takes its measurements. The row is fitted to
+   the width it takes with every tab as bold as the selected one, so clicking a
+   different tab cannot push it past the edge of the modal. */
+.notes-editor-tabs.tab-fit-measuring .notes-editor-tab {
+  font-weight: 700;
+}
+
+.notes-editor-panes {
+  position: relative;
+  min-height: 180px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.notes-editor-pane {
+  display: none;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 4px;
+}
+
+.notes-editor-pane.active {
+  display: flex;
+}
+
+/* Form notes editor adjustments */
+.form-notes-tabs {
+  margin-top: 4px;
+}
+
+.form-markdown-preview {
+  min-height: 90px !important;
+  max-height: 300px !important;
+}
+
+/* Markdown rendered content styles */
+.markdown-rendered {
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text);
+  min-height: 180px;
+  max-height: 480px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+#modalNotesPreview.markdown-rendered,
+#modalProgNotesPreview.markdown-rendered,
+#modalFundingNotesPreview.markdown-rendered {
+  max-height: none;
+  overflow-y: visible;
+}
+
+.card-description.markdown-rendered,
+.block-content.markdown-rendered,
+.feedback-quote.markdown-rendered,
+.action-content.markdown-rendered {
+  min-height: auto;
+  max-height: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  overflow: visible;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered * {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4,
+.markdown-rendered h5,
+.markdown-rendered h6 {
+  margin: 1em 0 0.5em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered h1 { font-size: 1.5rem; }
+.markdown-rendered h2 { font-size: 1.25rem; }
+.markdown-rendered h3 { font-size: 1.1rem; }
+.markdown-rendered h4 { font-size: 1rem; }
+
+.markdown-rendered p {
+  margin: 0 0 0.75em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered ul,
+.markdown-rendered ol {
+  margin: 0 0 0.75em;
+  padding-left: 1.5em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered li {
+  margin-bottom: 0.25em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered code {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--surface-strong);
+  font-size: 0.85em;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered pre {
+  margin: 0.75em 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.markdown-rendered pre code {
+  padding: 0;
+  background: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered blockquote {
+  margin: 0.75em 0;
+  padding: 8px 16px;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text-soft);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.markdown-rendered a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.markdown-rendered a:hover {
+  color: var(--accent-hover);
+}
+
+.markdown-rendered hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 1em 0;
+}
+
+.markdown-rendered strong {
+  font-weight: 700;
+}
+
+.markdown-rendered img {
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+  margin: 0.5em 0;
+}
+
+.markdown-rendered table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  margin: 0.75em 0;
+  font-size: 0.85em;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered th,
+.markdown-rendered td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: left;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown-rendered th {
+  background: var(--surface-strong);
+  font-weight: 700;
+}
+
+/* ==========================================
+   CUSTOM TOOLTIP STYLES
+   ========================================== */
+.custom-tooltip {
+  position: fixed;
+  z-index: 2000;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f3f4f6;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  max-width: 320px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.custom-tooltip.wide-tooltip {
+  max-width: 500px;
+}
+
+.custom-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tooltip-title {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 4px;
+}
+
+.tooltip-section {
+  margin-top: 8px;
+}
+
+.tooltip-heading {
+  font-size: 0.68rem;
+  font-weight: 750;
+  color: #60a5fa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.tooltip-body {
+  color: #d1d5db;
+}
+
+.tooltip-simple {
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ==========================================
+   CATEGORY EDITOR (Config Drawer)
+   ========================================== */
+
+.cat-editor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cat-editor-card {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.cat-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cat-editor-header:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.cat-editor-header .cat-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cat-editor-header .cat-toggle {
+  transition: transform 0.2s;
+}
+
+.cat-editor-card.expanded .cat-editor-header .cat-toggle {
+  transform: rotate(180deg);
+}
+
+.cat-editor-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 14px;
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+.cat-editor-card.expanded .cat-editor-body {
+  max-height: 2000px;
+  padding: 10px 14px 14px;
+  opacity: 1;
+}
+
+.cat-editor-field label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.cat-editor-field input,
+.cat-editor-field textarea {
+  width: 100%;
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.15s;
+}
+
+.cat-editor-field input:focus,
+.cat-editor-field textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.cat-editor-field textarea {
+  resize: vertical;
+  min-height: 48px;
+}
+
+.cat-editor-field + .cat-editor-field {
+  margin-top: 8px;
+}
+
+.cat-subcategories-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.cat-subcategories-header span {
+  font-size: 0.7rem;
+  font-weight: 750;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cat-subcat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.cat-subcat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.cat-subcat-item .subcat-remove-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: auto;
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-sm);
+  background: rgba(239, 68, 68, 0.06);
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.15s;
+  align-self: flex-end;
+}
+
+.cat-subcat-item .subcat-remove-btn svg {
+  flex-shrink: 0;
+}
+
+.cat-subcat-item .subcat-remove-btn:hover {
+  border-color: #ef4444;
+  color: #ffffff;
+  background: #ef4444;
+}
+
+.cat-subcat-item input {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  color: var(--text);
+  width: 100%;
+}
+
+.cat-subcat-item input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.cat-subcat-item textarea {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  color: var(--text);
+  width: 100%;
+  resize: vertical;
+  min-height: 36px;
+}
+
+.cat-subcat-item textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.cat-editor-add-btn {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cat-editor-add-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.cat-editor-remove-btn {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cat-editor-remove-btn:hover {
+  color: var(--danger, #ef4444);
+  border-color: var(--danger, #ef4444);
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.cat-editor-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* ==========================================
+   SUBCATEGORY SELECT (Form + Table Rows)
+   ========================================== */
+
+#subcategoryInput {
+  font-size: 0.78rem;
+}
+
+.subcategory-row-select {
+  color: var(--text);
+  min-width: 0;
+}
+
+/* ==========================================
+   SUBCATEGORY TABS (Pipeline filtering)
+   ========================================== */
+
+.subcategory-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  background: var(--surface-strong);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  user-select: none;
+}
+
+.subtab-button {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0 10px;
+  color: var(--muted-strong);
+  font-size: 0.76rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.subtab-button:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.subtab-button[aria-selected="true"] {
+  border-color: transparent;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.12);
+}
+
+.subtab-button .tab-count {
+  min-width: 14px;
+  height: 14px;
+  font-size: 0.62rem;
+  padding: 0 4px;
+}
+
+/* ==========================================
+   DARK THEME – Category Editor Overrides
+   ========================================== */
+
+[data-theme="dark"] .cat-editor-card {
+  background: var(--surface-strong);
+  border-color: var(--border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .cat-editor-header:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .cat-subcat-item {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .cat-subcat-item input,
+[data-theme="dark"] .cat-subcat-item textarea {
+  background: var(--surface-strong);
+}
+
+[data-theme="dark"] .help-button {
+  background: var(--surface);
+}
+
+/* ==========================================
+   TAB SETUP CONFIG DRAWER STYLES
+   ========================================== */
+
+.tab-setup-group {
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.tab-setup-group-header {
+  background: var(--surface);
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.tab-setup-group-header:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+[data-theme="dark"] .tab-setup-group-header:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tab-setup-group-header h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.tab-setup-group-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 16px;
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+.tab-setup-group.expanded .tab-setup-group-body {
+  max-height: 3000px;
+  padding: 16px;
+  opacity: 1;
+  border-top: 1px solid var(--border);
+}
+
+.tab-setup-group-header .group-toggle-icon {
+  transition: transform 0.2s;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+}
+
+.tab-setup-group.expanded .tab-setup-group-header .group-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.tab-setup-section {
+  margin-bottom: 20px;
+}
+
+.tab-setup-section:last-child {
+  margin-bottom: 0;
+}
+
+.tab-setup-section h4 {
+  margin: 0 0 8px 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.list-editor-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.list-editor-header-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.list-editor-header-row div {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.list-editor-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.list-editor-row input {
+  flex: 1;
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.15s;
+}
+
+.list-editor-row input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.list-editor-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.list-editor-card:last-child {
+  margin-bottom: 0;
+}
+
+[data-theme="dark"] .tab-setup-group {
+  background: var(--surface-strong);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .tab-setup-group-header {
+  background: var(--surface);
+}
+
+[data-theme="dark"] .tab-setup-group.expanded .tab-setup-group-header {
+  border-bottom: 1px solid var(--border);
+}
+
+[data-theme="dark"] .list-editor-row input {
+  background: var(--surface-strong);
+}
+
+[data-theme="dark"] .list-editor-card {
+  background: var(--surface-strong);
+}
+
+.list-editor-remove-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(239, 68, 68, 0.05);
+  color: #ef4444;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.list-editor-remove-btn svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  fill: none;
+}
+
+.list-editor-remove-btn:hover {
+  border-color: #ef4444;
+  color: #ffffff;
+  background: #ef4444;
+}
+
+.list-editor-remove-btn:disabled {
+  border-color: var(--border);
+  color: var(--muted);
+  background: var(--surface);
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+[data-theme="dark"] .list-editor-remove-btn {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+[data-theme="dark"] .list-editor-remove-btn:hover {
+  background: #ef4444;
+}
+
+/* ==========================================
+   PROGRAM MODAL LAYOUT & CHECKBOX Overhaul
+   ========================================== */
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.col-span-3 {
+  grid-column: span 3;
+}
+
+.grid-header {
+  grid-column: 1 / -1;
+  font-size: 0.88rem;
+  font-weight: 750;
+  color: var(--text);
+  margin-top: 14px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border-soft);
+  padding-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* 3-column Card Grid for Checkbox options */
+.checkbox-options-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px !important;
+  margin: 10px 0 !important;
+  grid-column: 1 / -1 !important;
+}
+
+.checkbox-option {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  font-size: 0.8rem !important;
+  color: var(--text-soft) !important;
+  background: var(--surface-soft) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 10px 14px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  user-select: none !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  min-height: 44px !important;
+}
+
+.checkbox-option:hover {
+  background: var(--surface-strong) !important;
+  border-color: var(--border-strong) !important;
+  color: var(--text) !important;
+}
+
+.checkbox-option input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-height: 18px !important;
+  border: 1.5px solid var(--border-strong) !important;
+  border-radius: var(--radius-xs) !important;
+  background: var(--surface) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.checkbox-option input[type="checkbox"]:hover {
+  border-color: var(--accent) !important;
+}
+
+.checkbox-option input[type="checkbox"]:checked {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+.checkbox-option input[type="checkbox"]:checked::after {
+  content: "" !important;
+  width: 4px !important;
+  height: 8px !important;
+  border: solid white !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg) !important;
+  position: absolute !important;
+  top: 1.5px !important;
+}
+
+.checkbox-option input[type="checkbox"]:indeterminate {
+  background: var(--accent-soft) !important;
+  border-color: var(--accent) !important;
+}
+
+.checkbox-option input[type="checkbox"]:indeterminate::after {
+  content: "" !important;
+  width: 8px !important;
+  height: 2px !important;
+  background: var(--accent) !important;
+  position: absolute !important;
+}
+
+/* Ensure document list handles column layout width properly */
+#modalProgramDocuments {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* Note Preview Link Banner */
+.note-preview-link-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--page-elevated-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.note-preview-link-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted-strong);
+  flex-shrink: 0;
+}
+
+.note-preview-link-url {
+  font-size: 0.85rem;
+  color: var(--accent);
+  word-break: break-all;
+  flex: 1 1 auto;
+  text-decoration: none;
+}
+
+.note-preview-link-url:hover {
+  text-decoration: underline;
+}
+
+.note-preview-link-banner .open-link-new-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  margin-left: auto;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .note-preview-link-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .note-preview-link-banner .open-link-new-tab-btn {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Record history pane (MK / PO / FU History tab)
+
+   Colours live in tokens scoped to the pane rather than reusing --green and
+   --red directly: a diff needs a tinted row background and a stronger inline
+   highlight as well as text colour, and those three have to move together
+   between themes.
+   --------------------------------------------------------------------------- */
+
+.record-history-pane {
+  --history-add-text: #047857;
+  --history-add-bg: rgba(16, 185, 129, 0.09);
+  --history-add-border: rgba(16, 185, 129, 0.28);
+  --history-add-mark: rgba(16, 185, 129, 0.28);
+  --history-remove-text: #b91c1c;
+  --history-remove-bg: rgba(239, 68, 68, 0.08);
+  --history-remove-border: rgba(239, 68, 68, 0.26);
+  --history-remove-mark: rgba(239, 68, 68, 0.24);
+  /* Display, flex direction and scrolling all come from .notes-editor-pane;
+     only the gap between timeline blocks is set here. */
+  gap: 8px;
+}
+
+[data-theme="dark"] .record-history-pane {
+  --history-add-text: #34d399;
+  --history-add-bg: rgba(52, 211, 153, 0.12);
+  --history-add-border: rgba(52, 211, 153, 0.3);
+  --history-add-mark: rgba(52, 211, 153, 0.3);
+  --history-remove-text: #fb7185;
+  --history-remove-bg: rgba(251, 113, 133, 0.12);
+  --history-remove-border: rgba(251, 113, 133, 0.3);
+  --history-remove-mark: rgba(251, 113, 133, 0.28);
+}
+
+/* .secondary-button carries a 42px min-height meant for full-size buttons. In
+   this timeline a button sits inside a one-line summary beside 12px text, so its
+   height comes from its own label instead. Kept out of the narrow-screen block
+   on purpose: the pane should read the same at every width. */
+.record-history-pane .small-btn,
+.history-dialog-body .small-btn {
+  min-height: 0;
+}
+
+.record-history-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  /* nowrap like every other row in this pane: a narrow modal scrolls sideways
+     rather than stacking the count above the buttons. */
+  flex-wrap: nowrap;
+  /* Sits right under the tab row, so it stays a thin line of text rather than a
+     band of its own. */
+  padding: 1px 0 2px;
+  border-bottom: 1px solid var(--border);
+}
+
+.record-history-summary {
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+}
+
+.record-history-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Refresh is an icon the height of the text beside it, so the row stays one
+   line of type instead of a row of buttons. */
+.record-history-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55em;
+  height: 1.55em;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  color: var(--muted-strong);
+  font-size: 0.78rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.record-history-refresh:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.record-history-refresh:disabled {
+  cursor: progress;
+  opacity: 0.75;
+}
+
+.record-history-refresh.is-busy svg {
+  animation: doc-spin 0.9s linear infinite;
+}
+
+.record-history-clear-compare {
+  padding: 1px 8px;
+  font-size: 0.72rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.record-history-empty {
+  padding: 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.record-history-error {
+  border-color: var(--history-remove-border);
+  color: var(--history-remove-text);
+}
+
+.record-history-message {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--text-soft);
+  font-size: 0.8rem;
+}
+
+.record-history-note {
+  color: var(--muted);
+  font-size: 0.79rem;
+  line-height: 1.5;
+}
+
+/* Day groups -------------------------------------------------------------- */
+
+/* One heading per calendar day in Bucharest time. Without it a run of edits
+   over a fortnight reads as one undifferentiated stack of timestamps. */
+.record-history-day {
+  display: grid;
+  gap: 8px;
+}
+
+.record-history-day + .record-history-day {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-strong);
+}
+
+.record-history-day-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.record-history-day-head::-webkit-details-marker {
+  display: none;
+}
+
+.record-history-day-head:hover {
+  border-color: var(--accent);
+}
+
+.record-history-day-head::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  border-left: 5px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  color: var(--muted);
+  transition: transform 0.15s ease;
+}
+
+.record-history-day[open] > .record-history-day-head::before {
+  transform: rotate(90deg);
+}
+
+.record-history-day-label {
+  font-size: 0.79rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.record-history-day-count {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+/* Timeline ---------------------------------------------------------------- */
+
+.record-history-timeline {
+  display: grid;
+  gap: 8px;
+}
+
+.record-history-entry {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.record-history-entry-created {
+  border-left-color: var(--history-add-border);
+}
+
+.record-history-entry-deleted,
+.record-history-entry-move {
+  border-left-color: var(--history-remove-border);
+}
+
+.record-history-entry-activity {
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.record-history-entry.is-comparing {
+  border-color: var(--accent);
+  box-shadow: var(--accent-ring);
+}
+
+/* Every entry starts closed, so this row has to carry enough of the change to
+   be worth reading on its own: what happened, when, who, and the digest. */
+.record-history-entry-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* Deliberately never wraps. A narrow modal scrolls sideways instead of
+     restacking, so an entry looks the same at every width. */
+  flex-wrap: nowrap;
+  /* An entry that carries a long badge list plus a full digest used to run wider
+     than its own card and push the compare button out past the right edge, where
+     nothing could reach it. Clipped here instead, and the order below decides
+     what gives way first. */
+  overflow: hidden;
+  padding: 9px 12px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.record-history-entry-head > * {
+  flex-shrink: 0;
+}
+
+.record-history-entry-head::-webkit-details-marker {
+  display: none;
+}
+
+.record-history-entry-head:hover {
+  background: var(--surface-soft);
+}
+
+.record-history-entry[open] > .record-history-entry-head {
+  border-bottom: 1px solid var(--border);
+}
+
+.record-history-entry-head::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  border-left: 4px solid currentColor;
+  border-top: 3.5px solid transparent;
+  border-bottom: 3.5px solid transparent;
+  color: var(--muted);
+  transition: transform 0.15s ease;
+}
+
+.record-history-entry[open] > .record-history-entry-head::before {
+  transform: rotate(90deg);
+}
+
+.record-history-entry-body {
+  display: grid;
+  gap: 10px;
+  padding: 11px 14px 13px;
+}
+
+.record-history-event {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.record-history-entry-head time {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.record-history-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  /* First to give way when the row runs out of room: which tool wrote the change
+     is repeated inside the entry, while the digest and the compare button exist
+     only in this row. */
+  flex-shrink: 8;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Digest ------------------------------------------------------------------ */
+
+.record-history-digest {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  margin-left: auto;
+  /* Gives way only after the badges have collapsed, and never before the compare
+     button, which keeps flex-shrink: 0 from the rule above. */
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.73rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* A status move is the one thing worth reading before anything else, so it gets
+   the only coloured chip in the row. */
+.record-history-digest-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.record-history-digest-status-before {
+  color: var(--history-remove-text);
+  text-decoration: line-through;
+  text-decoration-color: var(--history-remove-border);
+}
+
+.record-history-digest-status-after {
+  color: var(--history-add-text);
+}
+
+.record-history-digest-status-arrow {
+  color: var(--muted);
+}
+
+.record-history-digest-lines {
+  display: inline-flex;
+  gap: 6px;
+  padding: 2px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.record-history-digest-fields {
+  padding: 2px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+  color: var(--muted-strong);
+}
+
+.record-history-digest-empty {
+  color: var(--muted);
+}
+
+.record-history-badge {
+  padding: 2px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+  color: var(--muted-strong);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.record-history-badge-backfill,
+.record-history-badge-approximate {
+  border-style: dashed;
+  cursor: help;
+}
+
+.record-history-badge-activity {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
+/* The digest before it already carries the auto margin that pushes this side of
+   the row right, so this button only has to keep its own size. */
+.record-history-compare-btn {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.record-history-compare-btn.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.record-history-entry-label {
+  color: var(--text-soft);
+  font-size: 0.81rem;
+}
+
+.record-history-session {
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.record-history-activity-block {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-soft);
+  font-size: 0.81rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.record-history-activity-block strong {
+  color: var(--muted-strong);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Field blocks ----------------------------------------------------------- */
+
+.record-history-field {
+  display: grid;
+  gap: 7px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.record-history-field:first-of-type {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.record-history-field-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.record-history-field-name {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-strong);
+}
+
+.record-history-field-head .small-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.record-history-scalar {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.record-history-scalar-before {
+  color: var(--history-remove-text);
+  text-decoration: line-through;
+  text-decoration-color: var(--history-remove-border);
+}
+
+.record-history-scalar-after {
+  color: var(--history-add-text);
+  font-weight: 500;
+}
+
+.record-history-scalar-arrow {
+  color: var(--muted);
+}
+
+.record-history-blank {
+  color: var(--muted);
+  font-style: italic;
+  text-decoration: none;
+}
+
+.record-history-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.record-history-chip {
+  padding: 3px 9px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  font-size: 0.76rem;
+}
+
+.record-history-chip-added {
+  border-color: var(--history-add-border);
+  background: var(--history-add-bg);
+  color: var(--history-add-text);
+}
+
+.record-history-chip-added::before {
+  content: "+ ";
+}
+
+.record-history-chip-removed {
+  border-color: var(--history-remove-border);
+  background: var(--history-remove-bg);
+  color: var(--history-remove-text);
+  text-decoration: line-through;
+}
+
+.record-history-chip-removed::before {
+  content: "\2212  ";
+  text-decoration: none;
+}
+
+.record-history-json-pair {
+  display: grid;
+  gap: 8px;
+}
+
+.record-history-json,
+.record-history-plain {
+  margin: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  color: var(--text-soft);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.record-history-json-before {
+  border-color: var(--history-remove-border);
+  background: var(--history-remove-bg);
+}
+
+.record-history-json-after {
+  border-color: var(--history-add-border);
+  background: var(--history-add-bg);
+}
+
+/* Text diff -------------------------------------------------------------- */
+
+.record-history-modes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.record-history-modes .small-btn {
+  padding: 2px 9px;
+  font-size: 0.72rem;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.record-history-modes .small-btn.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.record-history-diff {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  overflow: hidden;
+}
+
+.record-history-diff-stats {
+  display: flex;
+  gap: 10px;
+  padding: 6px 11px;
+  border-bottom: 1px solid var(--border);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.73rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.record-history-diff-added {
+  color: var(--history-add-text);
+}
+
+.record-history-diff-removed {
+  color: var(--history-remove-text);
+}
+
+.record-history-diff-rows {
+  /* Long unbroken lines scroll here instead of stretching the modal sideways. */
+  overflow-x: auto;
+}
+
+.record-history-diff-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  min-width: max-content;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+/* Word wrap: min-width is what holds a long line on one row, so dropping it is
+   the whole toggle. The text itself already wraps on white-space: pre-wrap. */
+.record-history-diff.is-wrapped .record-history-diff-row {
+  min-width: 0;
+}
+
+.record-history-diff.is-wrapped .record-history-diff-rows {
+  overflow-x: hidden;
+}
+
+.record-history-diff-add {
+  background: var(--history-add-bg);
+  color: var(--history-add-text);
+}
+
+.record-history-diff-remove {
+  background: var(--history-remove-bg);
+  color: var(--history-remove-text);
+}
+
+.record-history-diff-context {
+  color: var(--text-soft);
+}
+
+.record-history-diff-gutter {
+  flex: 0 0 3.2em;
+  padding: 0 8px;
+  border-right: 1px solid var(--border);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  user-select: none;
+}
+
+.record-history-diff-sign {
+  flex: 0 0 1.4em;
+  text-align: center;
+  user-select: none;
+}
+
+.record-history-diff-text {
+  flex: 1 1 auto;
+  padding-right: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.record-history-segment-add {
+  background: var(--history-add-mark);
+  color: inherit;
+  border-radius: 3px;
+}
+
+.record-history-segment-remove {
+  background: var(--history-remove-mark);
+  color: inherit;
+  border-radius: 3px;
+}
+
+/* Context controls -------------------------------------------------------- */
+
+/* A hidden run of unchanged lines opens five at a time from either end, so the
+   lines just above or just below a change can be read without unfolding a
+   thousand-line note. */
+.record-history-diff-gap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  padding: 4px 8px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+.record-history-diff-gap-count {
+  /* Holds the left of the bar so every button in it sits together on the right,
+     whichever of them the run needs at that moment. */
+  margin-right: auto;
+  color: var(--muted);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.record-history-diff-step {
+  padding: 2px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--muted-strong);
+  font-family: inherit;
+  font-size: 0.71rem;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.record-history-diff-step:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.record-history-previews {
+  display: grid;
+  gap: 8px;
+}
+
+.record-history-preview {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.record-history-preview-before {
+  border-color: var(--history-remove-border);
+}
+
+.record-history-preview-after {
+  border-color: var(--history-add-border);
+}
+
+.record-history-preview-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted-strong);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Comparison ------------------------------------------------------------- */
+
+.record-history-compare {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+}
+
+.record-history-compare-waiting {
+  color: var(--muted-strong);
+  font-size: 0.8rem;
+}
+
+.record-history-compare-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+}
+
+.record-history-compare-head span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* History dialogs --------------------------------------------------------- */
+
+/* The markdown preview and the restore confirmation open over the detail modal
+   rather than inside the timeline: a rendered note needs a readable width, and a
+   restore needs to show what it is about to overwrite where nothing can scroll
+   away from it. */
+.history-dialog-card {
+  width: min(760px, 94vw);
+  max-height: min(80vh, 720px);
+  display: flex;
+  flex-direction: column;
+}
+
+.history-dialog-body {
+  display: grid;
+  gap: 10px;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.history-dialog-body .record-history-preview {
+  min-width: 0;
+}
+
+.history-dialog-note {
+  color: var(--muted);
+  font-size: 0.79rem;
+  line-height: 1.5;
+}
+
+.history-dialog-warning {
+  padding: 9px 12px;
+  border: 1px solid var(--history-remove-border);
+  border-radius: var(--radius-sm);
+  background: var(--history-remove-bg);
+  color: var(--history-remove-text);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+/* Narrow screens ---------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  /* No reflow here on purpose. Every row in this pane is nowrap, so a narrow
+     modal scrolls sideways and an entry reads the same at any width instead of
+     restacking into a different shape. The pane itself is the one scroller;
+     the rule below re-enables the axis the shared mobile pane rule turns off. */
+  .record-history-pane {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .record-history-diff-gutter {
+    flex-basis: 2.6em;
+    padding: 0 6px;
+  }
+
+  /* The shared touch-target rule also swaps in 14px of side padding at this
+     width. The buttons in this pane keep the size they have on a wide screen,
+     because the rows scroll sideways instead of growing. */
+  .record-history-field-head .small-btn {
+    padding: 4px 10px;
+  }
+
+  .history-dialog-card {
+    width: 100%;
+  }
+}
+
+/* A held edit that predates a restore or an import says so. */
+.record-conflict-note {
+  margin: 4px 0 0;
+  color: var(--muted-strong);
+  font-size: 0.8rem;
+  font-weight: 600;
+}

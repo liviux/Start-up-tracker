@@ -1,0 +1,136 @@
+{
+  "id": "generic",
+  "version": 1,
+  "country": null,
+  "countryName": "Any other country",
+  "entityType": "Generic",
+  "nameLocal": "The legal form you name",
+  "nameEnglish": "Any legal form",
+  "currency": null,
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": null,
+  "sources": [],
+  "conditions": [],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The registered name, with its legal form.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "registrationNumber",
+      "label": "Registration number",
+      "description": "The number the company register gave the company.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "taxId",
+      "label": "Tax number",
+      "description": "The company's tax or VAT number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered address",
+      "description": "The address on the register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "shareCapital",
+      "label": "Share capital",
+      "description": "Subscribed capital, if your legal form has one.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Runs the company."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Owns shares or a stake in the company."
+      },
+      {
+        "id": "officer",
+        "label": "Other officer",
+        "description": "Any other role the law or your articles name."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn",
+      "idNumber"
+    ]
+  },
+  "setupSteps": [],
+  "obligations": [],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Registration number: {{registrationNumber}}\n- Tax number: {{taxId}}\n- Registered address: {{registeredOffice}}\n- Share capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+}

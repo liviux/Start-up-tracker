@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "targetLength": 1000,
+  "softMinLength": 400,
+  "softMaxLength": 2500,
+  "privacyNote": "This text is sent to the AI agents you run. Write only what you are comfortable sharing.",
+  "tips": [
+    {
+      "id": "builder-owner",
+      "topic": "Who builds it, who owns it",
+      "why": "Some programs fund individuals, some only companies; IP ownership matters",
+      "starter": "The product is built by ... The code and IP are owned by ..."
+    },
+    {
+      "id": "priority",
+      "topic": "Current priority",
+      "why": "Programs for a product and programs for a company ask for different things",
+      "starter": "Right now the priority is ... (the product or project, or the company)."
+    },
+    {
+      "id": "purpose",
+      "topic": "Why the company exists",
+      "why": "Planned work, and what would start it, decides fit for company programs",
+      "starter": "The company exists to ... It may later build ..., which would start when ... Its status today: ..."
+    },
+    {
+      "id": "legal-entity",
+      "topic": "Legal entity",
+      "why": "Country, type and age decide most eligibility rules",
+      "starter": "The company is a ... registered in ... on ... (registration number ...), with its registered office in ... It has ... founders, who own ...%, and is managed by ..."
+    },
+    {
+      "id": "founders",
+      "topic": "Founders",
+      "why": "Programs target women, young or older founders, citizens or residents of a place",
+      "starter": "Founder 1: age ... and sex ... (both optional), citizen of ..., lives in ... Founder 2: ..."
+    },
+    {
+      "id": "education",
+      "topic": "Education",
+      "why": "Some programs are for students, recent graduates or alumni of certain schools",
+      "starter": "Founder 1 studied ... at ... (graduated ...)."
+    },
+    {
+      "id": "roles-time",
+      "topic": "Roles and time",
+      "why": "Programs ask who works on it full time and who leads what",
+      "starter": "Founder 1 leads ... full time. Founder 2 leads ..., about ... hours a week."
+    },
+    {
+      "id": "team",
+      "topic": "Team",
+      "why": "Many programs require or exclude employees",
+      "starter": "We have ... employees. We would / would not hire to qualify."
+    },
+    {
+      "id": "track-record",
+      "topic": "Track record",
+      "why": "Prior funding, grants, state aid limits and earlier companies affect eligibility",
+      "starter": "So far: revenue ..., expenses ..., funding ..., grants or state aid ..., programs joined ... The founders have / have not run a company before."
+    },
+    {
+      "id": "industry-codes",
+      "topic": "Industry codes",
+      "why": "Public calls often filter by activity code",
+      "starter": "Industry codes: main ..., others ... (NACE / NAICS / SIC)."
+    },
+    {
+      "id": "product-plans",
+      "topic": "Product and plans",
+      "why": "Stage and plans decide fit",
+      "starter": "Product stage (idea, MVP, live or revenue): ... Plans for the next 12 months: ... A planned product or edition: users ..., business model ..., features ..."
+    },
+    {
+      "id": "deal-breakers",
+      "topic": "Deal-breakers",
+      "why": "Saves time on opportunities you would refuse",
+      "starter": "Skip anything that needs new staff, large co-financing, relocation, travel, mandatory attendance, equity or changes to the company, unless the benefit is exceptional."
+    },
+    {
+      "id": "where-to-look",
+      "topic": "Where to look",
+      "why": "Keeps searches focused",
+      "starter": "Search in ..., the wider region, worldwide and online, in public, institutional, nonprofit and private programs."
+    },
+    {
+      "id": "who-may-apply",
+      "topic": "Who may apply",
+      "why": "Some calls take only companies, others only people or founder groups",
+      "starter": "Offers open to the company or to the founders as individuals are both fine, including programs for founder groups."
+    },
+    {
+      "id": "checks",
+      "topic": "Checks to do",
+      "why": "Avoids ineligible results",
+      "starter": "Before adding anything, verify that companies and citizens from ... are eligible."
+    }
+  ]
+}

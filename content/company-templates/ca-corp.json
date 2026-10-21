@@ -1,0 +1,556 @@
+{
+  "id": "ca-corp",
+  "version": 1,
+  "country": "CA",
+  "countryName": "Canada",
+  "entityType": "Corporation",
+  "nameLocal": "Corporation (federal or provincial)",
+  "nameEnglish": "Business corporation",
+  "currency": "CAD",
+  "bilingual": null,
+  "subdivision": {
+    "label": "Province or territory of the registered office",
+    "required": false,
+    "options": [
+      {
+        "code": "CA-AB",
+        "name": "Alberta"
+      },
+      {
+        "code": "CA-BC",
+        "name": "British Columbia"
+      },
+      {
+        "code": "CA-MB",
+        "name": "Manitoba"
+      },
+      {
+        "code": "CA-NB",
+        "name": "New Brunswick"
+      },
+      {
+        "code": "CA-NL",
+        "name": "Newfoundland and Labrador"
+      },
+      {
+        "code": "CA-NS",
+        "name": "Nova Scotia"
+      },
+      {
+        "code": "CA-NT",
+        "name": "Northwest Territories"
+      },
+      {
+        "code": "CA-NU",
+        "name": "Nunavut"
+      },
+      {
+        "code": "CA-ON",
+        "name": "Ontario"
+      },
+      {
+        "code": "CA-PE",
+        "name": "Prince Edward Island"
+      },
+      {
+        "code": "CA-QC",
+        "name": "Quebec"
+      },
+      {
+        "code": "CA-SK",
+        "name": "Saskatchewan"
+      },
+      {
+        "code": "CA-YT",
+        "name": "Yukon"
+      }
+    ]
+  },
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "annual-return",
+      "title": "Annual return for business corporations",
+      "publisher": "Corporations Canada (ISED)",
+      "url": "https://ised-isde.canada.ca/site/corporations-canada/en/annual-return-business-corporations",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "isc",
+      "title": "Individuals with significant control",
+      "publisher": "Corporations Canada (ISED)",
+      "url": "https://ised-isde.canada.ca/site/corporations-canada/en/individuals-significant-control",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "services",
+      "title": "Services, fees and processing times",
+      "publisher": "Corporations Canada (ISED)",
+      "url": "https://ised-isde.canada.ca/site/corporations-canada/en/services-fees-and-processing-times",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "t2-when",
+      "title": "When to file your corporation income tax return",
+      "publisher": "Canada Revenue Agency",
+      "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/corporations/corporation-income-tax-return/when-file-your-corporation-income-tax-return.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "corp-payments",
+      "title": "Corporate income tax payments",
+      "publisher": "Canada Revenue Agency",
+      "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/corporations/corporation-payments.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "instalments",
+      "title": "Due dates for corporate income tax payments",
+      "publisher": "Canada Revenue Agency",
+      "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/corporations/corporation-payments/paying-instalments/instalment-dates.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gst-deadlines",
+      "title": "GST/HST reporting requirements and deadlines",
+      "publisher": "Canada Revenue Agency",
+      "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/file-gst-hst-return/reporting-requirements-deadlines.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "payroll-remit",
+      "title": "How and when to remit source deductions",
+      "publisher": "Canada Revenue Agency",
+      "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/remitting-source-deductions/how-when-remit-due-dates.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "business-number",
+      "title": "Business number and CRA program accounts",
+      "publisher": "Canada Revenue Agency",
+      "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/registering-your-business/register.html",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "federal",
+      "label": "Incorporated federally (CBCA)",
+      "description": "Incorporated with Corporations Canada under the Canada Business Corporations Act."
+    },
+    {
+      "id": "gst-monthly-quarterly",
+      "label": "GST/HST registrant, monthly or quarterly",
+      "description": "Files GST/HST returns monthly or quarterly."
+    },
+    {
+      "id": "gst-annual",
+      "label": "GST/HST registrant, annual",
+      "description": "Files one GST/HST return a year."
+    },
+    {
+      "id": "ccpc",
+      "label": "Canadian-controlled private corporation",
+      "description": "May have a later balance-due day."
+    },
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Withholds and remits source deductions."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Corporate name",
+      "description": "The name on the certificate of incorporation (or the number name).",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "services"
+      ]
+    },
+    {
+      "key": "corporationNumber",
+      "label": "Corporation number",
+      "description": "The number on the certificate of incorporation.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "annual-return"
+      ]
+    },
+    {
+      "key": "businessNumber",
+      "label": "Business number (BN)",
+      "description": "The nine-digit number from the CRA.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "business-number"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The address in the articles' province or territory.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "jurisdiction",
+      "label": "Incorporated under",
+      "description": "Federal (CBCA) or the province's corporations act.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "services"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Sits on the board."
+      },
+      {
+        "id": "officer",
+        "label": "Officer",
+        "description": "President, secretary or another officer."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Holds shares."
+      },
+      {
+        "id": "isc",
+        "label": "Individual with significant control",
+        "description": "Recorded in the ISC register."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "jurisdiction",
+      "title": "Choose federal or provincial incorporation",
+      "description": "A federal corporation is formed with Corporations Canada; a provincial one with the province's registry, which has its own fees and filings.",
+      "authority": "Corporations Canada or the provincial registry",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": [
+        "services"
+      ]
+    },
+    {
+      "id": "name",
+      "title": "Choose a name or a number name",
+      "description": "For a federal online incorporation the name search is part of the process; a number name needs no search.",
+      "authority": "Corporations Canada",
+      "typicalCost": null,
+      "dependsOn": [
+        "jurisdiction"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "services"
+      ]
+    },
+    {
+      "id": "incorporate",
+      "title": "File the articles of incorporation",
+      "description": "File online with Corporations Canada (or the provincial registry) with the registered office and the first directors.",
+      "authority": "Corporations Canada",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "services"
+      ]
+    },
+    {
+      "id": "isc-register",
+      "title": "Set up the ISC register",
+      "description": "Keep a register of individuals with significant control and update it within 15 days of a change.",
+      "authority": "Corporations Canada",
+      "typicalCost": null,
+      "dependsOn": [
+        "incorporate"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "isc"
+      ]
+    },
+    {
+      "id": "business-number",
+      "title": "Get a business number and CRA program accounts",
+      "description": "Register for the corporation income tax account and any others you need (GST/HST, payroll).",
+      "authority": "Canada Revenue Agency",
+      "typicalCost": null,
+      "dependsOn": [
+        "incorporate"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "business-number"
+      ]
+    },
+    {
+      "id": "extra-provincial",
+      "title": "Register in other provinces where you operate",
+      "description": "A corporation carrying on business in another province usually registers there as well.",
+      "authority": "Provincial registries",
+      "typicalCost": null,
+      "dependsOn": [
+        "incorporate"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "bank-account",
+      "title": "Open a business bank account",
+      "description": "Banks ask for the certificate and the articles.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "incorporate"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "annual-return",
+      "title": "Annual return and ISC information (federal)",
+      "description": "File within 60 days after the anniversary of incorporation; not before the anniversary.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-anniversary",
+        "of": "incorporation",
+        "months": 0,
+        "days": 60
+      },
+      "conditions": [
+        "federal"
+      ],
+      "subdivisions": [],
+      "authority": "Corporations Canada",
+      "checkLocally": false,
+      "sourceIds": [
+        "annual-return",
+        "isc"
+      ]
+    },
+    {
+      "id": "isc-update",
+      "title": "Update the ISC register",
+      "description": "Within 15 days of learning of a change.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "relative-to-event",
+        "days": 15,
+        "event": "A change affecting the ISC register"
+      },
+      "conditions": [
+        "federal"
+      ],
+      "subdivisions": [],
+      "authority": "Corporations Canada",
+      "checkLocally": false,
+      "sourceIds": [
+        "isc"
+      ]
+    },
+    {
+      "id": "provincial-return",
+      "title": "Provincial annual return",
+      "description": "Provincial corporations, and federal ones registered in a province, may file a provincial annual return. Add the date for your province.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Provincial registry",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "t2-return",
+      "title": "Corporation income tax return (T2)",
+      "description": "File within six months of the end of each tax year.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 6,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Canada Revenue Agency",
+      "checkLocally": false,
+      "sourceIds": [
+        "t2-when"
+      ]
+    },
+    {
+      "id": "balance-due",
+      "title": "Pay the balance of corporate tax",
+      "description": "Two months after the tax year ends, or three months for an eligible CCPC.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 2,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Canada Revenue Agency",
+      "checkLocally": false,
+      "sourceIds": [
+        "corp-payments",
+        "instalments"
+      ]
+    },
+    {
+      "id": "instalments",
+      "title": "Corporate tax instalments",
+      "description": "Most corporations pay instalments monthly or quarterly during the year. Check your dates with the CRA.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Canada Revenue Agency",
+      "checkLocally": true,
+      "sourceIds": [
+        "instalments"
+      ]
+    },
+    {
+      "id": "gst-return",
+      "title": "GST/HST return, monthly or quarterly",
+      "description": "File and pay one month after the end of each reporting period. The dates shown assume quarterly periods.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": "last"
+      },
+      "conditions": [
+        "gst-monthly-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": "Canada Revenue Agency",
+      "checkLocally": false,
+      "sourceIds": [
+        "gst-deadlines"
+      ]
+    },
+    {
+      "id": "gst-annual",
+      "title": "GST/HST return, annual",
+      "description": "File and pay three months after the fiscal year-end.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 3,
+        "day": "same"
+      },
+      "conditions": [
+        "gst-annual"
+      ],
+      "subdivisions": [],
+      "authority": "Canada Revenue Agency",
+      "checkLocally": false,
+      "sourceIds": [
+        "gst-deadlines"
+      ]
+    },
+    {
+      "id": "source-deductions",
+      "title": "Remit source deductions",
+      "description": "Due dates depend on the remitter type, set from the average monthly withholding two years before. Check your dates with the CRA.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "Canada Revenue Agency",
+      "checkLocally": true,
+      "sourceIds": [
+        "payroll-remit"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Corporation number: {{corporationNumber}}\n- Business number: {{businessNumber}}\n- Registered office: {{registeredOffice}}\n- Incorporated under: {{jurisdiction}}\n\n## Directors, officers and shareholders\n\n{{people}}\n"
+}

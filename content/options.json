@@ -1,0 +1,111 @@
+{
+  "mediaTypes": [
+    { "id": "screenshot", "label": "Screenshot", "description": "A capture of a screen: the product, a page or a post." },
+    { "id": "infographic", "label": "Infographic", "description": "A chart, diagram or illustrated explanation." },
+    { "id": "thumbnail", "label": "Thumbnail", "description": "A small preview image, for example for a video or an article." },
+    { "id": "video", "label": "Video", "description": "A recording, demo or clip." },
+    { "id": "document", "label": "Document", "description": "A PDF, slide deck, spreadsheet or text file." },
+    { "id": "logo", "label": "Logo or brand", "description": "Logos, icons, colours and other brand files." },
+    { "id": "other", "label": "Other", "description": "Anything that fits no other type." }
+  ],
+  "feedbackTypes": [
+    { "id": "feedback", "label": "User feedback", "description": "A general reaction, suggestion or observation from a user or a potential customer.", "block": "person" },
+    { "id": "user-interview", "label": "User interview", "description": "Notes from a conversation about someone's work, needs and the tools they use today.", "block": "person" },
+    { "id": "person", "label": "Person to keep in touch with", "description": "Someone who matters to the startup: a regular user, an advocate, a partner contact or an advisor. Set a next contact date so the relationship does not go cold.", "block": "person" },
+    { "id": "testimonial", "label": "Testimonial", "description": "A quote or endorsement you may reuse with permission.", "block": "person" },
+    { "id": "case-study", "label": "Case study", "description": "A fuller story of how someone used the product and what happened.", "block": "person" },
+    { "id": "feature-request", "label": "Feature request", "description": "A capability or change someone asked for.", "block": "person" },
+    { "id": "bug-report", "label": "Bug report", "description": "A problem that needs investigation or a fix.", "block": "" },
+    { "id": "objection", "label": "Objection", "description": "A reason someone hesitated, stopped or chose something else.", "block": "journey" },
+    { "id": "onboarding-friction", "label": "Onboarding friction", "description": "Something that got in the way of signing up or getting started.", "block": "journey" },
+    { "id": "activation", "label": "Activation", "description": "Someone's first real success with the product, or where they got stuck before it.", "block": "journey" },
+    { "id": "retention", "label": "Retention or churn", "description": "Whether someone came back, used it less or left.", "block": "journey" },
+    { "id": "usage-outcome", "label": "Usage outcome", "description": "What happened after someone used the product for a real task.", "block": "journey" },
+    { "id": "proof", "label": "Proof point", "description": "Evidence that someone got value: a result, a number or a concrete outcome.", "block": "" },
+    { "id": "support-question", "label": "Support question", "description": "A question that shows confusion, a gap in the help pages or recurring support work.", "block": "" },
+    { "id": "security-concern", "label": "Privacy or security concern", "description": "A worry about data, privacy, permissions or safety.", "block": "" },
+    { "id": "partnership", "label": "Partnership", "description": "A partner, integration, reseller or listing opportunity.", "block": "" },
+    { "id": "competition", "label": "Competitor or market signal", "description": "A competitor, an alternative, a price change or a market shift worth watching.", "block": "" },
+    { "id": "community-signal", "label": "Community signal", "description": "A pattern you notice in a community, forum or group.", "block": "" },
+    { "id": "recommendation", "label": "Recommendation", "description": "Advice from a mentor, an advisor or your own review, kept until you act on it or drop it.", "block": "" },
+    { "id": "assumption", "label": "Assumption test", "description": "A belief the startup depends on, written so it can be proved wrong, with the evidence for and against it and a verdict.", "block": "assumption" }
+  ],
+  "feedbackSources": [
+    { "id": "email", "label": "Email" },
+    { "id": "call", "label": "Call" },
+    { "id": "interview", "label": "Interview" },
+    { "id": "survey", "label": "Survey" },
+    { "id": "social-post", "label": "Social media post" },
+    { "id": "review-site", "label": "Review site" },
+    { "id": "support-ticket", "label": "Support ticket" },
+    { "id": "community", "label": "Community or forum" },
+    { "id": "event", "label": "Event" },
+    { "id": "other", "label": "Other" }
+  ],
+  "feedbackStages": [
+    { "id": "discovery", "label": "Discovery", "description": "They are finding out the product exists." },
+    { "id": "evaluation", "label": "Evaluation", "description": "They are comparing it with what they use today." },
+    { "id": "onboarding", "label": "Onboarding", "description": "They are signing up or setting it up." },
+    { "id": "first-use", "label": "First use", "description": "They are trying it for the first time." },
+    { "id": "repeat-use", "label": "Regular use", "description": "They use it again and again." },
+    { "id": "purchase", "label": "Purchase or renewal", "description": "They are deciding to pay, or to keep paying." },
+    { "id": "support", "label": "Support", "description": "They asked for help." },
+    { "id": "unknown", "label": "Unknown" }
+  ],
+  "feedbackAreas": [
+    { "id": "onboarding", "label": "Onboarding" },
+    { "id": "core-features", "label": "Core features" },
+    { "id": "usability", "label": "Design and usability" },
+    { "id": "performance-reliability", "label": "Performance and reliability" },
+    { "id": "pricing", "label": "Pricing and plans" },
+    { "id": "documentation", "label": "Documentation and help" },
+    { "id": "support", "label": "Support" },
+    { "id": "security-privacy", "label": "Security and privacy" },
+    { "id": "integrations", "label": "Integrations" },
+    { "id": "other", "label": "Other" }
+  ],
+  "feedbackEvidence": [
+    { "id": "anecdote", "label": "Anecdote", "description": "Something said or seen once." },
+    { "id": "tried", "label": "Tried it", "description": "They used the product at least once." },
+    { "id": "completed-task", "label": "Completed a first task", "description": "They got a real result with it." },
+    { "id": "repeated-use", "label": "Repeated use", "description": "They came back and used it again." },
+    { "id": "pilot", "label": "Pilot or trial", "description": "They run an agreed trial." },
+    { "id": "paid", "label": "Paid or agreed to pay", "description": "Money changed hands, or they committed to it." }
+  ],
+  "feedbackRelationships": [
+    { "id": "none", "label": "Not tracked" },
+    { "id": "first-contact", "label": "First contact" },
+    { "id": "engaged", "label": "Engaged" },
+    { "id": "repeat", "label": "Repeat interaction" },
+    { "id": "advocate", "label": "Advocate" },
+    { "id": "core", "label": "Core or trusted" }
+  ],
+  "feedbackJourneySteps": [
+    { "id": "discovered", "label": "Discovered", "description": "They found out about the product." },
+    { "id": "signed-up", "label": "Signed up", "description": "They created an account or installed it." },
+    { "id": "activated", "label": "Activated", "description": "They got a first real result." },
+    { "id": "repeat-use", "label": "Repeat use", "description": "They came back for more." },
+    { "id": "churned", "label": "Churned", "description": "They stopped using it." }
+  ],
+  "feedbackVerdicts": [
+    { "id": "untested", "label": "Untested" },
+    { "id": "leaning-true", "label": "Leaning true" },
+    { "id": "leaning-false", "label": "Leaning false" },
+    { "id": "confirmed", "label": "Confirmed" },
+    { "id": "invalidated", "label": "Proved wrong" }
+  ],
+  "researchGroups": [
+    { "id": "x", "label": "X", "linkType": "x" },
+    { "id": "linkedin", "label": "LinkedIn", "linkType": "linkedinCompany" },
+    { "id": "facebook", "label": "Facebook", "linkType": "facebook" },
+    { "id": "reddit", "label": "Reddit", "linkType": "reddit" },
+    { "id": "youtube", "label": "YouTube", "linkType": "youtube" },
+    { "id": "github", "label": "GitHub", "linkType": "github" },
+    { "id": "slack", "label": "Slack", "linkType": "slack" },
+    { "id": "discord", "label": "Discord", "linkType": "discord" },
+    { "id": "forums", "label": "Forums", "linkType": "other" },
+    { "id": "newsletters", "label": "Newsletters", "linkType": "newsletter" },
+    { "id": "events", "label": "Events and meetups", "linkType": "booking" },
+    { "id": "other", "label": "Other", "linkType": "other" }
+  ]
+}

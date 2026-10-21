@@ -1,0 +1,457 @@
+{
+  "id": "jp-gk",
+  "version": 1,
+  "country": "JP",
+  "countryName": "Japan",
+  "entityType": "GK",
+  "nameLocal": "合同会社 (Godo Kaisha)",
+  "nameEnglish": "Limited liability company",
+  "currency": "JPY",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "registration",
+      "title": "Procedures for Establishment of Limited Liability Companies",
+      "publisher": "Ministry of Justice",
+      "url": "https://www.moj.go.jp/EN/MINJI/m_minji06_00003.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "new-company",
+      "title": "No.5100 新設法人の届出書類 (notifications for a new corporation)",
+      "publisher": "National Tax Agency",
+      "url": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/hojin/5100.htm",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ct-deadline",
+      "title": "確定申告書の提出期限 (filing deadline of the final return)",
+      "publisher": "National Tax Agency",
+      "url": "https://www.nta.go.jp/law/joho-zeikaishaku/hojin/group_faq/19.htm",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ct-extension",
+      "title": "C1-17 定款の定め等による申告期限の延長の特例の申請 (extension by the articles)",
+      "publisher": "National Tax Agency",
+      "url": "https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/hojin/annai/1554_12.htm",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "consumption",
+      "title": "No.6601 申告と納税 (consumption tax returns and payment)",
+      "publisher": "National Tax Agency",
+      "url": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6601.htm",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "withholding",
+      "title": "No.2505 源泉所得税の納付期限と納期の特例 (withholding tax due dates)",
+      "publisher": "National Tax Agency",
+      "url": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2505.htm",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "consumption-taxpayer",
+      "label": "Consumption tax payer",
+      "description": "A taxable business for consumption tax (for example above the sales threshold in the base period, or by choice)."
+    },
+    {
+      "id": "pays-salaries",
+      "label": "Pays salaries",
+      "description": "Withholds income tax from salaries, including directors' pay."
+    },
+    {
+      "id": "withholding-special-rule",
+      "label": "Twice-yearly withholding payments",
+      "description": "Approved for the special rule (納期の特例) for small payers."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Trade name (商号)",
+      "description": "The company name in the commercial register, including 株式会社 or 合同会社.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "corporateNumber",
+      "label": "Corporate number (法人番号)",
+      "description": "The 13-digit number assigned to the company.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "new-company"
+      ]
+    },
+    {
+      "key": "headOffice",
+      "label": "Head office (本店)",
+      "description": "The head office address in the register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registration"
+      ]
+    },
+    {
+      "key": "businessPurpose",
+      "label": "Business purposes (目的)",
+      "description": "The purposes in the articles of incorporation.",
+      "example": "",
+      "type": "textarea",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registration"
+      ]
+    },
+    {
+      "key": "statedCapital",
+      "label": "Stated capital (資本金)",
+      "description": "In yen.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registration"
+      ]
+    },
+    {
+      "key": "registryOffice",
+      "label": "Registry office (Legal Affairs Bureau)",
+      "description": "The Legal Affairs Bureau that keeps the registration.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registration"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "representative-member",
+        "label": "Representative member (代表社員)",
+        "description": "Represents the company."
+      },
+      {
+        "id": "executive-member",
+        "label": "Executive member (業務執行社員)",
+        "description": "Runs the business."
+      },
+      {
+        "id": "member",
+        "label": "Member (社員)",
+        "description": "Owns an equity interest."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "articles",
+      "title": "Prepare the articles of incorporation",
+      "description": "The members prepare the articles; a GK's articles do not need a notary's certification.",
+      "authority": "Members",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "registration"
+      ]
+    },
+    {
+      "id": "capital",
+      "title": "Pay in the contributions",
+      "description": "The members pay in their contributions before the registration.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "articles"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registration"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Apply for registration of establishment",
+      "description": "The person who will represent the company applies at the Legal Affairs Bureau of the head office, in writing or online, with the articles and the members' consent. Applications are in Japanese.",
+      "authority": "Legal Affairs Bureau (法務局)",
+      "typicalCost": null,
+      "dependsOn": [
+        "capital"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registration"
+      ]
+    },
+    {
+      "id": "tax-notification",
+      "title": "Notify the tax office of the incorporation",
+      "description": "Submit the corporation establishment notification (法人設立届出書) with a copy of the articles within two months of the registration date, by e-Tax or on paper.",
+      "authority": "Tax office (税務署)",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "new-company"
+      ]
+    },
+    {
+      "id": "local-notification",
+      "title": "Notify the prefecture and the municipality",
+      "description": "Local governments also need an establishment notification. Check their forms and deadlines.",
+      "authority": "Prefecture and municipality",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "blue-return",
+      "title": "Decide on the blue return (青色申告)",
+      "description": "Approval for the blue return is applied for with the tax office; the forms in No.5100 list the deadline.",
+      "authority": "Tax office (税務署)",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "new-company"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": "Open a corporate bank account",
+      "description": "Banks ask for the registration certificate and the company seal.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "licence-tax",
+      "title": "Pay the registration and license tax",
+      "description": "7/1,000 of the stated capital, with a minimum of 60,000 yen per application.",
+      "authority": "Legal Affairs Bureau (法務局)",
+      "typicalCost": {
+        "amount": 60000,
+        "currency": "JPY",
+        "note": "The minimum; 7/1,000 of the stated capital if that is more.",
+        "effectiveDate": "2026-10-20"
+      },
+      "dependsOn": [
+        "capital"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registration"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "corporate-tax-return",
+      "title": "Corporate tax final return",
+      "description": "File within two months after the business year ends. The articles can allow an extension; local tax returns follow similar dates.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 2,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Tax office (税務署)",
+      "checkLocally": false,
+      "sourceIds": [
+        "ct-deadline",
+        "ct-extension"
+      ]
+    },
+    {
+      "id": "local-tax-returns",
+      "title": "Local corporate taxes (prefecture and municipality)",
+      "description": "Corporate inhabitant tax and enterprise tax are filed with the prefecture and the municipality. Check the dates with them.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Prefecture and municipality",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "consumption-tax-return",
+      "title": "Consumption tax final return",
+      "description": "File and pay within two months after the taxable period ends (three months with the extension, where it applies).",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 2,
+        "day": "same"
+      },
+      "conditions": [
+        "consumption-taxpayer"
+      ],
+      "subdivisions": [],
+      "authority": "Tax office (税務署)",
+      "checkLocally": false,
+      "sourceIds": [
+        "consumption"
+      ]
+    },
+    {
+      "id": "withholding-tax",
+      "title": "Pay withheld income tax",
+      "description": "Pay the income tax withheld from salaries by the 10th of the month after payment. Small payers can get the special rule with two payments a year instead.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 10
+      },
+      "conditions": [
+        "pays-salaries"
+      ],
+      "subdivisions": [],
+      "authority": "Tax office (税務署)",
+      "checkLocally": false,
+      "sourceIds": [
+        "withholding"
+      ]
+    },
+    {
+      "id": "withholding-first-half",
+      "title": "Pay withheld income tax, January to June",
+      "description": "Under the special rule, tax withheld from January to June is paid by 10 July.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 7,
+        "day": 10
+      },
+      "conditions": [
+        "withholding-special-rule"
+      ],
+      "subdivisions": [],
+      "authority": "Tax office (税務署)",
+      "checkLocally": false,
+      "sourceIds": [
+        "withholding"
+      ]
+    },
+    {
+      "id": "withholding-second-half",
+      "title": "Pay withheld income tax, July to December",
+      "description": "Under the special rule, tax withheld from July to December is paid by 20 January of the next year.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 1,
+        "day": 20
+      },
+      "conditions": [
+        "withholding-special-rule"
+      ],
+      "subdivisions": [],
+      "authority": "Tax office (税務署)",
+      "checkLocally": false,
+      "sourceIds": [
+        "withholding"
+      ]
+    },
+    {
+      "id": "registration-changes",
+      "title": "Register changes",
+      "description": "Changes to registered matters (officers, head office, purposes, capital) are registered with the Legal Affairs Bureau. Check the deadline for each change.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Legal Affairs Bureau (法務局)",
+      "checkLocally": true,
+      "sourceIds": [
+        "registration"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Corporate number: {{corporateNumber}}\n- Head office: {{headOffice}}\n- Business purposes: {{businessPurpose}}\n- Stated capital: {{statedCapital}} JPY\n- Registry office: {{registryOffice}}\n\n## Members\n\n{{people}}\n"
+}

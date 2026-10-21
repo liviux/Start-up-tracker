@@ -1,0 +1,796 @@
+{
+  "id": "us-llc",
+  "version": 1,
+  "country": "US",
+  "countryName": "United States",
+  "entityType": "LLC",
+  "nameLocal": "Limited liability company",
+  "nameEnglish": "Limited liability company",
+  "currency": "USD",
+  "bilingual": null,
+  "subdivision": {
+    "label": "Formation state",
+    "required": true,
+    "options": [
+      {
+        "code": "US-AL",
+        "name": "Alabama"
+      },
+      {
+        "code": "US-AK",
+        "name": "Alaska"
+      },
+      {
+        "code": "US-AZ",
+        "name": "Arizona"
+      },
+      {
+        "code": "US-AR",
+        "name": "Arkansas"
+      },
+      {
+        "code": "US-CA",
+        "name": "California"
+      },
+      {
+        "code": "US-CO",
+        "name": "Colorado"
+      },
+      {
+        "code": "US-CT",
+        "name": "Connecticut"
+      },
+      {
+        "code": "US-DE",
+        "name": "Delaware"
+      },
+      {
+        "code": "US-DC",
+        "name": "District of Columbia"
+      },
+      {
+        "code": "US-FL",
+        "name": "Florida"
+      },
+      {
+        "code": "US-GA",
+        "name": "Georgia"
+      },
+      {
+        "code": "US-HI",
+        "name": "Hawaii"
+      },
+      {
+        "code": "US-ID",
+        "name": "Idaho"
+      },
+      {
+        "code": "US-IL",
+        "name": "Illinois"
+      },
+      {
+        "code": "US-IN",
+        "name": "Indiana"
+      },
+      {
+        "code": "US-IA",
+        "name": "Iowa"
+      },
+      {
+        "code": "US-KS",
+        "name": "Kansas"
+      },
+      {
+        "code": "US-KY",
+        "name": "Kentucky"
+      },
+      {
+        "code": "US-LA",
+        "name": "Louisiana"
+      },
+      {
+        "code": "US-ME",
+        "name": "Maine"
+      },
+      {
+        "code": "US-MD",
+        "name": "Maryland"
+      },
+      {
+        "code": "US-MA",
+        "name": "Massachusetts"
+      },
+      {
+        "code": "US-MI",
+        "name": "Michigan"
+      },
+      {
+        "code": "US-MN",
+        "name": "Minnesota"
+      },
+      {
+        "code": "US-MS",
+        "name": "Mississippi"
+      },
+      {
+        "code": "US-MO",
+        "name": "Missouri"
+      },
+      {
+        "code": "US-MT",
+        "name": "Montana"
+      },
+      {
+        "code": "US-NE",
+        "name": "Nebraska"
+      },
+      {
+        "code": "US-NV",
+        "name": "Nevada"
+      },
+      {
+        "code": "US-NH",
+        "name": "New Hampshire"
+      },
+      {
+        "code": "US-NJ",
+        "name": "New Jersey"
+      },
+      {
+        "code": "US-NM",
+        "name": "New Mexico"
+      },
+      {
+        "code": "US-NY",
+        "name": "New York"
+      },
+      {
+        "code": "US-NC",
+        "name": "North Carolina"
+      },
+      {
+        "code": "US-ND",
+        "name": "North Dakota"
+      },
+      {
+        "code": "US-OH",
+        "name": "Ohio"
+      },
+      {
+        "code": "US-OK",
+        "name": "Oklahoma"
+      },
+      {
+        "code": "US-OR",
+        "name": "Oregon"
+      },
+      {
+        "code": "US-PA",
+        "name": "Pennsylvania"
+      },
+      {
+        "code": "US-RI",
+        "name": "Rhode Island"
+      },
+      {
+        "code": "US-SC",
+        "name": "South Carolina"
+      },
+      {
+        "code": "US-SD",
+        "name": "South Dakota"
+      },
+      {
+        "code": "US-TN",
+        "name": "Tennessee"
+      },
+      {
+        "code": "US-TX",
+        "name": "Texas"
+      },
+      {
+        "code": "US-UT",
+        "name": "Utah"
+      },
+      {
+        "code": "US-VT",
+        "name": "Vermont"
+      },
+      {
+        "code": "US-VA",
+        "name": "Virginia"
+      },
+      {
+        "code": "US-WA",
+        "name": "Washington"
+      },
+      {
+        "code": "US-WV",
+        "name": "West Virginia"
+      },
+      {
+        "code": "US-WI",
+        "name": "Wisconsin"
+      },
+      {
+        "code": "US-WY",
+        "name": "Wyoming"
+      }
+    ]
+  },
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "irs-llc",
+      "title": "Limited liability company (LLC)",
+      "publisher": "IRS",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/limited-liability-company-llc",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "form-8832",
+      "title": "About Form 8832, Entity Classification Election",
+      "publisher": "IRS",
+      "url": "https://www.irs.gov/forms-pubs/about-form-8832",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "i1065",
+      "title": "Instructions for Form 1065",
+      "publisher": "IRS",
+      "url": "https://www.irs.gov/instructions/i1065",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "i1120",
+      "title": "Instructions for Form 1120",
+      "publisher": "IRS",
+      "url": "https://www.irs.gov/instructions/i1120",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "de-llc-tax",
+      "title": "LLC, LP and GP annual tax instructions",
+      "publisher": "Delaware Division of Corporations",
+      "url": "https://corp.delaware.gov/alt-entitytaxinstructions/",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "de-howto",
+      "title": "How to form a new business entity",
+      "publisher": "Delaware Division of Corporations",
+      "url": "https://corp.delaware.gov/howtoform/",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ein",
+      "title": "Get an employer identification number",
+      "publisher": "IRS",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "employment-due",
+      "title": "Employment tax due dates",
+      "publisher": "IRS",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/employment-tax-due-dates",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "estimated",
+      "title": "Estimated taxes",
+      "publisher": "IRS",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/estimated-taxes",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "boi",
+      "title": "Beneficial ownership information",
+      "publisher": "FinCEN",
+      "url": "https://www.fincen.gov/boi",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "sba-register",
+      "title": "Register your business",
+      "publisher": "U.S. Small Business Administration",
+      "url": "https://www.sba.gov/business-guide/launch-your-business/register-your-business",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "multi-member",
+      "label": "Two or more members, taxed as a partnership",
+      "description": "The IRS default for a domestic LLC with at least two members."
+    },
+    {
+      "id": "taxed-as-corporation",
+      "label": "Elected to be taxed as a corporation",
+      "description": "Filed Form 8832 (or Form 2553) to be taxed as a corporation."
+    },
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages subject to employment taxes."
+    },
+    {
+      "id": "pays-contractors",
+      "label": "Pays contractors",
+      "description": "Pays non-employees for services."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "LLC name",
+      "description": "The name on the certificate of formation (articles of organization).",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "sba-register"
+      ]
+    },
+    {
+      "key": "stateFileNumber",
+      "label": "State file number",
+      "description": "The number the formation state gave the LLC.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "sba-register"
+      ]
+    },
+    {
+      "key": "ein",
+      "label": "EIN",
+      "description": "The employer identification number from the IRS.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "ein"
+      ]
+    },
+    {
+      "key": "registeredAgent",
+      "label": "Registered agent",
+      "description": "Name and address of the registered agent in the formation state.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "sba-register"
+      ]
+    },
+    {
+      "key": "principalAddress",
+      "label": "Principal address",
+      "description": "Where the business is run from.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "taxClassification",
+      "label": "Federal tax classification",
+      "description": "Disregarded entity, partnership or corporation.",
+      "example": "",
+      "type": "select",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "irs-llc"
+      ],
+      "options": [
+        {
+          "value": "disregarded",
+          "label": "Disregarded entity (one member)",
+          "description": "The default for a single-member LLC: income goes on the owner's return."
+        },
+        {
+          "value": "partnership",
+          "label": "Partnership",
+          "description": "The default for an LLC with two or more members."
+        },
+        {
+          "value": "corporation",
+          "label": "Corporation",
+          "description": "After an election on Form 8832 or Form 2553."
+        }
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "member",
+        "label": "Member",
+        "description": "An owner of the LLC."
+      },
+      {
+        "id": "manager",
+        "label": "Manager",
+        "description": "Runs a manager-managed LLC."
+      },
+      {
+        "id": "organizer",
+        "label": "Organizer",
+        "description": "Filed the formation documents."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "choose-state",
+      "title": "Choose the formation state",
+      "description": "The state sets the formation fee, annual report and taxes. Many founders form where they operate.",
+      "authority": "Secretary of State",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "sba-register"
+      ]
+    },
+    {
+      "id": "name",
+      "title": "Choose and check the name",
+      "description": "Check the name is free in the formation state; some states let you reserve it.",
+      "authority": "Secretary of State",
+      "typicalCost": null,
+      "dependsOn": [
+        "choose-state"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "sba-register",
+        "de-howto"
+      ]
+    },
+    {
+      "id": "registered-agent",
+      "title": "Appoint a registered agent",
+      "description": "Every state requires one with a physical address in the state.",
+      "authority": "Secretary of State",
+      "typicalCost": null,
+      "dependsOn": [
+        "choose-state"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "sba-register",
+        "de-howto"
+      ]
+    },
+    {
+      "id": "file-formation",
+      "title": "File the certificate of formation",
+      "description": "Also called articles of organization. Fees and forms differ by state.",
+      "authority": "Secretary of State",
+      "typicalCost": null,
+      "dependsOn": [
+        "name",
+        "registered-agent"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "sba-register",
+        "de-howto"
+      ]
+    },
+    {
+      "id": "operating-agreement",
+      "title": "Write an operating agreement",
+      "description": "Sets out ownership and how the LLC is run. Not filed with the state in most cases.",
+      "authority": "Members",
+      "typicalCost": null,
+      "dependsOn": [
+        "file-formation"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "ein",
+      "title": "Get an EIN",
+      "description": "Apply online with the IRS for free; the number is issued at once if approved.",
+      "authority": "IRS",
+      "typicalCost": null,
+      "dependsOn": [
+        "file-formation"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "ein"
+      ]
+    },
+    {
+      "id": "tax-classification",
+      "title": "Decide the federal tax classification",
+      "description": "Keep the default (disregarded entity for one member, partnership for two or more) or elect corporate treatment with Form 8832.",
+      "authority": "IRS",
+      "typicalCost": null,
+      "dependsOn": [
+        "ein"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "irs-llc",
+        "form-8832"
+      ]
+    },
+    {
+      "id": "state-tax",
+      "title": "Register for state taxes",
+      "description": "Sales tax, payroll and other state registrations depend on the state and the business.",
+      "authority": "State tax agency",
+      "typicalCost": null,
+      "dependsOn": [
+        "file-formation"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "sba-register"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": "Open a business bank account",
+      "description": "Banks usually ask for the formation documents and the EIN.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "ein"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "de-howto"
+      ]
+    },
+    {
+      "id": "boi",
+      "title": "Beneficial ownership report: not needed",
+      "description": "FinCEN's rules now exempt companies created in the United States from BOI reporting; only some foreign companies registered in the US report.",
+      "authority": "FinCEN",
+      "typicalCost": null,
+      "dependsOn": [
+        "file-formation"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "boi"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "form-1065",
+      "title": "Partnership return (Form 1065)",
+      "description": "Due by the 15th day of the 3rd month after the tax year ends (March 15 for a calendar year).",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 3,
+        "day": 15
+      },
+      "conditions": [
+        "multi-member"
+      ],
+      "subdivisions": [],
+      "authority": "IRS",
+      "checkLocally": false,
+      "sourceIds": [
+        "i1065"
+      ]
+    },
+    {
+      "id": "form-1120",
+      "title": "Corporate income tax return (Form 1120)",
+      "description": "For an LLC taxed as a C corporation: due by the 15th day of the 4th month after the tax year ends (a June 30 year end has other rules).",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 4,
+        "day": 15
+      },
+      "conditions": [
+        "taxed-as-corporation"
+      ],
+      "subdivisions": [],
+      "authority": "IRS",
+      "checkLocally": false,
+      "sourceIds": [
+        "i1120"
+      ]
+    },
+    {
+      "id": "estimated-tax",
+      "title": "Estimated tax payments",
+      "description": "Owners of a disregarded or partnership LLC may owe estimated tax on their own returns; an LLC taxed as a corporation pays if it expects to owe $500 or more. Check the installment dates with the IRS.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "IRS",
+      "checkLocally": true,
+      "sourceIds": [
+        "estimated"
+      ]
+    },
+    {
+      "id": "state-annual-report",
+      "title": "State annual report or tax",
+      "description": "Most formation states require an annual or biennial report, a fee or a tax. Add the date for your state.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Secretary of State",
+      "checkLocally": true,
+      "sourceIds": [
+        "sba-register"
+      ]
+    },
+    {
+      "id": "de-annual-tax",
+      "title": "Delaware LLC annual tax",
+      "description": "Every LLC formed or registered in Delaware pays $400 a year on or before June 1; there is no annual report.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 6,
+        "day": 1
+      },
+      "conditions": [],
+      "subdivisions": [
+        "US-DE"
+      ],
+      "authority": "Delaware Division of Corporations",
+      "checkLocally": false,
+      "sourceIds": [
+        "de-llc-tax"
+      ]
+    },
+    {
+      "id": "form-941",
+      "title": "Employer's quarterly federal tax return (Form 941)",
+      "description": "File by the last day of the month after each quarter: April 30, July 31, October 31 and January 31. If all taxes were deposited on time, you have 10 more days.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": "last"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "IRS",
+      "checkLocally": false,
+      "sourceIds": [
+        "employment-due"
+      ]
+    },
+    {
+      "id": "form-w2",
+      "title": "Forms W-2 to employees and the SSA",
+      "description": "Report each employee's wages and withholding for the previous year.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 1,
+        "day": 31
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "IRS and Social Security Administration",
+      "checkLocally": true,
+      "sourceIds": [
+        "employment-due"
+      ]
+    },
+    {
+      "id": "form-940",
+      "title": "Federal unemployment tax return (Form 940)",
+      "description": "Report FUTA wages for the previous year by January 31 (10 more days if all FUTA tax was deposited on time).",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 1,
+        "day": 31
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "IRS",
+      "checkLocally": false,
+      "sourceIds": [
+        "employment-due"
+      ]
+    },
+    {
+      "id": "form-1099-nec",
+      "title": "Forms 1099-NEC for contractors",
+      "description": "File with the IRS and send to each contractor you paid above the reporting threshold, by January 31.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 1,
+        "day": 31
+      },
+      "conditions": [
+        "pays-contractors"
+      ],
+      "subdivisions": [],
+      "authority": "IRS",
+      "checkLocally": false,
+      "sourceIds": [
+        "employment-due"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- State file number: {{stateFileNumber}}\n- EIN: {{ein}}\n- Registered agent: {{registeredAgent}}\n- Principal address: {{principalAddress}}\n- Federal tax classification: {{taxClassification}}\n\n## Members and managers\n\n{{people}}\n"
+}

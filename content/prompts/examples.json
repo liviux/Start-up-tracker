@@ -1,0 +1,515 @@
+{
+  "version": 1,
+  "examples": [
+    {
+      "id": "f-shortlist",
+      "code": "F-SHORTLIST",
+      "variable": "SEARCH_FOCUS",
+      "label": "Ranked shortlist",
+      "text": "A short set ranked by benefit against effort, cost and obligations; not a directory. List strong candidates with one open blocker separately. Zero results is fine; never pad.",
+      "role": "shared"
+    },
+    {
+      "id": "f-conf",
+      "code": "F-CONF",
+      "variable": "SEARCH_FOCUS",
+      "label": "Conference speaker calls",
+      "text": "{{SECTOR}} or related conferences in the next six months that take outside speakers (talk, workshop, demo, panel, poster). Online anywhere; in person only in {{HOME_REGION}}. English or another founder language, online slots 08:00 to 23:00 {{TIMEZONE}}, free to apply and present."
+    },
+    {
+      "id": "f-show",
+      "code": "F-SHOW",
+      "variable": "SEARCH_FOCUS",
+      "label": "Online demo slots, next 14 days",
+      "text": "Online {{SECTOR}} or startup meetups and demo nights in the next 14 days where outside founders can present, even for 2 to 5 minutes. English or another founder language, slots 08:00 to 23:00 {{TIMEZONE}}, free."
+    },
+    {
+      "id": "f-list",
+      "code": "F-LIST",
+      "variable": "SEARCH_FOCUS",
+      "label": "Launch platforms and directories",
+      "text": "Active launch platforms and directories with a free, current submission route for products like {{STARTUP_NAME}}, with lasting discovery among its users."
+    },
+    {
+      "id": "f-comm",
+      "code": "F-COMM",
+      "variable": "SEARCH_FOCUS",
+      "label": "Communities and chat",
+      "text": "Active {{SECTOR}} communities, forums and chat spaces where {{STARTUP_NAME}} can be discussed or shown within the rules."
+    },
+    {
+      "id": "f-pr",
+      "code": "F-PR",
+      "variable": "SEARCH_FOCUS",
+      "label": "Media and creators",
+      "text": "Newsletters, creators, podcasts and trade media covering {{SECTOR}}, with an editorial or contact route and an audience that fits {{STARTUP_NAME}}."
+    },
+    {
+      "id": "f-sweep",
+      "code": "F-SWEEP",
+      "variable": "SEARCH_FOCUS",
+      "label": "General marketing sweep",
+      "text": "Any enabled MK category. Add or improve practical marketing work (channel, contact, community, content idea, asset, website or listing fix, recurring action); no application route needed. Use existing categories. Prefer free or cheap work, but keep strong ideas with a fair cost."
+    },
+    {
+      "id": "f-grant",
+      "code": "F-GRANT",
+      "variable": "SEARCH_FOCUS",
+      "label": "Grants and public funding",
+      "text": "The whole scope, including non-government routes with real non-dilutive support. Prefer a material benefit with a realistic path for the stated applicant; rank lower anything needing an unconfirmed consortium, sponsor or invitation. Apply {{CONSTRAINTS}} as hard filters."
+    },
+    {
+      "id": "f-prog",
+      "code": "F-PROG",
+      "variable": "SEARCH_FOCUS",
+      "label": "Startup support programs",
+      "text": "Structured programs with a live or rolling intake and a defined support offer: pre-accelerators, accelerators, incubators, venture studios, residencies, fellowships, mentoring. A label is not enough; skip directories, investor applications, one-off events, and programs whose only benefit is money, credits or publicity. Rank by value against dilution, cost and founder time, using {{CONSTRAINTS}}."
+    },
+    {
+      "id": "f-oss",
+      "code": "F-OSS",
+      "variable": "SEARCH_FOCUS",
+      "label": "Open-source project support",
+      "text": "Only if the product or part of it is open source. Programs meant to support open-source projects or maintainers: funding, paid maintenance, security, documentation, governance, fiscal hosting, bounties, travel. The company qualifies only if the rules allow it and the benefit goes to the open-source work."
+    },
+    {
+      "id": "f-perk",
+      "code": "F-PERK",
+      "variable": "SEARCH_FOCUS",
+      "label": "Perks, credits and in-kind resources",
+      "text": "Material free or subsidized resources (cloud, compute, AI and API credits, software, data, security, legal, accounting, marketing tools, workspace, hardware) with an application or activation route the terms allow for this applicant and use. Keep open-source-only and commercial terms apart. Rank by usable benefit after limits, expiry, required spend and lock-in."
+    },
+    {
+      "id": "f-mkt",
+      "code": "F-MKT",
+      "variable": "SEARCH_FOCUS",
+      "label": "Market access and customers",
+      "text": "Defined paths to users, buyers, testers or distributors: pilots, design-partner programs, sandboxes, marketplace or integration listings with real discovery, channel or co-sell access, vendor onboarding. The official source must describe the access after acceptance; exposure or \"become a partner\" is not enough. Say which offer each route serves. Prefer near-term feedback, pilots or revenue over prestige."
+    },
+    {
+      "id": "f-part",
+      "code": "F-PART",
+      "variable": "SEARCH_FOCUS",
+      "label": "Partnerships and ecosystem",
+      "text": "A named organization with a defined way to start a relationship: application, joining process, partner request, integration route, collaboration call, co-marketing proposal. Memberships only with concrete value. Name the counterparty, what each side gives and what follows acceptance; one target per route."
+    },
+    {
+      "id": "f-vis",
+      "code": "F-VIS",
+      "variable": "SEARCH_FOCUS",
+      "label": "Visibility and recognition",
+      "text": "Awards, rankings, hackathons, launch features, pitch or demo events and media programs with a live entry or judging process (conferences and meetups: EV1, EV2). Fixed dates within six months; rolling routes only if usable now. The outcome must be public (feature, award, shortlist, selected launch, public demo); recognition without money counts. Hackathons must accept {{STARTUP_NAME}} or a related entry."
+    },
+    {
+      "id": "f-plat",
+      "code": "F-PLAT",
+      "variable": "SEARCH_FOCUS",
+      "label": "Platform startup programs",
+      "text": "Startup, partner, researcher or maintainer programs of AI, cloud, developer and app platforms relevant to {{SECTOR}}, with a route usable now and a defined outcome (credits, technical access, support, a grant, an integration or distribution benefit). Taxonomy labels are search coverage, not proof a program exists; a free tier or trial is not a program."
+    },
+    {
+      "id": "f-ip",
+      "code": "F-IP",
+      "variable": "SEARCH_FOCUS",
+      "label": "Legal, IP and standards",
+      "text": "Routes whose main value is foundation support, standards work, governance, or practical IP, licensing or compliance help, with a concrete link to {{STARTUP_NAME}}. Real outcomes (admission, working-group seat, audit, licensing help, patent or trademark support) count; logos, member lists and open invitations do not."
+    },
+    {
+      "id": "f-angel",
+      "code": "F-ANGEL",
+      "variable": "SEARCH_FOCUS",
+      "label": "Angels and early-stage funds",
+      "text": "Active angels, syndicates, scouts, and pre-seed or seed funds investing at {{STARTUP_NAME}}'s stage, in {{SECTOR}}, in companies from {{COUNTRY}} or {{HOME_REGION}}, with a public way in (form, pitch submission, introduction path, office hours). Record stage, ticket size and focus only as published.",
+      "isNew": true
+    },
+    {
+      "id": "f-gmoney",
+      "code": "F-GMONEY",
+      "variable": "SEARCH_FOCUS",
+      "label": "Grants and prizes as money",
+      "text": "Non-dilutive money for the company or a founder: grant awards, foundation grants, prize money, tax credits or refunds, equity-free program cash, stipends. Track amount, currency, payment timing and conditions; if a PO program is the route, link it instead of adding a second target.",
+      "isNew": true
+    },
+    {
+      "id": "f-debt",
+      "code": "F-DEBT",
+      "variable": "SEARCH_FOCUS",
+      "label": "Debt and alternative financing",
+      "text": "Loans and credit open to a {{ENTITY_TYPE}} in {{COUNTRY}} at this stage: term or startup loans, credit lines, guaranteed or public loans, microloans, venture debt, invoice or equipment financing, revenue-based financing, with published terms or a documented application route.",
+      "isNew": true
+    },
+    {
+      "id": "f-crowd",
+      "code": "F-CROWD",
+      "variable": "SEARCH_FOCUS",
+      "label": "Crowdfunding and community",
+      "text": "Equity, community share, rewards and pre-order platforms, and sponsorship or donation programs, that accept a {{ENTITY_TYPE}} from {{COUNTRY}} in {{SECTOR}} and have an audience that fits {{STARTUP_NAME}}.",
+      "isNew": true
+    },
+    {
+      "id": "f-review",
+      "code": "F-REVIEW",
+      "variable": "SEARCH_FOCUS",
+      "label": "Weekly review",
+      "text": "No new search. Review this section's targets dated in the next 14 days, overdue, or still open: re-check each official page, update changed dates, rules or links, and set closed ones to the matching status. Add a target only for a directly related new round. End with what changed and what needs a decision.",
+      "isNew": true
+    },
+    {
+      "id": "f-topic",
+      "code": "F-TOPIC",
+      "variable": "SEARCH_FOCUS",
+      "label": "Research a topic",
+      "text": "Topic: [write it here before running]. Official and primary sources first, then reputable secondary ones. Add only targets that fit the scope and {{STARTUP_NAME}}.",
+      "isNew": true
+    },
+    {
+      "id": "v-program",
+      "code": "V-PROGRAM",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Program facts",
+      "text": "Record only what the official rules or application page support. Route: open, rolling, capped or invitation; next action; deadline with time zone; direct link. Applicant: the product, a founder personally, or the company; can it apply alone; required partners; never carry eligibility from one to another. Eligibility: stage, company age, revenue, headcount, sector, location, IP terms. Benefit: amount, currency, duration, expiry, timing. Costs: fees, equity, required spend, co-financing, exclusivity, IP or data terms, reporting, attendance, travel. Effort: documents, interviews, review time. Silence means unknown, never zero, free or eligible; drop candidates missing a material fact.",
+      "role": "shared"
+    },
+    {
+      "id": "v-conf",
+      "code": "V-CONF",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Conference speaker calls",
+      "text": "A verified, open call for papers or presenter slot for outside speakers; attend-only does not count. Check the deadline, and that speakers need not buy a ticket or sponsor."
+    },
+    {
+      "id": "v-show",
+      "code": "V-SHOW",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Online demo slots",
+      "text": "A current, direct registration or application link for a speaking or demo slot open to outside founders. Record the date and time in {{TIMEZONE}}."
+    },
+    {
+      "id": "v-list",
+      "code": "V-LIST",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Listings",
+      "text": "Official submission URL, active process, eligibility, cost, deadline, and no equivalent listing already tracked."
+    },
+    {
+      "id": "v-comm",
+      "code": "V-COMM",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Communities",
+      "text": "Active community, working entry URL, rules that allow the intended participation, a relevant channel. Record account-age, karma, approval or timing rules."
+    },
+    {
+      "id": "v-pr",
+      "code": "V-PR",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Media and creators",
+      "text": "Official submission form or current contact route, audience fit, rules, deadline. Published contact details only; outlet still active."
+    },
+    {
+      "id": "v-grant",
+      "code": "V-GRANT",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Grants, tenders, tax credits",
+      "text": "Also: eligible activities and stage (limits on software, research, commercial or open-source work, IP, publication); payment or reimbursement model, eligible costs, upfront cash, VAT or sales tax, caps on cumulative public aid (de minimis or similar). Tenders: supplier requirements, deliverables, payment terms; this is contract revenue. Tax credits: refundable or not, and what spending they need.",
+      "role": "add-on"
+    },
+    {
+      "id": "v-prog",
+      "code": "V-PROG",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Startup programs",
+      "text": "Also: length, format, schedule, founder time, attendance, travel or relocation, which founders take part; next cohort; investment terms; workload (deck, demo, references, interviews, documents); for founder-group programs, whether the person or the company applies. Note the best fit, main blocker and next step.",
+      "role": "add-on"
+    },
+    {
+      "id": "v-oss",
+      "code": "V-OSS",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Open-source support",
+      "text": "Also: open-source conditions (license, public repository, maintainer role, project age and activity, commercial use), eligible work and deliverables, matching funds, milestones, renewal.",
+      "role": "add-on"
+    },
+    {
+      "id": "v-perk",
+      "code": "V-PERK",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Credits, resources, platform programs",
+      "text": "Also: exact service, units, permitted use (open-source or commercial), duration, expiry, renewal, what happens after. Separate the headline maximum from the usable amount. Check card verification, minimum spend, overages, required integrations or referrals, telemetry, lock-in. Mark each as actionable now or conditional; never record zero or a guarantee because the terms are silent.",
+      "role": "add-on"
+    },
+    {
+      "id": "v-mkt",
+      "code": "V-MKT",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Market access",
+      "text": "Also: which product or use case; direct access or via referral, invitation, partner or procurement registration; the concrete access after acceptance (pilot, customer interviews, test environment, approved listing, co-selling); pilot scope, paid or unpaid, success criteria; commissions, certification, security review, data handling. A logo, directory entry or contact form is not customer access.",
+      "role": "add-on"
+    },
+    {
+      "id": "v-part",
+      "code": "V-PART",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Partnerships",
+      "text": "Also: counterparty and exact route; what each side gives; revenue share, minimum spend, exclusivity, brand, technical and reporting duties; approval steps. Skip sources that only say \"become a partner\". Acceptance never guarantees an integration, endorsement, audience or revenue.",
+      "role": "add-on"
+    },
+    {
+      "id": "v-vis",
+      "code": "V-VIS",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Visibility and recognition",
+      "text": "Also: self-submission or who may nominate; the real public outcome versus a private review or badge; judging criteria, content rights, exclusivity, winner duties. Hackathons: existing projects allowed, new build or attendance required, who owns the result. Media: earned coverage, contributor piece, listing or paid placement; a contact form is not an editorial route.",
+      "role": "add-on"
+    },
+    {
+      "id": "v-ip",
+      "code": "V-IP",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Legal, IP and standards",
+      "text": "Also: license compatibility, membership status, jurisdiction; the concrete outcome versus recognition; dues, time, voting duties, CLA or DCO terms, IP assignment, patent pledges, indemnity. For IP or compliance help: provider, scope, territory, what is actually protected. A license does not prove ownership and a founder may not bind the company; unresolved ownership or signing authority is a blocker.",
+      "role": "add-on"
+    },
+    {
+      "id": "v-invest",
+      "code": "V-INVEST",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Investors",
+      "text": "On the investor's own site or filings: active (recent deals or a current fund), stage, sector and location focus, published ticket size, the way in. Published contact routes only. Never invent portfolio companies, people or check sizes.",
+      "isNew": true
+    },
+    {
+      "id": "v-finance",
+      "code": "V-FINANCE",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Lenders and funding platforms",
+      "text": "In the official terms: who can apply (company age, revenue, location, legal form), amounts, full cost (interest, fees, warrants, revenue share, commission), repayment or payout schedule, guarantees, collateral, covenants, campaign limits, decision time. Never estimate rates or amounts the source does not state.",
+      "isNew": true
+    },
+    {
+      "id": "v-review",
+      "code": "V-REVIEW",
+      "variable": "VERIFIED_ACTIVITY",
+      "label": "Review of existing targets",
+      "text": "Open each target's official link and compare it with the fields. Change only what the page now shows differently, add the check date to the note, and set closed or vanished ones to the matching status.",
+      "isNew": true
+    },
+    {
+      "id": "a-base",
+      "code": "A-BASE",
+      "variable": "AVOID",
+      "label": "Basics",
+      "text": "Closed, expired, past or not-yet-open items; waitlists or invitations with no usable path; duplicates under any name or URL; items known only from aggregators or news, without the organizer's page; anything with an unverifiable route, eligibility, benefit, cost or deadline.",
+      "role": "shared"
+    },
+    {
+      "id": "a-conf",
+      "code": "A-CONF",
+      "variable": "AVOID",
+      "label": "Conferences",
+      "text": "Events more than six months out; in-person outside {{HOME_REGION}}; attend-only events; pitch competitions (PO7); pay-to-speak or sponsor-only slots; no language the founders present in; online slots outside 08:00 to 23:00 {{TIMEZONE}}."
+    },
+    {
+      "id": "a-show",
+      "code": "A-SHOW",
+      "variable": "AVOID",
+      "label": "Online demo slots",
+      "text": "In-person events, events beyond 14 days, slots outside 08:00 to 23:00 {{TIMEZONE}}, passive webinars, paid participation, no working registration link."
+    },
+    {
+      "id": "a-list",
+      "code": "A-LIST",
+      "variable": "AVOID",
+      "label": "Listings",
+      "text": "Dormant platforms, paid-only listings, ad marketplaces, platforms that forbid self-submission or products like {{STARTUP_NAME}}."
+    },
+    {
+      "id": "a-comm",
+      "code": "A-COMM",
+      "variable": "AVOID",
+      "label": "Communities",
+      "text": "Inactive, closed or off-topic communities, and those that ban self-promotion. A cold link drop is not a contribution."
+    },
+    {
+      "id": "a-pr",
+      "code": "A-PR",
+      "variable": "AVOID",
+      "label": "Media",
+      "text": "Paid-placement-only outlets, generic PR agencies, unreachable contacts, poor audience fit, invented contact details."
+    },
+    {
+      "id": "a-grant",
+      "code": "A-GRANT",
+      "variable": "AVOID",
+      "label": "Grants",
+      "text": "Debt, equity, convertibles or revenue-based financing (FU); recognition-only awards; intermediary pages without a live official route; paid applications, membership or consultancy before applying. For staff, co-financing, travel or attendance rules, follow {{CONSTRAINTS}} instead of excluding outright."
+    },
+    {
+      "id": "a-prog",
+      "code": "A-PROG",
+      "variable": "AVOID",
+      "label": "Startup programs",
+      "text": "Investor-only applications, pitch competitions, directories, webinars, one-off events and courses outside a structured program; entry fees, paid membership or consultancy; equity terms not published in full (an unstated term is never zero); programs whose only benefit is publicity, networking, money or credits."
+    },
+    {
+      "id": "a-oss",
+      "code": "A-OSS",
+      "variable": "AVOID",
+      "label": "Open-source support",
+      "text": "Generic donation pages, ordinary sponsorship or membership platforms, discounts, trials and paid services without a dedicated open-source program; offers for another project type, license or region; incidental open-source links; applicant-paid access. Grants and bounties that pay you are fine."
+    },
+    {
+      "id": "a-perk",
+      "code": "A-PERK",
+      "variable": "AVOID",
+      "label": "Credits and resources",
+      "text": "Public free tiers, ordinary trials, untargeted discounts, sales pages; exhausted capacity; resources only for another project type, license, region or entity. A required card, small co-payment or overage is not paid-only: record it, and exclude only if the benefit is small or {{CONSTRAINTS}} rules it out."
+    },
+    {
+      "id": "a-mkt",
+      "code": "A-MKT",
+      "variable": "AVOID",
+      "label": "Market access",
+      "text": "Passive directories, startup databases, networking, sales pages, affiliate schemes, paid lead lists, pay-to-play listings, sponsorship packages, registrations without real discovery or buyer access; innovation pages without a defined pilot, customer or procurement path; organizations guessed as customers; pure exposure. A customer-paid pilot is fine."
+    },
+    {
+      "id": "a-part",
+      "code": "A-PART",
+      "variable": "AVOID",
+      "label": "Partnerships",
+      "text": "Generic \"become a partner\" pages, sales contacts, contact forms and cold outreach without a partner intake; items where partnership is not the main benefit or the terms are undefined; unverified intermediaries. Record fees, technical work, legal commitments, exclusivity or travel and rank against {{CONSTRAINTS}}."
+    },
+    {
+      "id": "a-vis",
+      "code": "A-VIS",
+      "variable": "AVOID",
+      "label": "Visibility",
+      "text": "Conferences, speaker calls, meetups and attend-only routes (EV1, EV2); investor pitches and fundraising contests unless {{CONSTRAINTS}} says you are raising; paid awards, pay-to-play rankings, paid placements, sponsorship packages; directories or contact forms without a selection route; hackathons that need an unrelated build or have no public outcome."
+    },
+    {
+      "id": "a-plat",
+      "code": "A-PLAT",
+      "variable": "AVOID",
+      "label": "Platform programs",
+      "text": "Integration, affiliate or reseller schemes that do not explain selection and benefit; value limited to a badge, logo or community access; planned capabilities or customers presented as current. A requirement you cannot meet yet (live product, integration, sponsor) makes a candidate conditional at most."
+    },
+    {
+      "id": "a-ip",
+      "code": "A-IP",
+      "variable": "AVOID",
+      "label": "Legal, IP and standards",
+      "text": "Inactive groups, fee-only memberships, opaque legal commitments; pages with no defined route or outcome; invitation- or sponsor-only routes; items whose main benefit is funding, credits or publicity; ordinary paid legal services, templates, unsupported protection or compliance claims. Broad IP assignment, patent pledges, exclusivity or project control make a route conditional at most."
+    },
+    {
+      "id": "a-product",
+      "code": "A-PRODUCT",
+      "variable": "AVOID",
+      "label": "Product-only marketing",
+      "text": "Marketing about the company rather than the product, a founder's personal brand, or an edition that does not exist yet; fundraising and pitch events (PO, FU). A channel that also hosts these still qualifies when {{STARTUP_NAME}} can take part as a product.",
+      "role": "optional"
+    },
+    {
+      "id": "a-invest",
+      "code": "A-INVEST",
+      "variable": "AVOID",
+      "label": "Investors",
+      "text": "Inactive investors or those outside your stage, {{SECTOR}} or {{COUNTRY}}; pay-to-pitch events, paid investor lists, intermediaries that charge founders up front.",
+      "isNew": true
+    },
+    {
+      "id": "a-finance",
+      "code": "A-FINANCE",
+      "variable": "AVOID",
+      "label": "Lenders and platforms",
+      "text": "Unpublished pricing or terms; providers not licensed or registered where {{COUNTRY}} requires it; advance-fee offers; guarantees or collateral that {{CONSTRAINTS}} rules out.",
+      "isNew": true
+    },
+    {
+      "id": "a-review",
+      "code": "A-REVIEW",
+      "variable": "AVOID",
+      "label": "Review run",
+      "text": "Deleting targets (set a status instead), rewriting someone else's notes, changing a status because a date passed without checking the page, unrelated new targets.",
+      "isNew": true
+    },
+    {
+      "id": "s-deadline",
+      "code": "S-DEADLINE",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Deadline-driven applications",
+      "text": "Date the next concrete step, not the deadline, after checking eligibility and route. Fixed deadline: start the review 21 days before (30 if a deck, demo, proposal or interview is needed; 14 for a short form), submit 2 to 3 working days early, and note the exact deadline and time zone. With less time, use the next workday only if finishing is realistic, else note the blocker. Rolling route: check and apply within five business days; note the next cohort or capacity limit. Confirm required partners and open blockers first.",
+      "role": "shared"
+    },
+    {
+      "id": "s-conf",
+      "code": "S-CONF",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Conference speaker calls",
+      "text": "Date each target 2 to 3 weeks before the verified call-for-papers deadline, not the event; add the deadline and event dates as extra dates."
+    },
+    {
+      "id": "s-show",
+      "code": "S-SHOW",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Online demo slots",
+      "text": "Date preparation 1 to 2 days before the event, using the verified slot time in {{TIMEZONE}}; add the event date as an extra date."
+    },
+    {
+      "id": "s-comm",
+      "code": "S-COMM",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Community posts",
+      "text": "Real participation first. Promotional posts at least two days apart, never two on one day, and on the community's promotion day if its rules name one."
+    },
+    {
+      "id": "s-launch",
+      "code": "S-LAUNCH",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Launches and submissions",
+      "text": "Fixed launch date: prepare one working day before and launch on the day. Rolling routes: the next available workday. Never two public launches or two heavy submissions on one day."
+    },
+    {
+      "id": "s-perk",
+      "code": "S-PERK",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Credits and provider programs",
+      "text": "Eligibility and route first, then the application, activation or account setup, early enough to beat capacity limits or windows. Note deadlines, activation windows and credit expiry as separate dates. One resource or platform application per day."
+    },
+    {
+      "id": "s-outreach",
+      "code": "S-OUTREACH",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Outreach and partner requests",
+      "text": "Date the earliest open action, not research or the hoped-for result. Once the route is confirmed: preparation, then the application, inquiry or outreach (earlier if integration, security or legal material is needed). Customer, partner and listing actions on separate days. One follow-up 7 to 10 business days after no reply. No speculative outreach."
+    },
+    {
+      "id": "s-vis",
+      "code": "S-VIS",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Visibility routes",
+      "text": "Date the next step, not the ceremony, publication or an expected reply. Rolling route: confirm route and fit, then submit on the next feasible workday. Follow up only when an official response time is published."
+    },
+    {
+      "id": "s-ip",
+      "code": "S-IP",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Legal and governance review",
+      "text": "Review the applicant, route, signing authority and legal terms before any membership, contribution or application. If ownership, authority or a needed company change is unresolved, schedule that review instead."
+    },
+    {
+      "id": "s-campaign",
+      "code": "S-CAMPAIGN",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Campaigns",
+      "text": "Platform and rules check first, then campaign preparation (page, video, rewards or terms, first supporters) several weeks before launch. Use only dates the platform confirms.",
+      "isNew": true
+    },
+    {
+      "id": "s-review",
+      "code": "S-REVIEW",
+      "variable": "SPECIAL_SCHEDULE",
+      "label": "Review run",
+      "text": "Move a date only when the page or the next step changed. Overdue open targets get the next feasible workday, within {{MAX_TARGETS_PER_DAY}}.",
+      "isNew": true
+    }
+  ]
+}

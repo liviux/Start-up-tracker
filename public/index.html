@@ -1,0 +1,1771 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="app.name">Startup Tracker</title>
+    <meta
+      name="description"
+      content="A local tracker for a startup's marketing, programs and opportunities, funding and company tasks."
+    >
+    <link rel="icon" id="appFavicon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <!-- Vendored: this used to come from jsdelivr, which added an external
+         round trip to every cold load and broke markdown rendering entirely
+         when the host had no outbound internet. Not deferred, so it keeps
+         executing before app.js exactly as the CDN version did. -->
+    <script src="/assets/marked.min.js"></script>
+    <script src="/js/boot.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#mainContent" data-i18n="app.skipToContent">Skip to content</a>
+
+    <!-- Brand icons: GitHub, X, LinkedIn, YouTube and Facebook from Tabler Icons 3.49.0 (MIT, filled set);
+         Reddit from Simple Icons 16.35.0 (CC0 1.0). See THIRD_PARTY_NOTICES.md. -->
+    <svg aria-hidden="true" class="icon-sprite" focusable="false">
+      <symbol id="icon-link" viewBox="0 0 24 24">
+        <path d="M10.6 13.4a1 1 0 0 1 0-1.4l2.8-2.8a1 1 0 0 1 1.4 1.4L12 13.4a1 1 0 0 1-1.4 0Z"></path>
+        <path d="M8.8 17.7a5 5 0 0 1-3.5-8.5l3-3a5 5 0 0 1 7.1 0 1 1 0 0 1-1.4 1.4 3 3 0 0 0-4.3 0l-3 3a3 3 0 1 0 4.3 4.3 1 1 0 0 1 1.4 1.4 5 5 0 0 1-3.6 1.4Z"></path>
+        <path d="M12.2 19.2a1 1 0 0 1 .7-1.7 3 3 0 0 0 4.3 0l3-3a3 3 0 1 0-4.3-4.3 1 1 0 0 1-1.4-1.4 5 5 0 1 1 7.1 7.1l-3 3a5 5 0 0 1-7.1 0 1 1 0 0 1 .7-1.7Z"></path>
+      </symbol>
+      <symbol id="icon-github" viewBox="0 0 24 24">
+        <path d="M5.315 2.1c.791 -.113 1.9 .145 3.333 .966l.272 .161l.16 .1l.397 -.083a13.3 13.3 0 0 1 4.59 -.08l.456 .08l.396 .083l.161 -.1c1.385 -.84 2.487 -1.17 3.322 -1.148l.164 .008l.147 .017l.076 .014l.05 .011l.144 .047a1 1 0 0 1 .53 .514a5.2 5.2 0 0 1 .397 2.91l-.047 .267l-.046 .196l.123 .163c.574 .795 .93 1.728 1.03 2.707l.023 .295l.007 .272c0 3.855 -1.659 5.883 -4.644 6.68l-.245 .061l-.132 .029l.014 .161l.008 .157l.004 .365l-.002 .213l-.003 3.834a1 1 0 0 1 -.883 .993l-.117 .007h-6a1 1 0 0 1 -.993 -.883l-.007 -.117v-.734c-1.818 .26 -3.03 -.424 -4.11 -1.878l-.535 -.766c-.28 -.396 -.455 -.579 -.589 -.644l-.048 -.019a1 1 0 0 1 .564 -1.918c.642 .188 1.074 .568 1.57 1.239l.538 .769c.76 1.079 1.36 1.459 2.609 1.191l.001 -.678l-.018 -.168a5.03 5.03 0 0 1 -.021 -.824l.017 -.185l.019 -.12l-.108 -.024c-2.976 -.71 -4.703 -2.573 -4.875 -6.139l-.01 -.31l-.004 -.292a5.6 5.6 0 0 1 .908 -3.051l.152 -.222l.122 -.163l-.045 -.196a5.2 5.2 0 0 1 .145 -2.642l.1 -.282l.106 -.253a1 1 0 0 1 .529 -.514l.144 -.047l.154 -.03z"></path>
+      </symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24">
+        <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5Z"></path>
+      </symbol>
+      <symbol id="icon-save" viewBox="0 0 24 24">
+        <path d="M5 3h12l2 2v16H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2 2v6h9V5H7Zm0 14h10v-5H7v5Zm10-8V6.2L15.8 5H15v6h2Z"></path>
+      </symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24">
+        <path d="M11 4a1 1 0 1 1 2 0v8.6l2.3-2.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4l2.3 2.3V4Z"></path>
+        <path d="M5 17a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"></path>
+      </symbol>
+      <symbol id="icon-upload" viewBox="0 0 24 24">
+        <path d="M11 16a1 1 0 1 0 2 0V7.4l2.3 2.3a1 1 0 0 0 1.4-1.4l-4-4a1 1 0 0 0-1.4 0l-4 4a1 1 0 1 0 1.4 1.4L11 7.4V16Z"></path>
+        <path d="M5 17a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"></path>
+      </symbol>
+      <symbol id="icon-edit" viewBox="0 0 24 24">
+        <path d="M4 16.8V20h3.2L17.7 9.5l-3.2-3.2L4 16.8Zm15.8-9.4a1.5 1.5 0 0 0 0-2.1l-1.1-1.1a1.5 1.5 0 0 0-2.1 0l-1 1 3.2 3.2 1-1Z"></path>
+      </symbol>
+      <symbol id="icon-trash" viewBox="0 0 24 24">
+        <path d="M9 3a1 1 0 0 0-1 1v1H5a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2h-3V4a1 1 0 0 0-1-1H9Zm1 2h4V4h-4v1Zm-3 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1l-.7 10a2 2 0 0 1-2 1.9H9.7a2 2 0 0 1-2-1.9L7 9Zm3 2a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-5a1 1 0 0 0-1-1Zm4 0a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-5a1 1 0 0 0-1-1Z"></path>
+      </symbol>
+      <symbol id="icon-reset" viewBox="0 0 24 24">
+        <path d="M6.8 7.2A7.5 7.5 0 1 1 5 12a1 1 0 1 0-2 0 9.5 9.5 0 1 0 2.8-6.7L4 3.5A1 1 0 0 0 2.3 4v5a1 1 0 0 0 1 1h5a1 1 0 1 0 0-2H5.7l1.1-.8Z"></path>
+      </symbol>
+      <symbol id="icon-config" viewBox="0 0 24 24">
+        <path d="M10.6 3a1.4 1.4 0 0 1 2.8 0l.2 1.5c.5.2 1 .4 1.5.6l1.2-.9a1.4 1.4 0 0 1 2 .2l1.3 1.3a1.4 1.4 0 0 1 .2 2l-.9 1.2c.3.5.5 1 .6 1.5l1.5.2a1.4 1.4 0 0 1 0 2.8l-1.5.2c-.2.5-.4 1-.6 1.5l.9 1.2a1.4 1.4 0 0 1-.2 2l-1.3 1.3a1.4 1.4 0 0 1-2 .2l-1.2-.9c-.5.3-1 .5-1.5.6l-.2 1.5a1.4 1.4 0 0 1-2.8 0l-.2-1.5c-.5-.2-1-.4-1.5-.6l-1.2.9a1.4 1.4 0 0 1-2-.2l-1.3-1.3a1.4 1.4 0 0 1-.2-2l.9-1.2c-.3-.5-.5-1-.6-1.5L3 13.4a1.4 1.4 0 0 1 0-2.8l1.5-.2c.2-.5.4-1 .6-1.5l-.9-1.2a1.4 1.4 0 0 1 .2-2l1.3-1.3a1.4 1.4 0 0 1 2-.2l1.2.9c.5-.3 1-.5 1.5-.6L10.6 3Zm1.4 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"></path>
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <path d="M10.5 4a6.5 6.5 0 1 0 4 11.6l3 3a1 1 0 0 0 1.4-1.4l-3-3A6.5 6.5 0 0 0 10.5 4Zm-4.5 6.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Z"></path>
+      </symbol>
+      <symbol id="icon-chevron-up" viewBox="0 0 24 24">
+        <path d="M12 8.5L6 14.5l1.4 1.4 4.6-4.6 4.6 4.6 1.4-1.4-6-6Z"></path>
+      </symbol>
+      <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+        <path d="M12 15.5l6-6-1.4-1.4-4.6 4.6-4.6-4.6L6 9.5l6 6Z"></path>
+      </symbol>
+      <symbol id="icon-sort-inactive" viewBox="0 0 24 24">
+        <path d="M12 5.8L8.4 9.4l1.4 1.4 2.2-2.2 2.2 2.2 1.4-1.4L12 5.8ZM12 18.2l3.6-3.6-1.4-1.4-2.2 2.2-2.2-2.2-1.4 1.4 3.6 3.6Z"></path>
+      </symbol>
+      <symbol id="icon-forward" viewBox="0 0 24 24">
+        <path d="M13.3 5.3a1 1 0 0 1 1.4 0l6 6a1 1 0 0 1 0 1.4l-6 6a1 1 0 1 1-1.4-1.4l4.3-4.3H4a1 1 0 1 1 0-2h13.6l-4.3-4.3a1 1 0 0 1 0-1.4Z"></path>
+      </symbol>
+      <symbol id="icon-image" viewBox="0 0 24 24">
+        <path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2v9.6l3.3-3.3a1 1 0 0 1 1.4 0l2.3 2.3 4.3-4.3a1 1 0 0 1 1.4 0L19 11.6V6H5Zm14 12v-3.6l-2-2-4.3 4.3a1 1 0 0 1-1.4 0L9 14.4 5.4 18H19ZM8 9a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z"></path>
+      </symbol>
+      <symbol id="icon-file" viewBox="0 0 24 24">
+        <path d="M6 3h8l5 5v13H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm7 2H6v14h11V9h-4V5Zm2 .4V7h1.6L15 5.4ZM8 12h7a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2Zm0 4h5a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2Z"></path>
+      </symbol>
+      <symbol id="icon-folder" viewBox="0 0 24 24">
+        <path d="M3 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm2 2v10h14V8h-7.8l-2-2H5v2Z"></path>
+      </symbol>
+      <symbol id="icon-video" viewBox="0 0 24 24">
+        <path d="M5 6h9a2 2 0 0 1 2 2v1.2l3.5-2.1A1 1 0 0 1 21 8v8a1 1 0 0 1-1.5.9L16 14.8V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Zm0 2v8h9V8H5Zm11 3.5v1l3 1.8V9.7l-3 1.8Z"></path>
+      </symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24">
+        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.8a14.7 14.7 0 0 0-1.3-5.5A8.03 8.03 0 0 1 18.9 11ZM12 4c.9 1.4 1.7 3.9 1.9 7H10.1C10.3 7.9 11.1 5.4 12 4Zm-1.8 1.5c-.5 1.7-1 3.5-1.3 5.5H5.1a8.03 8.03 0 0 1 5.1-5.5ZM4.1 13h3.8c.3 2 .8 3.8 1.3 5.5A8.03 8.03 0 0 1 4.1 13Zm6 0h3.8c-.2 3.1-1 5.6-1.9 7-.9-1.4-1.7-3.9-1.9-7Zm3.7 5.5c.5-1.7 1-3.5 1.3-5.5h3.8a8.03 8.03 0 0 1-5.1 5.5Z"></path>
+      </symbol>
+      <symbol id="icon-x" viewBox="0 0 24 24">
+        <path d="M8.267 3a1 1 0 0 1 .73 .317l.076 .092l4.274 5.828l5.946 -5.944a1 1 0 0 1 1.497 1.32l-.083 .094l-6.163 6.162l6.262 8.54a1 1 0 0 1 -.697 1.585l-.109 .006h-4.267a1 1 0 0 1 -.73 -.317l-.076 -.092l-4.276 -5.829l-5.944 5.945a1 1 0 0 1 -1.497 -1.32l.083 -.094l6.161 -6.163l-6.26 -8.539a1 1 0 0 1 .697 -1.585l.109 -.006h4.267z"></path>
+      </symbol>
+      <symbol id="icon-linkedin" viewBox="0 0 24 24">
+        <path d="M17 2a5 5 0 0 1 5 5v10a5 5 0 0 1 -5 5h-10a5 5 0 0 1 -5 -5v-10a5 5 0 0 1 5 -5zm-9 8a1 1 0 0 0 -1 1v5a1 1 0 0 0 2 0v-5a1 1 0 0 0 -1 -1m6 0a3 3 0 0 0 -1.168 .236l-.125 .057a1 1 0 0 0 -1.707 .707v5a1 1 0 0 0 2 0v-3a1 1 0 0 1 2 0v3a1 1 0 0 0 2 0v-3a3 3 0 0 0 -3 -3m-6 -3a1 1 0 0 0 -.993 .883l-.007 .127a1 1 0 0 0 1.993 .117l.007 -.127a1 1 0 0 0 -1 -1"></path>
+      </symbol>
+      <symbol id="icon-youtube" viewBox="0 0 24 24">
+        <path d="M18 3a5 5 0 0 1 5 5v8a5 5 0 0 1 -5 5h-12a5 5 0 0 1 -5 -5v-8a5 5 0 0 1 5 -5zm-9 6v6a1 1 0 0 0 1.514 .857l5 -3a1 1 0 0 0 0 -1.714l-5 -3a1 1 0 0 0 -1.514 .857z"></path>
+      </symbol>
+      <symbol id="icon-facebook" viewBox="0 0 24 24">
+        <path d="M18 2a1 1 0 0 1 .993 .883l.007 .117v4a1 1 0 0 1 -.883 .993l-.117 .007h-3v1h3a1 1 0 0 1 .991 1.131l-.02 .112l-1 4a1 1 0 0 1 -.858 .75l-.113 .007h-2v6a1 1 0 0 1 -.883 .993l-.117 .007h-4a1 1 0 0 1 -.993 -.883l-.007 -.117v-6h-2a1 1 0 0 1 -.993 -.883l-.007 -.117v-4a1 1 0 0 1 .883 -.993l.117 -.007h2v-1a6 6 0 0 1 5.775 -5.996l.225 -.004h3z"></path>
+      </symbol>
+      <symbol id="icon-reddit" viewBox="0 0 24 24">
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z"></path>
+      </symbol>
+      <symbol id="icon-brand-behance" viewBox="0 0 24 24">
+        <path d="M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z"></path>
+      </symbol>
+      <symbol id="icon-brand-bluesky" viewBox="0 0 24 24">
+        <path d="M5.202 2.857C7.954 4.922 10.913 9.11 12 11.358c1.087-2.247 4.046-6.436 6.798-8.501C20.783 1.366 24 .213 24 3.883c0 .732-.42 6.156-.667 7.037-.856 3.061-3.978 3.842-6.755 3.37 4.854.826 6.089 3.562 3.422 6.299-5.065 5.196-7.28-1.304-7.847-2.97-.104-.305-.152-.448-.153-.327 0-.121-.05.022-.153.327-.568 1.666-2.782 8.166-7.847 2.97-2.667-2.737-1.432-5.473 3.422-6.3-2.777.473-5.899-.308-6.755-3.369C.42 10.04 0 4.615 0 3.883c0-3.67 3.217-2.517 5.202-1.026"></path>
+      </symbol>
+      <symbol id="icon-brand-chrome-web-store" viewBox="0 0 24 24">
+        <path d="M0 1.637v19.09c0 .9.736 1.636 1.636 1.636h.131a10.4 10.4 0 0 1-.13-1.636 10.3 10.3 0 0 1 1.667-5.64l4.202 7.276h1.128A3.77 3.77 0 0 1 12 16.958a3.77 3.77 0 0 1 3.366 5.406h1.048a4.7 4.7 0 0 0-1.587-5.406h6.83a10.34 10.34 0 0 1 .577 5.406h.13c.9 0 1.636-.737 1.636-1.637V1.637Zm9.273 2.181h5.454a1.09 1.09 0 1 1 0 2.182H9.273a1.09 1.09 0 1 1 0-2.182M12 10.364a10.36 10.36 0 0 1 9.233 5.652H12a4.71 4.71 0 0 0-4.677 4.149L3.91 14.25A10.34 10.34 0 0 1 12 10.364"></path>
+      </symbol>
+      <symbol id="icon-brand-crunchbase" viewBox="0 0 24 24">
+        <path d="M21.6 0H2.4A2.41 2.41 0 0 0 0 2.4v19.2A2.41 2.41 0 0 0 2.4 24h19.2a2.41 2.41 0 0 0 2.4-2.4V2.4A2.41 2.41 0 0 0 21.6 0zM7.045 14.465A2.11 2.11 0 0 0 9.84 13.42h1.66a3.69 3.69 0 1 1 0-1.75H9.84a2.11 2.11 0 1 0-2.795 2.795zm11.345.845a3.55 3.55 0 0 1-1.06.63 3.68 3.68 0 0 1-3.39-.38v.38h-1.51V5.37h1.5v4.11a3.74 3.74 0 0 1 1.8-.63H16a3.67 3.67 0 0 1 2.39 6.46zm-.223-2.766a2.104 2.104 0 1 1-4.207 0 2.104 2.104 0 0 1 4.207 0z"></path>
+      </symbol>
+      <symbol id="icon-brand-dev" viewBox="0 0 24 24">
+        <path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45.56-.02c.41 0 .63-.07.83-.26.24-.24.26-.36.26-2.2 0-1.91-.02-1.96-.29-2.18zM0 4.94v14.12h24V4.94H0zM8.56 15.3c-.44.58-1.06.77-2.53.77H4.71V8.53h1.4c1.67 0 2.16.18 2.6.9.27.43.29.6.32 2.57.05 2.23-.02 2.73-.47 3.3zm5.09-5.47h-2.47v1.77h1.52v1.28l-.72.04-.75.03v1.77l1.22.03 1.2.04v1.28h-1.6c-1.53 0-1.6-.01-1.87-.3l-.3-.28v-3.16c0-3.02.01-3.18.25-3.48.23-.31.25-.31 1.88-.31h1.64v1.3zm4.68 5.45c-.17.43-.64.79-1 .79-.18 0-.45-.15-.67-.39-.32-.32-.45-.63-.82-2.08l-.9-3.39-.45-1.67h.76c.4 0 .75.02.75.05 0 .06 1.16 4.54 1.26 4.83.04.15.32-.7.73-2.3l.66-2.52.74-.04c.4-.02.73 0 .73.04 0 .14-1.67 6.38-1.8 6.68z"></path>
+      </symbol>
+      <symbol id="icon-brand-gitlab" viewBox="0 0 24 24">
+        <path d="m23.6004 9.5927-.0337-.0862L20.3.9814a.851.851 0 0 0-.3362-.405.8748.8748 0 0 0-.9997.0539.8748.8748 0 0 0-.29.4399l-2.2055 6.748H7.5375l-2.2057-6.748a.8573.8573 0 0 0-.29-.4412.8748.8748 0 0 0-.9997-.0537.8585.8585 0 0 0-.3362.4049L.4332 9.5015l-.0325.0862a6.0657 6.0657 0 0 0 2.0119 7.0105l.0113.0087.03.0213 4.976 3.7264 2.462 1.8633 1.4995 1.1321a1.0085 1.0085 0 0 0 1.2197 0l1.4995-1.1321 2.4619-1.8633 5.006-3.7489.0125-.01a6.0682 6.0682 0 0 0 2.0094-7.003z"></path>
+      </symbol>
+      <symbol id="icon-brand-google-play" viewBox="0 0 24 24">
+        <path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"></path>
+      </symbol>
+      <symbol id="icon-brand-hacker-news" viewBox="0 0 24 24">
+        <path d="M0 24V0h24v24H0zM6.951 5.896l4.112 7.708v5.064h1.583v-4.972l4.148-7.799h-1.749l-2.457 4.875c-.372.745-.688 1.434-.688 1.434s-.297-.708-.651-1.434L8.831 5.896h-1.88z"></path>
+      </symbol>
+      <symbol id="icon-brand-hashnode" viewBox="0 0 24 24">
+        <path d="M22.351 8.019l-6.37-6.37a5.63 5.63 0 0 0-7.962 0l-6.37 6.37a5.63 5.63 0 0 0 0 7.962l6.37 6.37a5.63 5.63 0 0 0 7.962 0l6.37-6.37a5.63 5.63 0 0 0 0-7.962zM12 15.953a3.953 3.953 0 1 1 0-7.906 3.953 3.953 0 0 1 0 7.906z"></path>
+      </symbol>
+      <symbol id="icon-brand-indie-hackers" viewBox="0 0 24 24">
+        <path d="M0 0h24v24H0V0Zm5.4 17.2h2.4V6.8H5.4v10.4Zm4.8 0h2.4v-4h3.6v4h2.4V6.8h-2.4v4h-3.6v-4h-2.4v10.4Z"></path>
+      </symbol>
+      <symbol id="icon-brand-mastodon" viewBox="0 0 24 24">
+        <path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"></path>
+      </symbol>
+      <symbol id="icon-brand-medium" viewBox="0 0 24 24">
+        <path d="M4.21 0A4.201 4.201 0 0 0 0 4.21v15.58A4.201 4.201 0 0 0 4.21 24h15.58A4.201 4.201 0 0 0 24 19.79v-1.093c-.137.013-.278.02-.422.02-2.577 0-4.027-2.146-4.09-4.832a7.592 7.592 0 0 1 .022-.708c.093-1.186.475-2.241 1.105-3.022a3.885 3.885 0 0 1 1.395-1.1c.468-.237 1.127-.367 1.664-.367h.023c.101 0 .202.004.303.01V4.211A4.201 4.201 0 0 0 19.79 0Zm.198 5.583h4.165l3.588 8.435 3.59-8.435h3.864v.146l-.019.004c-.705.16-1.063.397-1.063 1.254h-.003l.003 10.274c.06.676.424.885 1.063 1.03l.02.004v.145h-4.923v-.145l.019-.005c.639-.144.994-.353 1.054-1.03V7.267l-4.745 11.15h-.261L6.15 7.569v9.445c0 .857.358 1.094 1.063 1.253l.02.004v.147H4.405v-.147l.019-.004c.705-.16 1.065-.397 1.065-1.253V6.987c0-.857-.358-1.094-1.064-1.254l-.018-.004zm19.25 3.668c-1.086.023-1.733 1.323-1.813 3.124H24V9.298a1.378 1.378 0 0 0-.342-.047Zm-1.862 3.632c-.1 1.756.86 3.239 2.204 3.634v-3.634z"></path>
+      </symbol>
+      <symbol id="icon-brand-product-hunt" viewBox="0 0 24 24">
+        <path d="M13.604 8.4h-3.405V12h3.405c.995 0 1.801-.806 1.801-1.801 0-.993-.805-1.799-1.801-1.799zM12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm1.604 14.4h-3.405V18H7.801V6h5.804c2.319 0 4.2 1.88 4.2 4.199 0 2.321-1.881 4.201-4.201 4.201z"></path>
+      </symbol>
+      <symbol id="icon-brand-substack" viewBox="0 0 24 24">
+        <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"></path>
+      </symbol>
+      <symbol id="icon-brand-telegram" viewBox="0 0 24 24">
+        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"></path>
+      </symbol>
+      <symbol id="icon-brand-threads" viewBox="0 0 24 24">
+        <path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"></path>
+      </symbol>
+      <symbol id="icon-brand-twitch" viewBox="0 0 24 24">
+        <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"></path>
+      </symbol>
+      <symbol id="icon-brand-wellfound" viewBox="0 0 24 24">
+        <path d="M23.998 8.128c.063-1.379-1.612-2.376-2.795-1.664-1.23.598-1.322 2.52-.156 3.234 1.2.862 2.995-.09 2.951-1.57zm0 7.748c.063-1.38-1.612-2.377-2.795-1.665-1.23.598-1.322 2.52-.156 3.234 1.2.863 2.995-.09 2.951-1.57zm-20.5 1.762L0 6.364h3.257l2.066 8.106 2.245-8.106h3.267l2.244 8.106 2.065-8.106h3.257l-3.54 11.274H11.39c-.73-2.713-1.46-5.426-2.188-8.14l-2.233 8.14H3.5z"></path>
+      </symbol>
+      <symbol id="icon-brand-app-store" viewBox="0 0 24 24">
+        <path d="M15.079 5.999l.239 .012c1.43 .097 3.434 1.013 4.508 2.586a1 1 0 0 1 -.344 1.44c-.05 .028 -.372 .158 -.497 .217a4.15 4.15 0 0 0 -.722 .431c-.614 .461 -.948 1.009 -.942 1.694c.01 .885 .339 1.454 .907 1.846c.208 .143 .436 .253 .666 .33c.126 .043 .426 .116 .444 .122a1 1 0 0 1 .662 .942c0 2.621 -3.04 6.381 -5.286 6.381c-.79 0 -1.272 -.091 -1.983 -.315l-.098 -.031c-.463 -.146 -.702 -.192 -1.133 -.192c-.52 0 -.863 .06 -1.518 .237l-.197 .053c-.575 .153 -.964 .226 -1.5 .248c-2.749 0 -5.285 -5.093 -5.285 -9.072c0 -3.87 1.786 -6.92 5.286 -6.92c.297 0 .598 .045 .909 .128c.403 .107 .774 .26 1.296 .508c.787 .374 .948 .44 1.009 .44h.016c.03 -.003 .128 -.047 1.056 -.457c1.061 -.467 1.864 -.685 2.746 -.616l-.24 -.012z" ></path> <path d="M14 1a1 1 0 0 1 1 1a3 3 0 0 1 -3 3a1 1 0 0 1 -1 -1a3 3 0 0 1 3 -3z" ></path>
+      </symbol>
+      <symbol id="icon-brand-bitbucket" viewBox="0 0 24 24">
+        <path d="M3.661 3l16.68 .007c.484 -.005 .946 .203 1.262 .57c.316 .368 .454 .856 .364 1.396l-3.338 14.651a1.64 1.64 0 0 1 -1.629 1.376h-10.01c-.906 -.009 -1.678 -.668 -1.82 -1.517l-3.148 -14.576a1.64 1.64 0 0 1 1.639 -1.907m11.339 5h-6a1 1 0 0 0 -.986 1.164l1 6a1 1 0 0 0 .986 .836h4a1 1 0 0 0 .986 -.836l1 -6a1 1 0 0 0 -.986 -1.164" ></path>
+      </symbol>
+      <symbol id="icon-brand-discord" viewBox="0 0 24 24">
+        <path d="M14.983 3l.123 .006c2.014 .214 3.527 .672 4.966 1.673a1 1 0 0 1 .371 .488c1.876 5.315 2.373 9.987 1.451 12.28c-1.003 2.005 -2.606 3.553 -4.394 3.553c-.732 0 -1.693 -.968 -2.328 -2.045a21.512 21.512 0 0 0 2.103 -.493a1 1 0 1 0 -.55 -1.924c-3.32 .95 -6.13 .95 -9.45 0a1 1 0 0 0 -.55 1.924c.717 .204 1.416 .37 2.103 .494c-.635 1.075 -1.596 2.044 -2.328 2.044c-1.788 0 -3.391 -1.548 -4.428 -3.629c-.888 -2.217 -.39 -6.89 1.485 -12.204a1 1 0 0 1 .371 -.488c1.439 -1.001 2.952 -1.459 4.966 -1.673a1 1 0 0 1 .935 .435l.063 .107l.651 1.285l.137 -.016a12.97 12.97 0 0 1 2.643 0l.134 .016l.65 -1.284a1 1 0 0 1 .754 -.54l.122 -.009zm-5.983 7a2 2 0 0 0 -1.977 1.697l-.018 .154l-.005 .149l.005 .15a2 2 0 1 0 1.995 -2.15zm6 0a2 2 0 0 0 -1.977 1.697l-.018 .154l-.005 .149l.005 .15a2 2 0 1 0 1.995 -2.15z" ></path>
+      </symbol>
+      <symbol id="icon-brand-dribbble" viewBox="0 0 24 24">
+        <path d="M14.384 14.38a22.877 22.877 0 0 1 1.056 4.863l.064 .644l.126 1.431a10 10 0 0 1 -9.15 -.98l2.08 -2.087l.246 -.24c1.793 -1.728 3.41 -2.875 5.387 -3.566l.191 -.065zm6.09 -.783l.414 .003l.981 .014a9.997 9.997 0 0 1 -4.319 6.704l-.054 -.605c-.18 -2.057 -.55 -3.958 -1.163 -5.814c1.044 -.182 2.203 -.278 3.529 -.298l.611 -.004zm-7.869 -3.181a24.91 24.91 0 0 1 1.052 2.098c-2.276 .77 -4.142 2.053 -6.144 3.967l-.355 .344l-2.236 2.24a10 10 0 0 1 -2.917 -6.741l-.005 -.324l.004 -.25h1.096l.467 -.002c3.547 -.026 6.356 -.367 8.938 -1.295l.1 -.037zm9.388 1.202l-1.515 -.02c-1.86 -.003 -3.45 .124 -4.865 .402a26.112 26.112 0 0 0 -1.163 -2.38c1.393 -.695 2.757 -1.597 4.179 -2.75l.428 -.354l.816 -.682a10 10 0 0 1 2.098 5.409l.022 .375zm-14.663 -8.46l1.266 1.522c1.145 1.398 2.121 2.713 2.949 3.985c-2.26 .766 -4.739 1.052 -7.883 1.081l-.562 .004h-.844a10 10 0 0 1 5.074 -6.593zm9.67 .182c.53 .306 1.026 .657 1.483 1.046l-1.025 .857c-1.379 1.128 -2.688 1.993 -4.034 2.649c-.89 -1.398 -1.943 -2.836 -3.182 -4.358l-.474 -.574l-.485 -.584a10 10 0 0 1 7.717 .964z" ></path>
+      </symbol>
+      <symbol id="icon-brand-instagram" viewBox="0 0 24 24">
+        <path d="M16 3a5 5 0 0 1 5 5v8a5 5 0 0 1 -5 5h-8a5 5 0 0 1 -5 -5v-8a5 5 0 0 1 5 -5zm-4 5a4 4 0 0 0 -3.995 3.8l-.005 .2a4 4 0 1 0 4 -4m4.5 -1.5a1 1 0 0 0 -.993 .883l-.007 .127a1 1 0 0 0 1.993 .117l.007 -.127a1 1 0 0 0 -1 -1" ></path>
+      </symbol>
+      <symbol id="icon-brand-pinterest" viewBox="0 0 24 24">
+        <path d="M17 3.34a10 10 0 0 1 -8.512 18.023l2.364 -5.315a3.5 3.5 0 0 0 2.398 .952c2.708 0 4.75 -2.089 4.75 -5a6 6 0 1 0 -11.64 2.041a1 1 0 1 0 1.88 -.682a4 4 0 1 1 7.76 -1.36c0 1.818 -1.156 3.001 -2.75 3.001c-.609 0 -1.153 -.361 -1.478 -1.022l1.142 -2.572a1 1 0 0 0 -1.828 -.812l-4.392 9.882a10 10 0 0 1 -4.694 -8.476l.005 -.324a10 10 0 0 1 14.995 -8.336" ></path>
+      </symbol>
+      <symbol id="icon-brand-tiktok" viewBox="0 0 24 24">
+        <path d="M16.083 2h-4.083a1 1 0 0 0 -1 1v11.5a1.5 1.5 0 1 1 -2.519 -1.1l.12 -.1a1 1 0 0 0 .399 -.8v-4.326a1 1 0 0 0 -1.23 -.974a7.5 7.5 0 0 0 1.73 14.8l.243 -.005a7.5 7.5 0 0 0 7.257 -7.495v-2.7l.311 .153c1.122 .53 2.333 .868 3.59 .993a1 1 0 0 0 1.099 -.996v-4.033a1 1 0 0 0 -.834 -.986a5.005 5.005 0 0 1 -4.097 -4.096a1 1 0 0 0 -.986 -.835z" ></path>
+      </symbol>
+      <symbol id="icon-brand-whatsapp" viewBox="0 0 24 24">
+        <path d="M18.497 4.409a10 10 0 0 1 -10.36 16.828l-.223 -.098l-4.759 .849l-.11 .011a1 1 0 0 1 -.11 0l-.102 -.013l-.108 -.024l-.105 -.037l-.099 -.047l-.093 -.058l-.014 -.011l-.012 -.007l-.086 -.073l-.077 -.08l-.067 -.088l-.056 -.094l-.034 -.07l-.04 -.108l-.028 -.128l-.012 -.102a1 1 0 0 1 0 -.125l.012 -.1l.024 -.11l.045 -.122l1.433 -3.304l-.009 -.014a10 10 0 0 1 1.549 -12.454l.215 -.203a10 10 0 0 1 13.226 -.217m-8.997 3.09a1.5 1.5 0 0 0 -1.5 1.5v1a6 6 0 0 0 6 6h1a1.5 1.5 0 0 0 0 -3h-1l-.144 .007a1.5 1.5 0 0 0 -1.128 .697l-.042 .074l-.022 -.007a4.01 4.01 0 0 1 -2.435 -2.435l-.008 -.023l.075 -.041a1.5 1.5 0 0 0 .704 -1.272v-1a1.5 1.5 0 0 0 -1.5 -1.5" ></path>
+      </symbol>
+    </svg>
+
+    <div class="app-shell">
+      <aside class="shell-sidebar" aria-label="Main navigation" data-i18n-aria-label="nav.main">
+        <div class="identity">
+          <div class="identity-copy">
+            <div class="title-row">
+              <img src="/assets/logo.svg" class="topbar-logo" alt="" />
+              <h1 data-app-name>Startup Tracker</h1>
+            </div>
+          </div>
+        </div>
+        <div class="startup-switcher" id="startupSwitcher">
+          <button
+            class="startup-switcher-button"
+            id="startupSwitcherButton"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="startupSwitcherMenu"
+          >
+            <span class="startup-icon" id="startupSwitcherIcon" aria-hidden="true"></span>
+            <span class="startup-switcher-text">
+              <span class="startup-switcher-caption" data-i18n="startups.caption">Startup</span>
+              <span class="startup-switcher-name" id="startupSwitcherName"></span>
+            </span>
+            <svg class="startup-switcher-chevron" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+          </button>
+          <div
+            class="startup-switcher-menu"
+            id="startupSwitcherMenu"
+            role="menu"
+            aria-label="Startups"
+            data-i18n-aria-label="startups.menuLabel"
+            hidden
+          ></div>
+        </div>
+        <nav class="app-tabs" id="appTabs" role="tablist" aria-label="Tracker views" data-i18n-aria-label="nav.views">
+          <button class="app-tab-button active" type="button" role="tab" aria-selected="true" data-app-tab="calendar" data-shortname="CA"><img src="/assets/icons/calendar-week.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.calendar">Calendar</span></button>
+          <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="pipeline" data-section="mk" data-shortname="MK"><img src="/assets/icons/target-arrow.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.marketing">Marketing</span></button>
+          <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="programs" data-section="po" data-shortname="PO"><img src="/assets/icons/rocket.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.programsOpportunities">Programs &amp; Opportunities</span></button>
+          <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="funding" data-section="fu" data-shortname="FU"><img src="/assets/icons/wallet.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.funding">Funding</span></button>
+          <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="company" data-section="comp" data-shortname="COMP"><img src="/assets/icons/building.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="company.title">Company</span><span class="app-tab-badge" data-company-urgent-count hidden></span></button>
+          <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="extra" data-shortname="EX" data-active-subtab="ai"><img src="/assets/icons/layout-grid.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.extra">Extra</span></button>
+          <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="agents" data-shortname="AG"><img src="/assets/icons/robot.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="agents.title">Agents</span><span class="app-tab-badge" data-agent-run-count hidden></span></button>
+        </nav>
+        <button class="setup-badge" id="finishSetupButton" type="button" title="The setup is not finished. Continue where you stopped." data-i18n-title="setup.badgeHint" hidden>
+          <span class="setup-badge-dot" aria-hidden="true"></span><span data-i18n="setup.badge">Finish setup</span>
+        </button>
+        <div class="sidebar-footer"><span data-app-name>Startup Tracker</span><span id="appVersionLabel"></span></div>
+      </aside>
+      <header class="topbar">
+        <nav class="shell-breadcrumb" aria-label="Breadcrumb" data-i18n-aria-label="nav.breadcrumb"><span id="breadcrumbStartup"></span><span aria-hidden="true">/</span><span id="breadcrumbView" aria-current="page" data-i18n="ui.common.calendar">Calendar</span></nav>
+        <div class="topbar-actions">
+          <span id="saveStateLabel" class="save-state-text syncing" data-tooltip="Syncing data..." tabindex="-1" data-i18n-tooltip="ui.topbar.syncingData"><span class="status-spinner"></span><span data-i18n="ui.topbar.syncingData">Syncing data...</span></span>
+          <div class="global-search" id="globalSearch">
+            <button
+              class="icon-button global-search-toggle"
+              id="globalSearchToggle"
+              type="button"
+              data-tooltip="Search everything"
+              aria-label="Open search"
+              data-i18n-aria-label="search.open"
+              aria-expanded="false"
+              aria-controls="globalSearchInput"
+             data-i18n-tooltip="ui.topbar.searchEverything">
+              <svg><use href="#icon-search"></use></svg>
+            </button>
+            <label class="global-search-field" for="globalSearchInput">
+              <input
+                id="globalSearchInput"
+                type="search"
+                autocomplete="off"
+                placeholder="Search everything..."
+                data-i18n-placeholder="search.placeholder"
+                aria-label="Search everything"
+                data-i18n-aria-label="search.label"
+                aria-controls="globalSearchList"
+                aria-expanded="false"
+              >
+            </label>
+            <div class="global-search-results" id="globalSearchResults" hidden>
+              <div class="scope-switch global-search-scope" role="group" aria-label="Search in" data-i18n-aria-label="search.scopeLabel">
+                <button type="button" class="scope-switch-button" data-search-scope="this" aria-pressed="true" data-i18n="scope.this">This startup</button>
+                <button type="button" class="scope-switch-button" data-search-scope="all" aria-pressed="false" data-i18n="scope.all">All startups</button>
+              </div>
+              <div class="global-search-list" id="globalSearchList" role="listbox" aria-label="Search results" data-i18n-aria-label="search.resultsLabel"></div>
+            </div>
+          </div>
+          <button class="icon-button" id="themeToggleButton" type="button" data-tooltip="Toggle theme" aria-label="Toggle theme" data-i18n-tooltip="ui.topbar.toggleTheme" data-i18n-aria-label="ui.topbar.toggleTheme">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+          <button
+            class="secondary-button"
+            id="settingsButton"
+            type="button"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-controls="settingsPanel"
+          >
+            <svg aria-hidden="true"><use href="#icon-config"></use></svg>
+            <span data-i18n="settings.button">Settings</span>
+          </button>
+          <div class="project-links-dropdown" id="projectLinksDropdown">
+            <button
+              class="secondary-button project-links-toggle"
+              id="projectLinksToggle"
+              type="button"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="projectLinksMenu"
+              aria-label="Project links"
+             data-i18n-aria-label="ui.topbar.projectLinks">
+              <svg class="project-links-icon"><use href="#icon-link"></use></svg>
+              <span data-i18n="ui.common.links">Links</span>
+              <svg class="project-links-chevron"><use href="#icon-chevron-down"></use></svg>
+            </button>
+            <div class="project-links-menu" id="projectLinksMenu" role="menu" hidden>
+              <span class="project-link-item project-links-empty" role="menuitem" aria-disabled="true">
+                <span class="project-link-text" data-i18n="ui.topbar.noLinksYet">No links yet</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="mainContent" tabindex="-1">
+
+        <section class="app-view active" id="calendarView" data-app-view="calendar" aria-label="Calendar" data-i18n-aria-label="ui.common.calendar">
+          <header class="shell-heading"><h2 data-i18n="ui.common.calendar">Calendar</h2><p data-i18n="calendar.intro">Your dates across marketing, programs, funding and company tasks.</p></header>
+          <div class="scope-switch calendar-scope" id="calendarScopeSwitch" role="group" aria-label="Show dates from" data-i18n-aria-label="calendar.scopeLabel">
+            <button type="button" class="scope-switch-button" data-calendar-scope="this" aria-pressed="true" data-i18n="scope.this">This startup</button>
+            <button type="button" class="scope-switch-button" data-calendar-scope="all" aria-pressed="false" data-i18n="scope.all">All startups</button>
+          </div>
+          <p class="calendar-scope-status" id="calendarScopeStatus" role="status" hidden></p>
+
+          <div class="calendar-layout-container">
+            <div class="calendar-strip-container">
+              <div class="calendar-strip-top-row">
+                <div class="calendar-nav-column">
+                  <div class="calendar-nav-group calendar-nav-left">
+                    <button class="calendar-nav-btn" id="calendarPrevWeek" type="button" title="Previous 9 days" data-i18n-title="ui.calendar.previous9Days">
+                      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+                    </button>
+                    <button class="calendar-nav-btn calendar-nav-btn-sub" id="calendarPrevDay" type="button" title="Previous day" data-i18n-title="ui.common.previousDay">
+                      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                  </div>
+                  <button class="calendar-nav-btn calendar-nav-btn-sub calendar-month-toggle" id="calendarMonthToggle" type="button" title="Open month calendar" aria-expanded="false" data-i18n-title="ui.calendar.openMonthCalendar">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </button>
+                </div>
+                
+                <div class="calendar-strip-viewport" id="calendarStripViewport" tabIndex="0" aria-label="Calendar date carousel" data-i18n-aria-label="ui.calendar.calendarDateCarousel">
+                  <div class="calendar-days-track" id="calendarDaysTrack">
+                    <div class="calendar-days-strip" id="calendarDaysStrip"></div>
+                  </div>
+                </div>
+                
+                <div class="calendar-strip-side">
+                  <div class="focus-date-mode calendar-mode-toggle" role="group" aria-label="Calendar date mode" data-i18n-aria-label="ui.calendar.calendarDateMode">
+                    <button type="button" class="focus-date-mode-btn active" data-calendar-mode="on"><span data-i18n="ui.common.onThisDay">On this day</span> <span class="tab-count">0</span></button>
+                    <button type="button" class="focus-date-mode-btn" data-calendar-mode="by"><span data-i18n="ui.common.dueBy">Due by</span> <span class="tab-count">0</span></button>
+                  </div>
+                  <div class="calendar-strip-side-actions">
+                    <div class="calendar-nav-group calendar-nav-right">
+                      <button class="calendar-nav-btn calendar-nav-btn-sub" id="calendarNextDay" type="button" title="Next day" data-i18n-title="ui.common.nextDay">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                      </button>
+                      <button class="calendar-nav-btn" id="calendarNextWeek" type="button" title="Next 9 days" data-i18n-title="ui.calendar.next9Days">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+                      </button>
+                    </div>
+                    
+                    <button class="secondary-button" id="calendarTodayBtn" type="button" data-i18n="calendar.today">Today</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="calendar-month-panel" id="calendarMonthPanel" hidden>
+                <div class="calendar-month-panel-header">
+                  <div class="calendar-month-nav-group calendar-month-nav-left">
+                    <button class="calendar-nav-btn calendar-month-nav-btn" id="calendarMonthPrevMonth" type="button" title="Previous month" data-i18n-title="ui.calendar.previousMonth">
+                      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+                      <span data-i18n="ui.calendar.prevMonth">Previous month</span>
+                    </button>
+                  </div>
+                  <span class="calendar-month-title" id="calendarMonthTitle"></span>
+                  <div class="calendar-month-nav-group calendar-month-nav-right">
+                    <button class="calendar-nav-btn calendar-month-nav-btn" id="calendarMonthNextMonth" type="button" title="Next month" data-i18n-title="ui.calendar.nextMonth">
+                      <span data-i18n="ui.calendar.nextMonth">Next month</span>
+                      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="calendar-month-grid" id="calendarMonthGrid"></div>
+              </div>
+            </div>
+
+            <div class="calendar-toggles" id="calendarToggles"></div>
+            <div class="calendar-filter-bar focus-filter-shell-host" id="calendarFilterBar"></div>
+
+            <div class="calendar-detail-container">
+              <h3 class="calendar-detail-title" id="calendarDetailTitle"></h3>
+              
+              <div class="calendar-detail-sections">
+                <div class="calendar-detail-section marketing" data-section="mk">
+                  <h4 data-i18n="ui.common.marketing">Marketing</h4>
+                  <div class="calendar-items-list" id="calListMarketing"></div>
+                </div>
+
+                <div class="calendar-detail-section programs" data-section="po">
+                  <h4 data-i18n="ui.common.programsOpportunities">Programs &amp; Opportunities</h4>
+                  <div class="calendar-items-list" id="calListPrograms"></div>
+                </div>
+
+                <div class="calendar-detail-section funding" data-section="fu">
+                  <h4 data-i18n="ui.common.funding">Funding</h4>
+                  <div class="calendar-items-list" id="calListFunding"></div>
+                </div>
+
+                <div class="calendar-detail-section company" data-section="comp">
+                  <h4 data-i18n="ui.calendar.company">Company</h4>
+                  <div class="calendar-items-list" id="calListCompany"></div>
+                </div>
+
+                <div class="calendar-detail-section campaigns" hidden>
+                  <h4 data-i18n="ui.common.campaigns">Campaigns</h4>
+                  <div class="calendar-items-list" id="calListCampaigns"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="calendar-summary-container" id="calendarSummaryContainer"></div>
+          </div>
+        </section>
+
+        <div class="app-view section-page" id="pipelineView" data-app-view="pipeline" data-section="mk" aria-label="Marketing" hidden data-i18n-aria-label="ui.common.marketing">
+          <header class="shell-heading"><h2 data-i18n="ui.common.marketing">Marketing</h2><p data-i18n="ui.pipeline.planTheNextMoveFollow">Plan the next move. Follow every conversation.</p></header>
+          <section class="summary-grid section-metrics" data-sp-metrics aria-label="Marketing summary" data-i18n-aria-label="ui.pipeline.marketingSummary"></section>
+
+          <section class="workbench" aria-label="Focus queue and new target" data-i18n-aria-label="ui.common.focusQueueAndNewTarget">
+            <article class="panel focus-panel" data-sp-panel="focus">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="ui.common.nextActions">Next actions</p>
+                  <h2 data-i18n="ui.common.focusQueue">Focus queue</h2>
+                </div>
+                <button class="panel-toggle" type="button" data-sp-toggle="focus" aria-controls="mkFocusBody" aria-expanded="true" aria-label="Show or hide the focus queue" data-i18n-aria-label="ui.common.showOrHideTheFocus"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+              </div>
+              <div class="panel-body" id="mkFocusBody">
+                <div class="focus-date-bar">
+                  <div class="focus-date-mode" role="group" aria-label="Which dates" data-i18n-aria-label="ui.common.whichDates">
+                    <button type="button" class="focus-date-mode-btn" data-sp-focus-mode="on"><span data-i18n="ui.common.onThisDay">On this day</span> <span class="tab-count">0</span></button>
+                    <button type="button" class="focus-date-mode-btn" data-sp-focus-mode="by"><span data-i18n="ui.common.dueBy">Due by</span> <span class="tab-count">0</span></button>
+                  </div>
+                  <div class="focus-date-controls">
+                    <button type="button" class="focus-nav-btn" data-sp-focus-step="-1" title="Previous day" aria-label="Previous day" data-i18n-aria-label="ui.common.previousDay" data-i18n-title="ui.common.previousDay">&#8249;</button>
+                    <input type="date" class="focus-date-input" data-sp-focus-date aria-label="Focus date" data-i18n-aria-label="ui.common.focusDate">
+                    <button type="button" class="focus-nav-btn" data-sp-focus-step="1" title="Next day" aria-label="Next day" data-i18n-aria-label="ui.common.nextDay" data-i18n-title="ui.common.nextDay">&#8250;</button>
+                    <button type="button" class="focus-today-btn" data-sp-focus-today data-i18n="ui.common.today">Today</button>
+                    <button type="button" class="focus-clear-btn" data-sp-focus-clear data-i18n="ui.common.anyDate">Any date</button>
+                  </div>
+                </div>
+                <div class="focus-filter-bar" data-sp-focus-statuses></div>
+                <div class="focus-list" id="focusList" data-sp-focus-list></div>
+                <nav class="pagination manager-pagination focus-pagination" data-sp-focus-pages aria-label="Focus queue pages" data-i18n-aria-label="ui.common.focusQueuePages"></nav>
+              </div>
+            </article>
+
+            <article class="panel form-panel" data-sp-panel="form">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="ui.common.new">New</p>
+                  <h2 data-i18n="ui.common.addTarget">Add target</h2>
+                </div>
+                <button class="panel-toggle collapsed" type="button" data-sp-toggle="form" aria-controls="mkFormBody" aria-expanded="false" aria-label="Show or hide the add form" data-i18n-aria-label="ui.common.showOrHideTheAdd"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+              </div>
+              <div class="panel-body collapsed" id="mkFormBody">
+                <form class="task-form section-add-form" id="taskForm" data-sp-form novalidate>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.name">Name</span>
+                    <input name="name" type="text" required placeholder="e.g. Launch week post" autocomplete="off" data-i18n-placeholder="ui.pipeline.eGLaunchWeekPost">
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.organization">Organization</span>
+                    <input name="organization" type="text" placeholder="e.g. Indie founders forum" autocomplete="off" data-i18n-placeholder="ui.pipeline.eGIndieFoundersForum">
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.link">Link</span>
+                    <input name="link" type="url" placeholder="e.g. https://example.com/apply" data-i18n-placeholder="ui.common.eGHttpsExampleCom">
+                  </label>
+                  <div class="taxonomy-field">
+                    <span class="label-title" id="mkFormTaxonomyLabel" data-i18n="ui.common.categories">Categories</span>
+                    <div id="mkFormTaxonomy" aria-labelledby="mkFormTaxonomyLabel"></div>
+                  </div>
+                  <div class="form-row two-col">
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.status">Status</span>
+                      <select name="status"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.priority">Priority</span>
+                      <select name="priority">
+                        <option data-i18n="ui.common.veryHigh">Very High</option>
+                        <option data-i18n="ui.common.high">High</option>
+                        <option selected data-i18n="ui.common.medium">Medium</option>
+                        <option data-i18n="ui.common.low">Low</option>
+                        <option data-i18n="ui.common.veryLow">Very Low</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.nextAction">Next action</span>
+                    <input name="nextAction" type="text" placeholder="e.g. Check the eligibility rules" autocomplete="off" data-i18n-placeholder="ui.common.eGCheckTheEligibility">
+                  </label>
+                  <div class="form-row two-col">
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.nextActionDate">Next action date</span>
+                      <input name="nextActionDate" type="date">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.time">Time</span>
+                      <input name="nextActionTime" type="time">
+                    </label>
+                  </div>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.campaign">Campaign</span>
+                    <select name="campaignId"></select>
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.tags">Tags</span>
+                    <input name="tags" type="text" placeholder="e.g. launch, partner" autocomplete="off" data-i18n-placeholder="ui.common.eGLaunchPartner">
+                  </label>
+                  <div class="form-actions">
+                    <button class="primary-button" type="submit" data-i18n="ui.common.addTarget">Add target</button>
+                    <button class="secondary-button" type="button" data-sp-add-open data-i18n="ui.common.addAndOpenDetails">Add and open details</button>
+                    <button class="secondary-button" type="reset" data-i18n="ui.common.clearForm">Clear form</button>
+                  </div>
+                  <p class="form-status" data-sp-form-status role="status"></p>
+                </form>
+              </div>
+            </article>
+          </section>
+
+          <section class="tracker-panel panel" data-sp-panel="table" aria-label="Marketing targets" data-i18n-aria-label="ui.pipeline.marketingTargets">
+            <div class="tracker-topline panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="ui.common.marketing">Marketing</p>
+                <h2 data-i18n="ui.common.targets">Targets</h2>
+              </div>
+              <button class="panel-toggle" type="button" data-sp-toggle="table" aria-controls="mkTableBody" aria-expanded="true" aria-label="Show or hide the targets" data-i18n-aria-label="ui.common.showOrHideTheTargets"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            </div>
+            <div class="panel-body" id="mkTableBody">
+              <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="Categories" data-i18n-aria-label="ui.common.categories"></div>
+              <div class="subcategory-tabs" id="subcategoryTabs" role="tablist" aria-label="Subcategories" data-i18n-aria-label="ui.common.subcategories"></div>
+              <div class="subcategory-tabs type-tabs" id="mkTypeTabs" role="tablist" aria-label="Types" data-i18n-aria-label="ui.common.types"></div>
+              <div class="filters section-filters">
+                <label class="search-field">
+                  <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                  <input type="search" data-sp-search placeholder="Search names, notes, links..." aria-label="Search targets" data-i18n-aria-label="ui.common.searchTargets" data-i18n-placeholder="ui.common.searchNamesNotesLinks">
+                </label>
+                <label><span data-i18n="ui.common.savedView">Saved view</span> <select data-sp-view></select></label>
+                <label><span data-i18n="ui.common.priority">Priority</span> <select data-sp-priority></select></label>
+                <label><span data-i18n="ui.common.campaign">Campaign</span> <select data-sp-campaign></select></label>
+                <label><span data-i18n="ui.common.perPage">Per page</span> <select data-sp-page-size></select></label>
+              </div>
+              <div class="focus-filter-bar section-status-filter" data-sp-statuses></div>
+              <div class="facet-filters">
+                <div class="facet-group">
+                  <span class="facet-label" data-i18n="ui.common.tags">Tags</span>
+                  <input type="text" data-sp-tag-input placeholder="Type a tag, press Enter" aria-label="Filter by tag" data-i18n-aria-label="ui.common.filterByTag" data-i18n-placeholder="ui.common.typeATagPressEnter">
+                  <div class="tag-pill-list" data-sp-tag-list></div>
+                </div>
+                <div class="facet-group" data-sp-facet-row hidden>
+                  <span class="facet-label" data-i18n="ui.common.yourFields">Your fields</span>
+                  <div class="facet-kv-row">
+                    <select data-sp-facet-key aria-label="Field" data-i18n-aria-label="ui.common.field"></select>
+                    <input type="text" data-sp-facet-value placeholder="Value..." aria-label="Value" data-i18n-aria-label="ui.common.value2" data-i18n-placeholder="ui.common.value">
+                    <button class="secondary-button" type="button" data-sp-facet-add data-i18n="ui.common.add">Add</button>
+                  </div>
+                  <div class="tag-pill-list" data-sp-facet-list></div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="section-table">
+                  <thead><tr data-sp-head></tr></thead>
+                  <tbody id="taskRows" data-sp-rows></tbody>
+                </table>
+                <div class="empty-state" data-sp-empty hidden>
+                  <h3 data-i18n="ui.common.noMatchingTargets">No matching targets</h3>
+                  <p data-i18n="ui.common.clearTheFiltersOrAdd">Clear the filters, or add a target above.</p>
+                </div>
+              </div>
+              <nav class="pagination" data-sp-pages aria-label="Target pages" data-i18n-aria-label="ui.common.targetPages"></nav>
+            </div>
+          </section>
+        </div>
+
+        <section class="app-view section-page" id="programsView" data-app-view="programs" data-section="po" aria-label="Programs &amp; Opportunities" hidden data-i18n-aria-label="ui.common.programsOpportunities">
+          <header class="shell-heading"><h2 data-i18n="ui.common.programsOpportunities">Programs &amp; Opportunities</h2><p data-i18n="ui.programs.keepApplicationsDeadlinesAndNext">Keep applications, deadlines, and next steps together.</p></header>
+          <section class="summary-grid section-metrics" data-sp-metrics aria-label="Programs &amp; Opportunities summary" data-i18n-aria-label="ui.programs.programsOpportunitiesSummary"></section>
+
+          <section class="workbench" aria-label="Focus queue and new target" data-i18n-aria-label="ui.common.focusQueueAndNewTarget">
+            <article class="panel focus-panel" data-sp-panel="focus">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="ui.common.nextActions">Next actions</p>
+                  <h2 data-i18n="ui.common.focusQueue">Focus queue</h2>
+                </div>
+                <button class="panel-toggle" type="button" data-sp-toggle="focus" aria-controls="poFocusBody" aria-expanded="true" aria-label="Show or hide the focus queue" data-i18n-aria-label="ui.common.showOrHideTheFocus"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+              </div>
+              <div class="panel-body" id="poFocusBody">
+                <div class="focus-date-bar">
+                  <div class="focus-date-mode" role="group" aria-label="Which dates" data-i18n-aria-label="ui.common.whichDates">
+                    <button type="button" class="focus-date-mode-btn" data-sp-focus-mode="on"><span data-i18n="ui.common.onThisDay">On this day</span> <span class="tab-count">0</span></button>
+                    <button type="button" class="focus-date-mode-btn" data-sp-focus-mode="by"><span data-i18n="ui.common.dueBy">Due by</span> <span class="tab-count">0</span></button>
+                  </div>
+                  <div class="focus-date-controls">
+                    <button type="button" class="focus-nav-btn" data-sp-focus-step="-1" title="Previous day" aria-label="Previous day" data-i18n-aria-label="ui.common.previousDay" data-i18n-title="ui.common.previousDay">&#8249;</button>
+                    <input type="date" class="focus-date-input" data-sp-focus-date aria-label="Focus date" data-i18n-aria-label="ui.common.focusDate">
+                    <button type="button" class="focus-nav-btn" data-sp-focus-step="1" title="Next day" aria-label="Next day" data-i18n-aria-label="ui.common.nextDay" data-i18n-title="ui.common.nextDay">&#8250;</button>
+                    <button type="button" class="focus-today-btn" data-sp-focus-today data-i18n="ui.common.today">Today</button>
+                    <button type="button" class="focus-clear-btn" data-sp-focus-clear data-i18n="ui.common.anyDate">Any date</button>
+                  </div>
+                </div>
+                <div class="focus-filter-bar" data-sp-focus-statuses></div>
+                <div class="focus-list" id="programFocusList" data-sp-focus-list></div>
+                <nav class="pagination manager-pagination focus-pagination" data-sp-focus-pages aria-label="Focus queue pages" data-i18n-aria-label="ui.common.focusQueuePages"></nav>
+              </div>
+            </article>
+
+            <article class="panel form-panel" data-sp-panel="form">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="ui.common.new">New</p>
+                  <h2 data-i18n="ui.common.addTarget">Add target</h2>
+                </div>
+                <button class="panel-toggle collapsed" type="button" data-sp-toggle="form" aria-controls="poFormBody" aria-expanded="false" aria-label="Show or hide the add form" data-i18n-aria-label="ui.common.showOrHideTheAdd"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+              </div>
+              <div class="panel-body collapsed" id="poFormBody">
+                <form class="task-form section-add-form" id="programForm" data-sp-form novalidate>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.name">Name</span>
+                    <input name="name" type="text" required placeholder="e.g. Spring accelerator 2027" autocomplete="off" data-i18n-placeholder="ui.programs.eGSpringAccelerator2027">
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.organization">Organization</span>
+                    <input name="organization" type="text" placeholder="e.g. City Innovation Hub" autocomplete="off" data-i18n-placeholder="ui.programs.eGCityInnovationHub">
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.link">Link</span>
+                    <input name="link" type="url" placeholder="e.g. https://example.com/apply" data-i18n-placeholder="ui.common.eGHttpsExampleCom">
+                  </label>
+                  <div class="taxonomy-field">
+                    <span class="label-title" id="programFormTaxonomyLabel" data-i18n="ui.common.categories">Categories</span>
+                    <div id="programFormTaxonomy" aria-labelledby="programFormTaxonomyLabel"></div>
+                  </div>
+                  <div class="form-row two-col">
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.status">Status</span>
+                      <select name="status"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.priority">Priority</span>
+                      <select name="priority">
+                        <option data-i18n="ui.common.veryHigh">Very High</option>
+                        <option data-i18n="ui.common.high">High</option>
+                        <option selected data-i18n="ui.common.medium">Medium</option>
+                        <option data-i18n="ui.common.low">Low</option>
+                        <option data-i18n="ui.common.veryLow">Very Low</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.nextAction">Next action</span>
+                    <input name="nextAction" type="text" placeholder="e.g. Check the eligibility rules" autocomplete="off" data-i18n-placeholder="ui.common.eGCheckTheEligibility">
+                  </label>
+                  <div class="form-row two-col">
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.nextActionDate">Next action date</span>
+                      <input name="nextActionDate" type="date">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.time">Time</span>
+                      <input name="nextActionTime" type="time">
+                    </label>
+                  </div>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.campaign">Campaign</span>
+                    <select name="campaignId"></select>
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.tags">Tags</span>
+                    <input name="tags" type="text" placeholder="e.g. launch, partner" autocomplete="off" data-i18n-placeholder="ui.common.eGLaunchPartner">
+                  </label>
+                  <div class="form-actions">
+                    <button class="primary-button" type="submit" data-i18n="ui.common.addTarget">Add target</button>
+                    <button class="secondary-button" type="button" data-sp-add-open data-i18n="ui.common.addAndOpenDetails">Add and open details</button>
+                    <button class="secondary-button" type="reset" data-i18n="ui.common.clearForm">Clear form</button>
+                  </div>
+                  <p class="form-status" data-sp-form-status role="status"></p>
+                </form>
+              </div>
+            </article>
+          </section>
+
+          <section class="tracker-panel panel" data-sp-panel="table" aria-label="Programs &amp; Opportunities targets" data-i18n-aria-label="ui.programs.programsOpportunitiesTargets">
+            <div class="tracker-topline panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="ui.common.programsOpportunities">Programs &amp; Opportunities</p>
+                <h2 data-i18n="ui.common.targets">Targets</h2>
+              </div>
+              <button class="panel-toggle" type="button" data-sp-toggle="table" aria-controls="poTableBody" aria-expanded="true" aria-label="Show or hide the targets" data-i18n-aria-label="ui.common.showOrHideTheTargets"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            </div>
+            <div class="panel-body" id="poTableBody">
+              <div class="category-tabs" id="programCategoryTabs" role="tablist" aria-label="Categories" data-i18n-aria-label="ui.common.categories"></div>
+              <div class="subcategory-tabs" id="programTypeTabs" role="tablist" aria-label="Subcategories" data-i18n-aria-label="ui.common.subcategories"></div>
+              <div class="subcategory-tabs type-tabs" id="programNodeTypeTabs" role="tablist" aria-label="Types" data-i18n-aria-label="ui.common.types"></div>
+              <div class="filters section-filters">
+                <label class="search-field">
+                  <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                  <input type="search" data-sp-search placeholder="Search names, notes, links..." aria-label="Search targets" data-i18n-aria-label="ui.common.searchTargets" data-i18n-placeholder="ui.common.searchNamesNotesLinks">
+                </label>
+                <label><span data-i18n="ui.common.savedView">Saved view</span> <select data-sp-view></select></label>
+                <label><span data-i18n="ui.common.priority">Priority</span> <select data-sp-priority></select></label>
+                <label><span data-i18n="ui.common.campaign">Campaign</span> <select data-sp-campaign></select></label>
+                <label><span data-i18n="ui.common.perPage">Per page</span> <select data-sp-page-size></select></label>
+              </div>
+              <div class="focus-filter-bar section-status-filter" data-sp-statuses></div>
+              <div class="facet-filters">
+                <div class="facet-group">
+                  <span class="facet-label" data-i18n="ui.common.tags">Tags</span>
+                  <input type="text" data-sp-tag-input placeholder="Type a tag, press Enter" aria-label="Filter by tag" data-i18n-aria-label="ui.common.filterByTag" data-i18n-placeholder="ui.common.typeATagPressEnter">
+                  <div class="tag-pill-list" data-sp-tag-list></div>
+                </div>
+                <div class="facet-group" data-sp-facet-row hidden>
+                  <span class="facet-label" data-i18n="ui.common.yourFields">Your fields</span>
+                  <div class="facet-kv-row">
+                    <select data-sp-facet-key aria-label="Field" data-i18n-aria-label="ui.common.field"></select>
+                    <input type="text" data-sp-facet-value placeholder="Value..." aria-label="Value" data-i18n-aria-label="ui.common.value2" data-i18n-placeholder="ui.common.value">
+                    <button class="secondary-button" type="button" data-sp-facet-add data-i18n="ui.common.add">Add</button>
+                  </div>
+                  <div class="tag-pill-list" data-sp-facet-list></div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="section-table">
+                  <thead><tr data-sp-head></tr></thead>
+                  <tbody id="programRows" data-sp-rows></tbody>
+                </table>
+                <div class="empty-state" data-sp-empty hidden>
+                  <h3 data-i18n="ui.common.noMatchingTargets">No matching targets</h3>
+                  <p data-i18n="ui.common.clearTheFiltersOrAdd">Clear the filters, or add a target above.</p>
+                </div>
+              </div>
+              <nav class="pagination" data-sp-pages aria-label="Target pages" data-i18n-aria-label="ui.common.targetPages"></nav>
+            </div>
+          </section>
+        </section>
+
+        <section class="app-view section-page" id="fundingView" data-app-view="funding" data-section="fu" aria-label="Funding" hidden data-i18n-aria-label="ui.common.funding">
+          <header class="shell-heading"><h2 data-i18n="ui.common.funding">Funding</h2><p data-i18n="ui.funding.trackOpportunitiesFromFirstContact">Track opportunities from first contact to funds received.</p></header>
+          <section class="summary-grid section-metrics" data-sp-metrics aria-label="Funding summary" data-i18n-aria-label="ui.funding.fundingSummary"></section>
+
+          <section class="workbench" aria-label="Focus queue and new target" data-i18n-aria-label="ui.common.focusQueueAndNewTarget">
+            <article class="panel focus-panel" data-sp-panel="focus">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="ui.common.nextActions">Next actions</p>
+                  <h2 data-i18n="ui.common.focusQueue">Focus queue</h2>
+                </div>
+                <button class="panel-toggle" type="button" data-sp-toggle="focus" aria-controls="fuFocusBody" aria-expanded="true" aria-label="Show or hide the focus queue" data-i18n-aria-label="ui.common.showOrHideTheFocus"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+              </div>
+              <div class="panel-body" id="fuFocusBody">
+                <div class="focus-date-bar">
+                  <div class="focus-date-mode" role="group" aria-label="Which dates" data-i18n-aria-label="ui.common.whichDates">
+                    <button type="button" class="focus-date-mode-btn" data-sp-focus-mode="on"><span data-i18n="ui.common.onThisDay">On this day</span> <span class="tab-count">0</span></button>
+                    <button type="button" class="focus-date-mode-btn" data-sp-focus-mode="by"><span data-i18n="ui.common.dueBy">Due by</span> <span class="tab-count">0</span></button>
+                  </div>
+                  <div class="focus-date-controls">
+                    <button type="button" class="focus-nav-btn" data-sp-focus-step="-1" title="Previous day" aria-label="Previous day" data-i18n-aria-label="ui.common.previousDay" data-i18n-title="ui.common.previousDay">&#8249;</button>
+                    <input type="date" class="focus-date-input" data-sp-focus-date aria-label="Focus date" data-i18n-aria-label="ui.common.focusDate">
+                    <button type="button" class="focus-nav-btn" data-sp-focus-step="1" title="Next day" aria-label="Next day" data-i18n-aria-label="ui.common.nextDay" data-i18n-title="ui.common.nextDay">&#8250;</button>
+                    <button type="button" class="focus-today-btn" data-sp-focus-today data-i18n="ui.common.today">Today</button>
+                    <button type="button" class="focus-clear-btn" data-sp-focus-clear data-i18n="ui.common.anyDate">Any date</button>
+                  </div>
+                </div>
+                <div class="focus-filter-bar" data-sp-focus-statuses></div>
+                <div class="focus-list" id="fundingFocusList" data-sp-focus-list></div>
+                <nav class="pagination manager-pagination focus-pagination" data-sp-focus-pages aria-label="Focus queue pages" data-i18n-aria-label="ui.common.focusQueuePages"></nav>
+              </div>
+            </article>
+
+            <article class="panel form-panel" data-sp-panel="form">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="ui.common.new">New</p>
+                  <h2 data-i18n="ui.common.addTarget">Add target</h2>
+                </div>
+                <button class="panel-toggle collapsed" type="button" data-sp-toggle="form" aria-controls="fuFormBody" aria-expanded="false" aria-label="Show or hide the add form" data-i18n-aria-label="ui.common.showOrHideTheAdd"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+              </div>
+              <div class="panel-body collapsed" id="fuFormBody">
+                <form class="task-form section-add-form" id="fundingForm" data-sp-form novalidate>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.name">Name</span>
+                    <input name="name" type="text" required placeholder="e.g. Pre-seed round" autocomplete="off" data-i18n-placeholder="ui.funding.eGPreSeedRound">
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.organization">Organization</span>
+                    <input name="organization" type="text" placeholder="e.g. Example Angels" autocomplete="off" data-i18n-placeholder="ui.funding.eGExampleAngels">
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.link">Link</span>
+                    <input name="link" type="url" placeholder="e.g. https://example.com/apply" data-i18n-placeholder="ui.common.eGHttpsExampleCom">
+                  </label>
+                  <div class="taxonomy-field">
+                    <span class="label-title" id="fundingFormTaxonomyLabel" data-i18n="ui.common.categories">Categories</span>
+                    <div id="fundingFormTaxonomy" aria-labelledby="fundingFormTaxonomyLabel"></div>
+                  </div>
+                  <div class="form-row two-col">
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.status">Status</span>
+                      <select name="status"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.priority">Priority</span>
+                      <select name="priority">
+                        <option data-i18n="ui.common.veryHigh">Very High</option>
+                        <option data-i18n="ui.common.high">High</option>
+                        <option selected data-i18n="ui.common.medium">Medium</option>
+                        <option data-i18n="ui.common.low">Low</option>
+                        <option data-i18n="ui.common.veryLow">Very Low</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.nextAction">Next action</span>
+                    <input name="nextAction" type="text" placeholder="e.g. Check the eligibility rules" autocomplete="off" data-i18n-placeholder="ui.common.eGCheckTheEligibility">
+                  </label>
+                  <div class="form-row two-col">
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.nextActionDate">Next action date</span>
+                      <input name="nextActionDate" type="date">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.time">Time</span>
+                      <input name="nextActionTime" type="time">
+                    </label>
+                  </div>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.campaign">Campaign</span>
+                    <select name="campaignId"></select>
+                  </label>
+                  <label>
+                    <span class="label-title" data-i18n="ui.common.tags">Tags</span>
+                    <input name="tags" type="text" placeholder="e.g. launch, partner" autocomplete="off" data-i18n-placeholder="ui.common.eGLaunchPartner">
+                  </label>
+                  <div class="form-actions">
+                    <button class="primary-button" type="submit" data-i18n="ui.common.addTarget">Add target</button>
+                    <button class="secondary-button" type="button" data-sp-add-open data-i18n="ui.common.addAndOpenDetails">Add and open details</button>
+                    <button class="secondary-button" type="reset" data-i18n="ui.common.clearForm">Clear form</button>
+                  </div>
+                  <p class="form-status" data-sp-form-status role="status"></p>
+                </form>
+              </div>
+            </article>
+          </section>
+
+          <section class="tracker-panel panel" data-sp-panel="table" aria-label="Funding targets" data-i18n-aria-label="ui.funding.fundingTargets">
+            <div class="tracker-topline panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="ui.common.funding">Funding</p>
+                <h2 data-i18n="ui.common.targets">Targets</h2>
+              </div>
+              <button class="panel-toggle" type="button" data-sp-toggle="table" aria-controls="fuTableBody" aria-expanded="true" aria-label="Show or hide the targets" data-i18n-aria-label="ui.common.showOrHideTheTargets"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            </div>
+            <div class="panel-body" id="fuTableBody">
+              <div class="category-tabs" id="fundingCategoryTabs" role="tablist" aria-label="Categories" data-i18n-aria-label="ui.common.categories"></div>
+              <div class="subcategory-tabs" id="fundingTypeTabs" role="tablist" aria-label="Subcategories" data-i18n-aria-label="ui.common.subcategories"></div>
+              <div class="subcategory-tabs type-tabs" id="fundingNodeTypeTabs" role="tablist" aria-label="Types" data-i18n-aria-label="ui.common.types"></div>
+              <div class="filters section-filters">
+                <label class="search-field">
+                  <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                  <input type="search" data-sp-search placeholder="Search names, notes, links..." aria-label="Search targets" data-i18n-aria-label="ui.common.searchTargets" data-i18n-placeholder="ui.common.searchNamesNotesLinks">
+                </label>
+                <label><span data-i18n="ui.common.savedView">Saved view</span> <select data-sp-view></select></label>
+                <label><span data-i18n="ui.common.priority">Priority</span> <select data-sp-priority></select></label>
+                <label><span data-i18n="ui.common.campaign">Campaign</span> <select data-sp-campaign></select></label>
+                <label><span data-i18n="ui.common.perPage">Per page</span> <select data-sp-page-size></select></label>
+              </div>
+              <div class="focus-filter-bar section-status-filter" data-sp-statuses></div>
+              <div class="facet-filters">
+                <div class="facet-group">
+                  <span class="facet-label" data-i18n="ui.common.tags">Tags</span>
+                  <input type="text" data-sp-tag-input placeholder="Type a tag, press Enter" aria-label="Filter by tag" data-i18n-aria-label="ui.common.filterByTag" data-i18n-placeholder="ui.common.typeATagPressEnter">
+                  <div class="tag-pill-list" data-sp-tag-list></div>
+                </div>
+                <div class="facet-group" data-sp-facet-row hidden>
+                  <span class="facet-label" data-i18n="ui.common.yourFields">Your fields</span>
+                  <div class="facet-kv-row">
+                    <select data-sp-facet-key aria-label="Field" data-i18n-aria-label="ui.common.field"></select>
+                    <input type="text" data-sp-facet-value placeholder="Value..." aria-label="Value" data-i18n-aria-label="ui.common.value2" data-i18n-placeholder="ui.common.value">
+                    <button class="secondary-button" type="button" data-sp-facet-add data-i18n="ui.common.add">Add</button>
+                  </div>
+                  <div class="tag-pill-list" data-sp-facet-list></div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="section-table">
+                  <thead><tr data-sp-head></tr></thead>
+                  <tbody id="fundingRows" data-sp-rows></tbody>
+                </table>
+                <div class="empty-state" data-sp-empty hidden>
+                  <h3 data-i18n="ui.common.noMatchingTargets">No matching targets</h3>
+                  <p data-i18n="ui.common.clearTheFiltersOrAdd">Clear the filters, or add a target above.</p>
+                </div>
+              </div>
+              <nav class="pagination" data-sp-pages aria-label="Target pages" data-i18n-aria-label="ui.common.targetPages"></nav>
+            </div>
+          </section>
+
+          <section class="panel funding-rounds-panel" aria-label="Funding rounds" data-i18n-aria-label="ui.funding.fundingRounds">
+            <div class="tracker-topline panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="ui.funding.raisePlanning">Raise planning</p>
+                <h2 data-i18n="ui.funding.fundingRounds">Funding rounds</h2>
+              </div>
+              <button class="panel-toggle" type="button" id="fundingRoundsPanelToggle" aria-label="Toggle funding rounds panel" data-panel="funding-rounds" data-i18n-aria-label="ui.funding.toggleFundingRoundsPanel">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </div>
+            <div class="panel-body" id="fundingRoundsPanelBody">
+              <form class="filters funding-round-form" id="fundingRoundForm">
+                <label>
+                  <span class="label-title" data-i18n="ui.funding.roundName">Round name</span>
+                  <input id="fundingRoundNameInput" type="text" placeholder="Pre-seed 2026" required data-i18n-placeholder="ui.funding.preSeed2026">
+                </label>
+                <label>
+                  <span class="label-title" data-i18n="ui.common.stage">Stage</span>
+                  <input id="fundingRoundStageInput" type="text" placeholder="Pre-seed" data-i18n-placeholder="ui.funding.preSeed">
+                </label>
+                <label>
+                  <span class="label-title" data-i18n="ui.funding.target">Target</span>
+                  <input id="fundingRoundTargetInput" type="number" min="0" step="any" placeholder="500000">
+                </label>
+                <label>
+                  <span class="label-title" data-i18n="ui.funding.currency">Currency</span>
+                  <input id="fundingRoundCurrencyInput" type="text" maxlength="3" value="EUR">
+                </label>
+                <label>
+                  <span class="label-title" data-i18n="ui.funding.minimumClose">Minimum close</span>
+                  <input id="fundingRoundMinimumInput" type="number" min="0" step="any" placeholder="150000">
+                </label>
+                <label>
+                  <span class="label-title" data-i18n="ui.funding.expectedClose">Expected close</span>
+                  <input id="fundingRoundCloseInput" type="date">
+                </label>
+                <button class="primary-button" type="submit" data-i18n="ui.funding.addRound">Add round</button>
+              </form>
+              <div class="manager-list funding-round-list" id="fundingRoundList"></div>
+            </div>
+          </section>
+        </section>
+
+
+        <section class="app-view" id="extraView" data-app-view="extra" aria-label="Extra views" hidden data-i18n-aria-label="ui.extra.extraViews">
+          <header class="shell-heading"><h2 data-i18n="ui.common.extra">Extra</h2><p data-i18n="ui.extra.yourToolsContentAndResearch">Your tools, content, and research in one place.</p></header>
+
+          <!-- Extra Sub-navigation Bar -->
+          <div class="extra-subnav" role="tablist" aria-label="Extra pages" data-i18n-aria-label="ui.extra.extraPages">
+            <div class="extra-subnav-links">
+              <button class="extra-subnav-btn active" data-extra-tab="ai" data-shortname="AI" type="button" role="tab" aria-selected="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4"></path><path d="M12 17v4"></path><path d="m4.93 4.93 2.83 2.83"></path><path d="m16.24 16.24 2.83 2.83"></path><path d="M3 12h4"></path><path d="M17 12h4"></path><path d="m4.93 19.07 2.83-2.83"></path><path d="m16.24 7.76 2.83-2.83"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span data-i18n="ui.extra.ai">AI</span>
+              </button>
+              <button class="extra-subnav-btn" data-extra-tab="prompts" data-shortname="PR" type="button" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span data-i18n="ui.extra.prompts">Prompts</span>
+              </button>
+              <button class="extra-subnav-btn" data-extra-tab="media" data-shortname="ME" type="button" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <span data-i18n="ui.extra.media">Media</span>
+              </button>
+              <button class="extra-subnav-btn" data-extra-tab="feedback" data-shortname="FB" type="button" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span data-i18n="ui.extra.feedback">Feedback</span>
+              </button>
+              <button class="extra-subnav-btn" data-extra-tab="research" data-shortname="RE" type="button" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span data-i18n="ui.extra.researchLinks">Research links</span>
+              </button>
+              <span class="extra-subnav-group" role="presentation" data-i18n="extra.customize">Customize</span>
+              <button class="extra-subnav-btn" data-extra-tab="campaigns" data-shortname="CP" type="button" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <span data-i18n="ui.common.campaigns">Campaigns</span>
+              </button>
+              <button class="extra-subnav-btn" data-extra-tab="tags" data-shortname="TG" type="button" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                <span data-i18n="ui.common.tags">Tags</span>
+              </button>
+              <button class="extra-subnav-btn" data-extra-tab="categories" data-shortname="CA" type="button" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span data-i18n="ui.common.categories">Categories</span>
+              </button>
+              <button class="extra-subnav-btn" data-extra-tab="fields" data-shortname="FI" type="button" role="tab" aria-selected="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="14" y2="12"></line><line x1="4" y1="18" x2="17" y2="18"></line></svg>
+                <span data-i18n="ui.extra.fields">Fields</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sub-page 1: AI accounts -->
+          <div class="extra-subpage" id="extraSubpageAi">
+            <header class="extra-page-header" data-extra-header="ai">
+              <div class="extra-page-title">
+                <h3 data-i18n="ui.extra.ai">AI</h3>
+                <span class="extra-page-count" data-extra-count="ai" id="aiAccountCount"></span>
+              </div>
+              <label class="search-field extra-page-filter">
+                <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                <input id="aiSearchInput" type="search" placeholder="Filter subscriptions and APIs" aria-label="Filter subscriptions and APIs" data-i18n-aria-label="ui.extra.filterSubscriptionsAndApis" data-i18n-placeholder="ui.extra.filterSubscriptionsAndApis">
+              </label>
+              <button class="primary-button compact" type="button" data-extra-add="ai">
+                <svg aria-hidden="true"><use href="#icon-plus"></use></svg>
+                <span data-i18n="ui.extra.addSubscriptionOrApi">Add subscription or API</span>
+              </button>
+            </header>
+            <div class="ai-page">
+              <div class="ai-rate" id="aiRate"></div>
+              <div class="ai-groups" id="aiGroups"></div>
+              <div class="ai-flow-wrap" id="aiFlowWrap"></div>
+            </div>
+          </div>
+
+          <!-- Sub-page 2: Research Links -->
+          <div class="extra-subpage" id="extraSubpageResearch" style="display: none;">
+            <header class="extra-page-header" data-extra-header="research">
+              <div class="extra-page-title">
+                <h3 data-i18n="ui.extra.researchLinks">Research links</h3>
+                <span class="extra-page-count" data-extra-count="research"></span>
+              </div>
+              <label class="search-field extra-page-filter">
+                <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                <input id="dailySearchInput" type="search" placeholder="Filter research links" aria-label="Filter research links" data-i18n-aria-label="ui.extra.filterResearchLinks" data-i18n-placeholder="ui.extra.filterResearchLinks">
+              </label>
+              <button class="primary-button compact" type="button" data-extra-add="research">
+                <svg aria-hidden="true"><use href="#icon-plus"></use></svg>
+                <span data-i18n="ui.extra.addLink">Add link</span>
+              </button>
+            </header>
+            <details class="extra-options">
+              <summary data-i18n="ui.extra.groups">Groups</summary>
+              <div data-options-editor="research"></div>
+            </details>
+            <div class="manager-layout">
+              <aside class="manager-sidebar">
+                <article class="panel form-panel">
+                  <div class="panel-heading">
+                    <h3 data-i18n="ui.extra.addLink2">Add link</h3>
+                  </div>
+                  <form class="manager-form-v2" id="dailyForm" novalidate>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.group">Group</span>
+                      <select id="dailySubcategoryInput"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.title">Title</span>
+                      <input id="dailyTitleInput" type="text" placeholder="e.g. Founders group, industry newsletter" required data-i18n-placeholder="ui.extra.eGFoundersGroupIndustry">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.links">Links</span>
+                      <input id="dailyUrlInput" type="text" placeholder="https://first.example; https://second.example" required data-i18n-placeholder="ui.extra.httpsFirstExampleHttpsSecond">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.priority">Priority</span>
+                      <select id="dailyPriorityInput"></select>
+                    </label>
+                    <label class="checkbox-field">
+                      <input id="dailyActiveInput" type="checkbox" checked>
+                      <span data-i18n="ui.extra.active">Active</span>
+                    </label>
+                    <label class="checkbox-field">
+                      <input id="dailySharedInput" type="checkbox">
+                      <span data-i18n="ui.extra.sharedWithAllStartups">Shared with all startups</span>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.description">Description</span>
+                      <textarea id="dailyDescriptionInput" rows="2" class="auto-expand-field" placeholder="What to look for, rules, angle..." data-i18n-placeholder="ui.extra.whatToLookForRules"></textarea>
+                    </label>
+                    <div class="form-actions">
+                      <button class="primary-button" type="submit">
+                        <svg><use href="#icon-plus"></use></svg>
+                        <span data-i18n="ui.extra.addLink">Add link</span>
+                      </button>
+                      <button class="secondary-button" id="resetDailyFormButton" type="button" data-i18n="ui.common.clearForm">Clear form</button>
+                    </div>
+                  </form>
+                </article>
+              </aside>
+              <div class="manager-content">
+                <div class="manager-list grouped-list" id="dailyGroups"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-page 3: Prompts -->
+          <div class="extra-subpage" id="extraSubpageCategories" style="display: none;">
+            <div class="categories-page">
+            <header class="extra-page-header" data-extra-header="categories">
+              <div class="extra-page-title">
+                <h3 data-i18n="categories.title">Categories</h3>
+                <span class="extra-page-count" data-extra-count="categories"></span>
+              </div>
+            </header>
+
+              <div id="categoriesEditor"></div>
+            </div>
+          </div>
+
+          <div class="extra-subpage" id="extraSubpageFields" style="display: none;">
+            <div class="fields-page">
+            <header class="extra-page-header" data-extra-header="fields">
+              <div class="extra-page-title">
+                <h3 data-i18n="ui.extra.fields">Fields</h3>
+                <span class="extra-page-count" data-extra-count="fields"></span>
+              </div>
+            </header>
+              <div id="fieldsEditor"></div>
+              <section class="fields-documents" aria-labelledby="documentChecklistTitle">
+                <h3 id="documentChecklistTitle" data-i18n="ui.extra.programsDocumentsChecklist">Programs documents checklist</h3>
+                <div data-options-editor="fields"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="extra-subpage" id="extraSubpagePrompts" style="display: none;">
+            <header class="extra-page-header" data-extra-header="prompts">
+              <div class="extra-page-title">
+                <h3 data-i18n="ui.extra.prompts">Prompts</h3>
+                <span class="extra-page-count" data-extra-count="prompts"></span>
+              </div>
+            </header>
+            <div id="promptsPage" class="prompts-page"></div>
+          </div>
+
+          <!-- Sub-page 4: Media -->
+          <div class="extra-subpage" id="extraSubpageMedia" style="display: none;">
+            <header class="extra-page-header" data-extra-header="media">
+              <div class="extra-page-title">
+                <h3 data-i18n="ui.extra.media">Media</h3>
+                <span class="extra-page-count" data-extra-count="media"></span>
+              </div>
+              <label class="search-field extra-page-filter">
+                <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                <input id="mediaSearchInput" type="search" placeholder="Filter media" aria-label="Filter media" data-i18n-aria-label="ui.extra.filterMedia" data-i18n-placeholder="ui.extra.filterMedia">
+              </label>
+              <button class="primary-button compact" type="button" data-extra-add="media">
+                <svg aria-hidden="true"><use href="#icon-plus"></use></svg>
+                <span data-i18n="ui.extra.addMedia">Add media</span>
+              </button>
+            </header>
+            <details class="extra-options">
+              <summary data-i18n="ui.extra.options">Options</summary>
+              <div data-options-editor="media"></div>
+            </details>
+            <div class="manager-layout">
+              <aside class="manager-sidebar">
+                <article class="panel form-panel">
+                  <div class="panel-heading">
+                    <h3 data-i18n="ui.extra.addMedia2">Add media</h3>
+                  </div>
+                  <form class="manager-form-v2" id="mediaForm" novalidate>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.source">Source</span>
+                      <select id="mediaSourceInput">
+                        <option value="upload" data-i18n="ui.extra.uploadFile">Upload file</option>
+                        <option value="url" data-i18n="ui.extra.url">URL</option>
+                        <option value="local-path" data-i18n="ui.extra.pcPath">PC path</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.type">Type</span>
+                      <select id="mediaTypeInput"></select>
+                    </label>
+                    <label id="mediaFileLabel">
+                      <span class="label-title" data-i18n="ui.extra.file">File</span>
+                      <input id="mediaFileInput" type="file" accept="image/*,.pdf,.txt,.md,.markdown,.doc,.docx,.ppt,.pptx,.xls,.xlsx">
+                    </label>
+                    <label id="mediaPathLabel" hidden>
+                      <span class="label-title" data-i18n="ui.extra.urlOrPath">URL or path</span>
+                      <input id="mediaPathInput" type="text" placeholder="https://example.com/video.mp4 or a file path" data-i18n-placeholder="ui.extra.httpsExampleComVideoMp4">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.title">Title</span>
+                      <input id="mediaTitleInput" type="text" placeholder="e.g. Landing page mockup" required data-i18n-placeholder="ui.extra.eGLandingPageMockup">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.tags">Tags</span>
+                      <input id="mediaTagsInput" type="text" placeholder="e.g. launch, homepage" list="mediaTagList" data-i18n-placeholder="ui.extra.eGLaunchHomepage">
+                      <datalist id="mediaTagList"></datalist>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.notes">Notes</span>
+                      <textarea id="mediaNotesInput" rows="2" class="auto-expand-field" placeholder="e.g. Size, where it fits, what to crop" data-i18n-placeholder="ui.extra.eGSizeWhereIt"></textarea>
+                    </label>
+                    <div class="picker-field">
+                      <span class="label-title" id="mediaTargetsInputLabel" data-i18n="ui.extra.usedIn">Used in</span>
+                      <div id="mediaTargetsInput" aria-labelledby="mediaTargetsInputLabel"></div>
+                    </div>
+                    <div id="mediaUploadProgressWrap" class="upload-progress-container" hidden>
+                      <div class="upload-progress-header">
+                        <span id="mediaUploadProgressText" class="upload-progress-label" data-i18n="ui.extra.uploadingMediaFile">Uploading media file...</span>
+                        <span id="mediaUploadProgressPercent" class="upload-progress-percentage">0%</span>
+                      </div>
+                      <div class="upload-progress-track">
+                        <div id="mediaUploadProgressFill" class="upload-progress-fill" style="width: 0%;"></div>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button class="primary-button" type="submit">
+                        <svg><use href="#icon-plus"></use></svg>
+                        <span data-i18n="ui.extra.addMedia">Add media</span>
+                      </button>
+                      <button class="secondary-button" id="resetMediaFormButton" type="button" data-i18n="ui.extra.clear">
+                        Clear
+                      </button>
+                    </div>
+                  </form>
+                </article>
+              </aside>
+              <div class="manager-content">
+                <div class="panel list-panel">
+                  <div class="media-toolbar filters">
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.type">Type</span>
+                      <select id="mediaTypeFilter"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.source">Source</span>
+                      <select id="mediaSourceFilter">
+                        <option value="all" data-i18n="ui.extra.allSources">All sources</option>
+                        <option value="upload" data-i18n="ui.extra.uploads">Uploads</option>
+                        <option value="url" data-i18n="ui.extra.urls">URLs</option>
+                        <option value="local-path" data-i18n="ui.extra.pcPaths">PC paths</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.linkedTo">Linked to</span>
+                      <select id="mediaKindFilter"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.tag">Tag</span>
+                      <select id="mediaTagFilter"></select>
+                    </label>
+                    <div class="picker-field">
+                      <span class="label-title" id="mediaTargetFilterLabel" data-i18n="ui.extra.usedIn">Used in</span>
+                      <div class="media-target-filter-row">
+                        <select id="mediaTargetFilterMode" aria-label="Which media" data-i18n-aria-label="ui.extra.whichMedia">
+                          <option value="all" data-i18n="ui.extra.allMedia">All media</option>
+                          <option value="unused" data-i18n="ui.extra.notUsedAnywhere">Not used anywhere</option>
+                          <option value="record" data-i18n="ui.extra.usedIn2">Used in…</option>
+                        </select>
+                        <div id="mediaTargetFilter" aria-labelledby="mediaTargetFilterLabel" hidden></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="media-list" id="mediaList"></div>
+                  <nav class="pagination manager-pagination" id="mediaPagination" aria-label="Media pages" data-i18n-aria-label="ui.extra.mediaPages"></nav>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-page 2: Feedback -->
+          <div class="extra-subpage" id="extraSubpageFeedback" style="display: none;">
+            <header class="extra-page-header" data-extra-header="feedback">
+              <div class="extra-page-title">
+                <h3 data-i18n="ui.extra.feedback">Feedback</h3>
+                <span class="extra-page-count" data-extra-count="feedback"></span>
+              </div>
+              <label class="search-field extra-page-filter">
+                <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                <input id="feedbackSearchInput" type="search" placeholder="Filter feedback" aria-label="Filter feedback" data-i18n-aria-label="ui.extra.filterFeedback" data-i18n-placeholder="ui.extra.filterFeedback">
+              </label>
+              <button class="primary-button compact" type="button" data-extra-add="feedback">
+                <svg aria-hidden="true"><use href="#icon-plus"></use></svg>
+                <span data-i18n="ui.extra.addFeedback">Add feedback</span>
+              </button>
+            </header>
+            <details class="extra-options">
+              <summary data-i18n="ui.extra.options">Options</summary>
+              <div data-options-editor="feedback"></div>
+            </details>
+            <section class="summary-grid manager-summary-grid feedback-summary-grid" aria-label="Feedback summary" data-i18n-aria-label="ui.extra.feedbackSummary">
+              <article class="metric-card" data-metric="total">
+                <span class="metric-value" id="feedbackTotalCount">0</span>
+                <span class="metric-label" data-i18n="ui.extra.signals">Signals</span>
+              </article>
+              <article class="metric-card" data-metric="todo">
+                <span class="metric-value" id="feedbackNeedsReviewCount">0</span>
+                <span class="metric-label" data-i18n="ui.extra.needsReview">Needs review</span>
+              </article>
+              <article class="metric-card" data-metric="done">
+                <span class="metric-value" id="feedbackWorkflowCount">0</span>
+                <span class="metric-label" data-i18n="ui.extra.strongEvidence">Strong evidence</span>
+              </article>
+              <article class="metric-card" data-metric="rejected">
+                <span class="metric-value" id="feedbackBlockerCount">0</span>
+                <span class="metric-label" data-i18n="ui.extra.blockers">Blockers</span>
+              </article>
+            </section>
+
+            <div class="manager-layout">
+              <aside class="manager-sidebar">
+                <article class="panel form-panel">
+                  <div class="panel-heading">
+                    <h3 data-i18n="ui.extra.addFeedback">Add feedback</h3>
+                  </div>
+                  <p class="feedback-form-hint" data-i18n="ui.extra.whatHappenedWhoItCame">What happened, who it came from, and how strong the signal is.</p>
+                  <form class="manager-form-v2" id="feedbackForm" novalidate>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.type">Type</span>
+                      <select id="feedbackTypeInput"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.status">Status</span>
+                      <select id="feedbackStatusInput"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.source">Source</span>
+                      <select id="feedbackSourceInput"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.userOrGroup">User or group</span>
+                      <input id="feedbackAudienceInput" type="text" placeholder="e.g. Small agency owners" data-i18n-placeholder="ui.extra.eGSmallAgencyOwners">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.contactNameHandle">Contact name / handle</span>
+                      <input id="feedbackContactInput" type="text" placeholder="e.g. Name, email or handle" data-i18n-placeholder="ui.extra.eGNameEmailOr">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.relationshipDepth">Relationship depth</span>
+                      <select id="feedbackRelationshipInput"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.stage">Stage</span>
+                      <select id="feedbackStageInput"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.productArea">Product area</span>
+                      <select id="feedbackAreaInput"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.evidenceStrength">Evidence strength</span>
+                      <select id="feedbackEvidenceInput"></select>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.title">Title</span>
+                      <input id="feedbackTitleInput" type="text" placeholder="e.g. Could not finish sign-up" required data-i18n-placeholder="ui.extra.eGCouldNotFinish">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.sourceLink">Source link</span>
+                      <div class="input-with-button-row">
+                        <input id="feedbackLinkInput" type="url" placeholder="https://..." data-i18n-placeholder="ui.extra.https">
+                        <button class="icon-button" id="feedbackOpenLinkBtn" type="button" title="Open link in a new window" aria-label="Open link" data-i18n-aria-label="ui.extra.openLink" data-i18n-title="ui.extra.openLinkInANew">
+                          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </button>
+                      </div>
+                    </label>
+                    <div class="picker-field">
+                      <span class="label-title" id="feedbackAboutInputLabel" data-i18n="ui.extra.about">About</span>
+                      <div id="feedbackAboutInput" aria-labelledby="feedbackAboutInputLabel"></div>
+                    </div>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.whatHappened">What happened</span>
+                      <textarea id="feedbackDescriptionInput" rows="3" class="auto-expand-field" placeholder="e.g. The exact words, the context and what they tried" data-i18n-placeholder="ui.extra.eGTheExactWords"></textarea>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.outcomeOrMetric">Outcome or metric</span>
+                      <textarea id="feedbackOutcomeInput" rows="2" class="auto-expand-field" placeholder="e.g. Signed up, came back a week later, asked for a quote" data-i18n-placeholder="ui.extra.eGSignedUpCame"></textarea>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.nextAction">Next action</span>
+                      <textarea id="feedbackActionInput" rows="2" class="auto-expand-field" placeholder="e.g. Reply, fix the sign-up form, or keep watching" data-i18n-placeholder="ui.extra.eGReplyFixThe"></textarea>
+                    </label>
+                    <div id="feedbackBlockFields"></div>
+                    <div class="form-actions">
+                      <button class="primary-button" type="submit">
+                        <svg><use href="#icon-plus"></use></svg>
+                        <span data-i18n="ui.extra.addFeedback">Add feedback</span>
+                      </button>
+                      <button class="secondary-button" id="resetFeedbackFormButton" type="button" data-i18n="ui.common.clearForm">Clear form</button>
+                    </div>
+                  </form>
+                </article>
+              </aside>
+              <div class="manager-content">
+                <div class="facet-filters">
+                  <label class="feedback-filter-field">
+                    <span class="facet-label" data-i18n="ui.extra.type">Type</span>
+                    <select id="feedbackTypeFilter"></select>
+                  </label>
+                  <label class="feedback-filter-field">
+                    <span class="facet-label" data-i18n="ui.common.stage">Stage</span>
+                    <select id="feedbackStageFilter"></select>
+                  </label>
+                  <label class="feedback-filter-field">
+                    <span class="facet-label" data-i18n="ui.extra.evidence">Evidence</span>
+                    <select id="feedbackEvidenceFilter"></select>
+                  </label>
+                  <div class="facet-group">
+                    <span class="facet-label" data-i18n="ui.common.tags">Tags</span>
+                    <input id="feedbackFacetTagsInput" type="text" placeholder="Type a tag, press Enter (autocomplete, instant filter)..." data-i18n-placeholder="ui.extra.typeATagPressEnter" aria-label="Filter by tag" data-i18n-aria-label="ui.common.filterByTag">
+                    <div class="tag-pill-list" id="feedbackFacetTagsList"></div>
+                  </div>
+                </div>
+                <div class="manager-list" id="feedbackList"></div>
+                <nav class="pagination manager-pagination" id="feedbackPagination" aria-label="Feedback pages" data-i18n-aria-label="ui.extra.feedbackPages"></nav>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-page 3: Campaigns -->
+          <div class="extra-subpage" id="extraSubpageCampaigns" style="display: none;">
+            <header class="extra-page-header" data-extra-header="campaigns">
+              <div class="extra-page-title">
+                <h3 data-i18n="ui.common.campaigns">Campaigns</h3>
+                <span class="extra-page-count" data-extra-count="campaigns"></span>
+              </div>
+              <label class="search-field extra-page-filter">
+                <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                <input id="campaignSearchInput" type="search" placeholder="Filter campaigns" aria-label="Filter campaigns" data-i18n-aria-label="ui.extra.filterCampaigns" data-i18n-placeholder="ui.extra.filterCampaigns">
+              </label>
+              <button class="primary-button compact" type="button" data-extra-add="campaigns">
+                <svg aria-hidden="true"><use href="#icon-plus"></use></svg>
+                <span data-i18n="ui.extra.addCampaign">Add campaign</span>
+              </button>
+            </header>
+            <div class="manager-layout">
+              <aside class="manager-sidebar">
+                <article class="panel form-panel">
+                  <div class="panel-heading">
+                    <h3 data-i18n="ui.extra.addCampaign2">Add campaign</h3>
+                  </div>
+                  <form class="manager-form-v2" id="campaignForm" novalidate>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.name">Name</span>
+                      <input id="campaignNameInput" type="text" placeholder="e.g. Spring launch" required data-i18n-placeholder="ui.extra.eGSpringLaunch">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.common.status">Status</span>
+                      <select id="campaignStatusInput"></select>
+                    </label>
+                    <div class="form-row two-col">
+                      <label>
+                        <span class="label-title" data-i18n="ui.extra.start">Start</span>
+                        <input id="campaignStartInput" type="date">
+                      </label>
+                      <label>
+                        <span class="label-title" data-i18n="ui.extra.end">End</span>
+                        <input id="campaignEndInput" type="date">
+                      </label>
+                    </div>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.goal">Goal</span>
+                      <textarea id="campaignGoalInput" rows="1" class="auto-expand-field" placeholder="e.g. 50 qualified sign-ups" data-i18n-placeholder="ui.extra.eG50QualifiedSign"></textarea>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.hypothesis">Hypothesis</span>
+                      <textarea id="campaignHypothesisInput" rows="2" class="auto-expand-field" placeholder="e.g. Partner newsletters bring better sign-ups than ads" data-i18n-placeholder="ui.extra.eGPartnerNewslettersBring"></textarea>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.successMetric">Success metric</span>
+                      <textarea id="campaignSuccessMetricInput" rows="1" class="auto-expand-field" placeholder="e.g. 20 demo calls booked in 30 days" data-i18n-placeholder="ui.extra.eG20DemoCalls"></textarea>
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.description">Description</span>
+                      <textarea id="campaignDescriptionInput" rows="2" class="auto-expand-field" placeholder="e.g. Who it is for, the message, the channels" data-i18n-placeholder="ui.extra.eGWhoItIs"></textarea>
+                    </label>
+                    <div class="form-actions">
+                      <button class="primary-button" type="submit">
+                        <svg><use href="#icon-plus"></use></svg>
+                        <span data-i18n="ui.extra.addCampaign">Add campaign</span>
+                      </button>
+                      <button class="secondary-button" id="resetCampaignFormButton" type="button" data-i18n="ui.common.clearForm">Clear form</button>
+                    </div>
+                  </form>
+                </article>
+              </aside>
+              <div class="manager-content">
+                <div class="panel list-panel">
+                  <div class="campaign-toolbar filters">
+                    <div class="campaign-status-filters-wrapper">
+                      <span class="filter-label" data-i18n="ui.common.status">Status</span>
+                      <div class="campaign-status-filters" id="campaignStatusFilters" role="group" aria-label="Status filter" data-i18n-aria-label="ui.extra.statusFilter"></div>
+                    </div>
+                  </div>
+                  <div class="facet-filters">
+                    <div class="facet-group">
+                      <span class="facet-label" data-i18n="ui.common.tags">Tags</span>
+                      <input id="campaignFacetTagsInput" type="text" placeholder="Type a tag, press Enter (autocomplete, instant filter)..." data-i18n-placeholder="ui.extra.typeATagPressEnter" aria-label="Filter by tag" data-i18n-aria-label="ui.common.filterByTag">
+                      <div class="tag-pill-list" id="campaignFacetTagsList"></div>
+                    </div>
+                  </div>
+                  <div class="manager-list" id="campaignList"></div>
+                  <nav class="pagination manager-pagination" id="campaignPagination" aria-label="Campaign pages" data-i18n-aria-label="ui.extra.campaignPages"></nav>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-page 4: Tags -->
+          <div class="extra-subpage" id="extraSubpageTags" style="display: none;">
+            <header class="extra-page-header" data-extra-header="tags">
+              <div class="extra-page-title">
+                <h3 data-i18n="ui.common.tags">Tags</h3>
+                <span class="extra-page-count" data-extra-count="tags"></span>
+              </div>
+              <label class="search-field extra-page-filter">
+                <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+                <input id="tagSearchInput" type="search" placeholder="Filter tags" aria-label="Filter tags" data-i18n-aria-label="ui.extra.filterTags" data-i18n-placeholder="ui.extra.filterTags">
+              </label>
+              <button class="primary-button compact" type="button" data-extra-add="tags">
+                <svg aria-hidden="true"><use href="#icon-plus"></use></svg>
+                <span data-i18n="ui.extra.addTag">Add tag</span>
+              </button>
+            </header>
+            <div class="manager-layout">
+              <aside class="manager-sidebar">
+                <article class="panel form-panel">
+                  <div class="panel-heading">
+                    <h3 data-i18n="ui.extra.addTag2">Add tag</h3>
+                  </div>
+                  <form class="manager-form-v2" id="tagForm" novalidate>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.tag">Tag</span>
+                      <input id="tagLabelInput" type="text" placeholder="e.g. warm-contact" required data-i18n-placeholder="ui.extra.eGWarmContact">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.colour">Colour</span>
+                      <input id="tagColorInput" type="color" value="#6b7280">
+                    </label>
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.description">Description</span>
+                      <textarea id="tagDescriptionInput" rows="2" class="auto-expand-field" placeholder="e.g. When to use it and what it means" data-i18n-placeholder="ui.extra.eGWhenToUse"></textarea>
+                    </label>
+                    <div class="form-actions">
+                      <button class="primary-button" type="submit">
+                        <svg><use href="#icon-plus"></use></svg>
+                        <span data-i18n="ui.extra.addTag">Add tag</span>
+                      </button>
+                      <button class="secondary-button" id="resetTagFormButton" type="button" data-i18n="ui.common.clearForm">Clear form</button>
+                    </div>
+                  </form>
+                </article>
+              </aside>
+              <div class="manager-content">
+                <div class="panel list-panel">
+                  <div class="tag-toolbar filters">
+                    <label>
+                      <span class="label-title" data-i18n="ui.extra.usage">Usage</span>
+                      <select id="tagUsageFilter">
+                        <option value="all" data-i18n="ui.extra.allTags">All tags</option>
+                        <option value="targets" data-i18n="ui.extra.usedByTargets">Used by targets</option>
+                        <option value="programs" data-i18n="ui.extra.usedByPrograms">Used by programs</option>
+                        <option value="funding" data-i18n="ui.extra.usedByFunding">Used by funding</option>
+                        <option value="media" data-i18n="ui.extra.usedByMedia">Used by media</option>
+                        <option value="campaigns" data-i18n="ui.extra.usedByCampaigns">Used by campaigns</option>
+                        <option value="feedback" data-i18n="ui.extra.usedByFeedback">Used by feedback</option>
+                        <option value="unused" data-i18n="ui.extra.unusedDefinitions">Unused definitions</option>
+                        <option value="described" data-i18n="ui.extra.withDescription">With description</option>
+                        <option value="empty-description" data-i18n="ui.extra.noDescription">No description</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div class="manager-list tag-list" id="tagList"></div>
+                  <nav class="pagination manager-pagination" id="tagPagination" aria-label="Tag pages" data-i18n-aria-label="ui.extra.tagPages"></nav>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="app-view" id="companyView" data-app-view="company" data-section="comp" aria-label="Company" data-i18n-aria-label="company.title" hidden>
+          <header class="shell-heading"><h2 data-i18n="company.title">Company</h2><p data-i18n="company.intro">The legal entity behind the startup: setup, obligations and expenses.</p></header>
+          <div class="company-view-container" id="companyPage"></div>
+        </section>
+
+        <section class="app-view" id="agentsView" data-app-view="agents" aria-label="Agents" data-i18n-aria-label="agents.title" hidden>
+          <header class="shell-heading"><h2 data-i18n="agents.title">Agents</h2><p data-i18n="agents.intro">Prompts run by your AI agents, live and finished. Their changes are saved as they happen and can be undone per run.</p></header>
+          <div class="agents-view-container" id="agentsPage"></div>
+        </section>
+      </main>
+
+    </div>
+
+    <div class="modal-overlay" id="recordConflictModal" hidden>
+      <div class="modal-card record-conflict-modal-card" role="dialog" aria-modal="true" aria-labelledby="recordConflictModalTitle">
+        <div class="modal-header">
+          <div>
+            <h2 id="recordConflictModalTitle" data-i18n="ui.recordConflictModal.reviewConflictingChanges">Review conflicting changes</h2>
+            <p class="modal-subtitle" data-i18n="ui.recordConflictModal.theseFieldsChangedDifferentlyChoose">These fields changed differently. Choose which record version to keep.</p>
+          </div>
+          <button class="close-modal-btn" id="closeRecordConflictModal" type="button" aria-label="Close conflict review" data-i18n-aria-label="ui.recordConflictModal.closeConflictReview">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body record-conflict-modal-body" id="recordConflictReview"></div>
+        <div class="modal-footer">
+          <button class="secondary-button" type="button" id="cancelRecordConflictModal" data-i18n="ui.recordConflictModal.decideLater">Decide later</button>
+          <button class="danger-button" type="button" id="useTheirsConflictButton" data-i18n="ui.recordConflictModal.useTheirs">Use theirs</button>
+          <button class="primary-button" type="button" id="keepMineConflictButton" data-i18n="ui.recordConflictModal.keepMine">Keep mine</button>
+        </div>
+      </div>
+    </div>
+    <!-- Record history: markdown preview window. Kept out of the timeline so a
+         rendered note can be read at a comfortable width without pushing every
+         entry below it off the screen. -->
+    <div class="modal-overlay" id="historyPreviewModal" hidden>
+      <div class="modal-card history-dialog-card" role="dialog" aria-modal="true" aria-labelledby="historyPreviewModalTitle">
+        <div class="modal-header">
+          <div>
+            <h2 id="historyPreviewModalTitle" data-i18n="ui.historyPreviewModal.markdownPreview">Markdown preview</h2>
+            <p class="modal-subtitle" id="historyPreviewModalField"></p>
+          </div>
+          <button class="close-modal-btn" id="closeHistoryPreviewModal" type="button" aria-label="Close preview" data-i18n-aria-label="ui.historyPreviewModal.closePreview">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body history-dialog-body" id="historyPreviewModalBody"></div>
+      </div>
+    </div>
+    <!-- Record history: restore confirmation. Restoring writes straight to the
+         record and saves, so the value going in is shown next to the one it
+         replaces before anything happens. -->
+    <div class="modal-overlay" id="historyRestoreModal" hidden>
+      <div class="modal-card history-dialog-card" role="dialog" aria-modal="true" aria-labelledby="historyRestoreModalTitle">
+        <div class="modal-header">
+          <div>
+            <h2 id="historyRestoreModalTitle" data-i18n="ui.historyRestoreModal.restoreThisValue">Restore this value?</h2>
+            <p class="modal-subtitle" id="historyRestoreModalField"></p>
+          </div>
+          <button class="close-modal-btn" id="closeHistoryRestoreModal" type="button" aria-label="Cancel restore" data-i18n-aria-label="ui.historyRestoreModal.cancelRestore">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body history-dialog-body" id="historyRestoreModalBody"></div>
+        <div class="modal-footer">
+          <button class="secondary-button" type="button" id="cancelHistoryRestoreModal" data-i18n="ui.historyRestoreModal.cancel">Cancel</button>
+          <button class="primary-button" type="button" id="confirmHistoryRestoreModal" data-i18n="ui.historyRestoreModal.restoreThisValue2">Restore this value</button>
+        </div>
+      </div>
+    </div>
+    <!-- Prompt Variable Example Modal -->
+    <!-- The target window for MK, PO and FU (js/record-window.js draws it). -->
+    <div class="modal-overlay record-window" id="recordWindow" hidden></div>
+
+    <div class="modal-overlay" id="mediaDocumentModal" hidden>
+      <div class="modal-card modal-card-notes modal-card-document">
+        <div class="modal-header">
+          <h2 id="mediaDocumentModalTitle" data-i18n="ui.mediaDocumentModal.document">Document</h2>
+          <button class="close-modal-btn" id="closeMediaDocumentModal" aria-label="Close document" data-i18n-aria-label="ui.mediaDocumentModal.closeDocument">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-subtitle" id="mediaDocumentPath" data-i18n="ui.mediaDocumentModal.noDocumentLoaded">No document loaded.</p>
+          <div class="notes-editor-tabs" id="mediaDocumentTabs" role="tablist">
+            <button class="notes-editor-tab" role="tab" aria-selected="false" data-media-document-tab="edit" data-i18n="ui.mediaDocumentModal.edit">Edit</button>
+            <button class="notes-editor-tab active" role="tab" aria-selected="true" data-media-document-tab="preview" data-i18n="ui.mediaDocumentModal.preview">Preview</button>
+          </div>
+          <div class="notes-editor-panes">
+            <div class="notes-editor-pane" id="mediaDocumentPaneEdit">
+              <textarea id="mediaDocumentInput" spellcheck="false"></textarea>
+            </div>
+            <div class="notes-editor-pane active" id="mediaDocumentPanePreview">
+              <div class="markdown-rendered" id="mediaDocumentPreview"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="secondary-button" id="cancelMediaDocumentModal" type="button" data-i18n="ui.mediaDocumentModal.close">Close</button>
+          <button class="primary-button" id="saveMediaDocumentModal" type="button" data-i18n="ui.mediaDocumentModal.saveFile">Save file</button>
+        </div>
+      </div>
+    </div>
+
+
+    <dialog class="settings-panel" id="settingsPanel" aria-labelledby="settingsTitle">
+      <div class="settings-shell">
+        <header class="settings-header">
+          <h2 id="settingsTitle" data-i18n="settings.title">Settings</h2>
+          <button class="settings-close" id="settingsClose" type="button" aria-label="Close settings" data-i18n-aria-label="settings.close">
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </header>
+        <div class="settings-layout">
+          <nav class="settings-nav" aria-label="Settings sections" data-i18n-aria-label="settings.sectionsLabel"><ul id="settingsNav"></ul></nav>
+          <div class="settings-content" id="settingsContent"></div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="startup-dialog" id="newStartupDialog" aria-labelledby="newStartupTitle">
+      <form class="startup-form" id="newStartupForm" novalidate>
+        <h2 id="newStartupTitle" data-i18n="startups.newTitle">New startup</h2>
+        <label class="startup-field" for="newStartupName">
+          <span data-i18n="startups.nameLabel">Name</span>
+          <input id="newStartupName" name="name" type="text" maxlength="120" autocomplete="off" required>
+        </label>
+        <label class="startup-field" for="newStartupCopyFrom">
+          <span data-i18n="startups.copyFromLabel">Copy settings from</span>
+          <select id="newStartupCopyFrom" name="copySettingsFrom" aria-describedby="newStartupCopyHint"></select>
+        </label>
+        <p class="startup-hint" id="newStartupCopyHint" data-i18n="startups.copyHint">Copies settings only. Records stay with the startup they belong to.</p>
+        <p class="startup-error" id="newStartupError" role="alert" hidden></p>
+        <div class="startup-form-actions">
+          <button class="secondary-button" id="newStartupCancel" type="button" data-i18n="startups.cancel">Cancel</button>
+          <button class="primary-button" id="newStartupSubmit" type="submit" data-i18n="startups.create">Create startup</button>
+        </div>
+      </form>
+    </dialog>
+
+    <main class="first-startup" id="firstStartupScreen" aria-labelledby="firstStartupTitle" hidden>
+      <form class="startup-form first-startup-card" id="firstStartupForm" novalidate>
+        <img src="/assets/logo.svg" class="first-startup-logo" alt="" width="40" height="40">
+        <h1 id="firstStartupTitle" data-i18n="startups.firstTitle">Create your first startup</h1>
+        <p class="startup-hint" data-i18n="startups.firstIntro">Each startup keeps its own marketing, programs, funding and company records. You can add more later.</p>
+        <label class="startup-field" for="firstStartupName">
+          <span data-i18n="startups.nameLabel">Name</span>
+          <input id="firstStartupName" name="name" type="text" maxlength="120" autocomplete="organization" required>
+        </label>
+        <p class="startup-error" id="firstStartupError" role="alert" hidden></p>
+        <div class="startup-form-actions">
+          <button class="secondary-button" id="firstStartupSetup" type="button" data-i18n="setup.startSetup">Start the setup</button>
+          <button class="primary-button" id="firstStartupSubmit" type="submit" data-i18n="startups.create">Create startup</button>
+        </div>
+      </form>
+    </main>
+
+    <button id="backToTopBtn" class="back-to-top" aria-label="Back to top" title="Back to top" data-i18n-aria-label="ui.shell.backToTop" data-i18n-title="ui.shell.backToTop">
+      <svg><use href="#icon-chevron-up"></use></svg>
+    </button>
+
+    <script src="/js/dates.js"></script>
+    <script src="/js/calendar-model.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/status-model.js"></script>
+    <script src="/js/status-filter.js"></script>
+    <script src="/js/taxonomy-model.js"></script>
+    <script src="/js/taxonomy-picker.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/settings-store.js"></script>
+    <script src="/js/sections.js"></script>
+    <script src="/js/links-model.js"></script>
+    <script src="/js/components/item-picker.js"></script>
+    <script src="/js/fields.js"></script>
+    <script src="/js/record-window.js"></script>
+    <script src="/js/section-page.js"></script>
+    <script src="/scripts/taste-switcher.js"></script>
+    <script src="/js/startup-icon.js"></script>
+    <script src="/js/link-types.js"></script>
+    <script src="/js/recycle.js"></script>
+    <script src="/js/prompt-render.js"></script>
+    <script src="/js/ai-import.js"></script>
+    <script src="/js/prompts-page.js"></script>
+    <script src="/js/company-recurrence.js"></script>
+    <script src="/js/company-model.js"></script>
+    <script src="/js/company-page.js"></script>
+    <script src="/js/agents-page.js"></script>
+    <script src="/js/options.js"></script>
+    <script src="/js/global-data.js"></script>
+    <script src="/js/setup-wizard.js"></script>
+    <script src="/js/startups.js"></script>
+    <script src="/scripts/defaults.js"></script>
+    <script src="/scripts/record-conflict-merge.js"></script>
+    <script src="/scripts/record-history-diff.js"></script>
+    <script src="/scripts/record-history-timeline.js"></script>
+    <script src="/app.js"></script>
+    <script src="/js/categories-editor.js"></script>
+    <script src="/js/fields-editor.js"></script>
+    <script src="/js/options-editor.js"></script>
+    <script src="/js/agents-settings.js"></script>
+    <script src="/js/settings.js"></script>
+  </body>
+</html>

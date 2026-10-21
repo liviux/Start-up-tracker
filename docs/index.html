@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Startup Tracker documentation</title>
+    <meta name="description" content="Documentation for Startup Tracker, a local tracker for a startup's marketing, programs, funding and company tasks.">
+    <meta name="referrer" content="no-referrer">
+    <!-- Everything below is served from docs/vendor/. Nothing loads from another host. -->
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="vendor/core.min.css">
+    <link rel="stylesheet" href="vendor/core-dark.min.css" media="(prefers-color-scheme: dark)">
+  </head>
+  <body>
+    <div id="app">Loading the documentation...</div>
+    <script>
+      window.$docsify = {
+        name: "Startup Tracker",
+        loadSidebar: true,
+        subMaxLevel: 2,
+        auto2top: true,
+        relativePath: false,
+        search: {
+          placeholder: "Search",
+          noData: "No results",
+          depth: 3,
+        },
+      };
+    </script>
+    <script src="vendor/docsify.min.js"></script>
+    <script src="vendor/search.min.js"></script>
+  </body>
+</html>

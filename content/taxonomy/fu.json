@@ -1,0 +1,1193 @@
+{
+  "section": "fu",
+  "libraryVersion": 1,
+  "nodes": [
+    {
+      "id": "fu.founders",
+      "level": "category",
+      "parentId": null,
+      "name": "Founders and close network",
+      "shortName": "Founders",
+      "description": "Money from the founders themselves and from family and friends, such as savings, founder loans and family investments. Pick it for money that comes through personal ties rather than from professional funders.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.founders.founder-capital",
+      "level": "subcategory",
+      "parentId": "fu.founders",
+      "name": "Founder capital",
+      "description": "Money and unpaid work the founders put into the company themselves. Pick it to record what each founder has contributed and on what terms.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.founders.founder-capital.personal-savings",
+      "level": "type",
+      "parentId": "fu.founders.founder-capital",
+      "name": "Personal savings",
+      "description": "A founder's own cash paid into the company, as share capital or as a later contribution. Pick it for money the founder does not expect to get back as a loan.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.founders.founder-capital.founder-loan",
+      "level": "type",
+      "parentId": "fu.founders.founder-capital",
+      "name": "Founder loan",
+      "description": "Money a founder or shareholder lends to the company and expects to get back. Pick it so the amount, interest and repayment terms are on record next to the other funding.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.founders.founder-capital.personal-credit",
+      "level": "type",
+      "parentId": "fu.founders.founder-capital",
+      "name": "Personal credit",
+      "description": "Money a founder borrows personally, for example on a credit card, a personal loan or a loan against a home, and uses for the company. Pick it to keep that personal debt visible next to the company's funding.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.founders.founder-capital.deferred-salary",
+      "level": "type",
+      "parentId": "fu.founders.founder-capital",
+      "name": "Deferred salary",
+      "description": "Pay a founder agrees to take later, or works without, so the company spends less now. Pick it to record postponed or unpaid founder pay and any terms for paying it later.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.founders.friends-family",
+      "level": "subcategory",
+      "parentId": "fu.founders",
+      "name": "Friends and family",
+      "description": "Money from relatives, friends and close contacts who invest, lend or give because they know a founder. Pick it for personal-network money, whatever form it takes.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.founders.friends-family.equity",
+      "level": "type",
+      "parentId": "fu.founders.friends-family",
+      "name": "Equity",
+      "description": "Shares that friends or family buy in the company at an agreed price. Pick it when they become shareholders now rather than at a later round.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.founders.friends-family.loan",
+      "level": "type",
+      "parentId": "fu.founders.friends-family",
+      "name": "Loan",
+      "description": "Money friends or family lend to the company or a founder, to be paid back with or without interest. Pick it so the terms are written down, even when the arrangement is informal.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.founders.friends-family.convertible",
+      "level": "type",
+      "parentId": "fu.founders.friends-family",
+      "name": "Convertible",
+      "description": "A SAFE-type agreement or convertible note with friends or family that turns into shares at a later round. Pick it when they invest now and the price is set later.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.founders.friends-family.gift",
+      "level": "type",
+      "parentId": "fu.founders.friends-family",
+      "name": "Gift",
+      "description": "Money friends or family give with no repayment and no shares in return. Pick it so gifts are on record next to loans and investments.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.angels",
+      "level": "category",
+      "parentId": null,
+      "name": "Angel investment",
+      "shortName": "Angels",
+      "description": "People who invest their own money in early companies, alone or through groups and syndicates, usually for shares or a convertible. Pick it for private investors; use Venture capital for funds.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.angels.individual",
+      "level": "subcategory",
+      "parentId": "fu.angels",
+      "name": "Individual angels",
+      "description": "Single private investors who put in their own money, often with advice or contacts as well. Pick it for one person you pitch and negotiate with directly.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.angels.individual.lead-angel",
+      "level": "type",
+      "parentId": "fu.angels.individual",
+      "name": "Lead angel",
+      "description": "An angel who negotiates the terms of a round with you and commits early, so that others can follow. Pick it for investors who can anchor a round.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.angels.individual.follow-on-angel",
+      "level": "type",
+      "parentId": "fu.angels.individual",
+      "name": "Follow-on angel",
+      "description": "An angel who joins a round after the terms are set or a lead has committed, including existing investors who put in more. Pick it for checks that fill a round.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.angels.individual.operator-angel",
+      "level": "type",
+      "parentId": "fu.angels.individual",
+      "name": "Operator angel",
+      "description": "A current or former founder or executive who invests and also advises from hands-on experience. Pick it when the person's know-how or contacts matter as much as the money.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.angels.groups",
+      "level": "subcategory",
+      "parentId": "fu.angels",
+      "name": "Angel groups and syndicates",
+      "description": "Angels who review deals together and invest as a group or behind a lead investor. Pick it when you pitch to a network or a syndicate rather than to one person.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.angels.groups.angel-network",
+      "level": "type",
+      "parentId": "fu.angels.groups",
+      "name": "Angel network",
+      "description": "A club or association of angels that screens startups and holds pitch sessions for its members. Pick it for groups with an application or pitch process.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.angels.groups.online-syndicate",
+      "level": "type",
+      "parentId": "fu.angels.groups",
+      "name": "Online syndicate",
+      "description": "Backers who invest together behind a lead investor through an online platform, often in one legal vehicle. Pick it for platform-run syndicates and similar pooled deals.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.angels.groups.angel-fund",
+      "level": "type",
+      "parentId": "fu.angels.groups",
+      "name": "Angel fund",
+      "description": "A fund pooled from many angels and run by a manager, investing like a small venture fund. Pick it when the angels invest through the fund rather than one by one.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.angels.scouts-family-offices",
+      "level": "subcategory",
+      "parentId": "fu.angels",
+      "name": "Scouts and family offices",
+      "description": "Private investors that are neither single angels nor venture funds: scouts who invest for a venture firm, and family offices that invest a family's wealth. Pick it for either kind.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.angels.scouts-family-offices.venture-scout",
+      "level": "type",
+      "parentId": "fu.angels.scouts-family-offices",
+      "name": "Venture scout",
+      "description": "A person who invests small amounts of a venture fund's money in early companies and refers them to that fund. Pick it when the contact invests as a scout, not with their own money.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.angels.scouts-family-offices.family-office",
+      "level": "type",
+      "parentId": "fu.angels.scouts-family-offices",
+      "name": "Family office",
+      "description": "A firm that manages one wealthy family's money and sometimes invests directly in startups. Pick it for direct investment from a family office rather than through a fund.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc",
+      "level": "category",
+      "parentId": null,
+      "name": "Venture capital",
+      "shortName": "Venture",
+      "description": "Funds that invest in startups for shares, expecting fast growth and a later exit, whether venture firms, companies or public bodies run them. Pick it for professional equity investors rather than individuals.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "fu.vc.seed",
+      "level": "subcategory",
+      "parentId": "fu.vc",
+      "name": "Pre-seed and seed funds",
+      "description": "Venture funds that invest in a company's first rounds, often before much revenue. Pick it for funds that write the first institutional check, including accelerators that invest.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.vc.seed.pre-seed-fund",
+      "level": "type",
+      "parentId": "fu.vc.seed",
+      "name": "Pre-seed fund",
+      "description": "A fund that invests at the very start, often before a product or revenue exists. Pick it for funds that back a team with an idea or a prototype.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.vc.seed.seed-fund",
+      "level": "type",
+      "parentId": "fu.vc.seed",
+      "name": "Seed fund",
+      "description": "A fund that invests once there is a product and early signs of demand, often as the lead of the seed round. Pick it for funds that focus on seed rounds.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.vc.seed.micro-vc",
+      "level": "type",
+      "parentId": "fu.vc.seed",
+      "name": "Micro-VC",
+      "description": "A small venture fund, often run by one or two partners, that invests early. Pick it for small or solo-run funds, whatever stage label they use.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.seed.accelerator-investment",
+      "level": "type",
+      "parentId": "fu.vc.seed",
+      "name": "Accelerator or studio investment",
+      "description": "Cash an accelerator, incubator or venture studio invests for shares as part of its program. Pick it for the investment; track the program itself in PO and link the two.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "fu.vc.growth",
+      "level": "subcategory",
+      "parentId": "fu.vc",
+      "name": "Early and growth funds",
+      "description": "Funds that invest larger amounts once a company has clear traction and is scaling. Pick it for priced rounds after seed, from Series A onward.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.growth.series-a-fund",
+      "level": "type",
+      "parentId": "fu.vc.growth",
+      "name": "Series A fund",
+      "description": "A fund that leads or joins the first large priced round after seed, often called Series A. Pick it once you have traction and need a lead for that round.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.growth.growth-fund",
+      "level": "type",
+      "parentId": "fu.vc.growth",
+      "name": "Growth fund",
+      "description": "A fund that invests larger amounts in companies with established revenue that want to scale, including growth equity. Pick it for later rounds focused on expansion.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.growth.multi-stage-fund",
+      "level": "type",
+      "parentId": "fu.vc.growth",
+      "name": "Multi-stage fund",
+      "description": "A fund that invests from seed to later rounds and often keeps money aside to join follow-on rounds. Pick it for firms that may invest early and keep investing as you grow.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.corporate",
+      "level": "subcategory",
+      "parentId": "fu.vc",
+      "name": "Corporate venture capital",
+      "description": "Investment from established companies that want a financial return and a strategic link to your product or market. Pick it when the investor is a company or its venture arm.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.corporate.corporate-venture-fund",
+      "level": "type",
+      "parentId": "fu.vc.corporate",
+      "name": "Corporate venture fund",
+      "description": "A venture arm or fund that a company runs to invest in startups close to its business. Pick it for corporate investors with their own team and investment process.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.corporate.direct-investment",
+      "level": "type",
+      "parentId": "fu.vc.corporate",
+      "name": "Direct corporate investment",
+      "description": "A company invests from its own balance sheet, often next to a supply, distribution or partnership deal. Pick it when the investor has no separate venture arm and the reason is mainly strategic.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.specialized",
+      "level": "subcategory",
+      "parentId": "fu.vc",
+      "name": "Specialized funds",
+      "description": "Venture funds defined by a focus, such as a sector, a mission, a technology field, a place or a founder group. Pick it when the focus decides whether you fit, more than the stage does.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.specialized.sector-fund",
+      "level": "type",
+      "parentId": "fu.vc.specialized",
+      "name": "Sector fund",
+      "description": "A fund that invests only in one industry, such as health, climate, fintech or food. Pick it when your industry is the main filter for the investor.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.specialized.impact-fund",
+      "level": "type",
+      "parentId": "fu.vc.specialized",
+      "name": "Impact fund",
+      "description": "A fund that invests for measurable social or environmental results as well as a financial return. Pick it when the investor asks for impact goals and reporting.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.specialized.deep-tech-fund",
+      "level": "type",
+      "parentId": "fu.vc.specialized",
+      "name": "Deep tech fund",
+      "description": "A fund that backs science- or engineering-heavy companies with long development times, such as new materials, chips or biotech. Pick it when research risk is central to the company.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.specialized.regional-fund",
+      "level": "type",
+      "parentId": "fu.vc.specialized",
+      "name": "Regional fund",
+      "description": "A fund that invests only in companies from one country, region or city. Pick it when location is the main filter; use Public investment funds when a public body runs it.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.specialized.diversity-fund",
+      "level": "type",
+      "parentId": "fu.vc.specialized",
+      "name": "Diversity-focused fund",
+      "description": "A fund that invests in founders from groups that receive less investment, such as women or underrepresented founders. Pick it when the fund's focus is on who the founders are.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.specialized.university-fund",
+      "level": "type",
+      "parentId": "fu.vc.specialized",
+      "name": "University or spin-out fund",
+      "description": "A fund linked to a university or research institute that invests in its spin-outs, staff or alumni. Pick it for companies built on research or IP from that institution.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.public",
+      "level": "subcategory",
+      "parentId": "fu.vc",
+      "name": "Public investment funds",
+      "description": "Funds run or backed by a government or public bank that invest in startups for shares. Pick it when public money is invested for equity rather than given as a grant.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.public.public-venture-fund",
+      "level": "type",
+      "parentId": "fu.vc.public",
+      "name": "Public venture fund",
+      "description": "A fund run by a public body or a state-owned bank that invests directly in startups for shares. Pick it for public investors that take equity themselves.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.vc.public.co-investment",
+      "level": "type",
+      "parentId": "fu.vc.public",
+      "name": "Co-investment scheme",
+      "description": "A public program that invests alongside private angels or funds, often matching their money on similar terms. Pick it when public money joins a round you raise from private investors.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.hybrid",
+      "level": "category",
+      "parentId": null,
+      "name": "Convertible and hybrid instruments",
+      "shortName": "Convertibles",
+      "description": "Financing that converts into shares later, is repaid from revenue, or mixes grant, loan and equity features. Pick it for the instrument itself, on its own or next to the funder's category.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "fu.hybrid.convertible",
+      "level": "subcategory",
+      "parentId": "fu.hybrid",
+      "name": "Convertible instruments",
+      "description": "Agreements where money comes in now and turns into shares at a later priced round. Pick it for SAFE-type agreements and convertible notes or loans from any investor.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.hybrid.convertible.safe-type",
+      "level": "type",
+      "parentId": "fu.hybrid.convertible",
+      "name": "SAFE-type agreement",
+      "description": "A right to future shares that an investor buys now, with no interest or maturity date, usually converting at the next priced round. Pick it for the SAFE and similar standard agreements.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.hybrid.convertible.convertible-note",
+      "level": "type",
+      "parentId": "fu.hybrid.convertible",
+      "name": "Convertible note or loan",
+      "description": "A loan that converts into shares at a later round, usually with interest and a maturity date. Pick it for convertible notes and convertible loan agreements.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.hybrid.revenue-linked",
+      "level": "subcategory",
+      "parentId": "fu.hybrid",
+      "name": "Revenue-linked financing",
+      "description": "Money repaid as a share of revenue or sales instead of fixed installments or shares. Pick it when repayments rise and fall with how much you sell.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.hybrid.revenue-linked.revenue-based-financing",
+      "level": "type",
+      "parentId": "fu.hybrid.revenue-linked",
+      "name": "Revenue-based financing",
+      "description": "A provider advances cash and you repay it with a share of your revenue until an agreed total is reached. Pick it for offers priced on your sales or subscription data.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.hybrid.revenue-linked.revenue-share",
+      "level": "type",
+      "parentId": "fu.hybrid.revenue-linked",
+      "name": "Revenue-share investment",
+      "description": "An investor funds the company in return for a share of future revenue or profit, paid until an agreed multiple or date, instead of or alongside shares. Pick it for revenue-share and shared-earnings deals with investors.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.hybrid.revenue-linked.royalty-financing",
+      "level": "type",
+      "parentId": "fu.hybrid.revenue-linked",
+      "name": "Royalty financing",
+      "description": "Capital repaid through a royalty on sales of one product, license or catalog. Pick it when payments follow one product's sales rather than the whole company's revenue.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.hybrid.blended",
+      "level": "subcategory",
+      "parentId": "fu.hybrid",
+      "name": "Hybrid and blended",
+      "description": "Funding that mixes grant, loan and equity features, or switches from one to another when conditions are met. Pick it for public or mission-driven packages that do not fit one type.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.hybrid.blended.recoverable-grant",
+      "level": "type",
+      "parentId": "fu.hybrid.blended",
+      "name": "Recoverable grant",
+      "description": "A grant you pay back, fully or in part, if the funded project succeeds commercially. Pick it when repayment depends on results rather than on a fixed schedule.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.hybrid.blended.forgivable-loan",
+      "level": "type",
+      "parentId": "fu.hybrid.blended",
+      "name": "Forgivable loan",
+      "description": "A loan that is written off, fully or in part, once you meet agreed conditions such as creating jobs or completing a project. Pick it when repayment is the default and the conditions can cancel it.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.hybrid.blended.participating-loan",
+      "level": "type",
+      "parentId": "fu.hybrid.blended",
+      "name": "Participating or subordinated loan",
+      "description": "A loan that ranks behind other lenders, or whose interest depends partly on the company's results. Pick it for participating, profit-linked or subordinated loans, including those from public programs.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.hybrid.blended.grant-plus-equity",
+      "level": "type",
+      "parentId": "fu.hybrid.blended",
+      "name": "Grant plus equity or loan",
+      "description": "A package in which one program gives a grant and also invests in, or lends to, the same company. Pick it for blended public or impact programs, and note each part's terms.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt",
+      "level": "category",
+      "parentId": null,
+      "name": "Debt financing",
+      "shortName": "Debt",
+      "description": "Borrowed money you repay on agreed terms, with interest or fees. Pick it for loans, credit lines, leasing and other credit from banks, public lenders and finance providers.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "fu.debt.bank",
+      "level": "subcategory",
+      "parentId": "fu.debt",
+      "name": "Bank loans",
+      "description": "Loans and credit from commercial banks, based on your finances and sometimes on security or a personal guarantee. Pick it for borrowing from a bank you deal with directly.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.debt.bank.term-loan",
+      "level": "type",
+      "parentId": "fu.debt.bank",
+      "name": "Term loan",
+      "description": "A fixed amount borrowed once and repaid in installments over a set period. Pick it for one-time needs such as equipment, premises or a shop fit-out.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.bank.credit-line",
+      "level": "type",
+      "parentId": "fu.debt.bank",
+      "name": "Credit line or overdraft",
+      "description": "A limit you can draw on, repay and draw again, including an overdraft on the business account and business credit cards. Pick it for short-term cash needs.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.debt.bank.startup-loan",
+      "level": "type",
+      "parentId": "fu.debt.bank",
+      "name": "Startup loan",
+      "description": "A bank loan product for new businesses with little or no trading history. Pick it for new-business loans from banks; use Public loans and guarantees when a public body lends or backs the money.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "fu.debt.public",
+      "level": "subcategory",
+      "parentId": "fu.debt",
+      "name": "Public loans and guarantees",
+      "description": "Loans that a public body or development bank makes, subsidizes or guarantees. Pick it when a public program stands behind the loan, even if a commercial bank pays it out.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.debt.public.guaranteed-loan",
+      "level": "type",
+      "parentId": "fu.debt.public",
+      "name": "Guaranteed loan",
+      "description": "A loan from a bank or other lender where a public guarantee scheme covers part of the lender's risk. Pick it when your lender offers the loan under such a guarantee.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.debt.public.microloan",
+      "level": "type",
+      "parentId": "fu.debt.public",
+      "name": "Microloan",
+      "description": "A small loan for new or very small businesses or their founders, often from a public or nonprofit lender and sometimes with mentoring. Pick it for small amounts, including personal loans to founders from nonprofit networks.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.public.development-bank-loan",
+      "level": "type",
+      "parentId": "fu.debt.public",
+      "name": "Development bank loan",
+      "description": "A loan from a national or regional development or promotional bank, often for innovation, growth or investment. Pick it for that bank's own loan products, whether it lends directly or through your bank.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "fu.debt.trade-asset",
+      "level": "subcategory",
+      "parentId": "fu.debt",
+      "name": "Trade and asset finance",
+      "description": "Financing tied to invoices, stock, orders, equipment or supplier payment terms. Pick it when the money comes against a specific asset or sale rather than the whole company.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.trade-asset.invoice-financing",
+      "level": "type",
+      "parentId": "fu.debt.trade-asset",
+      "name": "Invoice financing",
+      "description": "Cash advanced against invoices your customers have not paid yet, including factoring. Pick it when slow-paying customers tie up your cash.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.trade-asset.inventory-financing",
+      "level": "type",
+      "parentId": "fu.debt.trade-asset",
+      "name": "Inventory or purchase-order financing",
+      "description": "Money to buy stock or fulfill a confirmed customer order, repaid when the goods sell or the customer pays. Pick it for production runs and seasonal stock.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.trade-asset.equipment-financing",
+      "level": "type",
+      "parentId": "fu.debt.trade-asset",
+      "name": "Equipment financing or leasing",
+      "description": "A loan or lease for machines, vehicles, computers or other equipment, usually secured on that equipment. Pick it when you pay for an asset over time instead of upfront.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.trade-asset.supplier-credit",
+      "level": "type",
+      "parentId": "fu.debt.trade-asset",
+      "name": "Supplier credit",
+      "description": "Time to pay that a supplier gives you after delivery, or a payment plan for goods and services. Pick it when supplier terms are a real part of how you fund stock or production.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.alternative",
+      "level": "subcategory",
+      "parentId": "fu.debt",
+      "name": "Alternative debt",
+      "description": "Debt for particular situations, mostly from specialist lenders and online platforms rather than ordinary bank products. Pick it for venture debt, bridge loans, cash advances and platform lending.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.alternative.venture-debt",
+      "level": "type",
+      "parentId": "fu.debt.alternative",
+      "name": "Venture debt",
+      "description": "A loan for startups that already have venture investors, often with warrants that give the lender a right to buy a small number of shares. Pick it to add runway between equity rounds.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.alternative.bridge-loan",
+      "level": "type",
+      "parentId": "fu.debt.alternative",
+      "name": "Bridge loan",
+      "description": "A short-term loan that covers the gap until a known payment arrives, such as a round closing, a grant installment or a sale. Pick it when repayment is tied to that event; use Convertible instruments if it turns into shares.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.alternative.merchant-cash-advance",
+      "level": "type",
+      "parentId": "fu.debt.alternative",
+      "name": "Merchant cash advance",
+      "description": "An advance repaid through a share of your card or online sales, sometimes offered by the payment provider or sales platform you already use. Pick it for offers repaid automatically from daily sales.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.debt.alternative.peer-to-peer",
+      "level": "type",
+      "parentId": "fu.debt.alternative",
+      "name": "Peer-to-peer or crowd lending",
+      "description": "A loan funded by many individual or institutional lenders through an online lending platform. Pick it for crowdlending and marketplace loans; use Crowdfunding and community funding for shares or rewards.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants",
+      "level": "category",
+      "parentId": null,
+      "name": "Grants and non-dilutive awards",
+      "shortName": "Grants",
+      "description": "Money you receive without giving up shares or paying it back, as long as you meet the conditions attached. Pick it for awarded grants, prize money, tax incentives and equity-free program cash.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.public",
+      "level": "subcategory",
+      "parentId": "fu.grants",
+      "name": "Public grant awards",
+      "description": "Grants from national, regional, local or international public bodies, usually awarded through a call. Pick it for the grant money; track the call itself in PO and link the two.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.public.rd-grant",
+      "level": "type",
+      "parentId": "fu.grants.public",
+      "name": "R&D grant",
+      "description": "A grant for research, development or innovation work, such as a prototype, a feasibility study or a technical trial. Pick it when the call pays for technical or scientific work.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.public.startup-grant",
+      "level": "type",
+      "parentId": "fu.grants.public",
+      "name": "Startup grant",
+      "description": "A grant for new or young companies to start or grow, often limited by company age or size. Pick it when the call is defined by your stage rather than by a topic or a region.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.public.regional-grant",
+      "level": "type",
+      "parentId": "fu.grants.public",
+      "name": "Regional or local grant",
+      "description": "A grant from a regional or city government, or a regional development fund, for activity, jobs or investment in that area. Pick it when where you are based decides whether you can apply.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.public.theme-grant",
+      "level": "type",
+      "parentId": "fu.grants.public",
+      "name": "Sector or theme grant",
+      "description": "A grant for a set sector or theme, such as export, digital adoption, sustainability, culture or health. Pick it when the call is defined by its topic rather than by research, stage or place.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.private",
+      "level": "subcategory",
+      "parentId": "fu.grants",
+      "name": "Foundation and private grants",
+      "description": "Grants from foundations, charities, companies and technology ecosystems rather than public bodies. Pick it for private grant money, whether the funder's aim is charitable or strategic.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.private.foundation-grant",
+      "level": "type",
+      "parentId": "fu.grants.private",
+      "name": "Foundation grant",
+      "description": "A grant from an independent, family or charitable foundation for work that fits its mission, for example in health, science, education or the open internet. Pick it for private philanthropic foundations.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.private.corporate-foundation-grant",
+      "level": "type",
+      "parentId": "fu.grants.private",
+      "name": "Corporate foundation grant",
+      "description": "A grant from a company's charitable foundation, usually for social or community goals. Pick it when the money comes from the foundation rather than from the company's business side.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.private.ecosystem-grant",
+      "level": "type",
+      "parentId": "fu.grants.private",
+      "name": "Ecosystem or platform grant",
+      "description": "A grant from a company, a platform or an open-source or technology foundation to teams that build on its technology or grow its field. Pick it for developer funds and ecosystem grant rounds.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.private.impact-grant",
+      "level": "type",
+      "parentId": "fu.grants.private",
+      "name": "Impact grant",
+      "description": "A grant for social or environmental results, often from NGOs, impact investors or mission-driven programs, with impact targets and reporting. Pick it when success is measured in impact rather than in research or growth.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.prizes",
+      "level": "subcategory",
+      "parentId": "fu.grants",
+      "name": "Prize and competition money",
+      "description": "Cash you win in a competition, challenge or award, usually paid once. Pick it for the prize money itself; track the competition in PO and link the two.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.prizes.prize-money",
+      "level": "type",
+      "parentId": "fu.grants.prizes",
+      "name": "Prize money",
+      "description": "A cash award for an achievement or an innovation, chosen by a jury or a public vote. Pick it for awards that pay money, not only recognition.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.prizes.pitch-award",
+      "level": "type",
+      "parentId": "fu.grants.prizes",
+      "name": "Pitch competition award",
+      "description": "Cash won by pitching your startup to judges at an event or competition. Pick it when the prize depends on the pitch and the business rather than on a technical task.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.prizes.challenge-award",
+      "level": "type",
+      "parentId": "fu.grants.prizes",
+      "name": "Challenge award",
+      "description": "Money won by solving a set problem, such as a challenge prize, a hackathon or a design contest. Pick it when the winner is chosen on a defined task or result.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.prizes.bounty",
+      "level": "type",
+      "parentId": "fu.grants.prizes",
+      "name": "Bounty",
+      "description": "A fixed reward for finishing a defined task, such as fixing a bug, building a feature or reporting a security issue. Pick it for bounty programs and paid issues.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.tax",
+      "level": "subcategory",
+      "parentId": "fu.grants",
+      "name": "Tax incentives and subsidies",
+      "description": "Tax relief and public payments you can claim when you meet a scheme's rules, rather than win in a competitive call. Pick it for tax credits, refunds and wage subsidies.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.tax.rd-tax-relief",
+      "level": "type",
+      "parentId": "fu.grants.tax",
+      "name": "R&D tax relief",
+      "description": "A tax credit, refund or extra deduction for qualifying research and development costs, in countries that offer one. Pick it for claims based on your R&D spending.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.tax.investment-incentive",
+      "level": "type",
+      "parentId": "fu.grants.tax",
+      "name": "Investment incentive",
+      "description": "A tax credit, allowance or cash incentive for buying equipment, buildings or other qualifying assets, in countries that offer one. Pick it when the support depends on what you invest in.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.tax.hiring-subsidy",
+      "level": "type",
+      "parentId": "fu.grants.tax",
+      "name": "Hiring subsidy or payroll relief",
+      "description": "A public payment toward wages or training, or lower payroll taxes or contributions, for hiring or employing certain staff. Pick it for support tied to jobs, such as first hires, interns or apprentices.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "fu.grants.program-cash",
+      "level": "subcategory",
+      "parentId": "fu.grants",
+      "name": "Program cash without equity",
+      "description": "Cash that a program pays to your company or a founder without taking shares. Pick it for the money from an equity-free accelerator, fellowship or residency; track the program in PO.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.program-cash.equity-free-accelerator",
+      "level": "type",
+      "parentId": "fu.grants.program-cash",
+      "name": "Equity-free accelerator cash",
+      "description": "Money an accelerator or incubator pays to companies in its program without taking shares. Pick it for the cash side of an equity-free program.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.grants.program-cash.fellowship-stipend",
+      "level": "type",
+      "parentId": "fu.grants.program-cash",
+      "name": "Fellowship stipend",
+      "description": "Regular payments to a founder, researcher or maintainer during a fellowship, residency or similar program. Pick it when the money goes to a person for their time rather than to the company.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd",
+      "level": "category",
+      "parentId": null,
+      "name": "Crowdfunding and community funding",
+      "shortName": "Crowdfunding",
+      "description": "Money raised from many people at once, as investors, backers, donors or sponsors, usually through an online platform. Pick it for campaigns and for ongoing support from your community.",
+      "order": 7,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.equity",
+      "level": "subcategory",
+      "parentId": "fu.crowd",
+      "name": "Equity crowdfunding",
+      "description": "Selling shares to many small investors through an online platform or a community offer. Pick it for campaigns where backers become shareholders, in countries where this is allowed.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.equity.equity-campaign",
+      "level": "type",
+      "parentId": "fu.crowd.equity",
+      "name": "Equity campaign",
+      "description": "A time-limited campaign on an equity crowdfunding platform in which the public buys shares. Pick it for a planned or live campaign with its target and terms.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.equity.community-shares",
+      "level": "type",
+      "parentId": "fu.crowd.equity",
+      "name": "Community shares",
+      "description": "Shares sold to customers, members or neighbors of a cooperative or community-owned business. Pick it for local or member share offers, in countries where this structure exists.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.rewards",
+      "level": "subcategory",
+      "parentId": "fu.crowd",
+      "name": "Rewards and pre-order crowdfunding",
+      "description": "Campaigns where backers pay for a reward or for the product itself rather than for shares. Pick it for public campaigns on a crowdfunding platform.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.rewards.rewards-campaign",
+      "level": "type",
+      "parentId": "fu.crowd.rewards",
+      "name": "Rewards campaign",
+      "description": "A campaign in which backers pledge money for rewards such as early access, merchandise or a thank-you. Pick it when backers support the project more than they buy a finished product.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.rewards.pre-order-campaign",
+      "level": "type",
+      "parentId": "fu.crowd.rewards",
+      "name": "Pre-order campaign",
+      "description": "A crowdfunding campaign that sells the product before it is made, often to pay for the first production run. Pick it for platform campaigns; pre-orders in your own shop go under Customer and revenue funding.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.donations",
+      "level": "subcategory",
+      "parentId": "fu.crowd",
+      "name": "Donations and sponsorships",
+      "description": "Money people or companies give to support your work, with at most recognition or perks in return. Pick it for donors, patrons and sponsors, including support for open-source work.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.donations.recurring-support",
+      "level": "type",
+      "parentId": "fu.crowd.donations",
+      "name": "Recurring support",
+      "description": "Regular payments from individual supporters, such as patrons or members, often through a membership or sponsor platform. Pick it for monthly or yearly backers who get updates or perks.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.donations.one-off-donation",
+      "level": "type",
+      "parentId": "fu.crowd.donations",
+      "name": "One-off donation",
+      "description": "A single gift from a person or organization, including gifts made during a donation campaign. Pick it for donations that do not repeat on a schedule.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.donations.corporate-sponsorship",
+      "level": "type",
+      "parentId": "fu.crowd.donations",
+      "name": "Corporate sponsorship",
+      "description": "A company pays to support your project, event or content, usually in return for visibility or goodwill. Pick it for sponsor deals with a company, one-off or recurring.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.crowd.donations.open-source-sponsorship",
+      "level": "type",
+      "parentId": "fu.crowd.donations",
+      "name": "Open-source sponsorship",
+      "description": "Money from users and companies to keep an open-source project maintained, often through a sponsor platform or a fiscal host. Pick it for any support tied to your open-source work.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue",
+      "level": "category",
+      "parentId": null,
+      "name": "Customer and revenue funding",
+      "shortName": "Revenue",
+      "description": "Growth paid for by customers and partners through pre-sales, pilots, revenue and larger deals, including reinvested profit. Pick it for bootstrapping and for customer money you plan around.",
+      "order": 8,
+      "recommended": true
+    },
+    {
+      "id": "fu.revenue.pre-sales",
+      "level": "subcategory",
+      "parentId": "fu.revenue",
+      "name": "Pre-sales and paid pilots",
+      "description": "Customer money that arrives before or during delivery and can pay for building the product. Pick it for paid trials, pre-orders and upfront payments.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.revenue.pre-sales.paid-pilot",
+      "level": "type",
+      "parentId": "fu.revenue.pre-sales",
+      "name": "Paid pilot",
+      "description": "A customer pays to test your product in real use for a limited time, often with agreed success criteria. Pick it for trials that can turn into a full contract.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "fu.revenue.pre-sales.pre-order",
+      "level": "type",
+      "parentId": "fu.revenue.pre-sales",
+      "name": "Pre-order",
+      "description": "Customers pay for a product before it ships, through your own shop or sales team. Pick it for direct pre-orders; use Crowdfunding and community funding for platform campaigns.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.pre-sales.advance-payment",
+      "level": "type",
+      "parentId": "fu.revenue.pre-sales",
+      "name": "Advance payment",
+      "description": "A customer pays part or all of a contract before the work or delivery, such as a deposit or an annual prepayment. Pick it for upfront payments from business customers.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "fu.revenue.streams",
+      "level": "subcategory",
+      "parentId": "fu.revenue",
+      "name": "Revenue streams",
+      "description": "Ongoing sales that pay for the company's growth, grouped by how customers pay. Pick it to plan and track how much growth you can fund from revenue and profit.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.streams.product-sales",
+      "level": "type",
+      "parentId": "fu.revenue.streams",
+      "name": "Product sales",
+      "description": "One-time sales of goods or software, in your own shop, through retailers or on marketplaces. Pick it for revenue from selling items rather than from access or time.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.streams.subscriptions",
+      "level": "type",
+      "parentId": "fu.revenue.streams",
+      "name": "Subscriptions",
+      "description": "Recurring payments for ongoing access to a product or service, such as software plans, memberships or subscription boxes. Pick it for plans that renew monthly or yearly.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.streams.usage-based",
+      "level": "type",
+      "parentId": "fu.revenue.streams",
+      "name": "Usage-based revenue",
+      "description": "Payments that depend on how much a customer uses, such as API calls, transactions or compute time. Pick it when the price is metered rather than fixed per plan.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.streams.licensing",
+      "level": "type",
+      "parentId": "fu.revenue.streams",
+      "name": "Licensing",
+      "description": "Fees for the right to use your software, technology, brand or content, including royalties from licensees. Pick it for ongoing license income; deals with upfront and milestone payments go under Strategic deals.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.streams.services",
+      "level": "type",
+      "parentId": "fu.revenue.streams",
+      "name": "Services or consulting",
+      "description": "Paid work for clients, such as projects, retainers, support, training or custom development. Pick it for revenue from your team's time, including client work that funds the product.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.streams.reinvested-profit",
+      "level": "type",
+      "parentId": "fu.revenue.streams",
+      "name": "Reinvested profit",
+      "description": "Profit the company keeps and spends on growth instead of paying it out, often called bootstrapping. Pick it to plan or record growth paid for from your own margins.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.strategic",
+      "level": "subcategory",
+      "parentId": "fu.revenue",
+      "name": "Strategic deals",
+      "description": "Larger deals where a partner, distributor or public buyer pays for development, rights or delivery under a negotiated contract. Pick it when one deal funds a big part of your plans.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.strategic.joint-development",
+      "level": "type",
+      "parentId": "fu.revenue.strategic",
+      "name": "Joint development",
+      "description": "You and a partner build something together and share the costs, work and results under one agreement. Pick it when both sides contribute and both own part of the outcome.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.strategic.sponsored-development",
+      "level": "type",
+      "parentId": "fu.revenue.strategic",
+      "name": "Sponsored development",
+      "description": "A customer or partner pays you to build a feature or capability that stays part of your product. Pick it when someone outside funds work on your roadmap.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.strategic.milestone-deal",
+      "level": "type",
+      "parentId": "fu.revenue.strategic",
+      "name": "Licensing and milestone deal",
+      "description": "A partner pays upfront and at agreed milestones for rights to your technology or product, sometimes with royalties later. Pick it for out-licensing and partnering deals, for example in biotech or medtech.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.strategic.distribution-advance",
+      "level": "type",
+      "parentId": "fu.revenue.strategic",
+      "name": "Distribution advance",
+      "description": "A distributor or reseller pays upfront, or commits to buy stock, in return for the right to sell your product. Pick it when a sales partner funds production or a launch.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "fu.revenue.strategic.public-contract",
+      "level": "type",
+      "parentId": "fu.revenue.strategic",
+      "name": "Public contract",
+      "description": "A contract won from a public body through a tender or innovation procurement, paid for delivery rather than given as a grant. Pick it for the contract money; track the tender in PO and link the two.",
+      "order": 5,
+      "recommended": false
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "variables": [
+    { "name": "STARTUP_NAME", "source": "profile", "block": false, "description": "The startup's name." },
+    { "name": "STARTUP_ONE_LINER", "source": "profile", "block": false, "description": "One sentence on what it is and for whom." },
+    { "name": "STARTUP_DESCRIPTION", "source": "profile", "block": false, "description": "Stage, license, business model, editions." },
+    { "name": "STARTUP_WEBSITE", "source": "profile", "block": false, "description": "The website, read only to judge fit." },
+    { "name": "STARTUP_LINKS", "source": "profile", "block": true, "description": "\"Type: URL\" lines, read only to judge fit." },
+    { "name": "SECTOR", "source": "profile", "block": false, "description": "The startup's market, for example \"online education\". Replaces hard-coded topic lists." },
+    { "name": "CONSTRAINTS", "source": "profile", "block": true, "description": "Company and founders text from the profile's AI context (tips in constraints-tips.json). One text per startup instead of a preset example. With no text, its line and the line above it are removed." },
+    { "name": "COUNTRY", "source": "profile", "block": false, "description": "Home country." },
+    { "name": "ENTITY_TYPE", "source": "profile", "block": false, "description": "Legal form." },
+    { "name": "HOME_REGION", "source": "profile", "block": false, "description": "Area where in-person events are acceptable." },
+    { "name": "MAX_TARGETS_PER_DAY", "source": "profile", "block": false, "default": "10", "description": "Daily calendar cap, default 10." },
+    { "name": "TODAY", "source": "settings", "block": false, "aliases": ["TODAY_DATE", "DATE"], "description": "Today's date." },
+    { "name": "TIMEZONE", "source": "settings", "block": false, "description": "The time zone for all dates and times." },
+    { "name": "TAB", "source": "scope", "block": false, "description": "The section: MK, PO or FU. The name is kept from earlier prompts." },
+    { "name": "CATEGORY", "source": "scope", "block": false, "description": "Readable names of the chosen categories." },
+    { "name": "SUBCATEGORY", "source": "scope", "block": false, "description": "Readable names of the chosen subcategories." },
+    { "name": "TYPE", "source": "scope", "block": false, "description": "Readable names of the chosen types." },
+    { "name": "SCOPE_DETAILS", "source": "scope", "block": true, "description": "Descriptions of the chosen taxonomy nodes, so the agent understands the scope." },
+    { "name": "SEARCH_FOCUS", "source": "preset", "block": true, "description": "What to look for and how to rank it; was the preset part of CONSTRAINTS. Filled from the selected examples, one bullet each." },
+    { "name": "VERIFIED_ACTIVITY", "source": "preset", "block": true, "description": "What to confirm before adding. Filled from the selected examples, one bullet each." },
+    { "name": "AVOID", "source": "preset", "block": true, "description": "What to leave out. Filled from the selected examples, one bullet each." },
+    { "name": "SPECIAL_SCHEDULE", "source": "preset", "block": true, "description": "How to pick the date. Filled from the selected examples, one bullet each." },
+    { "name": "TRACKER_ACCESS", "source": "system", "block": true, "description": "How to save results, set by the run mode: the tracker tools in an ACP run; CLI and API steps with a limited agent token when the prompt is copied; a JSON format for chat agents that cannot run commands." }
+  ]
+}

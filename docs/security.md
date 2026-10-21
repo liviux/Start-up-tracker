@@ -1,0 +1,13 @@
+# Security of the local server
+
+Startup Tracker runs a small web server on your own computer. These are the rules it follows so that other websites, and other people on your network, cannot read or change your data.
+
+- **Only this computer by default.** The server listens on 127.0.0.1 and answers only requests whose `Host` is `localhost`, `127.0.0.1` or `[::1]`. To reach it from another device you list that host name in `ALLOWED_HOSTS` (an advanced setting).
+- **Writes come from the tracker page or carry the API token.** A request that changes data must come from the tracker's own page in your browser (the browser marks it as same-origin), or send `Authorization: Bearer <token>` with the token from `secrets/api-token` in the data folder. That file is created on first start and only your user account can read it. A page on another website cannot change your data, even while the tracker is open.
+- **JSON only.** Routes that take JSON refuse other content types and invalid JSON.
+- **Only the app's own files are served.** The server sends files from `public/` and `content/` and nothing else: not the code, the data folder, git metadata or plans. Paths with encoded `..` are refused.
+- **Uploads stay in the media folder.** Uploaded files are served from `/media/`. Their real location is checked, so a symbolic link inside the media folder cannot point elsewhere. HTML, SVG and XML uploads are downloaded instead of shown, so they cannot run as a page. The document editor saves only files inside the media folder.
+- **Safe links.** Only `http`, `https`, `mailto` and `tel` links become clickable. Links in notes show their real destination when you hover over them.
+- **AI agents run only as you set them up.** An agent starts only from a command you confirmed in Settings > AI agents; a run never takes a command from the browser, and the shared-data route refuses changes to the agent list. Agents get a clean environment, never the tracker's own variables or tokens, and no file or terminal access from the tracker. Their working folder is not a sandbox: an agent's own tools can reach whatever your user account can.
+- **Run tokens.** A run's token can only call the tracker tools of its own run and startup, and is revoked when the run ends. Run logs replace configured variable values and tokens with `***` before they are stored. When the tracker stops, it stops every agent and the program tree each started.
+- **A strict page policy.** The page runs only scripts served by the tracker, cannot be shown inside another site's frame, and sends no referrer to the sites it links to.

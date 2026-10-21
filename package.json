@@ -1,0 +1,33 @@
+{
+  "name": "startup-tracker",
+  "version": "0.1.0",
+  "description": "A local tracker for a startup's marketing, programs and opportunities, funding and company tasks.",
+  "license": "MIT",
+  "author": "Startup Tracker contributors",
+  "homepage": "https://liviux.github.io/Start-up-tracker/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liviux/Start-up-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/liviux/Start-up-tracker/issues"
+  },
+  "engines": {
+    "node": ">=22.16"
+  },
+  "main": "server.js",
+  "bin": {
+    "startup-tracker": "bin/startup-tracker.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js --dev",
+    "test": "node tools/run-tests.js",
+    "check": "node tools/check.js",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "eslint": "10.11.0",
+    "globals": "17.13.0"
+  }
+}

@@ -1,0 +1,177 @@
+/* Section colours: MK, PO, FU and Company.
+
+   The tokens between the markers come from public/js/sections.js
+   (cssText of the standard palette); tests/sections.test.js checks they
+   match and that text on every tint reads at 4.5:1 or more. Settings >
+   Appearance can switch to the colour-blind palette or pick colours, which
+   js/sections.js writes into a <style id="section-colors"> after this file.
+   Colour is never the only signal: chips and counts carry the section code. */
+
+/* tokens:start */
+:root {
+  --section-mk: #2563eb;
+  --section-mk-rgb: 37, 99, 235;
+  --section-mk-bg: #e5ecfd;
+  --section-mk-fg: #235edf;
+  --section-mk-border: #a8c1f7;
+  --section-po: #ea580c;
+  --section-po-rgb: 234, 88, 12;
+  --section-po-bg: #fcebe2;
+  --section-po-fg: #bb460a;
+  --section-po-border: #f7bc9e;
+  --section-fu: #15803d;
+  --section-fu-rgb: 21, 128, 61;
+  --section-fu-bg: #e3f0e8;
+  --section-fu-fg: #147a3a;
+  --section-fu-border: #a1ccb1;
+  --section-comp: #7c3aed;
+  --section-comp-rgb: 124, 58, 237;
+  --section-comp-bg: #efe7fd;
+  --section-comp-fg: #7c3aed;
+  --section-comp-border: #cbb0f8;
+}
+
+:root[data-theme="dark"] {
+  --section-mk: #2563eb;
+  --section-mk-rgb: 37, 99, 235;
+  --section-mk-bg: #142958;
+  --section-mk-fg: #6692f1;
+  --section-mk-border: #1b4194;
+  --section-po: #ea580c;
+  --section-po-rgb: 234, 88, 12;
+  --section-po-bg: #442723;
+  --section-po-fg: #ee793d;
+  --section-po-border: #873b1a;
+  --section-fu: #15803d;
+  --section-fu-rgb: 21, 128, 61;
+  --section-fu-bg: #10302f;
+  --section-fu-fg: #5ba677;
+  --section-fu-border: #125134;
+  --section-comp: #7c3aed;
+  --section-comp-rgb: 124, 58, 237;
+  --section-comp-bg: #291f59;
+  --section-comp-fg: #aa7ff3;
+  --section-comp-border: #4b2a95;
+}
+/* tokens:end */
+
+/* Any element with data-section="<id>" gets the generic names. */
+[data-section="mk"] {
+  --section: var(--section-mk);
+  --section-rgb: var(--section-mk-rgb);
+  --section-bg: var(--section-mk-bg);
+  --section-fg: var(--section-mk-fg);
+  --section-border: var(--section-mk-border);
+}
+
+[data-section="po"] {
+  --section: var(--section-po);
+  --section-rgb: var(--section-po-rgb);
+  --section-bg: var(--section-po-bg);
+  --section-fg: var(--section-po-fg);
+  --section-border: var(--section-po-border);
+}
+
+[data-section="fu"] {
+  --section: var(--section-fu);
+  --section-rgb: var(--section-fu-rgb);
+  --section-bg: var(--section-fu-bg);
+  --section-fg: var(--section-fu-fg);
+  --section-border: var(--section-fu-border);
+}
+
+[data-section="comp"] {
+  --section: var(--section-comp);
+  --section-rgb: var(--section-comp-rgb);
+  --section-bg: var(--section-comp-bg);
+  --section-fg: var(--section-comp-fg);
+  --section-border: var(--section-comp-border);
+}
+
+/* A chip with the section code, for search results, the calendar and lists. */
+.section-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  border: 1px solid var(--section-border, var(--border-strong));
+  border-radius: var(--radius-pill);
+  background: var(--section-bg, var(--surface-strong));
+  color: var(--section-fg, var(--text-soft));
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.section-dot {
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--section, var(--muted));
+}
+
+/* Sidebar: a dot after the name of each section. */
+html #appTabs .app-tab-button[data-section]::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  min-width: 0;
+  height: 8px;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--section);
+}
+
+@media (max-width: 1023px) {
+  html #appTabs .app-tab-button[data-section]::after { margin-left: 2px; }
+}
+
+/* Page header: a short stripe above the title. */
+.app-view[data-section] > .shell-heading::before {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 4px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  background: var(--section);
+}
+
+/* Focus queue cards: a dot before the title. */
+.app-view[data-section] .focus-item-main > strong::before,
+.app-view[data-section] .focus-item-main > .focus-item-title::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: var(--section);
+  vertical-align: 0.08em;
+}
+
+/* Calendar: per-day counts such as M2 P4 F1 C1. */
+.day-counts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+}
+
+.day-count {
+  padding: 0 5px;
+  border: 1px solid var(--section-border);
+  border-radius: 6px;
+  background: var(--section-bg);
+  color: var(--section-fg);
+  font-size: 10.5px;
+  font-weight: 750;
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,2338 @@
+{
+  "section": "mk",
+  "libraryVersion": 1,
+  "nodes": [
+    {
+      "id": "mk.launches",
+      "level": "category",
+      "parentId": null,
+      "name": "Launches and listings",
+      "shortName": "Launches",
+      "description": "Public launches and long-lived listings where people look for products like yours. Pick it for launch days, directory and store listings, review site profiles and local business listings.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.launches.launch-platforms",
+      "level": "subcategory",
+      "parentId": "mk.launches",
+      "name": "Product launch platforms",
+      "description": "Sites built around launching new products to an audience that comes to discover them, for example Product Hunt or a crowdfunding site. Pick it for a planned launch with a set date.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.launches.launch-platforms.launch-day",
+      "level": "type",
+      "parentId": "mk.launches.launch-platforms",
+      "name": "Launch day",
+      "description": "The launch itself: the listing, the timing, the first comments and the replies on the day. Pick it for the one entry that holds the launch plan and its outcome.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.launches.launch-platforms.teaser-page",
+      "level": "type",
+      "parentId": "mk.launches.launch-platforms",
+      "name": "Upcoming or teaser page",
+      "description": "A pre-launch page on a launch platform where people can follow the product or get notified. Pick it when the platform lets you collect followers before the launch date.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.launch-platforms.relaunch",
+      "level": "type",
+      "parentId": "mk.launches.launch-platforms",
+      "name": "Relaunch or major update",
+      "description": "A second launch of the same product after a big new version or a new direction. Pick it when the platform allows relaunches and you have something new to show.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.launch-platforms.crowdfunding-launch",
+      "level": "type",
+      "parentId": "mk.launches.launch-platforms",
+      "name": "Crowdfunding campaign launch",
+      "description": "The public side of a rewards or pre-order campaign: the campaign page, launch timing and updates to backers. Pick it for the marketing work; track the money itself in Funding.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.launch-platforms.launch-follow-up",
+      "level": "type",
+      "parentId": "mk.launches.launch-platforms",
+      "name": "Launch follow-up",
+      "description": "Work after a launch: thanking supporters, answering late comments, sharing results and turning visitors into users. Pick it when you want the follow-up tracked apart from the launch day.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "mk.launches.directories",
+      "level": "subcategory",
+      "parentId": "mk.launches",
+      "name": "Directories and catalogs",
+      "description": "Websites that list products, tools or companies by category so people can browse them, including curated lists. Pick it for one-off submissions that keep bringing visitors and links.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.launches.directories.free-listing",
+      "level": "type",
+      "parentId": "mk.launches.directories",
+      "name": "Free listing",
+      "description": "A standard submission to a directory at no cost, usually through a form or a request to the maintainer. Pick it for most directory entries.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.launches.directories.paid-listing",
+      "level": "type",
+      "parentId": "mk.launches.directories",
+      "name": "Featured or paid listing",
+      "description": "A paid or upgraded placement in a directory, such as a featured slot or a faster review. Pick it when you pay for visibility in a directory you already list in or plan to.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.directories.curated-list",
+      "level": "type",
+      "parentId": "mk.launches.directories",
+      "name": "Curated list submission",
+      "description": "A request to be added to a hand-maintained list of resources, for example an \"awesome\" list on a code hosting site or a resource page on a blog. Pick it when a person reviews each addition.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.directories.profile-update",
+      "level": "type",
+      "parentId": "mk.launches.directories",
+      "name": "Profile update",
+      "description": "Changes to a listing you already have: new screenshots, description, pricing or category. Pick it when the product changed and existing listings need to catch up.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.marketplaces",
+      "level": "subcategory",
+      "parentId": "mk.launches",
+      "name": "Marketplaces and app stores",
+      "description": "Stores and marketplaces where people find, buy or install products, for example app stores, browser extension stores, online marketplaces, delivery apps or package registries. Pick it for listings that live inside a platform.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.marketplaces.store-listing",
+      "level": "type",
+      "parentId": "mk.launches.marketplaces",
+      "name": "Store listing",
+      "description": "Creating or publishing your product page in a store or marketplace. Pick it for the first listing on a platform, including product pages on online marketplaces and delivery or booking apps.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.marketplaces.store-optimization",
+      "level": "type",
+      "parentId": "mk.launches.marketplaces",
+      "name": "Store page optimization",
+      "description": "Improving an existing store page so more visitors install or buy: title, keywords, images, video and description. Pick it for ongoing changes and tests on a listing.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.marketplaces.featured-request",
+      "level": "type",
+      "parentId": "mk.launches.marketplaces",
+      "name": "Featured placement request",
+      "description": "Asking the store or marketplace team to feature your product in an editorial list, collection or promotion. Pick it when the platform has a nomination or pitch route.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.marketplaces.package-registry",
+      "level": "type",
+      "parentId": "mk.launches.marketplaces",
+      "name": "Package or extension registry",
+      "description": "Publishing to a registry that developers or users install from, for example a package registry or a plugin directory for another product. Pick it when people install your work from there.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.review-sites",
+      "level": "subcategory",
+      "parentId": "mk.launches",
+      "name": "Comparison and review sites",
+      "description": "Sites where people compare products, read reviews or look for alternatives to a product they know. Pick it for review site profiles, alternatives pages and editorial reviews.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.review-sites.product-profile",
+      "level": "type",
+      "parentId": "mk.launches.review-sites",
+      "name": "Profile page",
+      "description": "Your own page on a review or comparison site, for a product or a service business, with description, pricing and images. Pick it when you claim or create the profile and keep it current.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.review-sites.alternatives-entry",
+      "level": "type",
+      "parentId": "mk.launches.review-sites",
+      "name": "Comparison or alternatives entry",
+      "description": "Getting listed as an alternative to a better known product, or in a side-by-side comparison. Pick it for sites organized around \"alternatives to\" searches.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.review-sites.editorial-review",
+      "level": "type",
+      "parentId": "mk.launches.review-sites",
+      "name": "Editorial review pitch",
+      "description": "Asking the site's own editors or testers to review your product. Pick it when the review is written by the site, not collected from your customers.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.review-sites.award-badge",
+      "level": "type",
+      "parentId": "mk.launches.review-sites",
+      "name": "Award badge",
+      "description": "A badge or ranking a review site gives products based on reviews or usage, often shown on your own website. Pick it when you apply for one or track one you earned.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.local-listings",
+      "level": "subcategory",
+      "parentId": "mk.launches",
+      "name": "Local and business listings",
+      "description": "Listings that help people find a business at a place, such as map profiles and city or regional directories. Pick it when you have a physical location or serve a local area.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.local-listings.map-profile",
+      "level": "type",
+      "parentId": "mk.launches.local-listings",
+      "name": "Map and business profile",
+      "description": "Your business profile on a map or local search service, with address, opening hours, photos and posts. Pick it for creating, verifying and updating that profile.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.local-listings.association-directory",
+      "level": "type",
+      "parentId": "mk.launches.local-listings",
+      "name": "Chamber or association directory",
+      "description": "A listing in the member directory of a chamber of commerce, trade body or business association. Pick it when the listing comes with membership or is offered to local companies.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.launches.local-listings.city-directory",
+      "level": "type",
+      "parentId": "mk.launches.local-listings",
+      "name": "Local or city directory",
+      "description": "A listing in a directory for one city, region or neighborhood, run by a local site, a tourism office or a local newspaper. Pick it for local discovery outside the big map services.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities",
+      "level": "category",
+      "parentId": null,
+      "name": "Communities and forums",
+      "shortName": "Communities",
+      "description": "Places where your audience talks, asks and shares, online or offline. Pick it for taking part in other people's communities and for running your own.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.communities.forums",
+      "level": "subcategory",
+      "parentId": "mk.communities",
+      "name": "Forums and Q&A",
+      "description": "Discussion forums and question-and-answer sites where threads stay findable for a long time. Pick it for answers and posts that need care, because each forum has its own rules on self-promotion.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.communities.forums.helpful-answer",
+      "level": "type",
+      "parentId": "mk.communities.forums",
+      "name": "Helpful answer",
+      "description": "Answering someone's question in detail, mentioning your product only when it fits the question. Pick it for replies that help on their own merit.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.communities.forums.discussion-post",
+      "level": "type",
+      "parentId": "mk.communities.forums",
+      "name": "Discussion post",
+      "description": "Starting a new thread with a story, lesson or question for the forum. Pick it when you open the conversation rather than join one.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.communities.forums.feedback-request",
+      "level": "type",
+      "parentId": "mk.communities.forums",
+      "name": "Feedback request",
+      "description": "Asking a forum for honest opinions on your product, idea, pricing or website. Pick it when you want input from people outside your circle.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.communities.forums.ask-me-anything",
+      "level": "type",
+      "parentId": "mk.communities.forums",
+      "name": "Ask-me-anything",
+      "description": "A planned session where you answer open questions from the community for a set period. Pick it when a forum hosts these and you have a topic people want to ask about.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.interest-communities",
+      "level": "subcategory",
+      "parentId": "mk.communities",
+      "name": "Interest communities",
+      "description": "Online communities around a topic, hobby, profession or condition, for example subreddits or niche sites. Pick it for regular posts and comments where you are a member, not an advertiser.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.communities.interest-communities.post",
+      "level": "type",
+      "parentId": "mk.communities.interest-communities",
+      "name": "Post",
+      "description": "A new post in an interest community, such as a guide, a story or a question. Pick it for posts that follow the community's rules and stand on their own.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.communities.interest-communities.comment",
+      "level": "type",
+      "parentId": "mk.communities.interest-communities",
+      "name": "Comment or reply",
+      "description": "Joining an existing conversation with a useful comment. Pick it for steady participation that builds your name in the community.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.communities.interest-communities.show-and-tell",
+      "level": "type",
+      "parentId": "mk.communities.interest-communities",
+      "name": "Show-and-tell",
+      "description": "Sharing something you made in a space meant for that, for example a \"Show\" post or a weekly showcase thread. Pick it when the community invites people to show their own work.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.interest-communities.recurring-thread",
+      "level": "type",
+      "parentId": "mk.communities.interest-communities",
+      "name": "Recurring thread",
+      "description": "A weekly or monthly thread where self-promotion or questions are allowed, such as a feedback or hiring thread. Pick it to plan regular entries in those threads.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.chat-communities",
+      "level": "subcategory",
+      "parentId": "mk.communities",
+      "name": "Chat communities",
+      "description": "Real-time group chats run by others, for example Discord servers, Slack workspaces or Telegram groups. Pick it when you join to help and listen, since dropping links is usually unwelcome there.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.chat-communities.introduction",
+      "level": "type",
+      "parentId": "mk.communities.chat-communities",
+      "name": "Introduction",
+      "description": "Your first message in a new chat community, usually in an introductions channel. Pick it when you join and want the entry to hold the rules and channel notes.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.chat-communities.helpful-reply",
+      "level": "type",
+      "parentId": "mk.communities.chat-communities",
+      "name": "Helpful reply",
+      "description": "Answering a question or solving a problem in a chat channel. Pick it for replies worth remembering, such as one that led to a follow-up conversation.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.chat-communities.showcase-post",
+      "level": "type",
+      "parentId": "mk.communities.chat-communities",
+      "name": "Showcase channel post",
+      "description": "A post in a channel set aside for sharing projects, products or launches. Pick it when the community has such a channel and allows your kind of post.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.chat-communities.community-event",
+      "level": "type",
+      "parentId": "mk.communities.chat-communities",
+      "name": "Community event",
+      "description": "Taking part in or running an event inside a chat community, such as a voice session, an office hour or a challenge. Pick it when the event is hosted on the community's own space.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.associations",
+      "level": "subcategory",
+      "parentId": "mk.communities",
+      "name": "Professional associations",
+      "description": "Membership organizations for a profession or an industry, such as trade bodies, guilds and societies. Pick it when members are your customers or can refer them.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.associations.membership",
+      "level": "type",
+      "parentId": "mk.communities.associations",
+      "name": "Membership",
+      "description": "Joining an association and keeping the membership active. Pick it for the decision to join, the fee and the benefits you plan to use.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.associations.member-post",
+      "level": "type",
+      "parentId": "mk.communities.associations",
+      "name": "Member post",
+      "description": "A post or message in the association's member forum, list or group, or a mention in its member newsletter. Pick it for anything you publish through the association's own channels.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.associations.working-group",
+      "level": "type",
+      "parentId": "mk.communities.associations",
+      "name": "Working group",
+      "description": "Joining a committee, working group or task force of the association. Pick it when you take an ongoing role that puts you in front of other members.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.own-community",
+      "level": "subcategory",
+      "parentId": "mk.communities",
+      "name": "Your own community",
+      "description": "A community you run for your customers, users or fans, such as a forum, a chat server or local user groups. Pick it for setting it up and keeping it active.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.own-community.community-space",
+      "level": "type",
+      "parentId": "mk.communities.own-community",
+      "name": "Community space setup",
+      "description": "Creating the place where your community meets, with rules, channels and moderation. Pick it when you open a new space or rework an existing one.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.own-community.member-onboarding",
+      "level": "type",
+      "parentId": "mk.communities.own-community",
+      "name": "Member onboarding",
+      "description": "How new members are welcomed: a welcome message, a starter guide, an introductions thread. Pick it for work that helps new members find their way and stay.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.own-community.user-group",
+      "level": "type",
+      "parentId": "mk.communities.own-community",
+      "name": "User group or local chapter",
+      "description": "A group of users that meets regularly in one city or around one topic, often run by volunteers. Pick it when you start or support such a group.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.communities.own-community.community-update",
+      "level": "type",
+      "parentId": "mk.communities.own-community",
+      "name": "Community update",
+      "description": "A regular post to your community about news, plans or member highlights. Pick it for recurring messages to your own members rather than to the public.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.social",
+      "level": "category",
+      "parentId": null,
+      "name": "Social media",
+      "shortName": "Social",
+      "description": "Your own presence and activity on social networks: posts, replies, videos and live sessions from your accounts. Pick it for regular publishing and engagement rather than paid ads.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.social.professional-networks",
+      "level": "subcategory",
+      "parentId": "mk.social",
+      "name": "Professional networks",
+      "description": "Social networks built around work and careers, for example LinkedIn. Pick it for posts and engagement aimed at buyers, partners, hires and peers.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.social.professional-networks.post",
+      "level": "type",
+      "parentId": "mk.social.professional-networks",
+      "name": "Post",
+      "description": "A regular post from a personal or company account on a professional network. Pick it for updates, lessons, announcements and short stories.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.social.professional-networks.article",
+      "level": "type",
+      "parentId": "mk.social.professional-networks",
+      "name": "Article",
+      "description": "A long-form article published inside the professional network rather than on your own site. Pick it when you want the piece to reach your network directly.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.professional-networks.comment",
+      "level": "type",
+      "parentId": "mk.social.professional-networks",
+      "name": "Comment",
+      "description": "A thoughtful comment on someone else's post, often from an industry voice or a potential customer. Pick it for planned engagement with specific people or topics.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.social.professional-networks.company-page",
+      "level": "type",
+      "parentId": "mk.social.professional-networks",
+      "name": "Company page update",
+      "description": "Changes to your company page: description, banner, featured posts, jobs or product sections. Pick it for upkeep of the page rather than single posts.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.microblogging",
+      "level": "subcategory",
+      "parentId": "mk.social",
+      "name": "Microblogging",
+      "description": "Short-post networks with fast public conversation, for example X, Bluesky, Threads or Mastodon. Pick it for posts, threads and replies that keep you visible day to day.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.social.microblogging.post-thread",
+      "level": "type",
+      "parentId": "mk.social.microblogging",
+      "name": "Post or thread",
+      "description": "A single post or a connected thread of posts from your account. Pick it for announcements, tips, demos and opinions.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.social.microblogging.reply",
+      "level": "type",
+      "parentId": "mk.social.microblogging",
+      "name": "Reply",
+      "description": "Replying to other people's posts in your field, including people who ask about problems you solve. Pick it for planned replies or a regular reply session.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.social.microblogging.build-in-public",
+      "level": "type",
+      "parentId": "mk.social.microblogging",
+      "name": "Build-in-public update",
+      "description": "Sharing progress, numbers you are comfortable publishing, mistakes and decisions while you build. Pick it for a recurring series about how the company is going.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.visual-social",
+      "level": "subcategory",
+      "parentId": "mk.social",
+      "name": "Visual social",
+      "description": "Photo-first networks where images carry the message, for example Instagram or Pinterest. Pick it when your product, place or people look good in pictures.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.visual-social.photo-post",
+      "level": "type",
+      "parentId": "mk.social.visual-social",
+      "name": "Photo post",
+      "description": "A single image post with a caption. Pick it for product shots, behind-the-scenes photos, customer photos you have permission to use and announcements.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.visual-social.carousel",
+      "level": "type",
+      "parentId": "mk.social.visual-social",
+      "name": "Carousel",
+      "description": "A post with several images or slides that people swipe through. Pick it for step-by-step tips, before-and-after sets and short explainers.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.visual-social.story",
+      "level": "type",
+      "parentId": "mk.social.visual-social",
+      "name": "Story",
+      "description": "A short post that disappears after a while, often with polls, links or questions. Pick it for daily updates, offers and quick interaction.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.visual-social.reel",
+      "level": "type",
+      "parentId": "mk.social.visual-social",
+      "name": "Reel",
+      "description": "A short vertical video posted on a photo-first network. Pick it when the video is meant for that network; use Short video for video-first apps.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.short-video",
+      "level": "subcategory",
+      "parentId": "mk.social",
+      "name": "Short video",
+      "description": "Video-first apps built around a feed of short vertical videos, for example TikTok or YouTube Shorts. Pick it for quick videos made for the feed.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.short-video.short-video",
+      "level": "type",
+      "parentId": "mk.social.short-video",
+      "name": "Short video",
+      "description": "An original short video: a demo, a tip, a story or a reaction. Pick it for most videos you post on a short video app.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.short-video.trend-remix",
+      "level": "type",
+      "parentId": "mk.social.short-video",
+      "name": "Trend or remix",
+      "description": "A video that joins a current trend, sound or format, or responds to another creator's video. Pick it when the idea depends on what is popular on the app now.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.short-video.live",
+      "level": "type",
+      "parentId": "mk.social.short-video",
+      "name": "Live",
+      "description": "A live broadcast on a short video app, often with comments and questions. Pick it for planned live sessions such as a demo, a sale or a question hour.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.long-video",
+      "level": "subcategory",
+      "parentId": "mk.social",
+      "name": "Long video and streaming",
+      "description": "Video platforms for longer videos and live streams, for example YouTube or Twitch. Pick it for publishing and running your channel there; put a regular show you produce under Content.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.long-video.video",
+      "level": "type",
+      "parentId": "mk.social.long-video",
+      "name": "Video",
+      "description": "A longer video uploaded to your channel, such as a review, a walkthrough or a story. Pick it for one-off uploads that are not part of a series.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.long-video.livestream",
+      "level": "type",
+      "parentId": "mk.social.long-video",
+      "name": "Livestream",
+      "description": "A live broadcast on a streaming platform, such as building something live or answering questions. Pick it for planned live sessions with a set time.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.long-video.premiere",
+      "level": "type",
+      "parentId": "mk.social.long-video",
+      "name": "Premiere",
+      "description": "A recorded video released at a set time with a live chat, so viewers watch it together. Pick it for a launch video or an important release.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.social-groups",
+      "level": "subcategory",
+      "parentId": "mk.social",
+      "name": "Groups on social platforms",
+      "description": "Groups and pages inside a social network that have their own members and admins, for example Facebook groups. Pick it for posting in groups and working with the people who run them.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.social-groups.group-post",
+      "level": "type",
+      "parentId": "mk.social.social-groups",
+      "name": "Group post",
+      "description": "A new post in a group you belong to. Pick it for posts that follow the group's rules, such as a question, a tip or an allowed promotion day.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.social-groups.group-comment",
+      "level": "type",
+      "parentId": "mk.social.social-groups",
+      "name": "Group comment",
+      "description": "Replying to posts in a group, often to questions your product or service answers. Pick it for steady, useful participation.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.social.social-groups.admin-outreach",
+      "level": "type",
+      "parentId": "mk.social.social-groups",
+      "name": "Admin outreach",
+      "description": "Contacting the people who run a group about a partnership, an announcement, a guest session or an approved post. Pick it when you need permission or a closer relationship.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.content",
+      "level": "category",
+      "parentId": null,
+      "name": "Content and SEO",
+      "shortName": "Content",
+      "description": "Content on channels you own, such as your blog, newsletter and podcast, and the work that helps people find you through search. Pick it for things you publish once and that keep being found later.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.blog",
+      "level": "subcategory",
+      "parentId": "mk.content",
+      "name": "Blog and articles",
+      "description": "Written posts on your own website or blog. Pick it for articles you publish yourself; articles in other people's publications go under PR and media.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.blog.how-to",
+      "level": "type",
+      "parentId": "mk.content.blog",
+      "name": "How-to",
+      "description": "A practical guide or tutorial that shows how to solve a specific problem. Pick it for articles people are likely to search for.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.blog.case-study",
+      "level": "type",
+      "parentId": "mk.content.blog",
+      "name": "Case study",
+      "description": "A story about how a customer or project used your product or service, with the problem, the approach and the outcome they agreed to share. Pick it for writing and publishing the piece.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.blog.opinion",
+      "level": "type",
+      "parentId": "mk.content.blog",
+      "name": "Opinion",
+      "description": "An article with a clear point of view on your field, a trend or a common practice. Pick it when the goal is to be known for how you think.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.blog.announcement",
+      "level": "type",
+      "parentId": "mk.content.blog",
+      "name": "Announcement",
+      "description": "A post about news from the company: a launch, a new feature, a partnership, a funding round or a new location. Pick it for one-off news posts.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.blog.release-notes",
+      "level": "type",
+      "parentId": "mk.content.blog",
+      "name": "Release notes or changelog",
+      "description": "A public list of what changed in a new version or in recent weeks. Pick it for regular product update posts that existing users and search engines read.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.podcast-video",
+      "level": "subcategory",
+      "parentId": "mk.content",
+      "name": "Own podcast and video series",
+      "description": "A podcast or video series you produce and publish on a regular schedule. Pick it for episodes of your own show, whatever platform hosts them.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.podcast-video.podcast-episode",
+      "level": "type",
+      "parentId": "mk.content.podcast-video",
+      "name": "Podcast episode",
+      "description": "An episode of your own audio show, solo or with co-hosts. Pick it for planning, recording and publishing each episode.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.podcast-video.interview-episode",
+      "level": "type",
+      "parentId": "mk.content.podcast-video",
+      "name": "Interview episode",
+      "description": "An episode where you host a guest such as a customer, partner or expert. Pick it when the guest needs to be invited, briefed and thanked.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.podcast-video.video-tutorial",
+      "level": "type",
+      "parentId": "mk.content.podcast-video",
+      "name": "Video tutorial",
+      "description": "A video lesson that teaches how to do something with your product or in your field. Pick it for tutorial series and course-style videos.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.podcast-video.webinar-recording",
+      "level": "type",
+      "parentId": "mk.content.podcast-video",
+      "name": "Webinar recording",
+      "description": "A recording of a live session published for people who missed it. Pick it for editing, publishing and sharing the recording after the event.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.newsletter",
+      "level": "subcategory",
+      "parentId": "mk.content",
+      "name": "Newsletter and email list",
+      "description": "Messages to people who signed up to hear from you, by email or another opt-in channel. Pick it for your own list; mentions in other people's newsletters go under PR and media.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.newsletter.issue",
+      "level": "type",
+      "parentId": "mk.content.newsletter",
+      "name": "Newsletter issue",
+      "description": "One edition of your regular newsletter. Pick it for planning and sending each issue.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.newsletter.automated-sequence",
+      "level": "type",
+      "parentId": "mk.content.newsletter",
+      "name": "Automated email sequence",
+      "description": "A series of emails sent automatically after an action, such as signing up, starting a trial or leaving a cart. Pick it for building and improving these flows.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.newsletter.announcement-email",
+      "level": "type",
+      "parentId": "mk.content.newsletter",
+      "name": "Announcement email",
+      "description": "A one-off email to your list about a launch, an event, an offer or important news. Pick it for sends outside the regular newsletter.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.newsletter.message-campaign",
+      "level": "type",
+      "parentId": "mk.content.newsletter",
+      "name": "Text or chat message campaign",
+      "description": "A message sent to subscribers by text message or a chat app, with their consent. Pick it when your audience prefers short messages to email.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.seo",
+      "level": "subcategory",
+      "parentId": "mk.content",
+      "name": "SEO and search pages",
+      "description": "Work that helps search engines understand and rank your website. Pick it for pages written for search, technical fixes and getting other sites to link to you.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.seo.keyword-page",
+      "level": "type",
+      "parentId": "mk.content.seo",
+      "name": "Keyword or use-case page",
+      "description": "A page written to answer one search need, such as a use case, an industry, a location or a feature. Pick it when the page targets a search term rather than a news moment.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.seo.comparison-page",
+      "level": "type",
+      "parentId": "mk.content.seo",
+      "name": "Comparison page",
+      "description": "A page on your own site that compares your product with an alternative or explains the differences between options. Pick it for honest comparisons people search for before they buy.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.seo.technical-fix",
+      "level": "type",
+      "parentId": "mk.content.seo",
+      "name": "Technical SEO fix",
+      "description": "A change to how the site is built so search engines can crawl and read it better, such as speed, broken links, metadata or structured data. Pick it for fixes found in an audit.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.seo.backlink-outreach",
+      "level": "type",
+      "parentId": "mk.content.seo",
+      "name": "Backlink outreach",
+      "description": "Asking other sites to link to a page of yours, for example a resource page or an article that mentions you without a link. Pick it for link requests to site owners.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.lead-magnets",
+      "level": "subcategory",
+      "parentId": "mk.content",
+      "name": "Lead magnets and resources",
+      "description": "Useful material people get for free, often in exchange for an email address. Pick it for resources meant to attract and capture potential customers.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.lead-magnets.guide",
+      "level": "type",
+      "parentId": "mk.content.lead-magnets",
+      "name": "Guide or ebook",
+      "description": "A longer document that covers a topic in depth. Pick it when the material is too long for a blog post and worth downloading.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.lead-magnets.template",
+      "level": "type",
+      "parentId": "mk.content.lead-magnets",
+      "name": "Template",
+      "description": "A ready-to-use file people can copy, such as a spreadsheet, a document or a design. Pick it when people in your field keep rebuilding the same thing from scratch.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.lead-magnets.free-tool",
+      "level": "type",
+      "parentId": "mk.content.lead-magnets",
+      "name": "Free tool or calculator",
+      "description": "A small free tool on your site, such as a calculator, a generator or a checker. Pick it when a simple tool solves a narrow problem your audience searches for.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.content.lead-magnets.report",
+      "level": "type",
+      "parentId": "mk.content.lead-magnets",
+      "name": "Research report or white paper",
+      "description": "A document based on research, data or expert analysis, such as a survey report or a technical white paper. Pick it when the material needs sources and a careful review before release.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr",
+      "level": "category",
+      "parentId": null,
+      "name": "PR and media",
+      "shortName": "PR and media",
+      "description": "Coverage you earn through journalists, curators, podcast hosts, creators and awards, where someone else decides what gets published. Pick it for pitches and the coverage that follows.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "mk.pr.press",
+      "level": "subcategory",
+      "parentId": "mk.pr",
+      "name": "Press and journalists",
+      "description": "News sites, magazines, trade and scientific publications, and the journalists, editors or analysts behind them. Pick it for news, features and articles in publications you do not own.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.pr.press.press-release",
+      "level": "type",
+      "parentId": "mk.pr.press",
+      "name": "Press release",
+      "description": "A written announcement sent to media or published on a news wire. Pick it for news big enough for journalists to report on, such as a launch, funding or a new location.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.pr.press.pitch",
+      "level": "type",
+      "parentId": "mk.pr.press",
+      "name": "Pitch",
+      "description": "A short personal message to a journalist or editor proposing a story. Pick it for each pitch you send and its follow-ups.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.pr.press.exclusive",
+      "level": "type",
+      "parentId": "mk.pr.press",
+      "name": "Exclusive",
+      "description": "Offering one publication the story first, before anyone else, in exchange for proper coverage. Pick it when the news is strong enough that one outlet will want it alone.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.press.interview",
+      "level": "type",
+      "parentId": "mk.pr.press",
+      "name": "Interview",
+      "description": "An interview with a journalist for an article, a broadcast or a profile. Pick it for preparing, giving and following up on the interview.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.press.contributed-article",
+      "level": "type",
+      "parentId": "mk.pr.press",
+      "name": "Contributed or guest article",
+      "description": "An article you write for another publication or blog, published under your name. Pick it for opinion pieces, guest posts and expert columns outside your own site.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.press.journal-paper",
+      "level": "type",
+      "parentId": "mk.pr.press",
+      "name": "Journal paper",
+      "description": "A paper, case report or study result submitted to a scientific or professional journal. Pick it when publication is also how your field learns about the product; track the research itself elsewhere.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.press.analyst-briefing",
+      "level": "type",
+      "parentId": "mk.pr.press",
+      "name": "Analyst briefing",
+      "description": "A meeting with an industry analyst or research firm to explain your product so they include it in reports and advice to buyers. Pick it when buyers in your market rely on analysts.",
+      "order": 7,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.curators",
+      "level": "subcategory",
+      "parentId": "mk.pr",
+      "name": "Newsletters and curators",
+      "description": "Newsletters, roundups and curated feeds run by other people who pick what to include. Pick it for getting featured for free; paid placements go under Paid acquisition.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.pr.curators.submission",
+      "level": "type",
+      "parentId": "mk.pr.curators",
+      "name": "Submission",
+      "description": "Sending your product or story through a newsletter's or curator's submission form or tip line. Pick it when there is a public way to suggest items.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.pr.curators.editor-pitch",
+      "level": "type",
+      "parentId": "mk.pr.curators",
+      "name": "Pitch to the curator",
+      "description": "A personal message to the person who writes the newsletter or roundup. Pick it when you have a reason they would want to include you, such as a fit with a recent issue.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.curators.featured-mention",
+      "level": "type",
+      "parentId": "mk.pr.curators",
+      "name": "Featured mention",
+      "description": "A record of being included in a newsletter or roundup after you pitched it. Pick it to log the result and thank the curator; unprompted mentions go under Mentions and monitoring.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.pr.podcast-guest",
+      "level": "subcategory",
+      "parentId": "mk.pr",
+      "name": "Podcasts as a guest",
+      "description": "Appearing on other people's podcasts and shows. Pick it for guest spots; your own show goes under Content and SEO.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.podcast-guest.guest-pitch",
+      "level": "type",
+      "parentId": "mk.pr.podcast-guest",
+      "name": "Guest pitch",
+      "description": "Proposing yourself or a teammate as a guest, with a topic that fits the show. Pick it for each pitch to a host or booking contact.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.podcast-guest.guest-appearance",
+      "level": "type",
+      "parentId": "mk.pr.podcast-guest",
+      "name": "Guest appearance",
+      "description": "The recording itself and its preparation: talking points, setup and links to share. Pick it once a host has said yes.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.creators",
+      "level": "subcategory",
+      "parentId": "mk.pr",
+      "name": "Creators, influencers and experts",
+      "description": "People with their own audience who can show, review or recommend your product, from video creators to respected experts in a field. Pick it for working with individuals rather than publications.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.creators.outreach",
+      "level": "type",
+      "parentId": "mk.pr.creators",
+      "name": "Creator outreach",
+      "description": "Contacting a creator or influencer about a possible collaboration. Pick it for first contact and follow-ups before anything is agreed.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.creators.product-seeding",
+      "level": "type",
+      "parentId": "mk.pr.creators",
+      "name": "Product seeding",
+      "description": "Sending free product, samples or access to creators with no obligation to post. Pick it for gifting campaigns where you track who received what and who shared it.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.creators.collaboration",
+      "level": "type",
+      "parentId": "mk.pr.creators",
+      "name": "Collaboration",
+      "description": "Making content together with a creator, such as a joint video, a guest post or a live session, without payment. Pick it when both sides gain from the joint piece.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.creators.sponsored-content",
+      "level": "type",
+      "parentId": "mk.pr.creators",
+      "name": "Sponsored content",
+      "description": "Paying a creator to make or post content about your product, labeled as an ad where the rules require it. Pick it for paid creator deals.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.creators.review",
+      "level": "type",
+      "parentId": "mk.pr.creators",
+      "name": "Review or unboxing",
+      "description": "A creator's independent review, test or unboxing of your product. Pick it when the creator decides what they say about it.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.creators.expert-advocate",
+      "level": "type",
+      "parentId": "mk.pr.creators",
+      "name": "Expert or opinion leader",
+      "description": "Working with a respected professional in your field, such as a doctor, engineer or chef, who speaks about the problem you solve. Pick it when trust comes from expertise rather than audience size.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.awards",
+      "level": "subcategory",
+      "parentId": "mk.pr",
+      "name": "Awards and rankings",
+      "description": "Awards, prizes and published lists that rank or recognize companies, products or founders. Pick it for entries made mainly for visibility; prize money and support programs go in their own sections.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.awards.nomination",
+      "level": "type",
+      "parentId": "mk.pr.awards",
+      "name": "Nomination",
+      "description": "Being nominated, or asking someone to nominate you, for an award. Pick it when the award works by nomination rather than open entry.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.awards.application",
+      "level": "type",
+      "parentId": "mk.pr.awards",
+      "name": "Application",
+      "description": "Entering an award or competition yourself, with the forms and materials it asks for. Pick it for open calls for entries.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.pr.awards.list-submission",
+      "level": "type",
+      "parentId": "mk.pr.awards",
+      "name": "List submission",
+      "description": "Submitting your company or a founder to a published list, such as a ranking of startups to watch in a city or an industry. Pick it for lists that take submissions.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.events",
+      "level": "category",
+      "parentId": null,
+      "name": "Events",
+      "shortName": "Events",
+      "description": "Events you attend, speak at, exhibit at or host, in person or online. Pick it for anything with a date and a venue or a link to join.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "mk.events.conferences",
+      "level": "subcategory",
+      "parentId": "mk.events",
+      "name": "Conferences and trade shows",
+      "description": "Large industry events with talks, exhibitors and many attendees, including trade fairs and scientific meetings. Pick it for events you travel to or plan months ahead.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.events.conferences.attend",
+      "level": "type",
+      "parentId": "mk.events.conferences",
+      "name": "Attend",
+      "description": "Going to an event to meet people, learn and talk to potential customers or partners. Pick it when you go without a talk or a booth.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.events.conferences.speaking-submission",
+      "level": "type",
+      "parentId": "mk.events.conferences",
+      "name": "Speaking or abstract submission",
+      "description": "Applying to speak, or submitting an abstract or paper, through the event's call for proposals. Pick it for the application and its outcome.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.events.conferences.talk-poster",
+      "level": "type",
+      "parentId": "mk.events.conferences",
+      "name": "Talk or poster",
+      "description": "Giving a talk, sitting on a panel or presenting a poster at the event. Pick it once you are accepted, for preparing and delivering it.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.conferences.exhibit",
+      "level": "type",
+      "parentId": "mk.events.conferences",
+      "name": "Exhibit",
+      "description": "Having a booth, table or stand at the event. Pick it for booth planning, materials, staffing and the leads you collect.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.conferences.sponsor",
+      "level": "type",
+      "parentId": "mk.events.conferences",
+      "name": "Sponsor",
+      "description": "Paying the organizer for visibility at the event, such as a logo, a session or a side event. Pick it for any paid event sponsorship, with or without a booth.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.local-events",
+      "level": "subcategory",
+      "parentId": "mk.events",
+      "name": "Meetups and local events",
+      "description": "Smaller in-person events in your city or region, such as meetups, local business events, markets and fairs. Pick it for events close to home, including ones you host.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.events.local-events.attend",
+      "level": "type",
+      "parentId": "mk.events.local-events",
+      "name": "Attend",
+      "description": "Going to a meetup or local event to meet people. Pick it for events you join as a guest, including regular groups you attend.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.events.local-events.talk-demo",
+      "level": "type",
+      "parentId": "mk.events.local-events",
+      "name": "Give a talk or demo",
+      "description": "Speaking or showing your product at a meetup or local event. Pick it when you are on the program, not only in the room.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.events.local-events.host",
+      "level": "type",
+      "parentId": "mk.events.local-events",
+      "name": "Host",
+      "description": "Organizing a meetup, workshop, open day or launch party yourself. Pick it for events where you pick the date, the venue and the guests.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.local-events.pop-up",
+      "level": "type",
+      "parentId": "mk.events.local-events",
+      "name": "Pop-up or in-store event",
+      "description": "A temporary shop, a market stall, a tasting or an event at your own premises. Pick it when people come to see, try or buy the product in person.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.local-events.sponsor",
+      "level": "type",
+      "parentId": "mk.events.local-events",
+      "name": "Sponsor",
+      "description": "Supporting a local event, team or group with money, products or space in return for visibility. Pick it for local sponsorships of any size.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.online-events",
+      "level": "subcategory",
+      "parentId": "mk.events",
+      "name": "Webinars and online events",
+      "description": "Live events held online, such as webinars, virtual summits and online workshops. Pick it for sessions people join through a link at a set time.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.online-events.host",
+      "level": "type",
+      "parentId": "mk.events.online-events",
+      "name": "Host a webinar",
+      "description": "Running your own online session, from sign-ups and reminders to the live session and follow-up email. Pick it for webinars you organize.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.online-events.guest-speaker",
+      "level": "type",
+      "parentId": "mk.events.online-events",
+      "name": "Guest speaker or panelist",
+      "description": "Speaking at an online event run by someone else, alone or on a panel. Pick it when another organizer invites you or accepts your proposal.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.online-events.workshop",
+      "level": "type",
+      "parentId": "mk.events.online-events",
+      "name": "Workshop or online class",
+      "description": "A hands-on session where attendees learn by doing, often in small groups. Pick it when the format is teaching rather than presenting.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.pitch-events",
+      "level": "subcategory",
+      "parentId": "mk.events",
+      "name": "Pitch and demo events",
+      "description": "Events where startups present to an audience of investors, customers or the press. Pick it for the marketing side of pitching; the programs and prizes behind them can be tracked in their own sections.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.pitch-events.demo-day",
+      "level": "type",
+      "parentId": "mk.events.pitch-events",
+      "name": "Demo day",
+      "description": "The closing event of a program where each startup presents to invited guests. Pick it for preparing the demo and following up with the people you met.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.pitch-events.pitch-competition",
+      "level": "type",
+      "parentId": "mk.events.pitch-events",
+      "name": "Pitch competition",
+      "description": "An event where startups pitch on stage and a jury picks winners. Pick it for the visibility side of the competition.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.pitch-events.showcase",
+      "level": "type",
+      "parentId": "mk.events.pitch-events",
+      "name": "Showcase or exhibition table",
+      "description": "A table or slot in a startup showcase where visitors walk around and try products. Pick it when you show the product rather than pitch it.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.hackathons",
+      "level": "subcategory",
+      "parentId": "mk.events",
+      "name": "Hackathons and challenges",
+      "description": "Time-limited events where people build or solve something, often in teams. Pick it when the event puts your product or brand in front of people who make things.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.hackathons.take-part",
+      "level": "type",
+      "parentId": "mk.events.hackathons",
+      "name": "Take part",
+      "description": "Joining a hackathon or challenge as a participant or a team. Pick it when building something there also shows your skills or product.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.hackathons.sponsor",
+      "level": "type",
+      "parentId": "mk.events.hackathons",
+      "name": "Sponsor",
+      "description": "Sponsoring a challenge, a prize or a track so participants use your product or work on your problem. Pick it for sponsor deals with organizers.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.events.hackathons.mentor-judge",
+      "level": "type",
+      "parentId": "mk.events.hackathons",
+      "name": "Mentor or judge",
+      "description": "Helping teams as a mentor or scoring projects as a judge. Pick it when you give time rather than money.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners",
+      "level": "category",
+      "parentId": null,
+      "name": "Partnerships and co-marketing",
+      "shortName": "Partnerships",
+      "description": "Growth that comes from working with other companies and people who already reach your audience. Pick it for joint campaigns, integrations, referral programs and sales partners.",
+      "order": 7,
+      "recommended": true
+    },
+    {
+      "id": "mk.partners.co-marketing",
+      "level": "subcategory",
+      "parentId": "mk.partners",
+      "name": "Co-marketing",
+      "description": "Marketing done together with another company that shares your audience but does not compete with you. Pick it for joint campaigns where both sides promote the result.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.partners.co-marketing.joint-content",
+      "level": "type",
+      "parentId": "mk.partners.co-marketing",
+      "name": "Joint content",
+      "description": "An article, guide, video or report made with a partner and shared by both. Pick it for content with two names on it.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.partners.co-marketing.joint-webinar",
+      "level": "type",
+      "parentId": "mk.partners.co-marketing",
+      "name": "Joint webinar or event",
+      "description": "An online or in-person event run together with a partner. Pick it when both sides invite their audiences.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.partners.co-marketing.list-swap",
+      "level": "type",
+      "parentId": "mk.partners.co-marketing",
+      "name": "Newsletter or audience swap",
+      "description": "An agreement to mention each other in newsletters, posts or channels. Pick it for simple exchanges of promotion with no money involved.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.co-marketing.joint-offer",
+      "level": "type",
+      "parentId": "mk.partners.co-marketing",
+      "name": "Bundle or joint offer",
+      "description": "A combined product, discount or package offered with a partner, such as a bundle or a local cross-promotion. Pick it when customers get something from both of you.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.integrations",
+      "level": "subcategory",
+      "parentId": "mk.partners",
+      "name": "Integrations and ecosystem listings",
+      "description": "Listings and pages that come from working with another product or platform, such as integration directories and plugin galleries. Pick it when your product connects to or builds on someone else's.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.integrations.integration-listing",
+      "level": "type",
+      "parentId": "mk.partners.integrations",
+      "name": "Integration listing",
+      "description": "A page in another product's integration directory that shows how your product connects to it. Pick it for getting listed and keeping the listing current.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.integrations.partner-directory",
+      "level": "type",
+      "parentId": "mk.partners.integrations",
+      "name": "Partner directory",
+      "description": "A listing in a platform's directory of certified or recommended partners, such as service providers or solution partners. Pick it when you qualify as a partner.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.integrations.template-listing",
+      "level": "type",
+      "parentId": "mk.partners.integrations",
+      "name": "Template or plugin listing",
+      "description": "Publishing a template, plugin, theme or add-on in another product's gallery so its users find you. Pick it when the add-on brings people to your main product.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.referrals",
+      "level": "subcategory",
+      "parentId": "mk.partners",
+      "name": "Affiliates and referrals",
+      "description": "Programs that reward people for sending you customers. Pick it for setting up and running affiliate, referral and ambassador programs.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.referrals.affiliate-program",
+      "level": "type",
+      "parentId": "mk.partners.referrals",
+      "name": "Affiliate program",
+      "description": "A program that pays partners, sites or creators a commission on sales they refer. Pick it for program setup, recruiting affiliates and tracking their results.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.referrals.referral-program",
+      "level": "type",
+      "parentId": "mk.partners.referrals",
+      "name": "Referral program",
+      "description": "A program that rewards existing customers for bringing new ones, for example with a discount or credit. Pick it for customer-to-customer referrals.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.referrals.ambassador-program",
+      "level": "type",
+      "parentId": "mk.partners.referrals",
+      "name": "Ambassador program",
+      "description": "A group of fans or users who represent your brand, often with perks, early access or recognition instead of commission. Pick it when you recruit and support ambassadors.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.channels",
+      "level": "subcategory",
+      "parentId": "mk.partners",
+      "name": "Resellers and channels",
+      "description": "Companies that sell, stock or deliver your product to their own customers. Pick it for building sales channels through other businesses.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.channels.reseller-outreach",
+      "level": "type",
+      "parentId": "mk.partners.channels",
+      "name": "Reseller outreach",
+      "description": "Contacting companies that could resell your product. Pick it for first contact, agreements and onboarding resellers.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.channels.distributor",
+      "level": "type",
+      "parentId": "mk.partners.channels",
+      "name": "Distributor",
+      "description": "A company that buys and distributes your product to shops or other sellers in a market or region. Pick it for distribution deals, often for physical products.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.channels.retail-placement",
+      "level": "type",
+      "parentId": "mk.partners.channels",
+      "name": "Retail stockist",
+      "description": "Getting your product onto the shelves of a shop or a chain, or into its online store. Pick it for pitches to buyers and the follow-up after a shop stocks you.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.partners.channels.agency-partner",
+      "level": "type",
+      "parentId": "mk.partners.channels",
+      "name": "Agency or service partner",
+      "description": "An agency or consultancy that recommends, sets up or delivers your product for its clients. Pick it for partners who bring customers through their own services.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach",
+      "level": "category",
+      "parentId": null,
+      "name": "Direct outreach and customer marketing",
+      "shortName": "Outreach",
+      "description": "One-to-one outreach to people who might buy, and marketing to people who already know you. Pick it for emails, messages, calls and visits to specific people, and for campaigns aimed at existing customers.",
+      "order": 8,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.email-outreach",
+      "level": "subcategory",
+      "parentId": "mk.outreach",
+      "name": "Email outreach",
+      "description": "Personal emails to specific people or companies who have not asked to hear from you yet. Pick it for prospecting by email, within the rules on unsolicited email where you and they are.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.email-outreach.cold-email",
+      "level": "type",
+      "parentId": "mk.outreach.email-outreach",
+      "name": "Cold email",
+      "description": "A first email to someone you have no prior contact with, written for that person. Pick it for each prospect or small batch you contact.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.email-outreach.follow-up-sequence",
+      "level": "type",
+      "parentId": "mk.outreach.email-outreach",
+      "name": "Follow-up sequence",
+      "description": "A planned series of follow-up emails after a first message gets no reply. Pick it when you want the timing and wording of the follow-ups tracked.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.email-outreach.warm-introduction",
+      "level": "type",
+      "parentId": "mk.outreach.email-outreach",
+      "name": "Warm introduction",
+      "description": "Asking someone who knows both of you to introduce you. Pick it when a mutual contact makes a reply more likely than a cold email.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.social-selling",
+      "level": "subcategory",
+      "parentId": "mk.outreach",
+      "name": "Social selling and messages",
+      "description": "Reaching out to specific people through social networks and messaging apps. Pick it for connection requests, direct messages and planned engagement with a prospect's posts.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.social-selling.connection-request",
+      "level": "type",
+      "parentId": "mk.outreach.social-selling",
+      "name": "Connection request",
+      "description": "Asking to connect with or follow a specific person, usually with a short note. Pick it as the first step of a social outreach.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.social-selling.direct-message",
+      "level": "type",
+      "parentId": "mk.outreach.social-selling",
+      "name": "Direct message",
+      "description": "A private message to a specific person on a social network or messaging app. Pick it for first messages and the conversation that follows.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.social-selling.prospect-engagement",
+      "level": "type",
+      "parentId": "mk.outreach.social-selling",
+      "name": "Prospect engagement",
+      "description": "Commenting on or sharing a prospect's posts over time so they know your name before you reach out. Pick it for a list of people you engage with regularly.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.calls-visits",
+      "level": "subcategory",
+      "parentId": "mk.outreach",
+      "name": "Calls and in-person visits",
+      "description": "Outreach by phone or face to face, such as calling businesses, walking into shops or visiting offices. Pick it when your buyers are easier to reach in person than online.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.calls-visits.cold-call",
+      "level": "type",
+      "parentId": "mk.outreach.calls-visits",
+      "name": "Cold call",
+      "description": "A phone call to a business or person you have not spoken to before. Pick it for call lists, scripts and call outcomes.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.calls-visits.in-person-visit",
+      "level": "type",
+      "parentId": "mk.outreach.calls-visits",
+      "name": "In-person visit",
+      "description": "Visiting a shop, office, clinic or site to introduce your product, often with samples or a brochure. Pick it for door-to-door rounds and planned visits.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.customer-marketing",
+      "level": "subcategory",
+      "parentId": "mk.outreach",
+      "name": "Customer marketing",
+      "description": "Marketing to people who already buy from you, to get reviews and stories, bring them back and grow what they buy. Pick it for campaigns aimed at existing customers.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.customer-marketing.review-request",
+      "level": "type",
+      "parentId": "mk.outreach.customer-marketing",
+      "name": "Review request",
+      "description": "Asking customers to leave a rating or review on a store, a map profile or a review site. Pick it for review campaigns on any platform, within that platform's rules on asking.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.customer-marketing.testimonial-request",
+      "level": "type",
+      "parentId": "mk.outreach.customer-marketing",
+      "name": "Testimonial request",
+      "description": "Asking a customer for a short quote, photo or video you can use on your website and materials. Pick it when you need permission to publish what they say.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.customer-marketing.case-study-request",
+      "level": "type",
+      "parentId": "mk.outreach.customer-marketing",
+      "name": "Case study request",
+      "description": "Asking a customer to take part in a case study and agreeing what can be shared. Pick it for the request, interview and approval; the published piece goes under Content.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.customer-marketing.upgrade-winback",
+      "level": "type",
+      "parentId": "mk.outreach.customer-marketing",
+      "name": "Upgrade or win-back campaign",
+      "description": "A campaign that offers existing customers more, or invites former customers back. Pick it for upgrades, add-ons, renewals and reactivation offers.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.customer-marketing.promotion",
+      "level": "type",
+      "parentId": "mk.outreach.customer-marketing",
+      "name": "Promotion or sale",
+      "description": "A time-limited offer such as a seasonal sale, a discount code or a holiday campaign. Pick it for planned promotions across channels.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.customer-marketing.loyalty-program",
+      "level": "type",
+      "parentId": "mk.outreach.customer-marketing",
+      "name": "Loyalty program",
+      "description": "A program that rewards repeat customers, such as points, stamp cards or member perks. Pick it for setting up and running the program.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.early-users",
+      "level": "subcategory",
+      "parentId": "mk.outreach",
+      "name": "Early users and design partners",
+      "description": "Finding the first users or customers before or just after launch, who give feedback in return for early access. Pick it for betas, waitlists and design partner programs.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.early-users.beta-invitation",
+      "level": "type",
+      "parentId": "mk.outreach.early-users",
+      "name": "Beta invitation",
+      "description": "Inviting people to try an early version and report what they find. Pick it for beta invitations and the feedback that comes back.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.early-users.design-partner",
+      "level": "type",
+      "parentId": "mk.outreach.early-users",
+      "name": "Design partner outreach",
+      "description": "Finding a few customers who agree to shape the product with you, often for a discount or early access. Pick it for recruiting and running design partners.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.outreach.early-users.waitlist-campaign",
+      "level": "type",
+      "parentId": "mk.outreach.early-users",
+      "name": "Waitlist campaign",
+      "description": "Getting people to join a waitlist before launch and keeping them interested until they get in. Pick it for the campaign; the page itself goes under Website and landing pages.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.outreach.early-users.trial-offer",
+      "level": "type",
+      "parentId": "mk.outreach.early-users",
+      "name": "Free trial or pilot offer",
+      "description": "An offer that lets a prospect try the product free or at a reduced price for a set time. Pick it for campaigns built around a trial, a free plan or a paid pilot.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid",
+      "level": "category",
+      "parentId": null,
+      "name": "Paid acquisition",
+      "shortName": "Paid",
+      "description": "Advertising and paid placements where you pay to reach people. Pick it for ad campaigns, sponsorships and printed or broadcast ads, along with their budgets and tests.",
+      "order": 9,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.search-ads",
+      "level": "subcategory",
+      "parentId": "mk.paid",
+      "name": "Search ads",
+      "description": "Ads shown in search results, including product listings in search engines and in marketplaces. Pick it for campaigns aimed at people who are already searching.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.search-ads.campaign",
+      "level": "type",
+      "parentId": "mk.paid.search-ads",
+      "name": "Search campaign",
+      "description": "A search ad campaign with its keywords, ads, budget and landing page. Pick it for each campaign you run.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.search-ads.keyword-test",
+      "level": "type",
+      "parentId": "mk.paid.search-ads",
+      "name": "Keyword test",
+      "description": "A small, time-limited test of new keywords or ad text to see what works before spending more. Pick it when you want the test and its result recorded apart from the main campaign.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.search-ads.shopping-ads",
+      "level": "type",
+      "parentId": "mk.paid.search-ads",
+      "name": "Shopping or product ads",
+      "description": "Ads that show a product with its image and price in search results or inside a marketplace. Pick it for promoting product listings, for example on an online marketplace.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.search-ads.retargeting",
+      "level": "type",
+      "parentId": "mk.paid.search-ads",
+      "name": "Search retargeting",
+      "description": "Search ads shown to people who have already visited your site. Pick it for campaigns aimed at bringing visitors back.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.social-ads",
+      "level": "subcategory",
+      "parentId": "mk.paid",
+      "name": "Social ads",
+      "description": "Paid ads on social networks and video apps, aimed by interests, job, location or similar audiences. Pick it for paid campaigns on any social platform.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.social-ads.campaign",
+      "level": "type",
+      "parentId": "mk.paid.social-ads",
+      "name": "Social campaign",
+      "description": "A social ad campaign with its audience, ads, budget and goal. Pick it for each campaign you run.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.social-ads.creative-test",
+      "level": "type",
+      "parentId": "mk.paid.social-ads",
+      "name": "Creative test",
+      "description": "Testing different images, videos or texts against each other to find the ad that works best. Pick it when the test is the point of the spend.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.social-ads.boosted-post",
+      "level": "type",
+      "parentId": "mk.paid.social-ads",
+      "name": "Boosted post",
+      "description": "Paying to show an existing post to more people. Pick it for small, quick promotions of posts that are already doing well.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.social-ads.retargeting",
+      "level": "type",
+      "parentId": "mk.paid.social-ads",
+      "name": "Social retargeting",
+      "description": "Social ads shown to people who visited your site or engaged with your accounts. Pick it for campaigns aimed at people who already know you.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.sponsorships",
+      "level": "subcategory",
+      "parentId": "mk.paid",
+      "name": "Sponsorships",
+      "description": "Paying for a mention or ad slot in someone else's newsletter, podcast or online community. Pick it for paid mentions; event sponsorships go under Events and paid creator content under PR and media.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.sponsorships.newsletter",
+      "level": "type",
+      "parentId": "mk.paid.sponsorships",
+      "name": "Newsletter sponsorship",
+      "description": "A paid ad or sponsored slot in someone else's newsletter. Pick it for each placement you book.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.sponsorships.podcast",
+      "level": "type",
+      "parentId": "mk.paid.sponsorships",
+      "name": "Podcast sponsorship",
+      "description": "A paid ad read or sponsored segment on a podcast. Pick it for each placement you book.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.sponsorships.community",
+      "level": "type",
+      "parentId": "mk.paid.sponsorships",
+      "name": "Community sponsorship",
+      "description": "Paying to support an online community, a forum or an open-source project in return for visibility, such as a sponsor badge. Pick it for groups rather than media; local sponsorships go under Events.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.display-ads",
+      "level": "subcategory",
+      "parentId": "mk.paid",
+      "name": "Display and native ads",
+      "description": "Banner, video and native ads shown on websites and apps through ad networks or direct deals. Pick it for ads placed next to content rather than in search or social feeds.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.display-ads.campaign",
+      "level": "type",
+      "parentId": "mk.paid.display-ads",
+      "name": "Display campaign",
+      "description": "A display or native ad campaign with its placements, ads and budget. Pick it for each campaign you run.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.display-ads.direct-placement",
+      "level": "type",
+      "parentId": "mk.paid.display-ads",
+      "name": "Direct placement",
+      "description": "An ad bought directly from one website, app or publication rather than through an ad network. Pick it for one-off deals with a single site.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.offline-ads",
+      "level": "subcategory",
+      "parentId": "mk.paid",
+      "name": "Offline and print",
+      "description": "Advertising outside the internet, such as print, mail, broadcast and outdoor ads. Pick it for physical and broadcast media, including signs and flyers for a local business.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.offline-ads.flyer-poster",
+      "level": "type",
+      "parentId": "mk.paid.offline-ads",
+      "name": "Flyer or poster",
+      "description": "Printed flyers, leaflets or posters handed out or put up in places your customers go. Pick it for each print run and where it was distributed.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.offline-ads.direct-mail",
+      "level": "type",
+      "parentId": "mk.paid.offline-ads",
+      "name": "Direct mail",
+      "description": "Letters, postcards or catalogs sent by post to a list of addresses. Pick it for mail campaigns and their responses.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.offline-ads.print-ad",
+      "level": "type",
+      "parentId": "mk.paid.offline-ads",
+      "name": "Print ad",
+      "description": "An ad in a newspaper, magazine or printed guide. Pick it for each ad you book.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.offline-ads.broadcast",
+      "level": "type",
+      "parentId": "mk.paid.offline-ads",
+      "name": "Radio or TV",
+      "description": "An ad or sponsored segment on radio or television, including local stations. Pick it for broadcast ads and their schedule.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.paid.offline-ads.outdoor",
+      "level": "type",
+      "parentId": "mk.paid.offline-ads",
+      "name": "Outdoor and signage",
+      "description": "Billboards, transit ads, shop signs, window displays and vehicle wraps. Pick it for ads people see in public places or at your premises.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand",
+      "level": "category",
+      "parentId": null,
+      "name": "Brand, assets and operations",
+      "shortName": "Brand and ops",
+      "description": "The material and systems behind your marketing: positioning, reusable assets, your website, measurement and watching what people say about you. Pick it for internal work that makes public actions better.",
+      "order": 10,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.positioning",
+      "level": "subcategory",
+      "parentId": "mk.brand",
+      "name": "Brand and positioning",
+      "description": "Deciding who the product is for, what you say about it and how the brand looks and sounds. Pick it for strategy work that shapes every other message.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.positioning.messaging",
+      "level": "type",
+      "parentId": "mk.brand.positioning",
+      "name": "Messaging",
+      "description": "The core words you use to describe the product, its value and its difference from alternatives. Pick it for writing and testing your main message.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.positioning.naming-tagline",
+      "level": "type",
+      "parentId": "mk.brand.positioning",
+      "name": "Naming or tagline",
+      "description": "Choosing or changing a product name, a company name or a tagline. Pick it for the options, checks and the final decision.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.positioning.visual-identity",
+      "level": "type",
+      "parentId": "mk.brand.positioning",
+      "name": "Visual identity",
+      "description": "The logo, colors, fonts and visual style of the brand. Pick it for creating or refreshing the identity and its guidelines.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.positioning.competitor-analysis",
+      "level": "type",
+      "parentId": "mk.brand.positioning",
+      "name": "Competitor analysis",
+      "description": "Studying competitors and alternatives: what they offer, how they price it and how they talk about it. Pick it for research that informs your own positioning.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.positioning.customer-persona",
+      "level": "type",
+      "parentId": "mk.brand.positioning",
+      "name": "Customer persona",
+      "description": "A written profile of a typical buyer or user, built from interviews and real customer data. Pick it for defining who your marketing is aimed at.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.assets",
+      "level": "subcategory",
+      "parentId": "mk.brand",
+      "name": "Marketing assets",
+      "description": "Reusable material that other marketing work draws on, such as images, videos, decks and copy. Pick it for making and updating assets rather than publishing them.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.assets.product-images",
+      "level": "type",
+      "parentId": "mk.brand.assets",
+      "name": "Product images",
+      "description": "Screenshots, product photos and other images that show the product. Pick it for shooting or capturing images and keeping them current.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.assets.demo-video",
+      "level": "type",
+      "parentId": "mk.brand.assets",
+      "name": "Demo video",
+      "description": "A short video that shows the product in use, reused on the website, in launches and in ads. Pick it for producing and updating the master version.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.assets.press-kit",
+      "level": "type",
+      "parentId": "mk.brand.assets",
+      "name": "Logo and press kit",
+      "description": "A downloadable set of logos, images, facts and descriptions for journalists and partners. Pick it for building the kit and keeping it current.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.assets.sales-deck",
+      "level": "type",
+      "parentId": "mk.brand.assets",
+      "name": "Pitch or sales deck",
+      "description": "A slide deck that presents the product or company to customers, partners or investors. Pick it for creating and updating the deck.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.assets.one-pager",
+      "level": "type",
+      "parentId": "mk.brand.assets",
+      "name": "One-pager or brochure",
+      "description": "A short printed or PDF summary of the product or service. Pick it for leave-behind material for meetings, events and visits.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.assets.packaging-menu",
+      "level": "type",
+      "parentId": "mk.brand.assets",
+      "name": "Packaging or menu",
+      "description": "Product packaging, labels, inserts and menus that customers see when they buy or order. Pick it for the marketing side of these: wording, design and updates.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.assets.copy-bank",
+      "level": "type",
+      "parentId": "mk.brand.assets",
+      "name": "Copy bank",
+      "description": "A store of approved descriptions, taglines and answers in different lengths, ready to paste into forms and posts. Pick it for writing and maintaining that text.",
+      "order": 7,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.website",
+      "level": "subcategory",
+      "parentId": "mk.brand",
+      "name": "Website and landing pages",
+      "description": "Your own website and the pages that turn visitors into users or customers. Pick it for building and improving pages; articles and pages written for search go under Content and SEO.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.website.homepage",
+      "level": "type",
+      "parentId": "mk.brand.website",
+      "name": "Homepage",
+      "description": "The main page of your website. Pick it for rewrites, redesigns and smaller changes to the first page most visitors see.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.website.pricing-page",
+      "level": "type",
+      "parentId": "mk.brand.website",
+      "name": "Pricing page",
+      "description": "The page that explains your prices, plans or packages. Pick it for changes to how prices are shown and explained.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.website.landing-page",
+      "level": "type",
+      "parentId": "mk.brand.website",
+      "name": "Campaign landing page",
+      "description": "A page made for one campaign, offer or audience, such as a waitlist page or an event sign-up page. Pick it when a campaign needs its own page, including tests of page versions.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.website.portfolio",
+      "level": "type",
+      "parentId": "mk.brand.website",
+      "name": "Portfolio or work page",
+      "description": "A page that shows past projects, clients or results, common for agencies, studios and consultants. Pick it for building the page and adding new work with permission from the client.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.website.docs-help",
+      "level": "type",
+      "parentId": "mk.brand.website",
+      "name": "Docs or help center",
+      "description": "Product documentation, guides and help articles for users. Pick it for the public docs that help people choose and use the product.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.website.project-page",
+      "level": "type",
+      "parentId": "mk.brand.website",
+      "name": "Code repository page",
+      "description": "The public page of a code repository, such as its readme, description, topics and release notes. Pick it when that page is where many people first meet the project.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.analytics",
+      "level": "subcategory",
+      "parentId": "mk.brand",
+      "name": "Analytics and reporting",
+      "description": "Measuring where visitors and customers come from and what your marketing achieves. Pick it for tracking setup, reports and regular reviews.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.analytics.analytics-setup",
+      "level": "type",
+      "parentId": "mk.brand.analytics",
+      "name": "Analytics setup",
+      "description": "Installing and configuring analytics on your website, store or app, with the events and goals you want to count. Pick it for setup work and fixes, within your privacy rules.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.analytics.link-tracking",
+      "level": "type",
+      "parentId": "mk.brand.analytics",
+      "name": "Link tracking plan",
+      "description": "A consistent way of tagging links, codes or numbers so you can tell which channel a visit or sale came from. Pick it for creating and maintaining the plan.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.analytics.dashboard",
+      "level": "type",
+      "parentId": "mk.brand.analytics",
+      "name": "Dashboard or report",
+      "description": "A dashboard or written report that brings your marketing numbers together. Pick it for building the report and keeping its data sources working.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.analytics.attribution-review",
+      "level": "type",
+      "parentId": "mk.brand.analytics",
+      "name": "Attribution review",
+      "description": "Looking into which channels and actions led to sign-ups or sales. Pick it when you want to decide where to spend more time or money.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.analytics.periodic-review",
+      "level": "type",
+      "parentId": "mk.brand.analytics",
+      "name": "Periodic review",
+      "description": "A regular look back at what was done, what worked and what to try next. Pick it for weekly or monthly marketing reviews.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.mentions",
+      "level": "subcategory",
+      "parentId": "mk.brand",
+      "name": "Mentions and monitoring",
+      "description": "Keeping track of what others say about you without being asked. Pick it to record organic mentions so you can thank, share or learn from them, and to set up the searches that find them.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.mentions.social-mention",
+      "level": "type",
+      "parentId": "mk.brand.mentions",
+      "name": "Social mention",
+      "description": "Someone mentioning your product or company in a social post, a reply or a video. Pick it for mentions on social networks.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.mentions.press-mention",
+      "level": "type",
+      "parentId": "mk.brand.mentions",
+      "name": "Press or newsletter mention",
+      "description": "An article, roundup, newsletter or podcast that mentions you without a pitch from you. Pick it for media mentions you did not arrange.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.mentions.community-mention",
+      "level": "type",
+      "parentId": "mk.brand.mentions",
+      "name": "Community mention",
+      "description": "A mention in a forum, a chat community or a group, such as someone recommending you in a thread. Pick it for mentions inside communities.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "mk.brand.mentions.review-monitoring",
+      "level": "type",
+      "parentId": "mk.brand.mentions",
+      "name": "Review monitoring",
+      "description": "Watching and answering new reviews on stores, maps and review sites. Pick it for regular review checks and the replies you post.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "mk.brand.mentions.monitoring-setup",
+      "level": "type",
+      "parentId": "mk.brand.mentions",
+      "name": "Monitoring setup",
+      "description": "Setting up the alerts, saved searches or tools that find mentions of your brand, product and competitors. Pick it for the setup and its upkeep.",
+      "order": 5,
+      "recommended": false
+    }
+  ]
+}

@@ -1,0 +1,2211 @@
+{
+  "section": "po",
+  "libraryVersion": 1,
+  "nodes": [
+    {
+      "id": "po.grants",
+      "level": "category",
+      "parentId": null,
+      "name": "Grants and public funding programs",
+      "shortName": "Grants",
+      "description": "Calls and schemes you apply to for non-dilutive money: grants, vouchers, tax incentives, prizes and public contracts. Track the program here and the money you receive in Funding, linked to it.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.government",
+      "level": "subcategory",
+      "parentId": "po.grants",
+      "name": "Government grants",
+      "description": "Grants from national, regional or local public bodies that pay part of a project's costs. Pick the type that matches the grant's purpose; grants for hiring or staff training go under Talent and hiring programs.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.government.rd-innovation",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "R&D and innovation",
+      "description": "Grants for research, development and innovation projects, such as building and testing a new product, process or technology. Pick it when the call pays for technical work.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.government.early-stage",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "Early-stage or startup",
+      "description": "Grants reserved for young companies, often limited by company age, to help with a first product or the first steps in a market. Pick it when the call targets startups rather than a theme.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.government.growth",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "Growth and commercialization",
+      "description": "Grants for taking a product to market or growing an existing business, such as a market launch, more production capacity or a new site. Pick it when the call pays for growth rather than research.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.government.regional-local",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "Regional or local development",
+      "description": "Grants from a region, city or development agency for businesses in its area, including local business, shop improvement and town-center programs. Pick it when where you are based is the main condition.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.government.export",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "Export and internationalization",
+      "description": "Grants toward the cost of selling abroad, such as market studies, foreign trade fairs or certification for a new market. For advice and trade missions without money, use Trade and export programs.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.government.digitalization",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "Digitalization",
+      "description": "Grants that help a business adopt digital tools, such as online sales, booking systems, cloud software or automation. Pick it when the call pays for buying or setting up technology rather than developing it.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.government.green",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "Green and sustainability",
+      "description": "Grants for projects that cut emissions, energy use or waste, or that develop clean technology. Pick it for climate, energy efficiency and circular economy calls.",
+      "order": 7,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.government.social-impact",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "Social impact and inclusion",
+      "description": "Grants for businesses with a social purpose, or for projects that improve accessibility or inclusion for people who are often left out. Pick it for social enterprise and inclusion calls.",
+      "order": 8,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.government.sector",
+      "level": "type",
+      "parentId": "po.grants.government",
+      "name": "Sector-specific",
+      "description": "Grants limited to one industry, such as health, agriculture, culture, tourism or space. Pick it when the sector is the main condition and no other theme fits better.",
+      "order": 9,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.foundations",
+      "level": "subcategory",
+      "parentId": "po.grants",
+      "name": "Foundation and private grants",
+      "description": "Grants from foundations, companies and ecosystem funds rather than a government. For funds that only open-source projects can apply to, use Open-source foundations and support.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.foundations.foundation",
+      "level": "type",
+      "parentId": "po.grants.foundations",
+      "name": "Foundation grant",
+      "description": "Grants from a charitable or philanthropic foundation, such as a research charity, a patient organization or an impact foundation. Pick it when the funder is a nonprofit.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.foundations.corporate",
+      "level": "type",
+      "parentId": "po.grants.foundations",
+      "name": "Corporate grant",
+      "description": "Grant programs run by a company or its corporate foundation, often on a theme such as climate, education or local communities. Pick it when a business gives the money and takes no equity.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.foundations.ecosystem",
+      "level": "type",
+      "parentId": "po.grants.foundations",
+      "name": "Ecosystem grant",
+      "description": "Grants that a platform, protocol or developer ecosystem gives to projects that build on it or grow its community. Pick it when the money depends on using that ecosystem.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.international",
+      "level": "subcategory",
+      "parentId": "po.grants",
+      "name": "International and cross-border programs",
+      "description": "Funding calls run across several countries, by international organizations or by development banks. Pick it when your own country's government does not run the program, even if you apply alone.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.international.framework",
+      "level": "type",
+      "parentId": "po.grants.international",
+      "name": "Multi-country framework program",
+      "description": "Large research and innovation programs that a group of countries funds together, often with calls for single companies and for consortia. Pick it when the call belongs to such a shared program.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.international.development-bank",
+      "level": "type",
+      "parentId": "po.grants.international",
+      "name": "Development bank program",
+      "description": "Grant or technical assistance programs run by a regional or multilateral development bank, often for markets with less access to capital. Pick it when a development bank runs the call.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.international.organization-call",
+      "level": "type",
+      "parentId": "po.grants.international",
+      "name": "International organization call",
+      "description": "Calls from intergovernmental organizations and their agencies, for example innovation challenges, pilot funding or technical support. Pick it when the organizer represents several governments.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.international.cross-border",
+      "level": "type",
+      "parentId": "po.grants.international",
+      "name": "Cross-border cooperation",
+      "description": "Programs that fund projects between partners in neighboring countries or regions, often with a partner required on each side of a border. Pick it when the call asks for a cross-border partnership.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.vouchers",
+      "level": "subcategory",
+      "parentId": "po.grants",
+      "name": "Innovation vouchers and open calls",
+      "description": "Vouchers that pay an approved provider for services you need, and open calls in which a funded project passes money on to startups. Track a scheme here whether you use the voucher or want to be listed as a provider.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.vouchers.innovation",
+      "level": "type",
+      "parentId": "po.grants.vouchers",
+      "name": "Innovation voucher",
+      "description": "A voucher that pays a research center, lab or approved provider to do innovation work for you, such as testing, prototyping or a technology adoption project. Pick it when the money goes to the provider, not to you.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.vouchers.consultancy",
+      "level": "type",
+      "parentId": "po.grants.vouchers",
+      "name": "Consultancy voucher",
+      "description": "A voucher that covers part of the cost of advice from an approved consultant, for example on strategy, export, digital tools or financing. Pick it for advice rather than technical work.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.vouchers.open-call",
+      "level": "type",
+      "parentId": "po.grants.vouchers",
+      "name": "Open call or sub-grant",
+      "description": "Money that a larger funded project or program passes on to startups and small companies through its own open calls, sometimes called cascade funding. Pick it when a project consortium runs the call, not the original funder.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.tax",
+      "level": "subcategory",
+      "parentId": "po.grants",
+      "name": "Tax incentives and subsidies",
+      "description": "Public support given through the tax system or as a standing subsidy rather than a competitive grant. Pick it for credits, reliefs and allowances you can claim when you meet the rules.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.tax.rd-credit",
+      "level": "type",
+      "parentId": "po.grants.tax",
+      "name": "R&D tax credit",
+      "description": "A tax credit or deduction for qualifying research and development costs, in some schemes paid out in cash to companies that make a loss. Pick it when you claim R&D spending through your tax return.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.tax.startup-relief",
+      "level": "type",
+      "parentId": "po.grants.tax",
+      "name": "Startup tax relief",
+      "description": "Lower or deferred taxes for young or innovative companies, such as reduced corporate or local taxes in the first years or a special startup status. Pick it when the relief depends on being a new or qualifying company.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.tax.investor-relief",
+      "level": "type",
+      "parentId": "po.grants.tax",
+      "name": "Investor tax relief",
+      "description": "Schemes that give your investors a tax benefit for investing in a qualifying young company. Pick it when you need to check or apply for the company's eligibility before a round.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.tax.payroll-relief",
+      "level": "type",
+      "parentId": "po.grants.tax",
+      "name": "Payroll tax or contribution relief",
+      "description": "Lower payroll taxes or social contributions for qualifying staff, such as researchers, young hires or first employees. For cash paid per new hire, use Hiring subsidy under Talent and hiring programs.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.tax.capital-investment",
+      "level": "type",
+      "parentId": "po.grants.tax",
+      "name": "Capital investment incentive",
+      "description": "Tax allowances or subsidies for buying equipment, machinery or buildings, or for setting up a site in a priority area. Pick it when the support depends on what you invest in fixed assets.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.tax.founder-allowance",
+      "level": "type",
+      "parentId": "po.grants.tax",
+      "name": "Founder or self-employment allowance",
+      "description": "Income support or a startup allowance for people who start a business after unemployment or a job loss. Pick it when the payment goes to a founder personally rather than to the company.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.prizes",
+      "level": "subcategory",
+      "parentId": "po.grants",
+      "name": "Prizes and challenges",
+      "description": "Competitions where the main reward is money. Pick it when the cash prize is the reason to enter; when visibility matters more, use Visibility, events and recognition.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.prizes.innovation",
+      "level": "type",
+      "parentId": "po.grants.prizes",
+      "name": "Innovation prize",
+      "description": "A cash prize for an innovation, product or achievement you already have, judged on an application. Pick it when you compete on what you have built so far.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.prizes.challenge",
+      "level": "type",
+      "parentId": "po.grants.prizes",
+      "name": "Challenge prize",
+      "description": "A prize for solving a problem the organizer defines, often in stages with money for each round. Pick it when you must build or prove a solution to someone else's problem.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.prizes.cash-competition",
+      "level": "type",
+      "parentId": "po.grants.prizes",
+      "name": "Competition with a cash prize",
+      "description": "A startup or business plan competition, usually with a pitch, where the winners receive money. Pick it over Pitch competition when the money matters more than the stage.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.grants.procurement",
+      "level": "subcategory",
+      "parentId": "po.grants",
+      "name": "Public procurement and tenders",
+      "description": "Formal ways to sell to public bodies, where a public buyer picks a supplier through a published process. The money is contract revenue, not a grant, but you apply in a similar way.",
+      "order": 7,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.procurement.market-consultation",
+      "level": "type",
+      "parentId": "po.grants.procurement",
+      "name": "Market consultation",
+      "description": "A public buyer's request for information or early market consultation before a tender, where suppliers describe what is possible. Pick it when answering could shape a future tender.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.procurement.innovation",
+      "level": "type",
+      "parentId": "po.grants.procurement",
+      "name": "Innovation procurement",
+      "description": "Tenders in which a public buyer pays for new solutions, including pre-commercial procurement of research and development. Pick it when the buyer wants something not yet on the market.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.procurement.tender",
+      "level": "type",
+      "parentId": "po.grants.procurement",
+      "name": "Public tender",
+      "description": "A standard call for bids to supply goods, services or works to a public body. Pick it for one-off contracts with published requirements and a submission date.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.procurement.framework",
+      "level": "type",
+      "parentId": "po.grants.procurement",
+      "name": "Framework agreement",
+      "description": "A long-running agreement or approved supplier list from which public buyers can order without a new full tender. Pick it when getting onto the list is the goal.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.procurement.small-value",
+      "level": "type",
+      "parentId": "po.grants.procurement",
+      "name": "Small-value purchase",
+      "description": "Purchases below the limit for a full tender, where a public buyer can ask a few suppliers for quotes or buy directly. Pick it for small contracts with a light process.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.research",
+      "level": "subcategory",
+      "parentId": "po.grants",
+      "name": "Research and academic programs",
+      "description": "Funding calls that link a company with research: joint projects with universities, money to commercialize research results, researcher placements and time on research facilities. Pick it when a research partner or result is part of the application.",
+      "order": 8,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.research.collaborative",
+      "level": "type",
+      "parentId": "po.grants.research",
+      "name": "Collaborative research grant",
+      "description": "A grant for a project run jointly by a company and a university or research institute. Pick it when the call requires an academic partner.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.research.commercialization",
+      "level": "type",
+      "parentId": "po.grants.research",
+      "name": "Research commercialization grant",
+      "description": "Funding to turn research results into a product or a spin-off company, such as proof-of-concept grants for academic teams. Pick it when the founders or the technology come from a university or lab.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.research.researcher-placement",
+      "level": "type",
+      "parentId": "po.grants.research",
+      "name": "Industrial PhD or researcher placement",
+      "description": "Programs that pay for a PhD student, postdoc or researcher to work on a project inside a company. Pick it when you want to host a researcher with public support.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.grants.research.infrastructure-access",
+      "level": "type",
+      "parentId": "po.grants.research",
+      "name": "Research infrastructure access",
+      "description": "Calls that give free or reduced-cost time on research facilities, such as supercomputers, clean rooms, synchrotrons or specialist labs. Pick it when you apply for facility time rather than money.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.support",
+      "level": "category",
+      "parentId": null,
+      "name": "Startup support programs",
+      "shortName": "Support",
+      "description": "Structured programs that help you build the company, such as accelerators, incubators, venture studios, fellowships and mentoring. Pick it when the support itself is the main benefit, not money or credits.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.support.pre-accelerators",
+      "level": "subcategory",
+      "parentId": "po.support",
+      "name": "Pre-accelerators and idea programs",
+      "description": "Short programs for founders with an idea or an early prototype, before they are ready for an accelerator. Pick it when the goal is to test the idea and form the team.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.support.pre-accelerators.idea-validation",
+      "level": "type",
+      "parentId": "po.support.pre-accelerators",
+      "name": "Idea validation program",
+      "description": "A part-time program that helps founders test whether a problem and a solution are worth pursuing, mostly through customer interviews and quick experiments. Pick it before you have a product.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.support.pre-accelerators.pre-seed",
+      "level": "type",
+      "parentId": "po.support.pre-accelerators",
+      "name": "Pre-seed program",
+      "description": "An early program that combines support with a small first investment or stipend for teams at the idea or prototype stage. Record the equity terms here and the money in Funding.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.support.pre-accelerators.student",
+      "level": "type",
+      "parentId": "po.support.pre-accelerators",
+      "name": "Student startup program",
+      "description": "A pre-accelerator run by a university or school for its own students and recent graduates. For programs open to young founders from anywhere, use Young and student founders.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.support.accelerators",
+      "level": "subcategory",
+      "parentId": "po.support",
+      "name": "Accelerators",
+      "description": "Fixed-length cohort programs for startups with a product, with mentoring, workshops and often a demo day, sometimes with investment. Tag a program with several types when more than one fits.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.support.accelerators.equity",
+      "level": "type",
+      "parentId": "po.support.accelerators",
+      "name": "Equity accelerator",
+      "description": "An accelerator that invests in the companies it accepts in exchange for shares or a convertible instrument. Track the investment in Funding as well.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.support.accelerators.equity-free",
+      "level": "type",
+      "parentId": "po.support.accelerators",
+      "name": "Equity-free accelerator",
+      "description": "An accelerator that takes no shares, often run by a public body, university or company, sometimes with a grant or a fee instead. Pick it when the published terms say no equity is taken.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.support.accelerators.corporate",
+      "level": "type",
+      "parentId": "po.support.accelerators",
+      "name": "Corporate accelerator",
+      "description": "An accelerator run by a large company, usually to find startups it can partner with, buy from or invest in. If the program is only a route to a pilot, use Corporate pilot program.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.support.accelerators.sector",
+      "level": "type",
+      "parentId": "po.support.accelerators",
+      "name": "Sector accelerator",
+      "description": "An accelerator focused on one industry or theme, such as health, food, climate or social impact, with mentors and partners from that field. Pick it when the focus matters more than the host.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.support.accelerators.public",
+      "level": "type",
+      "parentId": "po.support.accelerators",
+      "name": "Public accelerator",
+      "description": "An accelerator run or funded by a government, public agency or city, usually without equity. Pick it when the program is part of public startup support.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.support.accelerators.remote",
+      "level": "type",
+      "parentId": "po.support.accelerators",
+      "name": "Remote accelerator",
+      "description": "An accelerator that runs fully online, so the team can take part from anywhere. Pick it when location is not a condition.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "po.support.incubators",
+      "level": "subcategory",
+      "parentId": "po.support",
+      "name": "Incubators",
+      "description": "Longer-term support for early companies, usually with workspace, advice and a network, without a fixed cohort end. Pick it when you would stay for months or years rather than a few weeks.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.support.incubators.university",
+      "level": "type",
+      "parentId": "po.support.incubators",
+      "name": "University incubator",
+      "description": "An incubator run by a university or research institute, often for spin-offs, students and alumni. Pick it when the host is an academic institution.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.support.incubators.public",
+      "level": "type",
+      "parentId": "po.support.incubators",
+      "name": "Public incubator",
+      "description": "An incubator run by a city, region or public agency, often with subsidized space and local support services. Pick it when a public body runs the program.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.support.incubators.private",
+      "level": "type",
+      "parentId": "po.support.incubators",
+      "name": "Private or corporate incubator",
+      "description": "An incubator run by a company, investor or private operator, sometimes in return for equity or fees. Pick it when the host is a business.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.support.incubators.sector",
+      "level": "type",
+      "parentId": "po.support.incubators",
+      "name": "Sector incubator",
+      "description": "An incubator for one industry with specialist facilities, such as a life science incubator with labs or a food incubator with a shared kitchen. Pick it when the facilities are the reason to join.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.support.incubators.virtual",
+      "level": "type",
+      "parentId": "po.support.incubators",
+      "name": "Virtual incubator",
+      "description": "An incubator that provides advice, contacts and services online, without physical space. Pick it when you do not need a desk.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.support.studios",
+      "level": "subcategory",
+      "parentId": "po.support",
+      "name": "Venture studios and company builders",
+      "description": "Organizations that start companies themselves, supplying the idea, team, money or services, usually for a large equity stake. Pick it when the studio would co-found the company with you.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.support.studios.co-founding",
+      "level": "type",
+      "parentId": "po.support.studios",
+      "name": "Co-founding studio",
+      "description": "A venture studio that recruits founders to build companies on its own ideas, or co-founds with founders who bring one. Pick it when the studio becomes a founding shareholder.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.support.studios.corporate-builder",
+      "level": "type",
+      "parentId": "po.support.studios",
+      "name": "Corporate venture builder",
+      "description": "A unit of a large company that builds new ventures with outside founders around the company's assets or market. Pick it when a large company shapes the venture from the start.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.support.fellowships",
+      "level": "subcategory",
+      "parentId": "po.support",
+      "name": "Fellowships and residencies",
+      "description": "Programs that select individual founders rather than companies, often with a stipend, a peer group or a place to live and work. Pick it when the founder applies as a person.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.support.fellowships.founder-fellowship",
+      "level": "type",
+      "parentId": "po.support.fellowships",
+      "name": "Founder fellowship",
+      "description": "A selective program that gives an individual founder a stipend, mentoring and a peer group for a set period. Pick it when the person is selected, with or without a company.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.support.fellowships.entrepreneur-in-residence",
+      "level": "type",
+      "parentId": "po.support.fellowships",
+      "name": "Entrepreneur in residence",
+      "description": "A role hosted by an investor, university or company, in which a founder develops a new venture with the host's support. Pick it when you would join an organization while you build.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.support.fellowships.residency",
+      "level": "type",
+      "parentId": "po.support.fellowships",
+      "name": "Residency program",
+      "description": "A program where founders live or work together in one place for a period, such as a founder house or a hosted stay in another city. Pick it when the shared place is the main benefit.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.support.mentorship",
+      "level": "subcategory",
+      "parentId": "po.support",
+      "name": "Mentorship and advisory",
+      "description": "Programs that connect you with experienced people for advice, outside a full accelerator. Pick it when advice is the main benefit.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "po.support.mentorship.mentor-network",
+      "level": "type",
+      "parentId": "po.support.mentorship",
+      "name": "Mentor network",
+      "description": "A network that matches founders with volunteer mentors, often run by a public agency, university or business association. Pick it for ongoing one-to-one mentoring.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.support.mentorship.advisory",
+      "level": "type",
+      "parentId": "po.support.mentorship",
+      "name": "Advisory program",
+      "description": "A structured program in which advisors work with your team on one area, such as growth, finance or operations, over several sessions. Pick it when the advice follows a plan.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.support.mentorship.office-hours",
+      "level": "type",
+      "parentId": "po.support.mentorship",
+      "name": "Expert office hours",
+      "description": "Short sessions you can book with experts such as lawyers, investors or engineers, often free through a hub or program. Pick it for one-off questions.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.perks",
+      "level": "category",
+      "parentId": null,
+      "name": "Perks, credits and in-kind resources",
+      "shortName": "Perks",
+      "description": "Free or discounted credits, services, tools and space that providers offer to startups. Pick it when the benefit is something you would otherwise pay for, not cash.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.cloud",
+      "level": "subcategory",
+      "parentId": "po.perks",
+      "name": "Cloud and infrastructure credits",
+      "description": "Credits and free access for computing, hosting and data. Pick it when the benefit is usage you would otherwise pay a provider for; for a provider's wider startup program, use Platform startup programs.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.cloud.cloud-credits",
+      "level": "type",
+      "parentId": "po.perks.cloud",
+      "name": "Cloud credits",
+      "description": "Credits from a cloud provider that pay for its services for a limited period. Pick it for general cloud computing, storage and database credits.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.cloud.hosting",
+      "level": "type",
+      "parentId": "po.perks.cloud",
+      "name": "Hosting credits",
+      "description": "Free or discounted plans for web hosting, application platforms, content delivery or domains. Pick it for smaller hosting providers rather than a full cloud.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.cloud.compute",
+      "level": "type",
+      "parentId": "po.perks.cloud",
+      "name": "Compute or GPU access",
+      "description": "Credits or allocated time on GPUs or high-performance computing from providers and programs. Pick it for model training, simulation or other heavy computing; for calls for time on a public research facility, use Research infrastructure access.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.cloud.data",
+      "level": "type",
+      "parentId": "po.perks.cloud",
+      "name": "Data and dataset access",
+      "description": "Free or reduced-cost access to datasets, data platforms or shared data spaces for building and testing products. Pick it when the data is the resource you need.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.software",
+      "level": "subcategory",
+      "parentId": "po.perks",
+      "name": "Software and tool credits",
+      "description": "Free or discounted licenses and credits for software that runs the business or helps you build the product. Pick it for perks on tools rather than infrastructure.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.software.bundle",
+      "level": "type",
+      "parentId": "po.perks.software",
+      "name": "Perks bundle",
+      "description": "A package of discounts from many providers, offered through an accelerator, bank, platform or perks marketplace. Pick it when one membership gives access to several offers.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.software.developer-tools",
+      "level": "type",
+      "parentId": "po.perks.software",
+      "name": "Developer tools",
+      "description": "Free or discounted tools for writing, testing, securing and running code, including free plans for open-source projects. Pick it for engineering tools.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.software.design-tools",
+      "level": "type",
+      "parentId": "po.perks.software",
+      "name": "Design tools",
+      "description": "Free or discounted licenses for design, prototyping, video or 3D software. Pick it for tools your designers or product team use.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.software.productivity",
+      "level": "type",
+      "parentId": "po.perks.software",
+      "name": "Productivity tools",
+      "description": "Discounts on office, project management, communication and documentation software. Pick it for tools the whole team uses every day.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.software.ai-api",
+      "level": "type",
+      "parentId": "po.perks.software",
+      "name": "AI and API credits",
+      "description": "Credits for AI models and other paid APIs, such as language, speech, vision or data services. Pick it when the perk is usage credit; for a provider's partner or startup program, use Platform startup programs.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.services",
+      "level": "subcategory",
+      "parentId": "po.perks",
+      "name": "Professional services",
+      "description": "Free or discounted advice and services from private firms, often packaged for startups by law firms, accountants or programs. For public or nonprofit help with law and IP, use Legal, IP and compliance support.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.services.legal",
+      "level": "type",
+      "parentId": "po.perks.services",
+      "name": "Legal services",
+      "description": "Free or reduced-fee legal work from a law firm, such as incorporation, contracts, terms and privacy policies or an investment round. Pick it for a firm's startup package.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.services.accounting",
+      "level": "type",
+      "parentId": "po.perks.services",
+      "name": "Accounting and finance services",
+      "description": "Discounts on bookkeeping, accounting, tax filing, audit or financial modeling services. Pick it for an accountant's or finance provider's startup offer.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.services.hr-payroll",
+      "level": "type",
+      "parentId": "po.perks.services",
+      "name": "HR and payroll services",
+      "description": "Discounts on payroll, HR software, employer of record or recruiting services. Pick it for help with hiring and paying people.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.services.ip",
+      "level": "type",
+      "parentId": "po.perks.services",
+      "name": "IP and patent services",
+      "description": "Reduced-fee help from patent or trademark attorneys, such as searches, filings or an IP strategy session. Pick it for a private firm's offer; public IP schemes go under IP programs.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.marketing",
+      "level": "subcategory",
+      "parentId": "po.perks",
+      "name": "Marketing and sales perks",
+      "description": "Credits and discounts for advertising and for marketing and sales tools. Pick it when the perk pays for reaching or managing customers.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.marketing.ad-credits",
+      "level": "type",
+      "parentId": "po.perks.marketing",
+      "name": "Ad credits",
+      "description": "Free advertising credit on search, social or other ad platforms, usually for new accounts or program members. Pick it when the credit pays for ads.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.marketing.sales-crm",
+      "level": "type",
+      "parentId": "po.perks.marketing",
+      "name": "Sales and CRM tools",
+      "description": "Free or discounted CRM, sales engagement or customer support software for startups. Pick it for tools that track leads and customers.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.marketing.marketing-tools",
+      "level": "type",
+      "parentId": "po.perks.marketing",
+      "name": "Marketing tools",
+      "description": "Discounts on email, analytics, SEO, social media or website tools. Pick it for marketing software that is not advertising.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.workspace",
+      "level": "subcategory",
+      "parentId": "po.perks",
+      "name": "Workspace and facilities",
+      "description": "Free or subsidized places to work and the equipment in them. Pick it for desks, offices, shops, labs and machines that a program, landlord or public body offers below the market price.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.workspace.coworking",
+      "level": "type",
+      "parentId": "po.perks.workspace",
+      "name": "Coworking desk",
+      "description": "A free or discounted desk or membership at a coworking space, often through a program or a city scheme. Pick it for shared office space.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.perks.workspace.office-retail",
+      "level": "type",
+      "parentId": "po.perks.workspace",
+      "name": "Office or retail space",
+      "description": "Free or below-market premises for an office or a shop, from a landlord, city or program, including temporary use of empty buildings. Pick it when you get a space of your own.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.workspace.lab-production",
+      "level": "type",
+      "parentId": "po.perks.workspace",
+      "name": "Lab or production space",
+      "description": "Shared or subsidized space for hands-on work, such as wet labs, makerspaces, workshops, commercial kitchens or small pilot lines. Pick it when you need more than a desk to make or test things.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.workspace.equipment",
+      "level": "type",
+      "parentId": "po.perks.workspace",
+      "name": "Equipment and test facilities",
+      "description": "Access to machines and instruments you could not buy yet, such as 3D printers, measuring equipment or test chambers, free or at a reduced rate. Pick it for equipment time rather than space.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.banking",
+      "level": "subcategory",
+      "parentId": "po.perks",
+      "name": "Banking and payments perks",
+      "description": "Offers for new companies from banks and payment providers, such as fee-free accounts or lower card processing fees. Loans and credit lines go in Funding.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.banking.business-account",
+      "level": "type",
+      "parentId": "po.perks.banking",
+      "name": "Business account offer",
+      "description": "A business bank account with waived fees, a sign-up bonus or extra services for startups. Pick it when you are choosing where to bank.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.perks.banking.payment-processing",
+      "level": "type",
+      "parentId": "po.perks.banking",
+      "name": "Payment processing discount",
+      "description": "Reduced or waived fees for card payments, online checkout or point-of-sale terminals for a period. Pick it when you take payments from customers.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.market",
+      "level": "category",
+      "parentId": null,
+      "name": "Market access and customers",
+      "shortName": "Market access",
+      "description": "Programs that lead to users, buyers, testers or distributors, such as pilots, marketplaces, retail programs, export support and sandboxes. Pick it when the outcome is a customer, a test site or a sales channel.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "po.market.corporate",
+      "level": "subcategory",
+      "parentId": "po.market",
+      "name": "Corporate innovation and pilots",
+      "description": "Programs in which large companies and institutions, such as hospitals or utilities, look for startups to test, buy from or partner with. Pick it when a named organization offers a route to a pilot or a contract.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.market.corporate.pilot",
+      "level": "type",
+      "parentId": "po.market.corporate",
+      "name": "Corporate pilot program",
+      "description": "A program in which a large organization tests your product in its own operations, paid or unpaid, sometimes leading to a purchase. Venture client programs belong here too.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.market.corporate.open-innovation",
+      "level": "type",
+      "parentId": "po.market.corporate",
+      "name": "Open innovation challenge",
+      "description": "A call in which a company publishes problems and asks startups to propose solutions, usually leading to a pilot. Pick it over Challenge prize when the reward is a pilot or contract rather than cash.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.market.corporate.supplier-onboarding",
+      "level": "type",
+      "parentId": "po.market.corporate",
+      "name": "Supplier onboarding program",
+      "description": "A program that helps startups become approved suppliers of a large organization, for example through faster vendor checks or a startup purchasing track. Pick it when getting through purchasing is the goal.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.market.corporate.rfp-response",
+      "level": "type",
+      "parentId": "po.market.corporate",
+      "name": "Request for proposal",
+      "description": "A company or organisation asks suppliers for proposals against a written brief and a deadline. Pick it when you answer one; public tenders go under public procurement.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.market.marketplaces",
+      "level": "subcategory",
+      "parentId": "po.market",
+      "name": "Marketplaces and app ecosystems",
+      "description": "Programs inside online marketplaces and app stores that give selected sellers or apps more reach, lower fees or featured placement. A plain listing with no selection step belongs in Marketing.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.market.marketplaces.seller-program",
+      "level": "type",
+      "parentId": "po.market.marketplaces",
+      "name": "Marketplace seller program",
+      "description": "A program for new or small sellers on a consumer, business or delivery marketplace, such as reduced fees, onboarding help or a new brands section. Pick it when you sell goods or services through a marketplace.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.market.marketplaces.app-store",
+      "level": "type",
+      "parentId": "po.market.marketplaces",
+      "name": "App store program",
+      "description": "A program in an app or plugin store that gives approved developers lower fees, editorial features or launch support. Pick it when customers get your product through a store.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.market.marketplaces.software-marketplace",
+      "level": "type",
+      "parentId": "po.market.marketplaces",
+      "name": "Software or cloud marketplace",
+      "description": "A marketplace where business customers buy software through an account they already have with a cloud or software vendor, often with co-selling benefits. Pick it for selling software to larger companies.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.market.retail",
+      "level": "subcategory",
+      "parentId": "po.market",
+      "name": "Retail and distribution programs",
+      "description": "Routes for physical and consumer products to reach shelves and shoppers through someone else's stores or events. Pick it for retailer programs, buyer pitch days, pop-up shops and market stalls.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.market.retail.supplier-program",
+      "level": "type",
+      "parentId": "po.market.retail",
+      "name": "Retailer supplier program",
+      "description": "A program run by a retail chain or department store to stock products from new, local or small brands, often with coaching or a trial listing. Pick it when the goal is a place on a retailer's shelves.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.market.retail.buyer-pitch",
+      "level": "type",
+      "parentId": "po.market.retail",
+      "name": "Buyer pitch day",
+      "description": "An event or open call where retail or wholesale buyers review products from new brands and may offer a listing. Pick it when you pitch a product to a buyer for stocking.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.market.retail.pop-up",
+      "level": "type",
+      "parentId": "po.market.retail",
+      "name": "Pop-up shop or market stall",
+      "description": "A temporary place to sell directly, such as a pop-up shop program, a seasonal market, a food festival stall or a concession in another store. Pick it when you apply for a selling spot.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.market.trade-export",
+      "level": "subcategory",
+      "parentId": "po.market",
+      "name": "Trade and export programs",
+      "description": "Public and industry programs that help you sell in other countries, such as trade missions, export advice and soft-landing support. For export grants, use Government grants; for stands at foreign fairs, use Exhibitions and trade fairs.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.market.trade-export.trade-mission",
+      "level": "type",
+      "parentId": "po.market.trade-export",
+      "name": "Trade mission",
+      "description": "A group trip to another country, organized by a trade agency, chamber or region, with meetings with buyers, partners or investors. Pick it when the program takes you to the market in person.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.market.trade-export.export-support",
+      "level": "type",
+      "parentId": "po.market.trade-export",
+      "name": "Export support service",
+      "description": "Advice and services from a trade promotion agency or chamber, such as market studies, partner searches or export coaching, often free or subsidized. Pick it when you plan entry into a market.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.market.trade-export.soft-landing",
+      "level": "type",
+      "parentId": "po.market.trade-export",
+      "name": "Soft-landing program",
+      "description": "A program that helps a foreign startup settle in a new market, with temporary office space, local introductions and help with setting up. Pick it when you plan a presence in another country.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.market.sandboxes",
+      "level": "subcategory",
+      "parentId": "po.market",
+      "name": "Sandboxes and testbeds",
+      "description": "Controlled settings where you can test a product with real users or under real rules before a full launch. Pick it for regulated products or anything that needs testing outside a lab.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.market.sandboxes.regulatory",
+      "level": "type",
+      "parentId": "po.market.sandboxes",
+      "name": "Regulatory sandbox",
+      "description": "A program run by a regulator that lets selected companies test a product under supervision, sometimes with temporary relief from certain rules. Pick it for finance, health, energy, mobility and other regulated fields.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.market.sandboxes.testbed",
+      "level": "type",
+      "parentId": "po.market.sandboxes",
+      "name": "Testbed or living lab",
+      "description": "A real environment opened for trials, such as a street, building, farm, factory, network or neighborhood, often run by a city, university or industry group. Pick it when you need a site to test in.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.market.sandboxes.clinical",
+      "level": "type",
+      "parentId": "po.market.sandboxes",
+      "name": "Clinical validation program",
+      "description": "A program in which hospitals, clinics or care networks test a health product with patients or staff and share the results. Pick it when the goal is clinical evidence rather than a sale.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.market.discovery",
+      "level": "subcategory",
+      "parentId": "po.market",
+      "name": "Customer discovery and matchmaking",
+      "description": "Programs that put you in front of potential customers, to learn what they need or to start sales talks. Pick it for structured discovery programs, design partner programs and organized buyer meetings.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "po.market.discovery.cohort",
+      "level": "type",
+      "parentId": "po.market.discovery",
+      "name": "Customer discovery cohort",
+      "description": "A structured program in which teams interview many potential customers over a few weeks, with coaching, to test whether there is a market. Pick it when interviews and learning are the main output.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.market.discovery.design-partner",
+      "level": "type",
+      "parentId": "po.market.discovery",
+      "name": "Design partner or early adopter program",
+      "description": "A program in which a company or institution agrees to use early products and give feedback, sometimes developing them with you. Pick it when the organization helps shape the product before buying.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.market.discovery.matchmaking",
+      "level": "type",
+      "parentId": "po.market.discovery",
+      "name": "Buyer matchmaking event",
+      "description": "Organized one-to-one meetings between suppliers and business buyers or partners, often at a fair or run by a business support network. For retail buyers reviewing consumer products, use Buyer pitch day.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.partners",
+      "level": "category",
+      "parentId": null,
+      "name": "Partnerships and ecosystem",
+      "shortName": "Partnerships",
+      "description": "Ongoing relationships with platforms, technology and sales partners, research groups, public bodies, associations and open-source foundations. Pick it when the outcome is a lasting partnership rather than a one-off benefit.",
+      "order": 5,
+      "recommended": true
+    },
+    {
+      "id": "po.partners.platforms",
+      "level": "subcategory",
+      "parentId": "po.partners",
+      "name": "Platform startup programs",
+      "description": "Startup and partner programs run by the technology providers you build on, with support such as credits, technical help, early access or co-marketing. Pick it for the program; credits that come alone go under Perks.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.partners.platforms.ai-model",
+      "level": "type",
+      "parentId": "po.partners.platforms",
+      "name": "AI and model provider",
+      "description": "Startup, partner or researcher programs of companies that provide AI models, with credits, early access or technical support. Pick it when you build on a provider's models.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.partners.platforms.cloud",
+      "level": "type",
+      "parentId": "po.partners.platforms",
+      "name": "Cloud provider",
+      "description": "Startup programs of cloud providers that combine credits with technical support, training and sometimes co-selling or marketplace benefits. Pick it when the relationship goes beyond credits.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.partners.platforms.developer",
+      "level": "type",
+      "parentId": "po.partners.platforms",
+      "name": "Developer platform",
+      "description": "Programs of platforms that developers build on, such as code hosting, developer tools, databases or protocols, for startups or maintainers. Pick it for programs tied to using or integrating the platform.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.platforms.app-ecosystem",
+      "level": "type",
+      "parentId": "po.partners.platforms",
+      "name": "App ecosystem",
+      "description": "Programs for companies that build apps or extensions on a larger platform, such as a phone, commerce, workplace or game platform. Pick it when your product runs inside someone else's platform.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.platforms.hardware",
+      "level": "type",
+      "parentId": "po.partners.platforms",
+      "name": "Hardware and component vendor",
+      "description": "Startup programs of chip, module, sensor or other component makers, with development kits, samples, engineering support or discounts. Pick it when your device is built on a vendor's parts.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.technology",
+      "level": "subcategory",
+      "parentId": "po.partners",
+      "name": "Technology and integration partnerships",
+      "description": "Partner programs that let you connect your product to another company's product or build it into theirs. Pick it when there is a technical integration or a product deal.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.technology.technology-partner",
+      "level": "type",
+      "parentId": "po.partners.technology",
+      "name": "Technology partner program",
+      "description": "A vendor's formal partner program for companies whose products work with theirs, often with tiers, certification and a partner badge. Pick it when you join a partner program.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.technology.integration",
+      "level": "type",
+      "parentId": "po.partners.technology",
+      "name": "Integration partner",
+      "description": "A direct integration with another product, built and announced together, often with a listing in the partner's integration directory. Pick it for a one-to-one integration project.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.technology.oem",
+      "level": "type",
+      "parentId": "po.partners.technology",
+      "name": "OEM or white-label",
+      "description": "A deal in which another company sells or embeds your product under its own brand, or you embed theirs. Pick it when your product becomes part of someone else's offer.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.technology.manufacturing-partner",
+      "level": "type",
+      "parentId": "po.partners.technology",
+      "name": "Manufacturing partner program",
+      "description": "A manufacturer's or contract maker's program for young companies, with prototype runs, design-for-manufacturing help or small first batches. Pick it when you arrange how your product gets made.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.channel",
+      "level": "subcategory",
+      "parentId": "po.partners",
+      "name": "Distribution and channel partnerships",
+      "description": "Programs in which other companies sell, refer or deliver your product, or you join theirs as a partner. Pick it when the partner brings revenue through sales, referrals or services.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.channel.reseller",
+      "level": "type",
+      "parentId": "po.partners.channel",
+      "name": "Reseller program",
+      "description": "A program in which a partner buys and resells your product, or you resell theirs, usually with margins and sales support. Pick it for formal reselling.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.channel.referral",
+      "level": "type",
+      "parentId": "po.partners.channel",
+      "name": "Referral partner",
+      "description": "A program that pays a commission or fee for referring customers, in either direction. Pick it when partners send leads rather than sell.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.channel.co-sell",
+      "level": "type",
+      "parentId": "po.partners.channel",
+      "name": "Co-sell program",
+      "description": "A program in which a larger vendor's sales team sells alongside you or recommends your product to its customers. Pick it when the partner's sales force is the benefit.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.channel.services-partner",
+      "level": "type",
+      "parentId": "po.partners.channel",
+      "name": "Services partner program",
+      "description": "A program for agencies, consultants and integrators who set up or support another company's product, with certification, leads and a partner listing. Pick it when you deliver services around a platform.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.research",
+      "level": "subcategory",
+      "parentId": "po.partners",
+      "name": "Research and university partnerships",
+      "description": "Working relationships with universities and research institutes outside a specific funding call. For grants that require an academic partner, use Research and academic programs.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.research.collaboration",
+      "level": "type",
+      "parentId": "po.partners.research",
+      "name": "Research collaboration or joint lab",
+      "description": "A joint research project, contract research or shared lab with a university or institute. Pick it when you work with researchers on a defined problem.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.research.student-projects",
+      "level": "type",
+      "parentId": "po.partners.research",
+      "name": "Student project or thesis",
+      "description": "A student project, thesis or course assignment based on your problem, supervised by the university. Pick it to get student work on a defined question.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.research.licensing",
+      "level": "type",
+      "parentId": "po.partners.research",
+      "name": "Technology licensing",
+      "description": "A license or spin-off deal for technology that a university or research institute owns, usually through its technology transfer office. Pick it when you build on research you do not own.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.public-ngo",
+      "level": "subcategory",
+      "parentId": "po.partners",
+      "name": "Public sector and NGO partnerships",
+      "description": "Collaborations with governments, cities, public agencies and nonprofits that are not a tender or a grant. Pick it when you work with a public or nonprofit partner toward a shared goal.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.public-ngo.ppp",
+      "level": "type",
+      "parentId": "po.partners.public-ngo",
+      "name": "Public-private partnership",
+      "description": "A formal agreement between a public body and private companies to deliver a project or service together, with shared risks and roles. Pick it for long-term joint projects with a public partner.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.public-ngo.ngo",
+      "level": "type",
+      "parentId": "po.partners.public-ngo",
+      "name": "NGO collaboration",
+      "description": "A joint project with a nonprofit or charity, such as a program that brings your product to the people the organization serves. Pick it when a nonprofit is your main partner.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.public-ngo.city",
+      "level": "type",
+      "parentId": "po.partners.public-ngo",
+      "name": "City partnership program",
+      "description": "A program in which a city or local government works with startups on local problems, for example by opening data, services or staff time. For test sites, use Testbed or living lab.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.associations",
+      "level": "subcategory",
+      "parentId": "po.partners",
+      "name": "Industry associations and clusters",
+      "description": "Membership organizations for companies in a sector or region, such as clusters, chambers of commerce and trade associations. Pick it when membership gives you contacts, information or projects you will use.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "po.partners.associations.cluster",
+      "level": "type",
+      "parentId": "po.partners.associations",
+      "name": "Cluster membership",
+      "description": "Membership of an innovation or industry cluster that links companies, research and public bodies in one sector or region, often with joint projects. Pick it for cluster organizations.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.associations.association",
+      "level": "type",
+      "parentId": "po.partners.associations",
+      "name": "Business or trade association",
+      "description": "Membership of a chamber of commerce, trade association, startup association or professional body. Pick it for general business networks and industry representation.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.partners.associations.working-group",
+      "level": "type",
+      "parentId": "po.partners.associations",
+      "name": "Industry working group",
+      "description": "A working group or committee inside an association or industry body that drafts guidelines, positions or shared projects. For formal standards bodies, use Standards body participation.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.open-source",
+      "level": "subcategory",
+      "parentId": "po.partners",
+      "name": "Open-source foundations and support",
+      "description": "Programs for open-source projects and their maintainers: foundations, project funds, maintainer support, security audits, fiscal hosting and contributor mentoring. Pick it only when the benefit goes to open-source work.",
+      "order": 7,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.open-source.foundation",
+      "level": "type",
+      "parentId": "po.partners.open-source",
+      "name": "Foundation membership or incubation",
+      "description": "Joining an open-source foundation as a member, or moving a project into one through its incubation process, for neutral governance and shared services. Pick it when a foundation would host or support the project.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.open-source.fund",
+      "level": "type",
+      "parentId": "po.partners.open-source",
+      "name": "Open-source project fund",
+      "description": "A grant or fund for open-source software only, from a public body, foundation or company, for development, maintenance or security work. Pick it over other grants when only open-source projects can apply.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.open-source.maintainer",
+      "level": "type",
+      "parentId": "po.partners.open-source",
+      "name": "Maintainer support",
+      "description": "Stipends, fellowships, paid maintenance, bounties or travel grants that pay people to maintain and represent a project. Pick it when the money pays for maintainers' time.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.open-source.security-audit",
+      "level": "type",
+      "parentId": "po.partners.open-source",
+      "name": "Security audit program",
+      "description": "A program that pays for an independent security review, fuzzing or fixes for an open-source project. Pick it when the benefit is a funded audit rather than money.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.open-source.fiscal-hosting",
+      "level": "type",
+      "parentId": "po.partners.open-source",
+      "name": "Fiscal hosting",
+      "description": "A nonprofit host that holds money for a project without its own legal entity, handling donations, payments and accounting. Pick it when the project needs somewhere to receive funds.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.partners.open-source.mentoring",
+      "level": "type",
+      "parentId": "po.partners.open-source",
+      "name": "Contributor mentoring program",
+      "description": "A program that pairs open-source projects with new contributors, often students, sometimes with a stipend paid to the contributor. Pick it when the project would act as a mentoring organization.",
+      "order": 6,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility",
+      "level": "category",
+      "parentId": null,
+      "name": "Visibility, events and recognition",
+      "shortName": "Visibility",
+      "description": "Stages and awards you apply or get selected for: speaking slots, pitch and demo events, awards, startup areas at fairs, hackathons and media programs. Paid exposure without a selection step belongs in Marketing.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.conferences",
+      "level": "subcategory",
+      "parentId": "po.visibility",
+      "name": "Conferences and speaking",
+      "description": "Speaking slots at conferences and industry events that take outside speakers, usually through a call for speakers. Attending without a slot belongs in Marketing.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.conferences.call-for-speakers",
+      "level": "type",
+      "parentId": "po.visibility.conferences",
+      "name": "Call for speakers",
+      "description": "An open call to submit a talk proposal, also called a call for papers, including short formats such as lightning talks and posters. Pick it for regular talk slots.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.conferences.panel",
+      "level": "type",
+      "parentId": "po.visibility.conferences",
+      "name": "Panel",
+      "description": "A place on a panel discussion, by invitation or through an open call for panelists. Pick it when you share the stage with other speakers.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.conferences.workshop",
+      "level": "type",
+      "parentId": "po.visibility.conferences",
+      "name": "Workshop or tutorial",
+      "description": "A hands-on session you lead at an event, usually longer than a talk and proposed through its own call. Pick it when attendees work along with you.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.conferences.keynote",
+      "level": "type",
+      "parentId": "po.visibility.conferences",
+      "name": "Keynote",
+      "description": "A main-stage talk, usually given at the organizer's invitation. Pick it for invited headline talks.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.demo-pitch",
+      "level": "subcategory",
+      "parentId": "po.visibility",
+      "name": "Demo and pitch events",
+      "description": "Events where founders present a product or the company to an audience, judges or investors, in person or online. Pick it when you get a slot to present.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.demo-pitch.pitch-competition",
+      "level": "type",
+      "parentId": "po.visibility.demo-pitch",
+      "name": "Pitch competition",
+      "description": "A contest in which founders pitch to judges for recognition, prizes or investor attention. If the cash prize is the main reason to enter, also tag Competition with a cash prize.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.demo-pitch.demo-night",
+      "level": "type",
+      "parentId": "po.visibility.demo-pitch",
+      "name": "Demo night or meetup slot",
+      "description": "A short slot to show your product at a meetup, demo night or community call, online or in person. Pick it for small, frequent events where outside founders can present.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.demo-pitch.demo-day",
+      "level": "type",
+      "parentId": "po.visibility.demo-pitch",
+      "name": "Demo day",
+      "description": "The closing event of an accelerator or program where its startups present to investors and guests, or an open demo day that accepts applications. Pick it when the event is tied to a program or cohort.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.demo-pitch.investor-showcase",
+      "level": "type",
+      "parentId": "po.visibility.demo-pitch",
+      "name": "Investor showcase",
+      "description": "An event where selected startups present to a room or list of investors, without a competition. Pick it only when you are raising or plan to soon.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.awards",
+      "level": "subcategory",
+      "parentId": "po.visibility",
+      "name": "Awards and rankings",
+      "description": "Awards, lists and rankings that you enter or are nominated for, judged by a jury or by published criteria. Pick it when the outcome is public recognition; if the prize money matters most, use Prizes and challenges.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.awards.startup-business",
+      "level": "type",
+      "parentId": "po.visibility.awards",
+      "name": "Startup or business award",
+      "description": "An award for startups or for businesses in general, such as a startup of the year award or a local or national business award. Pick it when the whole company is judged.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.awards.industry-product",
+      "level": "type",
+      "parentId": "po.visibility.awards",
+      "name": "Industry or product award",
+      "description": "An award within one industry or for a product, such as a design, technology, food or innovation award. Pick it when the product or the work is judged rather than the company.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.awards.people-list",
+      "level": "type",
+      "parentId": "po.visibility.awards",
+      "name": "Founder or people list",
+      "description": "A list or award for individual founders or team members, such as a young leaders list or an award for women in an industry. Pick it when a person is nominated.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.awards.company-ranking",
+      "level": "type",
+      "parentId": "po.visibility.awards",
+      "name": "Company ranking",
+      "description": "A ranking or list of companies based on data or a jury, such as fastest-growing company or best employer lists. Pick it when you submit data to be ranked.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.exhibitions",
+      "level": "subcategory",
+      "parentId": "po.visibility",
+      "name": "Exhibitions and trade fairs",
+      "description": "Selected or subsidized places to exhibit at trade fairs and large events. Pick it for startup areas, subsidized stands and innovation zones; a regular paid stand belongs in Marketing.",
+      "order": 4,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.exhibitions.startup-pavilion",
+      "level": "type",
+      "parentId": "po.visibility.exhibitions",
+      "name": "Startup pavilion or area",
+      "description": "A shared zone for startups at a fair or conference, with a small stand or table at no or reduced cost, often organized by the event, a region or an export agency. Pick it when you join a group stand.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.exhibitions.subsidized-booth",
+      "level": "type",
+      "parentId": "po.visibility.exhibitions",
+      "name": "Subsidized booth",
+      "description": "Your own stand at a trade fair, paid in part or in full by a public body, export agency or an organizer's program. Pick it when you get support for a stand of your own.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.exhibitions.innovation-zone",
+      "level": "type",
+      "parentId": "po.visibility.exhibitions",
+      "name": "Innovation zone",
+      "description": "A curated area or gallery at a fair where selected new products are displayed, often linked to an innovation award. Pick it when the organizer chooses which products to show.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.hackathons",
+      "level": "subcategory",
+      "parentId": "po.visibility",
+      "name": "Hackathons and competitions",
+      "description": "Building and skills contests that you enter for recognition, contacts or small prizes. For contests where the money is the main point, use Prizes and challenges.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.hackathons.hackathon",
+      "level": "type",
+      "parentId": "po.visibility.hackathons",
+      "name": "Hackathon",
+      "description": "A short event, in person or online, where teams build something new around a theme, often with sponsor prizes or challenges. Pick it when you or your team would build during the event.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.hackathons.build-challenge",
+      "level": "type",
+      "parentId": "po.visibility.hackathons",
+      "name": "Online build challenge",
+      "description": "A contest that runs over several weeks, in which participants build with a given tool, dataset or platform and submit a project. Pick it for sponsor-run build contests.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.hackathons.skills-contest",
+      "level": "type",
+      "parentId": "po.visibility.hackathons",
+      "name": "Technical or skills contest",
+      "description": "A contest that tests a product or skill against others, such as a robotics or benchmark competition, or a culinary or craft contest. Pick it when entries are judged on performance.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.media",
+      "level": "subcategory",
+      "parentId": "po.visibility",
+      "name": "Media and content programs",
+      "description": "Editorial programs that select startups for features, stories or expert contributions. Pick it when there is an application or selection step; paid placements and ordinary pitches to journalists belong in Marketing.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.media.editorial-feature",
+      "level": "type",
+      "parentId": "po.visibility.media",
+      "name": "Editorial feature",
+      "description": "A feature series by a publication or platform that selects startups or launches to present, such as a startup of the week. Pick it when you apply or are chosen to be featured.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.visibility.media.customer-story",
+      "level": "type",
+      "parentId": "po.visibility.media",
+      "name": "Customer or partner story",
+      "description": "A case study or story that a supplier, platform or partner publishes about how you use their product. Pick it when a partner's program features its customers.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.visibility.media.contributions",
+      "level": "type",
+      "parentId": "po.visibility.media",
+      "name": "Call for contributions",
+      "description": "An open call for guest articles, expert comments or report contributions for a publication or media program. Pick it when you would write or contribute content.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.founders",
+      "level": "category",
+      "parentId": null,
+      "name": "Founder development",
+      "shortName": "Founders",
+      "description": "Programs for founders as people: networks, peer groups, training, coaching, and programs reserved for particular groups of founders. Pick it when a founder takes part as a person, not the company.",
+      "order": 7,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.communities",
+      "level": "subcategory",
+      "parentId": "po.founders",
+      "name": "Founder communities and networks",
+      "description": "Communities in which founders meet, share experience and help each other, online or in person. Pick it when the network itself is the benefit.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.communities.founder-network",
+      "level": "type",
+      "parentId": "po.founders.communities",
+      "name": "Founder network",
+      "description": "A membership network or community for founders, often with an application, events and a member directory. Pick it for joining a founder network.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.communities.peer-group",
+      "level": "type",
+      "parentId": "po.founders.communities",
+      "name": "Peer group or mastermind",
+      "description": "A small group of founders that meets regularly, often with a facilitator, to discuss problems in confidence. Pick it for recurring small-group support.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.groups",
+      "level": "subcategory",
+      "parentId": "po.founders",
+      "name": "Programs for specific founder groups",
+      "description": "Programs of any kind, such as grants, accelerators or networks, reserved for founders who belong to a particular group. Tag a program with one of these types as well as the type for its own kind.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.groups.women",
+      "level": "type",
+      "parentId": "po.founders.groups",
+      "name": "Women founders",
+      "description": "Programs open only to women founders or to teams with at least one woman founder. Check whether the founder or the company is the applicant.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.groups.underrepresented",
+      "level": "type",
+      "parentId": "po.founders.groups",
+      "name": "Underrepresented founders",
+      "description": "Programs for founders from groups with less access to funding and networks, such as ethnic minority, LGBTQ+ or disabled founders. Use the program's own definition of who can apply.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.groups.young-student",
+      "level": "type",
+      "parentId": "po.founders.groups",
+      "name": "Young and student founders",
+      "description": "Programs for founders under an age limit or still in education, open beyond a single campus. For a university's program for its own students, use Student startup program.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.groups.experienced",
+      "level": "type",
+      "parentId": "po.founders.groups",
+      "name": "Experienced founders",
+      "description": "Programs for repeat founders or for people who start a company later in their career, such as senior entrepreneurship programs. Pick it when experience or age is a condition.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.groups.immigrant",
+      "level": "type",
+      "parentId": "po.founders.groups",
+      "name": "Immigrant founders",
+      "description": "Programs for founders who moved from another country, including refugees, often with help on local rules, banking and networks. Pick it when the program is meant for newcomers.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.training",
+      "level": "subcategory",
+      "parentId": "po.founders",
+      "name": "Training and education",
+      "description": "Courses and training for founders, from short bootcamps to university programs. Pick it when learning is the main benefit; training for employees goes under Staff training programs.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.training.bootcamp",
+      "level": "type",
+      "parentId": "po.founders.training",
+      "name": "Founder bootcamp",
+      "description": "An intensive program of a few days on one topic, such as fundraising, sales, pricing or pitching. Pick it for short, focused training.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.training.course",
+      "level": "type",
+      "parentId": "po.founders.training",
+      "name": "Course or masterclass series",
+      "description": "A course or series of sessions for founders, online or in person, often free from a public agency, investor or platform. Pick it for training spread over several weeks.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.training.university-executive",
+      "level": "type",
+      "parentId": "po.founders.training",
+      "name": "University or executive education",
+      "description": "A degree, certificate or executive program at a university or business school, including entrepreneurship programs. Pick it for formal education.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.training.certification",
+      "level": "type",
+      "parentId": "po.founders.training",
+      "name": "Professional certification",
+      "description": "A certificate for a person's skills, such as project management, an industry license or a technical certification. For certifying the company or a product, use Certifications and standards.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.coaching",
+      "level": "subcategory",
+      "parentId": "po.founders",
+      "name": "Coaching and wellbeing",
+      "description": "Support for founders' own performance and health, separate from business mentoring. Pick it for coaching, counseling and wellbeing programs.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.coaching.founder-coaching",
+      "level": "type",
+      "parentId": "po.founders.coaching",
+      "name": "Founder coaching",
+      "description": "One-to-one or group coaching for founders on leadership, decisions or personal goals, sometimes free through a program. Pick it for coaching rather than business advice.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.founders.coaching.mental-health",
+      "level": "type",
+      "parentId": "po.founders.coaching",
+      "name": "Mental health support",
+      "description": "Programs that offer founders counseling, therapy or peer support for stress and burnout, often free or subsidized. Pick it for wellbeing support.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.legal",
+      "level": "category",
+      "parentId": null,
+      "name": "Legal, IP and compliance support",
+      "shortName": "Legal and IP",
+      "description": "Programs that help you protect ideas, follow rules and get certified, including IP schemes, legal clinics, regulator support, certification and standards work. For discounted services from private firms, use Perks.",
+      "order": 8,
+      "recommended": true
+    },
+    {
+      "id": "po.legal.ip",
+      "level": "subcategory",
+      "parentId": "po.legal",
+      "name": "IP programs",
+      "description": "Public and nonprofit schemes that help you understand and protect intellectual property, such as patents, trademarks and designs. Pick it for subsidized IP help.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.legal.ip.patent-support",
+      "level": "type",
+      "parentId": "po.legal.ip",
+      "name": "Patent support scheme",
+      "description": "A scheme that pays part of the cost of patent searches, filings or attorney fees, or offers free patent advice. Pick it when you plan to file or defend a patent.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.legal.ip.trademark-voucher",
+      "level": "type",
+      "parentId": "po.legal.ip",
+      "name": "Trademark or IP voucher",
+      "description": "A voucher or refund that covers part of the fees for registering a trademark, design or patent. Pick it for fixed support toward filing fees.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.legal.ip.ip-assessment",
+      "level": "type",
+      "parentId": "po.legal.ip",
+      "name": "IP assessment",
+      "description": "A subsidized review of what intellectual property you have and how to protect or use it, sometimes called an IP scan or pre-diagnosis. Pick it before you decide what to file.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.legal.regulatory",
+      "level": "subcategory",
+      "parentId": "po.legal",
+      "name": "Legal and regulatory support",
+      "description": "Free or subsidized help with laws, regulators and approvals, from public bodies, universities or professional associations. Pick it when you need to understand or meet rules.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.legal.regulatory.legal-clinic",
+      "level": "type",
+      "parentId": "po.legal.regulatory",
+      "name": "Legal clinic",
+      "description": "Free legal advice from a university law clinic, bar association or startup hub, usually for early companies with simple questions. Pick it for basic legal help without a paid lawyer.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.legal.regulatory.regulatory-guidance",
+      "level": "type",
+      "parentId": "po.legal.regulatory",
+      "name": "Regulatory guidance",
+      "description": "Advice from a regulator's innovation office, helpdesk or early advice service on how rules apply to your product. Pick it when you need an answer from the authority itself.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.legal.regulatory.data-protection",
+      "level": "type",
+      "parentId": "po.legal.regulatory",
+      "name": "Data protection support",
+      "description": "Guidance, templates or reviews that help you comply with privacy and data protection law, often from a data protection authority or business support body. Pick it for privacy questions.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.legal.regulatory.accelerated-approval",
+      "level": "type",
+      "parentId": "po.legal.regulatory",
+      "name": "Accelerated approval pathway",
+      "description": "A special route some regulators offer for innovative products, such as priority review, a breakthrough designation or extra scientific advice. Pick it when a regulator selects products for faster or guided approval.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.legal.certification",
+      "level": "subcategory",
+      "parentId": "po.legal",
+      "name": "Certifications and standards",
+      "description": "Certification schemes and standards work that show your product or company meets a recognized standard, and programs that help pay for them. Pick it when a certificate or a standards seat would help you sell or comply.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.legal.certification.quality",
+      "level": "type",
+      "parentId": "po.legal.certification",
+      "name": "Quality certification",
+      "description": "Certification of your management system or processes against a quality standard, for example ISO 9001. Pick it when customers or tenders ask for proof of quality processes.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.legal.certification.security",
+      "level": "type",
+      "parentId": "po.legal.certification",
+      "name": "Security certification",
+      "description": "Certification or audit reports on information security, for example ISO 27001 or SOC 2, which larger customers often ask for. Pick it when security reviews slow down your sales.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.legal.certification.product-safety",
+      "level": "type",
+      "parentId": "po.legal.certification",
+      "name": "Product safety and conformity",
+      "description": "Testing and certification that a physical product meets safety, radio, electrical, food or medical rules before it can be sold. Pick it for conformity marks and approvals, and for programs that subsidize the testing.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.legal.certification.sustainability",
+      "level": "type",
+      "parentId": "po.legal.certification",
+      "name": "Sustainability certification",
+      "description": "Certification of environmental or social standards, such as organic, fair trade, carbon or impact business labels. Pick it when the label matters to your buyers.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.legal.certification.standards-body",
+      "level": "type",
+      "parentId": "po.legal.certification",
+      "name": "Standards body participation",
+      "description": "Membership or a working group seat in a body that writes technical standards, so you can follow or shape a standard your product depends on. Pick it for formal standards organizations and consortia.",
+      "order": 5,
+      "recommended": false
+    },
+    {
+      "id": "po.talent",
+      "level": "category",
+      "parentId": null,
+      "name": "Talent and hiring programs",
+      "shortName": "Talent",
+      "description": "Programs that help you find co-founders, hire and train people, and bring in talent from abroad. Pick it when the benefit is a person on your team or support for employing them.",
+      "order": 9,
+      "recommended": true
+    },
+    {
+      "id": "po.talent.matching",
+      "level": "subcategory",
+      "parentId": "po.talent",
+      "name": "Co-founder and team matching",
+      "description": "Programs and events that match you with co-founders, early team members or candidates. Pick it when you are looking for people rather than funding.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.matching.co-founder",
+      "level": "type",
+      "parentId": "po.talent.matching",
+      "name": "Co-founder matching",
+      "description": "A platform, event or program that introduces people looking for a co-founder, for example a technical and a commercial founder. Pick it when you need a co-founder.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.matching.team-formation",
+      "level": "type",
+      "parentId": "po.talent.matching",
+      "name": "Team formation program",
+      "description": "A program that recruits individuals before they have a company or co-founder and helps them form a founding team, often with a first investment. Pick it when you would join as an individual.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.matching.talent-matching",
+      "level": "type",
+      "parentId": "po.talent.matching",
+      "name": "Talent matching program",
+      "description": "Events, talent pools and placement schemes that connect startups with candidates, such as startup job fairs or programs that place experienced professionals in startups. Pick it for finding early hires.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.internships",
+      "level": "subcategory",
+      "parentId": "po.talent",
+      "name": "Internship and graduate programs",
+      "description": "Programs that place students and recent graduates in companies, often with part of the cost covered. Pick it when you want an intern or a first-job hire.",
+      "order": 2,
+      "recommended": true
+    },
+    {
+      "id": "po.talent.internships.subsidized-internship",
+      "level": "type",
+      "parentId": "po.talent.internships",
+      "name": "Subsidized internship",
+      "description": "An internship placement in which a university, public body or program pays part of the intern's pay or costs. Pick it for interns with support.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.talent.internships.graduate-placement",
+      "level": "type",
+      "parentId": "po.talent.internships",
+      "name": "Graduate placement",
+      "description": "A program that matches recent graduates with employers for a first job, sometimes with a wage subsidy or training. Pick it when you hire someone new to the job market.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.hiring",
+      "level": "subcategory",
+      "parentId": "po.talent",
+      "name": "Hiring incentives and visas",
+      "description": "Public support for employing people and for bringing founders or staff from other countries. Pick it when a hire or a move from abroad needs support.",
+      "order": 3,
+      "recommended": true
+    },
+    {
+      "id": "po.talent.hiring.hiring-subsidy",
+      "level": "type",
+      "parentId": "po.talent.hiring",
+      "name": "Hiring subsidy",
+      "description": "Public money that pays part of the wage or costs of a new hire, often for first employees, young people or the long-term unemployed. Pick it for wage support linked to hiring.",
+      "order": 1,
+      "recommended": true
+    },
+    {
+      "id": "po.talent.hiring.visa",
+      "level": "type",
+      "parentId": "po.talent.hiring",
+      "name": "Startup or talent visa",
+      "description": "A visa or residence route for founders who start a company in a country, or for skilled people a startup hires from abroad. Pick it when someone on the team needs the right to live and work there.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.hiring.relocation",
+      "level": "type",
+      "parentId": "po.talent.hiring",
+      "name": "Relocation support",
+      "description": "Help with moving a founder or employee to a new city or country, such as relocation grants, housing help or landing services. Pick it for the move itself rather than the visa.",
+      "order": 3,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.training",
+      "level": "subcategory",
+      "parentId": "po.talent",
+      "name": "Staff training programs",
+      "description": "Training for your employees that a public body, industry group or provider pays for or delivers. Pick it for staff skills; courses for founders go under Training and education.",
+      "order": 4,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.training.upskilling",
+      "level": "type",
+      "parentId": "po.talent.training",
+      "name": "Upskilling program",
+      "description": "Free or subsidized courses for your employees, often run by a public agency or industry group, on digital, technical or management skills. Pick it when the program delivers the training.",
+      "order": 1,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.training.apprenticeship",
+      "level": "type",
+      "parentId": "po.talent.training",
+      "name": "Apprenticeship",
+      "description": "A program in which you hire and train an apprentice who combines work with formal training, often with public support. Pick it for trades, crafts and other skills learned on the job.",
+      "order": 2,
+      "recommended": false
+    },
+    {
+      "id": "po.talent.training.training-subsidy",
+      "level": "type",
+      "parentId": "po.talent.training",
+      "name": "Training subsidy",
+      "description": "Public money that pays back part of what you spend on staff training from a provider you choose. Pick it when you pick the training and claim the cost.",
+      "order": 3,
+      "recommended": false
+    }
+  ]
+}

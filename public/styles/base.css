@@ -1,0 +1,384 @@
+/* ==========================================
+   STARTUP TRACKER DESIGN SYSTEM
+   ========================================== */
+
+:root {
+  color-scheme: light;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-soft: rgba(255, 255, 255, 0.7);
+  --surface-strong: #f1f5f9;
+  --text: #0f172a;
+  --text-soft: #334155;
+  --muted: #64748b;
+  --muted-strong: #475569;
+  --border: rgba(226, 232, 240, 0.8);
+  --border-strong: #cbd5e1;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: rgba(37, 99, 235, 0.08);
+  --accent-ring: 0 0 0 3px rgba(37, 99, 235, 0.18);
+
+  --page-accent-rgb: 37, 99, 235;
+  --page-support-rgb: 56, 189, 248;
+  --page-contrast-rgb: 96, 165, 250;
+  --page-title-gradient-end: #38bdf8;
+  --page-shell-bg: rgba(255, 255, 255, 0.62);
+  --page-shell-border: rgba(var(--page-accent-rgb), 0.12);
+  --page-panel-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(var(--page-accent-rgb), 0.08) 100%);
+  --page-panel-soft-bg: rgba(255, 255, 255, 0.74);
+  --page-panel-muted-bg: rgba(var(--page-accent-rgb), 0.05);
+  --page-panel-strong-bg: rgba(var(--page-accent-rgb), 0.1);
+  --page-elevated-bg: rgba(255, 255, 255, 0.9);
+  --page-elevated-soft-bg: rgba(255, 255, 255, 0.76);
+  --page-hover-shadow: 0 12px 30px rgba(var(--page-accent-rgb), 0.14);
+  --page-focus-border: rgba(var(--page-accent-rgb), 0.28);
+  --page-bg-glow-1: rgba(var(--page-accent-rgb), 0.09);
+  --page-bg-glow-2: rgba(var(--page-support-rgb), 0.07);
+  --page-bg-glow-3: rgba(var(--page-contrast-rgb), 0.06);
+
+  --teal: #0d9488;
+  --teal-dark: #0f766e;
+  --blue: #2563eb;
+  --coral: #ea580c;
+  --amber: #d97706;
+  --green: #10b981;
+  --red: #ef4444;
+
+  --shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.02);
+  --shadow-soft: 0 2px 8px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 20px 40px -15px rgba(15, 23, 42, 0.12);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+  --radius-lg: 16px;
+
+  /* Aliases for names used in a handful of rules across the stylesheets. They
+     point at the tokens above rather than at fixed colours, so they follow the
+     theme instead of staying light while everything else goes dark. */
+  --danger: var(--red);
+  --border-soft: var(--border);
+  --border-light: var(--border);
+  --foreground: var(--text);
+  --muted-foreground: var(--muted);
+  --background: var(--bg);
+  --text-color: var(--text);
+  --text-body: var(--text);
+  --text-heading: var(--text);
+  --primary: var(--accent);
+  --primary-soft: var(--accent-soft);
+  --primary-border: var(--page-focus-border);
+  --accent-light: rgb(var(--page-contrast-rgb));
+  --surface-hover: var(--surface-strong);
+  --surface-subtle: var(--surface-strong);
+  --bg-hover: var(--surface-strong);
+  --hover-bg: var(--surface-strong);
+  --shadow-sm: var(--shadow-soft);
+  --shadow-md: var(--shadow);
+  --radius-md: var(--radius);
+  --radius-xs: var(--radius-sm);
+
+  /* Font stacks: same values already spelled out inline elsewhere in the
+     stylesheets, named here so the two var(--font-*) references resolve. */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+:root[data-active-app-tab="calendar"] {
+  --accent: #10b981;
+  --accent-hover: #047857;
+  --accent-soft: rgba(16, 185, 129, 0.1);
+  --accent-ring: 0 0 0 3px rgba(16, 185, 129, 0.18);
+  --page-accent-rgb: 16, 185, 129;
+  --page-support-rgb: 45, 212, 191;
+  --page-contrast-rgb: 74, 222, 128;
+  --page-title-gradient-end: #2dd4bf;
+}
+
+:root[data-active-app-tab="media"] {
+  --accent: #db2777;
+  --accent-hover: #be185d;
+  --accent-soft: rgba(219, 39, 119, 0.1);
+  --accent-ring: 0 0 0 3px rgba(219, 39, 119, 0.18);
+  --page-accent-rgb: 219, 39, 119;
+  --page-support-rgb: 244, 114, 182;
+  --page-contrast-rgb: 249, 168, 212;
+  --page-title-gradient-end: #f472b6;
+}
+
+:root[data-active-app-tab="campaigns"] {
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --accent-soft: rgba(139, 92, 246, 0.1);
+  --accent-ring: 0 0 0 3px rgba(139, 92, 246, 0.18);
+  --page-accent-rgb: 139, 92, 246;
+  --page-support-rgb: 167, 139, 250;
+  --page-contrast-rgb: 196, 181, 253;
+  --page-title-gradient-end: #a78bfa;
+}
+
+:root[data-active-app-tab="tags"] {
+  --accent: #06b6d4;
+  --accent-hover: #0891b2;
+  --accent-soft: rgba(6, 182, 212, 0.1);
+  --accent-ring: 0 0 0 3px rgba(6, 182, 212, 0.18);
+  --page-accent-rgb: 6, 182, 212;
+  --page-support-rgb: 34, 211, 238;
+  --page-contrast-rgb: 103, 232, 249;
+  --page-title-gradient-end: #67e8f9;
+}
+
+:root[data-active-app-tab="ai"] {
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-soft: rgba(124, 58, 237, 0.1);
+  --accent-ring: 0 0 0 3px rgba(124, 58, 237, 0.18);
+  --page-accent-rgb: 124, 58, 237;
+  --page-support-rgb: 167, 139, 250;
+  --page-contrast-rgb: 196, 181, 253;
+  --page-title-gradient-end: #a78bfa;
+}
+
+:root[data-active-app-tab="research"] {
+  --accent: #e11d48;
+  --accent-hover: #be123c;
+  --accent-soft: rgba(225, 29, 72, 0.1);
+  --accent-ring: 0 0 0 3px rgba(225, 29, 72, 0.18);
+  --page-accent-rgb: 225, 29, 72;
+  --page-support-rgb: 251, 113, 133;
+  --page-contrast-rgb: 253, 164, 175;
+  --page-title-gradient-end: #fb7185;
+}
+
+:root[data-active-app-tab="prompts"] {
+  --accent: #d97706;
+  --accent-hover: #b45309;
+  --accent-soft: rgba(217, 119, 6, 0.1);
+  --accent-ring: 0 0 0 3px rgba(217, 119, 6, 0.18);
+  --page-accent-rgb: 217, 119, 6;
+  --page-support-rgb: 251, 191, 36;
+  --page-contrast-rgb: 253, 230, 138;
+  --page-title-gradient-end: #fbbf24;
+}
+
+:root[data-active-app-tab="feedback"] {
+  --accent: #0d9488;
+  --accent-hover: #0f766e;
+  --accent-soft: rgba(13, 148, 136, 0.1);
+  --accent-ring: 0 0 0 3px rgba(13, 148, 136, 0.18);
+  --page-accent-rgb: 13, 148, 136;
+  --page-support-rgb: 45, 212, 191;
+  --page-contrast-rgb: 94, 234, 212;
+  --page-title-gradient-end: #2dd4bf;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-width: 320px;
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(at 0% 0%, var(--page-bg-glow-1) 0px, transparent 40%),
+    radial-gradient(at 50% 0%, var(--page-bg-glow-2) 0px, transparent 40%),
+    radial-gradient(at 100% 0%, var(--page-bg-glow-3) 0px, transparent 40%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+a,
+select,
+summary,
+.tab-button,
+.app-tab-button,
+.icon-button,
+.secondary-button,
+.primary-button,
+.danger-button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button,
+a,
+[role="button"],
+summary {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+/* Scrollable top navigation tabs with sleek thin scrollbars */
+.app-tabs,
+.category-tabs,
+.subcategory-tabs,
+.company-subnav {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  flex-wrap: nowrap !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent !important;
+  -ms-overflow-style: auto !important;
+}
+
+/* Modal Note Tabs with clean wrapping */
+.form-notes-tabs,
+.prompt-editor-tabs {
+  overflow-x: hidden !important;
+  flex-wrap: wrap !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* The modal tab rows stay on one line instead. fitTabRowToOneLine() in app.js
+   scales them down to fit, so wrapping is not the fallback for a long row. */
+.notes-editor-tabs {
+  flex-wrap: nowrap !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Custom sleek webkit scrollbars for horizontal tab lists */
+.app-tabs::-webkit-scrollbar,
+.category-tabs::-webkit-scrollbar,
+.subcategory-tabs::-webkit-scrollbar,
+.company-subnav::-webkit-scrollbar {
+  display: block !important;
+  height: 5px !important;
+  width: 5px !important;
+}
+
+.app-tabs::-webkit-scrollbar-track,
+.category-tabs::-webkit-scrollbar-track,
+.subcategory-tabs::-webkit-scrollbar-track,
+.company-subnav::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.app-tabs::-webkit-scrollbar-thumb,
+.category-tabs::-webkit-scrollbar-thumb,
+.subcategory-tabs::-webkit-scrollbar-thumb,
+.company-subnav::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35) !important;
+  border-radius: 999px !important;
+  transition: background 0.2s ease;
+}
+
+.app-tabs::-webkit-scrollbar-thumb:hover,
+.category-tabs::-webkit-scrollbar-thumb:hover,
+.subcategory-tabs::-webkit-scrollbar-thumb:hover,
+.company-subnav::-webkit-scrollbar-thumb:hover {
+  background: var(--accent) !important;
+}
+
+[data-theme="dark"] .app-tabs,
+[data-theme="dark"] .category-tabs,
+[data-theme="dark"] .subcategory-tabs,
+[data-theme="dark"] .company-subnav {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent !important;
+}
+
+[data-theme="dark"] .app-tabs::-webkit-scrollbar-thumb,
+[data-theme="dark"] .category-tabs::-webkit-scrollbar-thumb,
+[data-theme="dark"] .subcategory-tabs::-webkit-scrollbar-thumb,
+[data-theme="dark"] .company-subnav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .app-tabs::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .category-tabs::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .subcategory-tabs::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .company-subnav::-webkit-scrollbar-thumb:hover {
+  background: var(--accent) !important;
+}
+
+/* Completely hide webkit scrollbars on modal note and wrapped tab elements */
+.notes-editor-tabs::-webkit-scrollbar,
+.form-notes-tabs::-webkit-scrollbar,
+.prompt-editor-tabs::-webkit-scrollbar,
+.tab-bar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Native Option Styling in Dark Mode */
+[data-theme="dark"] select option {
+  background-color: #1e2130;
+  color: #f8fafc;
+}
+
+/* Prevent background elements scrolling when any modal or the Settings panel is open */
+body.modal-open,
+body:has(.modal-overlay.open),
+body:has(.settings-panel[open]),
+html:has(.modal-overlay.open),
+html:has(.settings-panel[open]) {
+  overflow: hidden !important;
+  touch-action: none !important;
+  overscroll-behavior: contain !important;
+}
+

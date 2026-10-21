@@ -1,0 +1,440 @@
+/* The Company tab (js/company-page.js) and its edit window. */
+
+.company-view-container {
+  width: 100%;
+}
+
+.company-page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.company-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--section-comp-border);
+  border-left: 4px solid var(--section-comp);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.company-hero h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.2rem;
+  font-weight: 850;
+}
+
+.company-hero-form {
+  margin: 2px 0 0;
+  color: var(--text-soft);
+  font-weight: 650;
+}
+
+.company-disclaimer {
+  margin: 6px 0 0;
+  color: var(--muted-strong);
+  font-size: 0.8rem;
+}
+
+.company-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.company-language {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+
+.company-language-btn {
+  padding: 5px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.company-language-btn.active {
+  background: var(--section-comp-bg);
+  color: var(--section-comp-fg);
+}
+
+.company-budget {
+  padding: 5px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.company-budget.is-over {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.company-urgent {
+  position: relative;
+}
+
+.company-urgent-btn {
+  padding: 5px 10px;
+  border: 1px solid var(--amber);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--amber);
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.company-urgent-list {
+  position: absolute;
+  right: 0;
+  z-index: 20;
+  width: min(360px, 90vw);
+  margin-top: 6px;
+  padding: 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.company-urgent-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.company-urgent-list button {
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.company-urgent-list button:hover {
+  background: var(--surface-strong);
+}
+
+.company-urgent-date {
+  color: var(--muted-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.company-urgent-list .is-overdue .company-state,
+.company-table .is-overdue .company-state {
+  color: var(--red);
+}
+
+.company-urgent-list .is-due-soon .company-state,
+.company-table .is-due-soon .company-state {
+  color: var(--amber);
+}
+
+.company-state {
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.company-subnav {
+  display: flex;
+  gap: 4px;
+}
+
+.company-subnav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-soft);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.company-subnav-btn.active {
+  border-color: var(--section-comp-border);
+  background: var(--section-comp-bg);
+  color: var(--section-comp-fg);
+}
+
+.company-count,
+.app-tab-badge {
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--muted-strong);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.app-tab-badge {
+  margin-left: 4px;
+  background: var(--amber);
+  color: #ffffff;
+}
+
+.company-note,
+.company-progress {
+  margin: 0;
+  color: var(--text-soft);
+  font-weight: 650;
+}
+
+.company-error {
+  margin: 0;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.company-message:empty {
+  display: none;
+}
+
+.company-card {
+  padding: 14px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.company-card + .company-card {
+  margin-top: 10px;
+}
+
+.company-card h3 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.company-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.company-conditions {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.company-conditions li {
+  display: grid;
+  gap: 2px;
+}
+
+.company-secret {
+  display: flex;
+  gap: 6px;
+}
+
+.company-secret input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.company-people,
+.company-steps,
+.company-obligations {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.company-person,
+.company-bank {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: end;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.company-step,
+.company-obligation {
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--section-comp-border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.company-step.is-done {
+  border-left-color: var(--green);
+}
+
+.company-obligation.is-off {
+  opacity: 0.7;
+}
+
+.company-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.company-item-head h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.company-step p,
+.company-obligation p {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+}
+
+.company-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: var(--muted-strong);
+  font-size: 0.82rem;
+}
+
+.company-sources {
+  font-size: 0.8rem;
+}
+
+.company-sources > span:first-child {
+  color: var(--muted-strong);
+  font-weight: 700;
+}
+
+.company-verified {
+  color: var(--muted);
+}
+
+.company-check-locally {
+  padding: 1px 6px;
+  border: 1px solid var(--amber);
+  border-radius: 999px;
+  color: var(--amber);
+  font-weight: 750;
+}
+
+.company-own,
+.company-frequency {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--section-comp-bg);
+  color: var(--section-comp-fg);
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+.company-notes {
+  white-space: pre-wrap;
+}
+
+.company-step .secondary-button,
+.company-obligation .secondary-button {
+  margin-top: 8px;
+}
+
+.company-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+}
+
+.company-table th,
+.company-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.company-table th {
+  color: var(--muted-strong);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.company-amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.company-needs {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-soft);
+}
+
+.company-document-actions {
+  margin: 8px 0;
+}
+
+.company-document {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.company-window-intro {
+  grid-column: 1 / -1;
+  color: var(--text-soft);
+}
+
+.company-window-intro p {
+  margin: 0 0 6px;
+}
+
+.field-help.is-warning {
+  color: var(--amber);
+}
+
+@media (max-width: 640px) {
+  .company-hero {
+    padding: 12px;
+  }
+
+  .company-subnav {
+    overflow-x: auto;
+  }
+
+  .company-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

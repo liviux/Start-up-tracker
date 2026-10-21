@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest a change or something new.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please search the open issues first, in case someone asked already. For a new category or company template, include the official sources you used.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to do, and what gets in the way today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like
+      description: How it could work. Sketches and examples are welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you do now instead
+      description: Workarounds or other tools you use for this.
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: For categories, company templates or other facts, links to official pages and the date you checked them.

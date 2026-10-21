@@ -1,0 +1,579 @@
+{
+  "id": "br-sa",
+  "version": 1,
+  "country": "BR",
+  "countryName": "Brazil",
+  "entityType": "S.A.",
+  "nameLocal": "Sociedade Anônima (S.A.)",
+  "nameEnglish": "Joint-stock corporation",
+  "currency": "BRL",
+  "bilingual": null,
+  "subdivision": {
+    "label": "State (UF) of the head office",
+    "required": false,
+    "options": [
+      {
+        "code": "BR-AC",
+        "name": "Acre"
+      },
+      {
+        "code": "BR-AL",
+        "name": "Alagoas"
+      },
+      {
+        "code": "BR-AP",
+        "name": "Amapá"
+      },
+      {
+        "code": "BR-AM",
+        "name": "Amazonas"
+      },
+      {
+        "code": "BR-BA",
+        "name": "Bahia"
+      },
+      {
+        "code": "BR-CE",
+        "name": "Ceará"
+      },
+      {
+        "code": "BR-DF",
+        "name": "Distrito Federal"
+      },
+      {
+        "code": "BR-ES",
+        "name": "Espírito Santo"
+      },
+      {
+        "code": "BR-GO",
+        "name": "Goiás"
+      },
+      {
+        "code": "BR-MA",
+        "name": "Maranhão"
+      },
+      {
+        "code": "BR-MT",
+        "name": "Mato Grosso"
+      },
+      {
+        "code": "BR-MS",
+        "name": "Mato Grosso do Sul"
+      },
+      {
+        "code": "BR-MG",
+        "name": "Minas Gerais"
+      },
+      {
+        "code": "BR-PA",
+        "name": "Pará"
+      },
+      {
+        "code": "BR-PB",
+        "name": "Paraíba"
+      },
+      {
+        "code": "BR-PR",
+        "name": "Paraná"
+      },
+      {
+        "code": "BR-PE",
+        "name": "Pernambuco"
+      },
+      {
+        "code": "BR-PI",
+        "name": "Piauí"
+      },
+      {
+        "code": "BR-RJ",
+        "name": "Rio de Janeiro"
+      },
+      {
+        "code": "BR-RN",
+        "name": "Rio Grande do Norte"
+      },
+      {
+        "code": "BR-RS",
+        "name": "Rio Grande do Sul"
+      },
+      {
+        "code": "BR-RO",
+        "name": "Rondônia"
+      },
+      {
+        "code": "BR-RR",
+        "name": "Roraima"
+      },
+      {
+        "code": "BR-SC",
+        "name": "Santa Catarina"
+      },
+      {
+        "code": "BR-SP",
+        "name": "São Paulo"
+      },
+      {
+        "code": "BR-SE",
+        "name": "Sergipe"
+      },
+      {
+        "code": "BR-TO",
+        "name": "Tocantins"
+      }
+    ]
+  },
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "lei-6404",
+      "title": "Lei 6.404/1976 (Lei das S.A.)",
+      "publisher": "Presidência da República (planalto.gov.br)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l6404consol.htm",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "redesim",
+      "title": "Redesim: abrir CNPJ",
+      "publisher": "Governo Federal (gov.br)",
+      "url": "https://www.gov.br/empresas-e-negocios/pt-br/redesim",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ecd",
+      "title": "Entregar Escrituração Contábil Digital (ECD)",
+      "publisher": "Receita Federal (gov.br)",
+      "url": "https://www.gov.br/pt-br/servicos/entregar-escrituracao-contabil-digital",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ecf",
+      "title": "Entregar Escrituração Contábil Fiscal (ECF)",
+      "publisher": "Receita Federal (gov.br)",
+      "url": "https://www.gov.br/pt-br/servicos/entregar-escrituracao-contabil-fiscal",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "dctfweb",
+      "title": "Declarar débitos e créditos tributários federais (DCTFWeb)",
+      "publisher": "Receita Federal (gov.br)",
+      "url": "https://www.gov.br/pt-br/servicos/declarar-debitos-e-creditos-tributarios-federais",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "pgdas",
+      "title": "Declarar apurações mensais do Simples Nacional (PGDAS-D)",
+      "publisher": "Receita Federal (gov.br)",
+      "url": "https://www.gov.br/pt-br/servicos/declarar-apuracoes-mensais-do-simples-nacional",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "defis",
+      "title": "Declarar apurações e informações anuais do Simples Nacional (DEFIS)",
+      "publisher": "Receita Federal (gov.br)",
+      "url": "https://www.gov.br/pt-br/servicos/declarar-apuracoes-e-informacoes-anuais-do-simples-nacional",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "simples",
+      "label": "Taxed under the Simples Nacional",
+      "description": "Pays most taxes monthly through the DAS."
+    },
+    {
+      "id": "not-simples",
+      "label": "Taxed outside the Simples Nacional",
+      "description": "Presumed or actual profit (lucro presumido or lucro real)."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Razão social",
+      "description": "The registered company name.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "redesim"
+      ]
+    },
+    {
+      "key": "cnpj",
+      "label": "CNPJ",
+      "description": "The company's national registration number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "redesim"
+      ]
+    },
+    {
+      "key": "nire",
+      "label": "NIRE",
+      "description": "The registration number at the Junta Comercial.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "headOffice",
+      "label": "Sede",
+      "description": "The head office address.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "activity",
+      "label": "Main activity (CNAE)",
+      "description": "The main CNAE code and its name.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "redesim"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "Capital social",
+      "description": "In reais.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "diretor",
+        "label": "Diretor",
+        "description": "An officer of the executive board."
+      },
+      {
+        "id": "conselheiro",
+        "label": "Conselheiro",
+        "description": "A board of directors member, if there is a board."
+      },
+      {
+        "id": "acionista",
+        "label": "Acionista",
+        "description": "Holds shares."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn",
+      "idNumber"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "subscription",
+      "title": "Subscribe all the shares",
+      "description": "At least two people subscribe all the shares of the capital in the bylaws (estatuto).",
+      "authority": "Founders",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "lei-6404"
+      ]
+    },
+    {
+      "id": "deposit",
+      "title": "Pay in and deposit the cash entry",
+      "description": "At least 10% of the issue price of shares subscribed in cash is paid in and deposited at Banco do Brasil or another bank authorised by the CVM.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "subscription"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "lei-6404"
+      ]
+    },
+    {
+      "id": "constitution",
+      "title": "Hold the constitutive meeting or sign the public deed",
+      "description": "Approve the bylaws and elect the first officers.",
+      "authority": "Founders",
+      "typicalCost": null,
+      "dependsOn": [
+        "deposit"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "lei-6404"
+      ]
+    },
+    {
+      "id": "cnpj",
+      "title": "Register the company and get the CNPJ (Redesim)",
+      "description": "The registration at the state's Junta Comercial and the CNPJ are requested through Redesim.",
+      "authority": "Junta Comercial and Receita Federal",
+      "typicalCost": null,
+      "dependsOn": [
+        "constitution"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "redesim"
+      ]
+    },
+    {
+      "id": "licences",
+      "title": "Get the municipal and state registrations and licences",
+      "description": "City registration, the operating licence and, for goods, the state registration depend on the activity and the place.",
+      "authority": "City hall and state tax office",
+      "typicalCost": null,
+      "dependsOn": [
+        "cnpj"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "tax-regime",
+      "title": "Choose the tax regime",
+      "description": "Simples Nacional, lucro presumido or lucro real; the choice changes the returns below.",
+      "authority": "Receita Federal",
+      "typicalCost": null,
+      "dependsOn": [
+        "cnpj"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "pgdas"
+      ]
+    },
+    {
+      "id": "accountant",
+      "title": "Appoint an accountant (contador)",
+      "description": "Bookkeeping and most returns are done by an accountant.",
+      "authority": "Your accountant",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "bank-account",
+      "title": "Open the company bank account",
+      "description": "Banks ask for the registered documents and the CNPJ.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "cnpj"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "ago",
+      "title": "Annual general meeting (AGO)",
+      "description": "Within the first four months after the financial year ends, to approve the financial statements, decide on the profit and elect officers when due.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 4,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Shareholders",
+      "checkLocally": false,
+      "sourceIds": [
+        "lei-6404"
+      ]
+    },
+    {
+      "id": "publications",
+      "title": "Legal publications",
+      "description": "The law requires publications (for example of the financial statements) in the places Article 289 sets; small closed companies may have exemptions under Article 294. Check with your accountant.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 4,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Company",
+      "checkLocally": true,
+      "sourceIds": [
+        "lei-6404"
+      ]
+    },
+    {
+      "id": "pgdas",
+      "title": "Simples Nacional monthly declaration and DAS (PGDAS-D)",
+      "description": "Declare and pay by the 20th of the following month (the next working day if banks are closed).",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 20
+      },
+      "conditions": [
+        "simples"
+      ],
+      "subdivisions": [],
+      "authority": "Receita Federal",
+      "checkLocally": false,
+      "sourceIds": [
+        "pgdas"
+      ]
+    },
+    {
+      "id": "defis",
+      "title": "Simples Nacional annual declaration (DEFIS)",
+      "description": "By the last day of March, for the previous calendar year.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 3,
+        "day": 31
+      },
+      "conditions": [
+        "simples"
+      ],
+      "subdivisions": [],
+      "authority": "Receita Federal",
+      "checkLocally": false,
+      "sourceIds": [
+        "defis"
+      ]
+    },
+    {
+      "id": "dctfweb",
+      "title": "Federal debts and credits declaration (DCTFWeb)",
+      "description": "Monthly, by the last working day of the following month. The date shown is the last day.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Receita Federal",
+      "checkLocally": false,
+      "sourceIds": [
+        "dctfweb"
+      ]
+    },
+    {
+      "id": "ecd",
+      "title": "Digital accounting books (ECD)",
+      "description": "Sent to Sped by the last working day of June of the next year, by companies required to keep them.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 6,
+        "day": 30
+      },
+      "conditions": [
+        "not-simples"
+      ],
+      "subdivisions": [],
+      "authority": "Receita Federal (Sped)",
+      "checkLocally": false,
+      "sourceIds": [
+        "ecd"
+      ]
+    },
+    {
+      "id": "ecf",
+      "title": "Tax accounting return (ECF)",
+      "description": "Sent to Sped by the last working day of July of the next year.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 7,
+        "day": 31
+      },
+      "conditions": [
+        "not-simples"
+      ],
+      "subdivisions": [],
+      "authority": "Receita Federal (Sped)",
+      "checkLocally": false,
+      "sourceIds": [
+        "ecf"
+      ]
+    },
+    {
+      "id": "state-municipal",
+      "title": "State and municipal taxes (ICMS, ISS)",
+      "description": "Depend on the state and the city of the business. Check the dates with them.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "State and municipal tax offices",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- CNPJ: {{cnpj}}\n- NIRE: {{nire}}\n- Sede: {{headOffice}}\n- Atividade principal: {{activity}}\n- Capital social: {{shareCapital}} BRL\n\n## Diretoria, conselho e acionistas\n\n{{people}}\n"
+}

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "defaultPriority": "medium",
+  "priorities": [
+    { "id": "very_high", "label": "Very high", "legacy": ["Very High"] },
+    { "id": "high", "label": "High", "legacy": ["High"] },
+    { "id": "medium", "label": "Medium", "legacy": ["Medium"] },
+    { "id": "low", "label": "Low", "legacy": ["Low"] },
+    { "id": "very_low", "label": "Very low", "legacy": ["Very Low"] }
+  ]
+}

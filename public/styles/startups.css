@@ -1,0 +1,236 @@
+/* Startups: the switcher in the sidebar, the New startup dialog, the screen
+   that creates the first startup, the This startup / All startups switches
+   and the startup label on combined results. */
+
+/* Without a startup in the address only the create screen shows. */
+html[data-no-startup] .app-shell,
+html[data-no-startup] .back-to-top { display: none !important; }
+
+.startup-icon {
+  display: inline-grid;
+  flex: 0 0 28px;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  overflow: hidden;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--sidebar-text) 14%, transparent);
+  color: var(--sidebar-text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+.startup-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- Switcher ---- */
+.startup-switcher { margin: 0 0 18px; }
+
+.startup-switcher-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--sidebar-text) 22%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--sidebar-text) 5%, transparent);
+  color: var(--sidebar-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.startup-switcher-button:hover { background: color-mix(in srgb, var(--sidebar-text) 12%, transparent); }
+.startup-switcher.open .startup-switcher-button { border-color: var(--sidebar-muted); }
+.startup-switcher-text { display: grid; flex: 1 1 auto; min-width: 0; }
+.startup-switcher-caption {
+  color: var(--sidebar-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.startup-switcher-name {
+  overflow: hidden;
+  color: var(--sidebar-text);
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.startup-switcher-chevron { flex: 0 0 16px; width: 16px; height: 16px; fill: currentColor; transition: transform 150ms; }
+.startup-switcher.open .startup-switcher-chevron { transform: rotate(180deg); }
+
+/* The menu sits in the flow of the sidebar, which scrolls, so it is never
+   clipped by it. */
+.startup-switcher-menu {
+  display: grid;
+  gap: 2px;
+  margin-top: 6px;
+  padding: 6px;
+  border: 1px solid color-mix(in srgb, var(--sidebar-text) 22%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--sidebar-text) 7%, transparent);
+}
+.startup-menu-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--sidebar-text);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.startup-menu-item .startup-icon { flex-basis: 24px; width: 24px; height: 24px; font-size: 12px; }
+.startup-menu-item:hover,
+.startup-menu-item:focus-visible { background: color-mix(in srgb, var(--sidebar-text) 14%, transparent); }
+.startup-menu-item[aria-current="page"] { font-weight: 700; }
+.startup-menu-item[aria-current="page"]::after { content: "✓"; margin-left: auto; color: var(--sidebar-muted); }
+.startup-menu-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.startup-menu-separator { height: 1px; margin: 4px 2px; background: color-mix(in srgb, var(--sidebar-text) 18%, transparent); }
+.startup-menu-new { font-weight: 600; }
+html .shell-sidebar .startup-menu-item:focus-visible,
+html .shell-sidebar .startup-switcher-button:focus-visible { outline: 2px solid #c9ebd6; outline-offset: 2px; }
+
+/* Unsynced or conflicted edits held by this browser for another startup:
+   a symbol and words, not only a colour. */
+.startup-unsynced {
+  display: inline-flex;
+  flex-basis: 100%;
+  align-items: center;
+  gap: 5px;
+  padding-left: 32px;
+  color: var(--sidebar-text);
+  font-size: 11px;
+  font-weight: 600;
+}
+.startup-unsynced-symbol {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #f6d48b;
+  color: #3b2a00;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+}
+.startup-unsynced.is-conflict .startup-unsynced-symbol { background: #ffb4a8; color: #4a0d05; }
+
+/* ---- Breadcrumb ---- */
+.shell-breadcrumb { overflow: hidden; min-width: 0; }
+.shell-breadcrumb span { overflow: hidden; text-overflow: ellipsis; }
+
+/* ---- Forms: New startup dialog and the first-startup screen ---- */
+.startup-dialog {
+  width: min(440px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 16px);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+}
+.startup-dialog::backdrop { background: rgb(10 20 15 / 45%); }
+.startup-form { display: grid; gap: 14px; padding: 24px; }
+.startup-form h1,
+.startup-form h2 { margin: 0; color: var(--text); font-size: 20px; font-weight: 700; letter-spacing: -0.4px; }
+.startup-field { display: grid; gap: 6px; color: var(--text-soft); font-size: 13px; font-weight: 600; }
+.startup-field input,
+.startup-field select {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 400;
+}
+.startup-hint { margin: 0; color: var(--muted); font-size: 13px; }
+.startup-error { margin: 0; color: #b42318; font-size: 13px; font-weight: 600; }
+html[data-theme="dark"] .startup-error { color: #ffb4a8; }
+.startup-error::before { content: "⚠ "; }
+.startup-form-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.first-startup {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  padding: 24px 16px;
+  background: var(--bg);
+}
+.first-startup[hidden] { display: none; }
+.first-startup-card {
+  width: min(460px, 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 16px);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.first-startup-logo { width: 40px; height: 40px; }
+
+/* ---- This startup / All startups ---- */
+.scope-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-soft);
+}
+.scope-switch-button {
+  min-height: 30px;
+  padding: 4px 12px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: none;
+  color: var(--text-soft);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.scope-switch-button:hover { background: var(--surface-strong); }
+.scope-switch-button[aria-pressed="true"] {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: var(--shadow-soft);
+}
+.global-search-scope { display: flex; margin: 2px 2px 6px; }
+.global-search-scope .scope-switch-button { flex: 1 1 0; }
+.calendar-scope { margin: -12px 0 18px; }
+.calendar-scope-status { margin: -8px 0 16px; color: var(--muted); font-size: 12px; }
+
+/* The startup a combined result belongs to. */
+.startup-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  margin-right: 6px;
+  padding: 1px 7px 1px 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+.startup-chip-icon { width: 14px; height: 14px; border-radius: 4px; object-fit: cover; }
+.startup-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.calendar-item-header .startup-chip { margin: 4px 0 0; }

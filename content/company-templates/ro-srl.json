@@ -1,0 +1,963 @@
+{
+  "id": "ro-srl",
+  "version": 1,
+  "country": "RO",
+  "countryName": "Romania",
+  "entityType": "SRL",
+  "nameLocal": {
+    "en": "Societate cu răspundere limitată",
+    "ro": "Societate cu răspundere limitată"
+  },
+  "nameEnglish": {
+    "en": "Limited liability company",
+    "ro": "Societate cu răspundere limitată"
+  },
+  "currency": "RON",
+  "bilingual": {
+    "languages": [
+      "en",
+      "ro"
+    ]
+  },
+  "subdivision": null,
+  "disclaimer": {
+    "en": "Not legal or tax advice. Check with an accountant or lawyer.",
+    "ro": "Nu este consultanță juridică sau fiscală. Verifică cu un contabil sau un avocat."
+  },
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "anaf-calendar",
+      "title": {
+        "en": "Tax obligations calendar for 2026",
+        "ro": "Calendarul obligațiilor fiscale pentru anul 2026"
+      },
+      "publisher": {
+        "en": "ANAF (National Agency for Fiscal Administration)",
+        "ro": "ANAF (Agenția Națională de Administrare Fiscală)"
+      },
+      "url": "https://static.anaf.ro/static/10/Anaf/AsistentaContribuabili_r/Calendar/Calendar_obligatii_fiscale_2025.htm",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "anaf",
+      "title": {
+        "en": "ANAF home page: SAF-T, e-Factura and returns",
+        "ro": "Pagina ANAF: SAF-T, e-Factura și declarații"
+      },
+      "publisher": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "url": "https://www.anaf.ro/anaf/internet/ANAF/",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "onrc",
+      "title": {
+        "en": "National Trade Register Office",
+        "ro": "Oficiul Național al Registrului Comerțului"
+      },
+      "publisher": {
+        "en": "ONRC",
+        "ro": "ONRC"
+      },
+      "url": "https://www.onrc.ro/",
+      "verifiedOn": null,
+      "checkLocally": true
+    },
+    {
+      "id": "mf",
+      "title": {
+        "en": "Ministry of Finance: annual financial statements",
+        "ro": "Ministerul Finanțelor: situații financiare anuale"
+      },
+      "publisher": {
+        "en": "Ministerul Finanțelor",
+        "ro": "Ministerul Finanțelor"
+      },
+      "url": "https://mfinante.gov.ro/",
+      "verifiedOn": null,
+      "checkLocally": true
+    }
+  ],
+  "conditions": [
+    {
+      "id": "vat-monthly",
+      "label": {
+        "en": "VAT registered, monthly returns",
+        "ro": "Plătitor de TVA, decont lunar"
+      },
+      "description": {
+        "en": "Registered for VAT with a monthly tax period.",
+        "ro": "Înregistrat în scopuri de TVA, cu perioadă fiscală lunară."
+      }
+    },
+    {
+      "id": "vat-quarterly",
+      "label": {
+        "en": "VAT registered, quarterly returns",
+        "ro": "Plătitor de TVA, decont trimestrial"
+      },
+      "description": {
+        "en": "Registered for VAT with a quarterly tax period.",
+        "ro": "Înregistrat în scopuri de TVA, cu perioadă fiscală trimestrială."
+      }
+    },
+    {
+      "id": "has-employees",
+      "label": {
+        "en": "Has employees",
+        "ro": "Are angajați"
+      },
+      "description": {
+        "en": "Pays salaries, including to a director with an employment contract.",
+        "ro": "Plătește salarii, inclusiv unui administrator cu contract de muncă."
+      }
+    },
+    {
+      "id": "micro-company",
+      "label": {
+        "en": "Pays micro-company income tax",
+        "ro": "Plătitor de impozit pe veniturile microîntreprinderilor"
+      },
+      "description": {
+        "en": "Taxed on turnover under the micro-company regime.",
+        "ro": "Impozitat pe venituri, în regimul microîntreprinderilor."
+      }
+    },
+    {
+      "id": "profit-tax",
+      "label": {
+        "en": "Pays corporate profit tax",
+        "ro": "Plătitor de impozit pe profit"
+      },
+      "description": {
+        "en": "Taxed on profit, outside the micro-company regime.",
+        "ro": "Impozitat pe profit, în afara regimului microîntreprinderilor."
+      }
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": {
+        "en": "Company name",
+        "ro": "Denumirea firmei"
+      },
+      "description": {
+        "en": "The name as registered with ONRC, including \"SRL\".",
+        "ro": "Denumirea înregistrată la ONRC, cu \"SRL\"."
+      },
+      "example": {
+        "en": "e.g. Example Studio SRL",
+        "ro": "e.g. Example Studio SRL"
+      },
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "key": "registrationNumber",
+      "label": {
+        "en": "Trade Register number",
+        "ro": "Nr. Registrul Comerțului"
+      },
+      "description": {
+        "en": "The J number on the registration certificate.",
+        "ro": "Numărul J din certificatul de înregistrare."
+      },
+      "example": {
+        "en": "",
+        "ro": ""
+      },
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "key": "euid",
+      "label": {
+        "en": "European Unique Identifier (EUID)",
+        "ro": "Identificator Unic la Nivel European (EUID)"
+      },
+      "description": {
+        "en": "The EUID shown on the registration certificate.",
+        "ro": "EUID-ul din certificatul de înregistrare."
+      },
+      "example": {
+        "en": "",
+        "ro": ""
+      },
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "key": "fiscalCode",
+      "label": {
+        "en": "Tax identification code (CUI)",
+        "ro": "Cod unic de înregistrare (CUI)"
+      },
+      "description": {
+        "en": "The company's fiscal code. VAT-registered companies use it with the RO prefix.",
+        "ro": "Codul fiscal al firmei. Plătitorii de TVA îl folosesc cu prefixul RO."
+      },
+      "example": {
+        "en": "",
+        "ro": ""
+      },
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "onrc",
+        "anaf"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": {
+        "en": "Registered office",
+        "ro": "Sediul social"
+      },
+      "description": {
+        "en": "The address registered with ONRC.",
+        "ro": "Adresa înregistrată la ONRC."
+      },
+      "example": {
+        "en": "",
+        "ro": ""
+      },
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "key": "mainActivity",
+      "label": {
+        "en": "Main activity (CAEN code)",
+        "ro": "Activitatea principală (cod CAEN)"
+      },
+      "description": {
+        "en": "The main activity code and its name.",
+        "ro": "Codul și denumirea activității principale."
+      },
+      "example": {
+        "en": "",
+        "ro": ""
+      },
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": {
+        "en": "Share capital",
+        "ro": "Capital social"
+      },
+      "description": {
+        "en": "Subscribed share capital in RON.",
+        "ro": "Capitalul social subscris, în lei."
+      },
+      "example": {
+        "en": "",
+        "ro": ""
+      },
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "administrator",
+        "label": {
+          "en": "Administrator",
+          "ro": "Administrator"
+        },
+        "description": {
+          "en": "Runs the company and represents it.",
+          "ro": "Conduce și reprezintă societatea."
+        }
+      },
+      {
+        "id": "associate",
+        "label": {
+          "en": "Associate (shareholder)",
+          "ro": "Asociat"
+        },
+        "description": {
+          "en": "Owns shares in the company.",
+          "ro": "Deține părți sociale."
+        }
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn",
+      "idNumber"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name-check",
+      "title": {
+        "en": "Check and reserve the company name",
+        "ro": "Verifică și rezervă denumirea"
+      },
+      "description": {
+        "en": "Check the name is free and reserve it with the Trade Register.",
+        "ro": "Verifică disponibilitatea denumirii și rezerv-o la Registrul Comerțului."
+      },
+      "authority": {
+        "en": "ONRC",
+        "ro": "ONRC"
+      },
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "id": "registered-office",
+      "title": {
+        "en": "Get a registered office",
+        "ro": "Asigură sediul social"
+      },
+      "description": {
+        "en": "Get a document that gives the company the right to use the address (for example a lease or a loan-for-use contract).",
+        "ro": "Obține actul care dă dreptul de folosință asupra spațiului (de exemplu contract de închiriere sau de comodat)."
+      },
+      "authority": {
+        "en": "ONRC",
+        "ro": "ONRC"
+      },
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "id": "articles",
+      "title": {
+        "en": "Draft the articles of association",
+        "ro": "Redactează actul constitutiv"
+      },
+      "description": {
+        "en": "Write and sign the articles of association with the associates and the administrator.",
+        "ro": "Redactează și semnează actul constitutiv, cu asociații și administratorul."
+      },
+      "authority": {
+        "en": "ONRC",
+        "ro": "ONRC"
+      },
+      "typicalCost": null,
+      "dependsOn": [
+        "name-check"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "id": "share-capital",
+      "title": {
+        "en": "Pay in the share capital",
+        "ro": "Vărsă capitalul social"
+      },
+      "description": {
+        "en": "Deposit the share capital as the articles say and keep the proof.",
+        "ro": "Depune capitalul social conform actului constitutiv și păstrează dovada."
+      },
+      "authority": {
+        "en": "Bank",
+        "ro": "Banca"
+      },
+      "typicalCost": null,
+      "dependsOn": [
+        "articles"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "id": "registration",
+      "title": {
+        "en": "File for registration",
+        "ro": "Depune cererea de înregistrare"
+      },
+      "description": {
+        "en": "File the registration with ONRC. The certificate shows the Trade Register number, the EUID and the fiscal code (CUI).",
+        "ro": "Depune cererea de înregistrare la ONRC. Certificatul conține numărul de ordine, EUID și codul unic de înregistrare."
+      },
+      "authority": {
+        "en": "ONRC",
+        "ro": "ONRC"
+      },
+      "typicalCost": null,
+      "dependsOn": [
+        "registered-office",
+        "articles",
+        "share-capital"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "onrc"
+      ]
+    },
+    {
+      "id": "spv",
+      "title": {
+        "en": "Get access to ANAF's online space (SPV)",
+        "ro": "Obține acces în Spațiul Privat Virtual (SPV)"
+      },
+      "description": {
+        "en": "Returns, e-Factura and SAF-T are filed online with ANAF.",
+        "ro": "Declarațiile, e-Factura și SAF-T se depun online la ANAF."
+      },
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "typicalCost": null,
+      "dependsOn": [
+        "registration"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "anaf"
+      ]
+    },
+    {
+      "id": "vat-registration",
+      "title": {
+        "en": "Register for VAT if you have to or want to",
+        "ro": "Înregistrează-te în scopuri de TVA, dacă e cazul"
+      },
+      "description": {
+        "en": "A company that passes the VAT exemption threshold must register at the latest when it passes it (form 010 or the electronic form 700). Check the current threshold with ANAF.",
+        "ro": "Persoana impozabilă care depășește plafonul de scutire se înregistrează cel târziu la data depășirii (formularul 010 sau formularul electronic 700). Verifică plafonul actual la ANAF."
+      },
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "typicalCost": null,
+      "dependsOn": [
+        "registration"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": {
+        "en": "Open a business bank account",
+        "ro": "Deschide un cont bancar al firmei"
+      },
+      "description": {
+        "en": "Open the company's current account and add it under Bank accounts.",
+        "ro": "Deschide contul curent al firmei și adaugă-l la Conturi bancare."
+      },
+      "authority": {
+        "en": "Bank",
+        "ro": "Banca"
+      },
+      "typicalCost": null,
+      "dependsOn": [
+        "registration"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "accountant",
+      "title": {
+        "en": "Appoint an accountant",
+        "ro": "Alege un contabil"
+      },
+      "description": {
+        "en": "Agree who keeps the books and files the returns.",
+        "ro": "Stabilește cine ține contabilitatea și depune declarațiile."
+      },
+      "authority": {
+        "en": "Your accountant",
+        "ro": "Contabilul tău"
+      },
+      "typicalCost": null,
+      "dependsOn": [
+        "registration"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "vat-return-monthly",
+      "title": {
+        "en": "VAT return (form 300), monthly",
+        "ro": "Decont de TVA (formularul 300), lunar"
+      },
+      "description": {
+        "en": "File the VAT return for the previous month by the 25th. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Depune decontul de TVA pentru luna precedentă până pe 25. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 25
+      },
+      "conditions": [
+        "vat-monthly"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "vat-return-quarterly",
+      "title": {
+        "en": "VAT return (form 300), quarterly",
+        "ro": "Decont de TVA (formularul 300), trimestrial"
+      },
+      "description": {
+        "en": "File the VAT return for the previous quarter by the 25th of the month after it. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Depune decontul de TVA pentru trimestrul precedent până pe 25 a lunii următoare. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 25
+      },
+      "conditions": [
+        "vat-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "vat-listing-monthly",
+      "title": {
+        "en": "Domestic supplies listing (form 394), monthly",
+        "ro": "Declarația informativă 394, lunar"
+      },
+      "description": {
+        "en": "Report domestic sales and purchases for the same period as the VAT return, by the 30th of the following month (the last day in February). If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Raportează livrările și achizițiile pe teritoriul național pentru aceeași perioadă ca decontul de TVA, până pe 30 a lunii următoare (ultima zi în februarie). Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 30
+      },
+      "conditions": [
+        "vat-monthly"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "vat-listing-quarterly",
+      "title": {
+        "en": "Domestic supplies listing (form 394), quarterly",
+        "ro": "Declarația informativă 394, trimestrial"
+      },
+      "description": {
+        "en": "Report domestic sales and purchases for the quarter by the 30th of the month after it. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Raportează livrările și achizițiile pe teritoriul național pentru trimestru până pe 30 a lunii următoare. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 30
+      },
+      "conditions": [
+        "vat-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "payroll-return",
+      "title": {
+        "en": "Payroll return (form 112)",
+        "ro": "Declarația 112"
+      },
+      "description": {
+        "en": "Social contributions and income tax on salaries for the previous month, by the 25th. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Contribuțiile sociale și impozitul pe salarii pentru luna precedentă, până pe 25. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 25
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "micro-tax-q1",
+      "title": {
+        "en": "Micro-company tax, first quarter (form 100)",
+        "ro": "Impozit pe veniturile microîntreprinderilor, trimestrul I (formularul 100)"
+      },
+      "description": {
+        "en": "Declare and pay the tax for January to March. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Declari și plătești impozitul pentru ianuarie–martie. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 4,
+        "day": 25
+      },
+      "conditions": [
+        "micro-company"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": true,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "micro-tax-q2",
+      "title": {
+        "en": "Micro-company tax, second quarter (form 100)",
+        "ro": "Impozit pe veniturile microîntreprinderilor, trimestrul II (formularul 100)"
+      },
+      "description": {
+        "en": "Declare and pay the tax for April to June. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Declari și plătești impozitul pentru aprilie–iunie. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 7,
+        "day": 25
+      },
+      "conditions": [
+        "micro-company"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": true,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "micro-tax-q3",
+      "title": {
+        "en": "Micro-company tax, third quarter (form 100)",
+        "ro": "Impozit pe veniturile microîntreprinderilor, trimestrul III (formularul 100)"
+      },
+      "description": {
+        "en": "Declare and pay the tax for July to September. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Declari și plătești impozitul pentru iulie–septembrie. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 10,
+        "day": 25
+      },
+      "conditions": [
+        "micro-company"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": true,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "micro-tax-q4",
+      "title": {
+        "en": "Micro-company tax, fourth quarter (form 100)",
+        "ro": "Impozit pe veniturile microîntreprinderilor, trimestrul IV (formularul 100)"
+      },
+      "description": {
+        "en": "The fourth quarter is declared and paid by 25 June of the next year while OUG 153/2020 applies, as ANAF's 2026 calendar lists it. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Trimestrul IV se declară și se plătește până la 25 iunie a anului următor, pe perioada aplicării OUG 153/2020, conform calendarului ANAF pentru 2026. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 6,
+        "day": 25
+      },
+      "conditions": [
+        "micro-company"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "profit-tax-annual",
+      "title": {
+        "en": "Annual profit tax return (form 101)",
+        "ro": "Declarația anuală privind impozitul pe profit (formularul 101)"
+      },
+      "description": {
+        "en": "File and pay the annual profit tax by 25 June of the next year while OUG 153/2020 applies. Quarterly payments may also be due; ask your accountant. If the date falls on a weekend or public holiday, it moves to the next working day.",
+        "ro": "Depui declarația și plătești impozitul pe profit anual până la 25 iunie a anului următor, pe perioada aplicării OUG 153/2020. Pot exista și plăți trimestriale; întreabă contabilul. Dacă termenul cade într-o zi nelucrătoare, se mută pe următoarea zi lucrătoare."
+      },
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 6,
+        "day": 25
+      },
+      "conditions": [
+        "profit-tax"
+      ],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": {
+        "en": "Annual financial statements",
+        "ro": "Situațiile financiare anuale"
+      },
+      "description": {
+        "en": "File the annual financial statements with the Ministry of Finance. The deadline counts from the end of the financial year; confirm it with your accountant.",
+        "ro": "Depui situațiile financiare anuale la Ministerul Finanțelor. Termenul se socotește de la încheierea exercițiului financiar; confirmă-l cu contabilul."
+      },
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 5,
+        "day": 30
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": {
+        "en": "Ministerul Finanțelor",
+        "ro": "Ministerul Finanțelor"
+      },
+      "checkLocally": true,
+      "sourceIds": [
+        "mf"
+      ]
+    },
+    {
+      "id": "saf-t",
+      "title": {
+        "en": "SAF-T file (D406)",
+        "ro": "Fișierul standard de control fiscal (D406)"
+      },
+      "description": {
+        "en": "The standard audit file. How often you file and by when depends on the size of the company; check with ANAF or your accountant.",
+        "ro": "Fișierul standard de control fiscal. Frecvența și termenul depind de dimensiunea firmei; verifică la ANAF sau cu contabilul."
+      },
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": true,
+      "sourceIds": [
+        "anaf"
+      ]
+    },
+    {
+      "id": "registration-changes",
+      "title": {
+        "en": "Report changes to registered tax data",
+        "ro": "Declară modificările datelor de înregistrare fiscală"
+      },
+      "description": {
+        "en": "File the changes (form 010, or form 700 online) within 15 days of a change to the data declared at registration.",
+        "ro": "Depui mențiunile (formularul 010 sau 700 online) în 15 zile de la modificarea datelor declarate inițial."
+      },
+      "frequency": "on-event",
+      "due": {
+        "rule": "relative-to-event",
+        "days": 15,
+        "event": {
+          "en": "A change to the data declared at tax registration",
+          "ro": "Modificarea datelor declarate la înregistrarea fiscală"
+        }
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": {
+        "en": "ANAF",
+        "ro": "ANAF"
+      },
+      "checkLocally": false,
+      "sourceIds": [
+        "anaf-calendar"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": {
+        "en": "Accounting",
+        "ro": "Contabilitate"
+      }
+    },
+    {
+      "id": "banking",
+      "label": {
+        "en": "Banking",
+        "ro": "Bancă"
+      }
+    },
+    {
+      "id": "government-fees",
+      "label": {
+        "en": "Taxes and fees",
+        "ro": "Taxe și tarife"
+      }
+    },
+    {
+      "id": "legal",
+      "label": {
+        "en": "Legal",
+        "ro": "Juridic"
+      }
+    },
+    {
+      "id": "office",
+      "label": {
+        "en": "Registered office",
+        "ro": "Sediu"
+      }
+    },
+    {
+      "id": "software",
+      "label": {
+        "en": "Software and services",
+        "ro": "Software și servicii"
+      }
+    },
+    {
+      "id": "other",
+      "label": {
+        "en": "Other",
+        "ro": "Altele"
+      }
+    }
+  ],
+  "documentTemplate": {
+    "en": "# {{legalName}}\n\n- Trade Register number: {{registrationNumber}}\n- EUID: {{euid}}\n- Tax identification code (CUI): {{fiscalCode}}\n- Registered office: {{registeredOffice}}\n- Main activity: {{mainActivity}}\n- Share capital: {{shareCapital}} RON\n\n## People\n\n{{people}}\n",
+    "ro": "# {{legalName}}\n\n- Nr. Registrul Comerțului: {{registrationNumber}}\n- EUID: {{euid}}\n- Cod unic de înregistrare (CUI): {{fiscalCode}}\n- Sediul social: {{registeredOffice}}\n- Activitatea principală: {{mainActivity}}\n- Capital social: {{shareCapital}} lei\n\n## Persoane\n\n{{people}}\n"
+  }
+}

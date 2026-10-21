@@ -1,0 +1,226 @@
+/* Extra: the header every page shares, the option list editors, and the
+   pieces Part 10 added to AI, Media, Research links and Tags. */
+
+.extra-subnav-group {
+  align-self: center;
+  margin: 0 4px 0 10px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border-strong);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.extra-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 4px 0 14px;
+}
+
+.extra-page-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+}
+
+.extra-page-title h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.extra-page-count {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.extra-page-filter {
+  flex: 0 1 280px;
+  min-width: 180px;
+}
+
+.extra-page-header .primary-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.extra-empty p {
+  max-width: 56ch;
+  margin-inline: auto;
+}
+
+.extra-options {
+  margin: 0 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.extra-options > summary {
+  cursor: pointer;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.extra-options > summary:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+  border-radius: 10px;
+}
+
+.extra-options[open] > summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.extra-options [data-options-editor],
+.fields-documents [data-options-editor] {
+  display: grid;
+  gap: 18px;
+  padding: 12px;
+}
+
+.fields-documents {
+  margin-top: 24px;
+}
+
+.options-editor-list h4 {
+  margin: 0 0 2px;
+}
+
+.options-editor-rows {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.options-editor-row {
+  display: grid;
+  grid-template-columns: minmax(70px, 120px) minmax(140px, 1fr) minmax(160px, 1.4fr) auto auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.options-editor-row:not(:has(select)) {
+  grid-template-columns: minmax(70px, 120px) minmax(140px, 1fr) minmax(160px, 1.4fr) auto;
+}
+
+.options-editor-id {
+  overflow: hidden;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.options-editor-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.options-editor-actions .icon-button {
+  width: 30px;
+  height: 30px;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+@media (max-width: 720px) {
+  .options-editor-row,
+  .options-editor-row:not(:has(select)) {
+    grid-template-columns: 1fr auto;
+  }
+
+  .options-editor-id {
+    grid-column: 1 / -1;
+  }
+}
+
+.ai-rate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 6px 14px;
+  margin-bottom: 14px;
+}
+
+.ai-rate-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-rate-input input {
+  width: 110px;
+}
+
+.media-copy-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px 10px;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 10px;
+}
+
+.media-copy-row p {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.research-group-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  vertical-align: -2px;
+}
+
+.shared-badge {
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 0 8px;
+}
+
+.tag-colour {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  vertical-align: 0;
+}
+
+.tag-rename-row,
+.tag-merge-row {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+}
+
+.tag-rename-row label,
+.tag-merge-row label {
+  flex: 1;
+}
+
+.tag-startup-usage {
+  margin: 10px 0 0;
+}
+
+.tag-startup-usage ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.campaign-other-startups .linked-target-meta {
+  gap: 6px;
+}

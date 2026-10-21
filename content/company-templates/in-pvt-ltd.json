@@ -1,0 +1,472 @@
+{
+  "id": "in-pvt-ltd",
+  "version": 1,
+  "country": "IN",
+  "countryName": "India",
+  "entityType": "Private Limited",
+  "nameLocal": "Private Limited Company",
+  "nameEnglish": "Private limited company",
+  "currency": "INR",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "mca",
+      "title": "Ministry of Corporate Affairs: MCA21 services (SPICe+, annual filings)",
+      "publisher": "Ministry of Corporate Affairs",
+      "url": "https://www.mca.gov.in/",
+      "verifiedOn": null,
+      "checkLocally": true
+    },
+    {
+      "id": "gstr3b",
+      "title": "FAQs: Form GSTR-3B",
+      "publisher": "GST Network (gst.gov.in)",
+      "url": "https://tutorial.gst.gov.in/userguide/returns/GSTR3B.htm",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gstr1",
+      "title": "FAQs: Form GSTR-1",
+      "publisher": "GST Network (gst.gov.in)",
+      "url": "https://tutorial.gst.gov.in/contextualhelp/Einv/GSTR_1.htm",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "itr-faq",
+      "title": "Income Tax Returns FAQs",
+      "publisher": "Income Tax Department",
+      "url": "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/%20income%20tax%20returns-faq",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "cos-act-137",
+      "title": "Companies Act, 2013, section 137",
+      "publisher": "India Code (Legislative Department)",
+      "url": "https://www.indiacode.nic.in/show-data?actid=AC_CEN_22_29_00008_201318_1517807327856&orderno=141",
+      "verifiedOn": null,
+      "checkLocally": true
+    }
+  ],
+  "conditions": [
+    {
+      "id": "gst-monthly",
+      "label": "GST registered, monthly returns",
+      "description": "Files GSTR-1 and GSTR-3B every month."
+    },
+    {
+      "id": "gst-quarterly",
+      "label": "GST registered, QRMP scheme",
+      "description": "Files quarterly returns and pays monthly under the QRMP scheme."
+    },
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Deducts tax at source from salaries."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The name in the certificate of incorporation, ending in \"Private Limited\".",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "key": "cin",
+      "label": "Corporate Identity Number (CIN)",
+      "description": "From the certificate of incorporation.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "key": "pan",
+      "label": "PAN",
+      "description": "The company's Permanent Account Number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "tan",
+      "label": "TAN",
+      "description": "Tax deduction account number, for TDS.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": false,
+      "sourceIds": []
+    },
+    {
+      "key": "gstin",
+      "label": "GSTIN",
+      "description": "The GST identification number, per state.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "gstr1"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office",
+      "description": "The registered office address.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Each director has a DIN; a private company needs at least two."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Holds shares."
+      },
+      {
+        "id": "company-secretary",
+        "label": "Company secretary",
+        "description": "If the company has one."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn",
+      "idNumber"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name-and-incorporation",
+      "title": "Apply for the name and incorporation (SPICe+)",
+      "description": "File SPICe+ on the MCA portal with the memorandum and articles; it also gives the PAN and TAN.",
+      "authority": "Ministry of Corporate Affairs",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "id": "financial-year",
+      "title": "Set the financial year end to 31 March",
+      "description": "Indian companies and LLPs keep an April to March financial year. Set the financial year end in Profile to 03-31 so the dates below are right.",
+      "authority": "Ministry of Corporate Affairs",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": "Open the company bank account",
+      "description": "Needed for the subscription money from the shareholders.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "name-and-incorporation"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "commencement",
+      "title": "Declare commencement of business",
+      "description": "File the declaration that the subscribers have paid for their shares. Check the deadline on the MCA portal.",
+      "authority": "Ministry of Corporate Affairs",
+      "typicalCost": null,
+      "dependsOn": [
+        "bank-account"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "id": "auditor",
+      "title": "Appoint the first auditor",
+      "description": "Check the deadline with the MCA portal or a company secretary.",
+      "authority": "Board of directors",
+      "typicalCost": null,
+      "dependsOn": [
+        "name-and-incorporation"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "id": "gst-registration",
+      "title": "Register for GST if needed",
+      "description": "Register on the GST portal when the turnover or the type of supply requires it.",
+      "authority": "GST Network",
+      "typicalCost": null,
+      "dependsOn": [
+        "name-and-incorporation"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "gstr1"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "agm",
+      "title": "Annual general meeting",
+      "description": "Held after each financial year to adopt the accounts. Check the time limit for your company.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 6,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Shareholders",
+      "checkLocally": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "id": "aoc4",
+      "title": "File the financial statements (AOC-4)",
+      "description": "Within 30 days of the annual general meeting that adopted them (section 137). The date shown counts from an AGM on the last allowed day.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 7,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Registrar of Companies",
+      "checkLocally": true,
+      "sourceIds": [
+        "cos-act-137",
+        "mca"
+      ]
+    },
+    {
+      "id": "mgt7",
+      "title": "Annual return (MGT-7 or MGT-7A)",
+      "description": "Filed after the annual general meeting. Check the time limit on the MCA portal.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 8,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Registrar of Companies",
+      "checkLocally": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "id": "itr",
+      "title": "Income tax return (ITR-6)",
+      "description": "Companies have their accounts audited; the return is due on 31 October for a March year end (the tax audit report a month before). Check each year for extensions.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 7,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Income Tax Department",
+      "checkLocally": false,
+      "sourceIds": [
+        "itr-faq"
+      ]
+    },
+    {
+      "id": "director-kyc",
+      "title": "Directors' KYC",
+      "description": "Each director with a DIN updates their KYC every year. Check the date on the MCA portal.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Ministry of Corporate Affairs",
+      "checkLocally": true,
+      "sourceIds": [
+        "mca"
+      ]
+    },
+    {
+      "id": "gstr1-monthly",
+      "title": "GSTR-1, monthly",
+      "description": "Outward supplies for the month, by the 11th of the next month.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 11
+      },
+      "conditions": [
+        "gst-monthly"
+      ],
+      "subdivisions": [],
+      "authority": "GST Network",
+      "checkLocally": false,
+      "sourceIds": [
+        "gstr1"
+      ]
+    },
+    {
+      "id": "gstr3b-monthly",
+      "title": "GSTR-3B, monthly",
+      "description": "Summary return and tax payment by the 20th of the next month (the government can extend it).",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 20
+      },
+      "conditions": [
+        "gst-monthly"
+      ],
+      "subdivisions": [],
+      "authority": "GST Network",
+      "checkLocally": false,
+      "sourceIds": [
+        "gstr3b"
+      ]
+    },
+    {
+      "id": "gstr1-quarterly",
+      "title": "GSTR-1, quarterly (QRMP)",
+      "description": "Due after each quarter; the portal shows the current date. The date shown is the last day of the month after the quarter, as the FAQ states.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": "last"
+      },
+      "conditions": [
+        "gst-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": "GST Network",
+      "checkLocally": false,
+      "sourceIds": [
+        "gstr1"
+      ]
+    },
+    {
+      "id": "gstr3b-quarterly",
+      "title": "GSTR-3B, quarterly (QRMP)",
+      "description": "Due on the 22nd or 24th of the month after the quarter, depending on the state; tax is paid monthly. The date shown is the 22nd.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 22
+      },
+      "conditions": [
+        "gst-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": "GST Network",
+      "checkLocally": false,
+      "sourceIds": [
+        "gstr3b"
+      ]
+    },
+    {
+      "id": "tds",
+      "title": "TDS deposits and quarterly statements",
+      "description": "Tax deducted at source is deposited monthly and reported quarterly. Check the dates with the Income Tax Department.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "Income Tax Department",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- CIN: {{cin}}\n- PAN: {{pan}}\n- GSTIN: {{gstin}}\n- Registered office: {{registeredOffice}}\n\n## Directors and shareholders\n\n{{people}}\n"
+}

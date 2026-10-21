@@ -1,0 +1,396 @@
+{
+  "id": "cn-llc",
+  "version": 1,
+  "country": "CN",
+  "countryName": "China",
+  "entityType": "LLC",
+  "nameLocal": "有限责任公司 (limited liability company; foreign-owned: WFOE)",
+  "nameEnglish": "Limited liability company",
+  "currency": "CNY",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "company-law",
+      "title": "中华人民共和国公司法 (Company Law, revised 2023, in force 1 July 2024)",
+      "publisher": "State Taxation Administration policy library",
+      "url": "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5233383/content.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "info-disclosure",
+      "title": "企业信息公示暂行条例 (Interim Regulations on Enterprise Information Disclosure, 2024 revision)",
+      "publisher": "State Administration for Market Regulation",
+      "url": "https://www.samr.gov.cn/xyjgs/flfg/art/2024/art_be55c2e3a54a43e5ab12794c9dc87600.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "cit-settlement",
+      "title": "企业所得税汇算清缴管理办法 (rules for the annual corporate income tax settlement)",
+      "publisher": "State Taxation Administration",
+      "url": "https://www.chinatax.gov.cn/chinatax/n810341/n810765/n812166/200904/c1189333/content.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "samr",
+      "title": "State Administration for Market Regulation",
+      "publisher": "SAMR",
+      "url": "https://www.samr.gov.cn/",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "chinatax",
+      "title": "State Taxation Administration",
+      "publisher": "STA",
+      "url": "https://www.chinatax.gov.cn/",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "foreign-invested",
+      "label": "Foreign-invested",
+      "description": "Owned in whole or in part by foreign investors (for example a WFOE)."
+    },
+    {
+      "id": "vat-general",
+      "label": "General VAT taxpayer",
+      "description": "Files VAT as a general taxpayer."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name (名称)",
+      "description": "The registered name.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "company-law"
+      ]
+    },
+    {
+      "key": "creditCode",
+      "label": "Unified social credit code (统一社会信用代码)",
+      "description": "The 18-character code on the business licence.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "company-law"
+      ]
+    },
+    {
+      "key": "domicile",
+      "label": "Domicile (住所)",
+      "description": "The registered address.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "company-law"
+      ]
+    },
+    {
+      "key": "businessScope",
+      "label": "Business scope (经营范围)",
+      "description": "As registered.",
+      "example": "",
+      "type": "textarea",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "company-law"
+      ]
+    },
+    {
+      "key": "registeredCapital",
+      "label": "Registered capital (注册资本)",
+      "description": "The capital subscribed by all shareholders, in yuan.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "company-law"
+      ]
+    },
+    {
+      "key": "contributionDeadline",
+      "label": "Capital contribution deadline",
+      "description": "The date in the articles by which the subscribed capital is paid in (at most five years from incorporation).",
+      "example": "",
+      "type": "date",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "company-law"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "legal-representative",
+        "label": "Legal representative (法定代表人)",
+        "description": "Registered as the company's legal representative."
+      },
+      {
+        "id": "director",
+        "label": "Director (董事)",
+        "description": "Sits on the board, or is the sole director."
+      },
+      {
+        "id": "supervisor",
+        "label": "Supervisor (监事)",
+        "description": "If the company has one."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder (股东)",
+        "description": "Subscribes capital."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn",
+      "idNumber"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "articles",
+      "title": "Draft the articles of association",
+      "description": "The articles set the shareholders, their subscribed capital and the contribution deadline.",
+      "authority": "Shareholders",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "company-law"
+      ]
+    },
+    {
+      "id": "approvals",
+      "title": "Get any approval the business needs first",
+      "description": "Where laws or regulations require approval before registration, obtain it first.",
+      "authority": "Relevant authority",
+      "typicalCost": null,
+      "dependsOn": [
+        "articles"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "company-law"
+      ]
+    },
+    {
+      "id": "registration",
+      "title": "Apply for establishment registration",
+      "description": "Apply to the company registration authority with the application and the articles. The business licence's date of issue is the date the company is formed.",
+      "authority": "Market regulation administration (市场监督管理局)",
+      "typicalCost": null,
+      "dependsOn": [
+        "approvals"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "company-law",
+        "samr"
+      ]
+    },
+    {
+      "id": "tax-setup",
+      "title": "Set up the tax account and invoicing",
+      "description": "Complete the tax information and invoicing set-up with the local tax bureau.",
+      "authority": "Local tax bureau",
+      "typicalCost": null,
+      "dependsOn": [
+        "registration"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "chinatax"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": "Open the basic bank account",
+      "description": "Banks ask for the business licence.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "registration"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "foreign-investment-report",
+      "title": "File the foreign investment information report",
+      "description": "Foreign-invested companies report investment information. Check the current procedure.",
+      "authority": "Commerce authorities",
+      "typicalCost": null,
+      "dependsOn": [
+        "registration"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "capital-contribution",
+      "title": "Pay in the subscribed capital",
+      "description": "Shareholders pay their subscribed capital as the articles say, within five years of incorporation. Set the date under Capital in Profile.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Shareholders",
+      "checkLocally": false,
+      "sourceIds": [
+        "company-law"
+      ]
+    },
+    {
+      "id": "annual-report",
+      "title": "Annual report on the enterprise credit system",
+      "description": "Between 1 January and 30 June, report the previous year's information through the National Enterprise Credit Information Publicity System. Companies formed this year start next year.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 6,
+        "day": 30
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Market regulation administration",
+      "checkLocally": false,
+      "sourceIds": [
+        "info-disclosure"
+      ]
+    },
+    {
+      "id": "cit-prepayment",
+      "title": "Corporate income tax prepayment",
+      "description": "File and pay within 15 days after each month or quarter ends (including the fourth quarter). The dates shown assume quarterly prepayment.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 15
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Local tax bureau",
+      "checkLocally": false,
+      "sourceIds": [
+        "cit-settlement"
+      ]
+    },
+    {
+      "id": "cit-settlement",
+      "title": "Annual corporate income tax settlement",
+      "description": "Within five months after the tax year ends (31 May for a calendar year).",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 5,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Local tax bureau",
+      "checkLocally": false,
+      "sourceIds": [
+        "cit-settlement"
+      ]
+    },
+    {
+      "id": "vat-returns",
+      "title": "VAT and surcharge returns",
+      "description": "Usually monthly or quarterly. Check the period and the date with the local tax bureau.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "vat-general"
+      ],
+      "subdivisions": [],
+      "authority": "Local tax bureau",
+      "checkLocally": true,
+      "sourceIds": [
+        "chinatax"
+      ]
+    },
+    {
+      "id": "registration-changes",
+      "title": "Register changes",
+      "description": "Changes to registered matters (name, domicile, capital, business scope, legal representative, shareholders) are registered with the registration authority.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Market regulation administration",
+      "checkLocally": true,
+      "sourceIds": [
+        "company-law"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Unified social credit code: {{creditCode}}\n- Domicile: {{domicile}}\n- Business scope: {{businessScope}}\n- Registered capital: {{registeredCapital}} CNY\n- Capital contribution deadline: {{contributionDeadline}}\n\n## Officers and shareholders\n\n{{people}}\n"
+}

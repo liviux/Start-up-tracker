@@ -1,0 +1,551 @@
+{
+  "id": "fr-sarl",
+  "version": 1,
+  "country": "FR",
+  "countryName": "France",
+  "entityType": "SARL",
+  "nameLocal": "Société à responsabilité limitée (SARL, or EURL with one partner)",
+  "nameEnglish": "Private limited liability company",
+  "currency": "EUR",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "legal-form",
+      "title": "Choisir la forme juridique de votre entreprise",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F23844",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "statuts",
+      "title": "Création d'une société : rédaction et enregistrement des statuts",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F32232",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "capital",
+      "title": "Constituer et déposer le capital social d'une société",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F32333",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "annonce",
+      "title": "Publier une annonce légale de constitution de société",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F35957",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "immatriculation",
+      "title": "Formalités d'immatriculation d'une société",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F35934",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "dirigeant",
+      "title": "Nomination du dirigeant d'une société",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F35938",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "comptes",
+      "title": "Dépôt des comptes annuels d'une société",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F31214",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "is",
+      "title": "Impôt sur les sociétés (IS) : taux, déclaration, paiement",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F23575",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "tva",
+      "title": "Déclarer et payer la TVA",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F23566",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "dsn",
+      "title": "Déclaration sociale nominative (DSN)",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F34059",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "guichet",
+      "title": "Guichet des formalités des entreprises",
+      "publisher": "INPI",
+      "url": "https://formalites.entreprises.gouv.fr/",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "fiscalite-sarl",
+      "title": "Fiscalité de la société à responsabilité limitée (SARL)",
+      "publisher": "Service Public Entreprendre (DILA)",
+      "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F36211",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "vat-normal",
+      "label": "VAT: régime réel normal",
+      "description": "Monthly VAT returns (CA3)."
+    },
+    {
+      "id": "vat-simplified",
+      "label": "VAT: régime simplifié",
+      "description": "One annual VAT return (CA12) with two instalments."
+    },
+    {
+      "id": "corporate-tax",
+      "label": "Pays corporate tax (IS)",
+      "description": "The default for an SAS or SARL; an EURL or SASU with a single individual owner may be taxed differently."
+    },
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays salaries; the DSN is monthly."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Dénomination sociale",
+      "description": "The company name in the articles.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "statuts"
+      ]
+    },
+    {
+      "key": "siren",
+      "label": "SIREN",
+      "description": "The 9-digit company number given at registration.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "immatriculation"
+      ]
+    },
+    {
+      "key": "rcs",
+      "label": "RCS registration",
+      "description": "The trade and companies register entry (city and number).",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "immatriculation"
+      ]
+    },
+    {
+      "key": "seat",
+      "label": "Siège social",
+      "description": "The registered office.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "statuts"
+      ]
+    },
+    {
+      "key": "vatNumber",
+      "label": "Numéro de TVA intracommunautaire",
+      "description": "The EU VAT number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "tva"
+      ]
+    },
+    {
+      "key": "activity",
+      "label": "Activité (objet social)",
+      "description": "What the company does, as in the articles.",
+      "example": "",
+      "type": "textarea",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "statuts"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "Capital social",
+      "description": "In euros, as in the articles.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "capital"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "gerant",
+        "label": "Gérant",
+        "description": "Runs the SARL; must be a natural person."
+      },
+      {
+        "id": "associate",
+        "label": "Associé",
+        "description": "Holds shares (parts sociales); an EURL has one."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn",
+      "idNumber"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "statuts",
+      "title": "Write and sign the articles (statuts)",
+      "description": "The articles set the form, the name, the purpose, the registered office, the capital and how the company is run.",
+      "authority": "Associates",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "statuts"
+      ]
+    },
+    {
+      "id": "capital",
+      "title": "Deposit the share capital",
+      "description": "Deposit the cash contributions in a bank account in the company's name; the money is released after registration.",
+      "authority": "Bank, notary or Caisse des dépôts",
+      "typicalCost": null,
+      "dependsOn": [
+        "statuts"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "capital"
+      ]
+    },
+    {
+      "id": "officer",
+      "title": "Appoint the gérant",
+      "description": "An SARL is run by one or more gérants, who must be natural persons, named in the articles or by the associates.",
+      "authority": "Associates",
+      "typicalCost": null,
+      "dependsOn": [
+        "statuts"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "dirigeant"
+      ]
+    },
+    {
+      "id": "annonce",
+      "title": "Publish the legal notice of creation",
+      "description": "Publish the notice in a newspaper or online service authorised in the département of the registered office. The price is fixed per département.",
+      "authority": "Support habilité (SHAL)",
+      "typicalCost": null,
+      "dependsOn": [
+        "statuts"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "annonce"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register on the Guichet unique",
+      "description": "Apply online at the Guichet des formalités des entreprises with the articles, the proof of the capital deposit and the notice's certificate. The company gets its SIREN and Kbis.",
+      "authority": "INPI (Guichet unique)",
+      "typicalCost": null,
+      "dependsOn": [
+        "capital",
+        "officer",
+        "annonce"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "immatriculation",
+        "guichet"
+      ]
+    },
+    {
+      "id": "tax-account",
+      "title": "Open the professional tax account",
+      "description": "VAT returns and payments are made in the company's professional space on impots.gouv.fr.",
+      "authority": "DGFiP",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "tva"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": "Open the business bank account",
+      "description": "The deposit account becomes the company's account once it is registered.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "capital"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "approve-accounts",
+      "title": "Approve the annual accounts",
+      "description": "The associates approve the accounts within six months of the financial year end.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 6,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Associates",
+      "checkLocally": false,
+      "sourceIds": [
+        "legal-form",
+        "comptes"
+      ]
+    },
+    {
+      "id": "file-accounts",
+      "title": "File the annual accounts with the court registry",
+      "description": "Within one month of the approval (two months when filed online). The date shown counts from a six-month approval.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 8,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Greffe du tribunal de commerce",
+      "checkLocally": false,
+      "sourceIds": [
+        "comptes"
+      ]
+    },
+    {
+      "id": "is-return",
+      "title": "Corporate tax return (liasse fiscale, 2065)",
+      "description": "For a 31 December year end: by the 2nd working day after 1 May, with 15 more days online. For other year ends: within three months. The date shown is an estimate.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 4,
+        "day": 3
+      },
+      "conditions": [
+        "corporate-tax"
+      ],
+      "subdivisions": [],
+      "authority": "DGFiP",
+      "checkLocally": false,
+      "sourceIds": [
+        "is"
+      ]
+    },
+    {
+      "id": "is-instalments",
+      "title": "Corporate tax instalments",
+      "description": "Four instalments on 15 March, 15 June, 15 September and 15 December; the dates that apply depend on the year end.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 0,
+        "day": 15
+      },
+      "conditions": [
+        "corporate-tax"
+      ],
+      "subdivisions": [],
+      "authority": "DGFiP",
+      "checkLocally": false,
+      "sourceIds": [
+        "is"
+      ]
+    },
+    {
+      "id": "vat-ca3",
+      "title": "VAT return (CA3), monthly",
+      "description": "Between the 15th and the 24th of the following month; the exact date is in the company's professional space on impots.gouv.fr. The date shown is the earliest.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 15
+      },
+      "conditions": [
+        "vat-normal"
+      ],
+      "subdivisions": [],
+      "authority": "DGFiP",
+      "checkLocally": false,
+      "sourceIds": [
+        "tva"
+      ]
+    },
+    {
+      "id": "vat-ca12",
+      "title": "Annual VAT return (CA12)",
+      "description": "By the 2nd working day after 1 May for the calendar year, with the balance paid then. Instalments of 55% in July and 40% in December.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 5,
+        "day": 3
+      },
+      "conditions": [
+        "vat-simplified"
+      ],
+      "subdivisions": [],
+      "authority": "DGFiP",
+      "checkLocally": false,
+      "sourceIds": [
+        "tva"
+      ]
+    },
+    {
+      "id": "vat-ca12-july",
+      "title": "VAT instalment (July)",
+      "description": "55% of the previous year's VAT, in July. Check the exact date in the professional space.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 7,
+        "day": 31
+      },
+      "conditions": [
+        "vat-simplified"
+      ],
+      "subdivisions": [],
+      "authority": "DGFiP",
+      "checkLocally": true,
+      "sourceIds": [
+        "tva"
+      ]
+    },
+    {
+      "id": "vat-ca12-december",
+      "title": "VAT instalment (December)",
+      "description": "40% of the previous year's VAT, in December. Check the exact date in the professional space.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 12,
+        "day": 31
+      },
+      "conditions": [
+        "vat-simplified"
+      ],
+      "subdivisions": [],
+      "authority": "DGFiP",
+      "checkLocally": true,
+      "sourceIds": [
+        "tva"
+      ]
+    },
+    {
+      "id": "dsn",
+      "title": "Monthly payroll declaration (DSN)",
+      "description": "By the 15th of the following month with fewer than 50 employees, by the 5th with 50 or more.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 15
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "URSSAF via Net-entreprises",
+      "checkLocally": false,
+      "sourceIds": [
+        "dsn"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- SIREN: {{siren}}\n- RCS: {{rcs}}\n- Siège social: {{seat}}\n- TVA intracommunautaire: {{vatNumber}}\n- Objet social: {{activity}}\n- Capital social: {{shareCapital}} EUR\n\n## Gérance et associés\n\n{{people}}\n"
+}

@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "prompts": [
+    {
+      "id": "target-research",
+      "name": "Target research and creation",
+      "description": "Finds, verifies and adds new targets for the chosen section and scope, and schedules their next steps. It changes the tracker directly.",
+      "whenToUse": "You want new targets in the tracker. Pick a preset to set the scope and the examples.",
+      "sections": [
+        "mk",
+        "po",
+        "fu"
+      ],
+      "body": "You are a research assistant for {{STARTUP_NAME}}. Find, verify and add high-quality targets to the local Startup Tracker. Make the changes directly; do not ask for approval. Never invent data.\n\n## 1. Startup context\n- Startup: {{STARTUP_NAME}}, {{STARTUP_ONE_LINER}}\n- Description: {{STARTUP_DESCRIPTION}}\n- Industry: {{SECTOR}}\n- Use these links only to understand positioning and fit: {{STARTUP_LINKS}}\n- Company and founders (use for eligibility and fit):\n  {{CONSTRAINTS}}\n\n## 2. Scope for this run\n- Section: {{TAB}}. Do not change other sections.\n- Category: {{CATEGORY}}\n- Subcategory: {{SUBCATEGORY}}\n- Type: {{TYPE}}\n- What these mean: {{SCOPE_DETAILS}}\n- Today: {{TODAY}} ({{TIMEZONE}})\n- What to look for:\n  {{SEARCH_FOCUS}}\n\n## 3. Duplicates, relevance and verification\n- Before adding, check existing targets in every section and status, including the recycle bin. Do not add something already tracked under another name or URL. Update an existing target only when something important changed (dates, requirements, rules).\n- Other people or agents may be editing at the same time. Never delete or overwrite their work.\n- Add only targets that fit {{STARTUP_NAME}} and this scope. A few good targets beat many weak ones; zero is a valid result.\n- Do not invent dates, fees, amounts, audience sizes, metrics, rules, contacts, eligibility or results. If a detail cannot be verified, leave it empty or mark it \"needs confirmation\".\n- Verify every candidate on its own official pages (website, rules, application or submission page).\n- Verification rules for this run:\n  {{VERIFIED_ACTIVITY}}\n- Leave out entirely:\n  {{AVOID}}\n\n## 4. Fields, scheduling and notes\n- Use the existing statuses, priorities, categories, fields and tags. Create a new subcategory or field only when nothing fits and it will help future targets.\n- Put the official URL in Link.\n- Check the calendar load first. Spread new targets so no day has more than {{MAX_TARGETS_PER_DAY}} items, unless a fixed date requires it. Schedule the earliest real next step, not only the final deadline. Use {{TIMEZONE}} for times.\n- Scheduling rule for this run:\n  {{SPECIAL_SCHEDULE}}\n- Notes (Markdown): start with a short plain summary (what it is, why it fits, how to take part, when). Then official links and sources with the date you checked them, rules and eligibility, next actions and other verified details. End with the date and the tool and model that wrote the note.\n\n## 5. How to save your work\n{{TRACKER_ACCESS}}"
+    },
+    {
+      "id": "outreach-plan",
+      "name": "Outreach and strategy plan",
+      "description": "Writes a campaign plan for the chosen section and scope from the targets already in the tracker. It reads the tracker and changes nothing.",
+      "whenToUse": "The scope already has targets and you want an order, dates and materials before acting on them. Any preset fills its variables unchanged.",
+      "sections": [
+        "mk",
+        "po",
+        "fu"
+      ],
+      "body": "You are a planning assistant for {{STARTUP_NAME}}. Write an outreach and strategy plan for the scope below, based on the targets already in the local Startup Tracker. Read the tracker, but do not add, change or delete targets. Never invent data.\n\n## 1. Startup context\n- {{STARTUP_NAME}}: {{STARTUP_ONE_LINER}}\n- Description: {{STARTUP_DESCRIPTION}}\n- Website and links (positioning only): {{STARTUP_WEBSITE}}; {{STARTUP_LINKS}}\n- Company and founders:\n  {{CONSTRAINTS}}\n\n## 2. Scope\n- Section {{TAB}}, category {{CATEGORY}}, subcategory {{SUBCATEGORY}}, type {{TYPE}}\n- What these mean: {{SCOPE_DETAILS}}\n- Today: {{TODAY}} ({{TIMEZONE}})\n- Focus:\n  {{SEARCH_FOCUS}}\n- Leave out:\n  {{AVOID}}\n\n## 3. Read first\n- Every target in this scope, in every status, with notes, dates and history, and the calendar from today on.\n- Before planning around a target, confirm it is still open:\n  {{VERIFIED_ACTIVITY}}\n\n## 4. The plan\n1. Angle: one or two sentences per audience, and the proof you can show today (facts from the profile, links and targets only).\n2. Audience: who is there, what they struggle with, what they respond to. Label assumptions.\n3. Rules and risks: each place's posting or submission rules, moderation or rejection risk, and what gets an account removed. Cite the rules page and the date checked.\n4. Order and dates: what comes first and why, with a date for each next step, at most {{MAX_TARGETS_PER_DAY}} a day, similar actions spread apart, and this rule:\n   {{SPECIAL_SCHEDULE}}\n5. Materials: posts, pitches, forms, assets and accounts needed, and what can be reused.\n6. Gaps: categories or types with no good target yet, as input for the research prompt.\n7. Measures: what to watch after each action, using only numbers the tracker or the platform shows.\n\n## 5. Output\nMarkdown. Name each target by title and link. List proposed date or status changes instead of making them. End with the date and the tool and model that wrote the plan.\n\n## 6. Tracker access (read only)\n{{TRACKER_ACCESS}}"
+    }
+  ]
+}

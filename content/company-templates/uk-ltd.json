@@ -1,0 +1,574 @@
+{
+  "id": "uk-ltd",
+  "version": 1,
+  "country": "GB",
+  "countryName": "United Kingdom",
+  "entityType": "Ltd",
+  "nameLocal": "Private company limited by shares",
+  "nameEnglish": "Private limited company",
+  "currency": "GBP",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "setup",
+      "title": "Set up a limited company: step by step",
+      "publisher": "GOV.UK",
+      "url": "https://www.gov.uk/limited-company-formation",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "register",
+      "title": "Register your company",
+      "publisher": "Companies House on GOV.UK",
+      "url": "https://www.gov.uk/limited-company-formation/register-your-company",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "confirmation",
+      "title": "Confirmation statement guidance",
+      "publisher": "Companies House",
+      "url": "https://www.gov.uk/guidance/confirmation-statement-guidance",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "accounts",
+      "title": "Accounts and tax returns: deadlines",
+      "publisher": "Companies House and HMRC on GOV.UK",
+      "url": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company/deadlines",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "changes",
+      "title": "Company changes you must report",
+      "publisher": "Companies House on GOV.UK",
+      "url": "https://www.gov.uk/running-a-limited-company/company-changes-you-must-report",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "corporation-tax",
+      "title": "Corporation Tax",
+      "publisher": "HMRC on GOV.UK",
+      "url": "https://www.gov.uk/corporation-tax",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "pay-ct",
+      "title": "Pay your Corporation Tax bill",
+      "publisher": "HMRC on GOV.UK",
+      "url": "https://www.gov.uk/pay-corporation-tax",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ct-returns",
+      "title": "Company Tax Returns",
+      "publisher": "HMRC on GOV.UK",
+      "url": "https://www.gov.uk/company-tax-returns",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "vat-registration",
+      "title": "Register for VAT",
+      "publisher": "HMRC on GOV.UK",
+      "url": "https://www.gov.uk/vat-registration",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "vat-returns",
+      "title": "VAT Returns: deadlines",
+      "publisher": "HMRC on GOV.UK",
+      "url": "https://www.gov.uk/vat-returns/deadlines",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "register-employer",
+      "title": "Register as an employer",
+      "publisher": "HMRC on GOV.UK",
+      "url": "https://www.gov.uk/register-employer",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "payroll-reporting",
+      "title": "Running payroll: reporting to HMRC",
+      "publisher": "HMRC on GOV.UK",
+      "url": "https://www.gov.uk/running-payroll/reporting-to-hmrc",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "pay-paye",
+      "title": "Pay employers' PAYE",
+      "publisher": "HMRC on GOV.UK",
+      "url": "https://www.gov.uk/pay-paye-tax",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "vat-registered",
+      "label": "VAT registered",
+      "description": "Registered for VAT with HMRC."
+    },
+    {
+      "id": "has-employees",
+      "label": "Runs a payroll",
+      "description": "Pays employees or directors through PAYE."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The name on the Companies House register.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "register"
+      ]
+    },
+    {
+      "key": "companyNumber",
+      "label": "Company number",
+      "description": "The number on the certificate of incorporation.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "register"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The official address on the register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "setup"
+      ]
+    },
+    {
+      "key": "sicCode",
+      "label": "SIC code",
+      "description": "The code that says what the company does.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "setup"
+      ]
+    },
+    {
+      "key": "utr",
+      "label": "Corporation Tax UTR",
+      "description": "The Unique Taxpayer Reference HMRC sends for Corporation Tax.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": false,
+      "sourceIds": [
+        "corporation-tax"
+      ]
+    },
+    {
+      "key": "vatNumber",
+      "label": "VAT registration number",
+      "description": "From HMRC once registered for VAT.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "vat-registration"
+      ]
+    },
+    {
+      "key": "payeReference",
+      "label": "Employer PAYE reference",
+      "description": "From HMRC once registered as an employer.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": false,
+      "sourceIds": [
+        "register-employer"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Runs the company; at least one is needed."
+      },
+      {
+        "id": "secretary",
+        "label": "Company secretary",
+        "description": "Optional for a private company."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Owns shares; at least one is needed and can be a director."
+      },
+      {
+        "id": "psc",
+        "label": "Person with significant control",
+        "description": "Someone with significant control over the company, recorded on the register."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name",
+      "title": "Choose a company name",
+      "description": "Check the name follows the naming rules and is not taken.",
+      "authority": "Companies House",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "setup"
+      ]
+    },
+    {
+      "id": "officers",
+      "title": "Choose directors, shareholders and people with significant control",
+      "description": "You need at least one director and one shareholder, who can be the same person. A company secretary is optional.",
+      "authority": "Companies House",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "setup"
+      ]
+    },
+    {
+      "id": "verify-identity",
+      "title": "Verify the directors' identity",
+      "description": "Directors and people with significant control verify their identity with Companies House and get a personal code. The company's confirmation statement is not accepted until every director has verified.",
+      "authority": "Companies House",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "confirmation",
+        "register"
+      ]
+    },
+    {
+      "id": "office-sic",
+      "title": "Pick a registered office and a SIC code",
+      "description": "The registered office is the official address. The SIC code says what the company does.",
+      "authority": "Companies House",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "setup"
+      ]
+    },
+    {
+      "id": "articles",
+      "title": "Agree the memorandum and articles of association",
+      "description": "Most companies use the model articles offered while registering.",
+      "authority": "Companies House",
+      "typicalCost": null,
+      "dependsOn": [
+        "officers"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "setup"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register the company with Companies House",
+      "description": "Online registration is usually done within 24 hours.",
+      "authority": "Companies House",
+      "typicalCost": {
+        "amount": 100,
+        "currency": "GBP",
+        "note": "Online; by post it costs more and takes 8 to 10 days.",
+        "effectiveDate": "2026-10-20"
+      },
+      "dependsOn": [
+        "name",
+        "officers",
+        "office-sic",
+        "articles"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "register"
+      ]
+    },
+    {
+      "id": "corporation-tax",
+      "title": "Set up Corporation Tax",
+      "description": "Choose it while registering, or add Corporation Tax to the business tax account afterwards.",
+      "authority": "HMRC",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "corporation-tax"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": "Open a business bank account",
+      "description": "Keep the company's money apart from your own.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "vat",
+      "title": "Register for VAT when you have to",
+      "description": "Register when taxable turnover for the last 12 months goes over the VAT threshold, or is expected to in the next 30 days; you can also register voluntarily. Check the current threshold on GOV.UK.",
+      "authority": "HMRC",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "vat-registration"
+      ]
+    },
+    {
+      "id": "paye",
+      "title": "Register as an employer before the first payday",
+      "description": "Needed to pay salaries, including to directors. You cannot register more than 2 months before you start paying people.",
+      "authority": "HMRC",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "register-employer"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "confirmation-statement",
+      "title": "Confirmation statement",
+      "description": "File at least once every 12 months. The review period ends 12 months after incorporation or the last statement; you have 14 days after it to file.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-anniversary",
+        "of": "incorporation",
+        "months": 0,
+        "days": 14
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Companies House",
+      "checkLocally": false,
+      "sourceIds": [
+        "confirmation"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": "Annual accounts",
+      "description": "Due 9 months after the financial year ends. The first accounts are due 21 months after the company was registered.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 9,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Companies House",
+      "checkLocally": false,
+      "sourceIds": [
+        "accounts"
+      ]
+    },
+    {
+      "id": "corporation-tax-payment",
+      "title": "Pay Corporation Tax",
+      "description": "Due 9 months and 1 day after the accounting period ends, for taxable profits up to £1.5 million (other rules above that). The date shown assumes the period ends on the last day of a month.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 10,
+        "day": 1
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "HMRC",
+      "checkLocally": false,
+      "sourceIds": [
+        "pay-ct",
+        "accounts"
+      ]
+    },
+    {
+      "id": "company-tax-return",
+      "title": "Company Tax Return",
+      "description": "Due 12 months after the end of the accounting period it covers.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 12,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "HMRC",
+      "checkLocally": false,
+      "sourceIds": [
+        "ct-returns",
+        "accounts"
+      ]
+    },
+    {
+      "id": "vat-return",
+      "title": "VAT Return",
+      "description": "Usually every 3 months; file and pay one calendar month and 7 days after the period ends. The dates shown assume calendar quarters; yours may differ.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 2,
+        "day": 7
+      },
+      "conditions": [
+        "vat-registered"
+      ],
+      "subdivisions": [],
+      "authority": "HMRC",
+      "checkLocally": false,
+      "sourceIds": [
+        "vat-returns"
+      ]
+    },
+    {
+      "id": "fps",
+      "title": "Full Payment Submission (FPS)",
+      "description": "Report pay to HMRC on or before each payday.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "relative-to-event",
+        "days": 0,
+        "event": "Each payday"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "HMRC",
+      "checkLocally": false,
+      "sourceIds": [
+        "payroll-reporting"
+      ]
+    },
+    {
+      "id": "paye-payment",
+      "title": "Pay PAYE to HMRC",
+      "description": "Pay by the 22nd of the next tax month (tax months run from the 6th to the 5th), or the 19th by post. Quarterly payers have other dates.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "fixed-date",
+        "day": 22
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "HMRC",
+      "checkLocally": false,
+      "sourceIds": [
+        "pay-paye"
+      ]
+    },
+    {
+      "id": "report-changes",
+      "title": "Report changes to Companies House",
+      "description": "Within 14 days of a change to directors, the registered office, people with significant control and other registered details.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "relative-to-event",
+        "days": 14,
+        "event": "A change to the company's registered details"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Companies House",
+      "checkLocally": false,
+      "sourceIds": [
+        "changes"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Company number: {{companyNumber}}\n- Registered office: {{registeredOffice}}\n- SIC code: {{sicCode}}\n- VAT number: {{vatNumber}}\n\n## People\n\n{{people}}\n"
+}

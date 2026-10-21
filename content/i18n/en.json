@@ -1,0 +1,3244 @@
+{
+  "app": {
+    "name": "Startup Tracker",
+    "skipToContent": "Skip to content",
+    "version": "Version {version}",
+    "programActivityTypes": {
+      "verificationResearch": "Verification / research",
+      "applicationSubmission": "Application / submission",
+      "responseReceived": "Response received",
+      "followUp": "Follow-up",
+      "callOrMeeting": "Call or meeting",
+      "publishedOrLive": "Published or live",
+      "milestone": "Milestone",
+      "decision": "Decision",
+      "reapplyRenewal": "Reapply / renewal",
+      "other": "Other"
+    },
+    "programActivityPreviousActionStatuses": {
+      "completed": "Completed",
+      "deferred": "Deferred",
+      "cancelledNoLongerRelevant": "Cancelled / no longer relevant",
+      "stillOpen": "Still open",
+      "noCurrentAction": "No current action"
+    },
+    "formatTagTooltip": {
+      "whyThisTagBestPractice": "Why this tag & best practice",
+      "noDescription": "No description."
+    },
+    "boot": {
+      "syncingData": "Syncing data...",
+      "loadingData": "Loading data..."
+    },
+    "getProgramQueueEntry": {
+      "submissionTarget": "Submission target",
+      "interview": "Interview",
+      "pitch": "Pitch",
+      "blocked": "Blocked: {blocker}",
+      "nextActionDue": "Next action due",
+      "milestone": "Milestone",
+      "reviewFitAndRequirements": "Review fit and requirements.",
+      "reviewOpportunity": "Review opportunity"
+    },
+    "getFundingQueueEntry": {
+      "owner": "· Owner: {owner}",
+      "qualifyFit": "Qualify fit",
+      "reachOut": "Reach out",
+      "bookDiscovery": "Book discovery",
+      "defineScope": "Define scope",
+      "sendProposal": "Send proposal",
+      "followUp": "Follow up",
+      "closeTerms": "Close terms",
+      "completeDueDiligence": "Complete due diligence",
+      "reviewTerms": "Review terms",
+      "confirmSigningAndPayment": "Confirm signing and payment",
+      "confirmPaymentSchedule": "Confirm payment schedule",
+      "reviewHold": "Review hold",
+      "collectBalance": "Collect balance",
+      "closeOut": "Close out",
+      "archiveNotes": "Archive notes",
+      "recordLearnings": "Record learnings",
+      "collectExpectedPayment": "Collect expected payment",
+      "confirmTransferPlan": "Confirm transfer plan",
+      "reviewDeal": "Review deal.",
+      "reviewConversation": "Review conversation"
+    },
+    "renderFundingRounds": {
+      "noFundingRoundsYet": "No funding rounds yet",
+      "addARoundWhenYou": "Add a round when you want to track a raise target across several conversations.",
+      "roundName": "Round name",
+      "target": "Target",
+      "currency": "Currency",
+      "minimumClose": "Minimum close",
+      "expectedClose": "Expected close",
+      "target2": "Target {targetAmount}",
+      "committed": "Committed {committedAmount}",
+      "received": "Received {receivedAmount}",
+      "weightedAsks": "Weighted asks {weightedAmount}",
+      "deleteFundingRound": "Delete funding round"
+    },
+    "renderTaxonomyTabs": {
+      "all": "All {parentId}",
+      "all2": "All"
+    },
+    "renderCalendarTab": {
+      "loadingData": "Loading data...",
+      "loading": "Loading...",
+      "dueBy": "Due by {fullDateStr}",
+      "due": "Due {date}",
+      "dueByToday": "Due by today",
+      "noMatchingItemsDueOn": "No matching items due on or before this day",
+      "noMatchingItemsScheduled": "No matching items scheduled"
+    },
+    "buildGlobalSearchResults": {
+      "updated": "Updated {updatedAt}",
+      "category": "Category",
+      "subcategory": "Subcategory",
+      "deadline": "Deadline: {deadline}",
+      "next": "Next: {nextActionDate}",
+      "applied": "Applied: {appliedDate}",
+      "type": "Type",
+      "close": "Close: {expectedCloseDate}",
+      "contacted": "Contacted: {lastContactDate}",
+      "fundingRound": "Funding round",
+      "launch": "Launch: {launchDate}",
+      "start": "Start: {startDate}",
+      "opened": "Opened: {lastOpenedAt}",
+      "currentFlow": "Current flow · {model}",
+      "prompt": "Prompt",
+      "review": "Review: {nextReviewDate}",
+      "logged": "Logged: {createdAt}",
+      "added": "Added: {createdAt}",
+      "tagDefinition": "Tag definition",
+      "due": "Due {dueDate}",
+      "fundingOpportunity": "Funding opportunity",
+      "researchLinks": "Research links",
+      "active": "Active",
+      "inactive": "Inactive",
+      "flow": "Flow",
+      "prompts": "Prompts",
+      "feedback": "Feedback",
+      "media": "Media",
+      "marketingSetup": "Marketing setup",
+      "company": "Company",
+      "subtitleResearchLinks": "Research links",
+      "subtitleFeedback": "Feedback",
+      "subtitleMedia": "Media",
+      "subtitleMarketingCategory": "Marketing category"
+    },
+    "renderGlobalSearch": {
+      "lastUpdated": "Last updated",
+      "closeSearch": "Close search",
+      "openSearch": "Open search",
+      "searchEverything": "Search everything"
+    },
+    "bindEvents": {
+      "currentFlowEntrySaved": "Current flow entry saved",
+      "roundNameIsRequired": "Round name is required.",
+      "fundingRoundAdded": "Funding round added",
+      "deleteFundingRoundLinkedDeals": "Delete funding round \"{name}\"? Linked deals will remain.",
+      "fundingRoundDeleted": "Funding round deleted"
+    },
+    "loadStateFromServer": {
+      "syncingSavedChanges": "Syncing saved changes...",
+      "syncingData": "Syncing data...",
+      "created": "Created",
+      "browserStorageUnavailable": "Browser storage unavailable",
+      "savedLocallyWaitingToSync": "Saved locally - waiting to sync",
+      "backendOffline": "Backend offline"
+    },
+    "normalizeAiLinks": {
+      "open": "Open"
+    },
+    "feedbackBlocks": {
+      "personAndContext": "Person and context",
+      "whoThisCameFromAnd": "Who this came from and what they are trying to get done.",
+      "role": "Role",
+      "eGFounderOfficeManager": "e.g. Founder, office manager, buyer",
+      "companyOrTeam": "Company or team",
+      "eGA10Person": "e.g. A 10-person design agency",
+      "whatTheyUseToday": "What they use today",
+      "eGASpreadsheetA": "e.g. A spreadsheet, a competitor, nothing",
+      "nextContactDate": "Next contact date",
+      "whatTheyWantToGet": "What they want to get done",
+      "eGSendInvoicesWithout": "e.g. Send invoices without retyping the order",
+      "journey": "Journey",
+      "howFarTheyGotWhether": "How far they got, whether they came back, and where they stopped.",
+      "furthestStepReached": "Furthest step reached",
+      "notTracked": "Not tracked",
+      "timesUsed": "Times used",
+      "whyTheyStoppedOrHesitated": "Why they stopped or hesitated",
+      "eGCouldNotConnect": "e.g. Could not connect their calendar",
+      "assumptionTest": "Assumption test",
+      "aBeliefTheStartupDepends": "A belief the startup depends on, written so it can be proved wrong.",
+      "assumption": "Assumption",
+      "eGSmallAgenciesWill": "e.g. Small agencies will pay monthly to save two hours a week",
+      "evidenceFor": "Evidence for",
+      "evidenceAgainst": "Evidence against",
+      "verdict": "Verdict",
+      "nextReviewDate": "Next review date"
+    },
+    "feedbackAboutPicker": {
+      "about": "About",
+      "targetsProgramsFunding": "Targets, programs, funding…"
+    },
+    "mountFeedbackAboutPicker": {
+      "about": "About",
+      "targetsProgramsFunding": "Targets, programs, funding…",
+      "feedbackLinksUpdated": "Feedback links updated"
+    },
+    "renderCampaigns": {
+      "editingCampaign": "Editing campaign: {name}",
+      "changesAreSavedAutomatically": "Changes are saved automatically.",
+      "start": "Start",
+      "end": "End",
+      "goal": "Goal",
+      "hypothesis": "Hypothesis",
+      "successMetric": "Success metric",
+      "description": "Description",
+      "doneEditing": "Done editing",
+      "typeATagPressEnter": "Type a tag, press Enter (autocomplete)...",
+      "text": "×",
+      "removeTag": "Remove tag",
+      "editCampaign": "Edit campaign",
+      "deleteCampaign": "Delete campaign",
+      "successMetric2": "Success metric"
+    },
+    "renderCampaignTargetsSection": {
+      "clear": "Clear",
+      "programs": "Programs ({length})",
+      "funding": "Funding ({length})",
+      "hide": "Hide",
+      "show": "Show",
+      "noTargetsMatchingFilters": "No targets matching filters.",
+      "noTargetsLinkedToThis": "No targets linked to this campaign.",
+      "noProgramsLinkedToThis": "No programs linked to this campaign.",
+      "noFundingRecordsLinkedTo": "No funding records linked to this campaign."
+    },
+    "renderTagCard": {
+      "changesAreSavedAutomatically": "Changes are saved automatically.",
+      "description": "Description",
+      "doneEditing": "Done editing",
+      "editTag": "Edit tag",
+      "described": "Described",
+      "noDescription": "No description",
+      "filterPipelineByTag": "Filter pipeline by tag"
+    },
+    "renderTagUsageSections": {
+      "programs": "Programs",
+      "media": "Media",
+      "feedback": "Feedback",
+      "noTargetsUseThisTag": "No targets use this tag.",
+      "noCampaignsUseThisTag": "No campaigns use this tag.",
+      "noFeedbackUsesThisTag": "No feedback uses this tag.",
+      "noProgramsUseThisTag": "No programs use this tag.",
+      "noFundingRecordsUseThis": "No funding records use this tag.",
+      "noMediaUsesThisTag": "No media uses this tag."
+    },
+    "renderLinkedTargetItem": {
+      "openTargetLink": "Open target link"
+    },
+    "renderLinkedMediaItem": {
+      "updated": "Updated {updatedAt}",
+      "openMedia": "Open media"
+    },
+    "renderAiGroups": {
+      "subscriptions": "Subscriptions",
+      "apiAccess": "API access",
+      "totalMonthlyCost": "Total monthly cost",
+      "ron": "{value} RON",
+      "provider": "Provider",
+      "modelsToPrefer": "Models to prefer",
+      "details": "Details"
+    },
+    "renderAiRate": {
+      "1Usd": "1 USD =",
+      "ron": "RON"
+    },
+    "renderAiAccountCard": {
+      "editing": "Editing {name}",
+      "changesAreSavedAutomatically": "Changes are saved automatically.",
+      "type": "Type",
+      "subscription": "Subscription",
+      "apiAccess": "API access",
+      "cost": "Cost",
+      "strikethroughExcludeFromMonthlyTotal": "Strikethrough (exclude from monthly total)",
+      "modelsToPrefer": "Models to prefer",
+      "details": "Details",
+      "doneEditing": "Done editing",
+      "leaveBlankIfUnknown": "Leave blank if unknown",
+      "labelUrl": "LABEL | URL",
+      "editAiEntry": "Edit AI entry",
+      "deleteAiEntry": "Delete AI entry",
+      "notSpecified": "Not specified",
+      "noDetailsSaved": "No details saved"
+    },
+    "renderAiFlow": {
+      "noFlowEntriesYetClick": "No flow entries yet. Select \"Add item\" to start.",
+      "currentFlow": "Current flow",
+      "addItem": "Add item",
+      "subApi": "Sub/API",
+      "model": "model",
+      "details": "details",
+      "doneEditing": "Done editing",
+      "editAll": "Edit all"
+    },
+    "renderAiFlowSeparatorRow": {
+      "dragToReorder": "Drag to reorder",
+      "moveUp": "Move up",
+      "moveDown": "Move down"
+    },
+    "renderAiFlowRow": {
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "subApi": "Sub/API",
+      "model": "Model",
+      "details": "Details",
+      "deleteFlowEntry": "Delete flow entry",
+      "doneEditing": "Done editing",
+      "editFlowEntry": "Edit flow entry"
+    },
+    "renderDailyGroups": {
+      "openAll": "Open all"
+    },
+    "renderDailyLinkCard": {
+      "openAll": "Open all ({length})",
+      "editingLink": "Editing link: {title}",
+      "changesAreSavedAutomatically": "Changes are saved automatically.",
+      "title": "Title",
+      "group": "Group",
+      "active": "Active",
+      "description": "Description",
+      "doneEditing": "Done editing",
+      "httpsFirstExampleHttpsSecond": "https://first.example; https://second.example",
+      "editLink": "Edit link",
+      "deleteLink": "Delete link",
+      "opened": "Opened {lastOpenedAt}",
+      "open": "Open",
+      "inactive": "Inactive"
+    },
+    "renderFeedbackList": {
+      "noFeedbackYet": "No feedback yet",
+      "recordWhatUsersSayAnd": "Record what users say and do: reactions, questions, blockers, results and the assumptions you are testing.",
+      "editingEvidence": "Editing evidence: {title}",
+      "changesAreSavedAutomatically": "Changes are saved automatically.",
+      "type": "Type",
+      "source": "Source",
+      "userOrGroup": "User or group",
+      "contactNameHandle": "Contact name / handle",
+      "relationshipDepth": "Relationship depth",
+      "productArea": "Product area",
+      "evidenceStrength": "Evidence strength",
+      "title": "Title",
+      "sourceLink": "Source link",
+      "about": "About",
+      "whatHappened": "What happened",
+      "outcomeOrMetric": "Outcome or metric",
+      "doneEditing": "Done editing",
+      "eGNameEmailOr": "e.g. Name, email or handle",
+      "typeATagPressEnter": "Type a tag, press Enter (autocomplete)...",
+      "text": "×",
+      "removeTag": "Remove tag",
+      "updated": "Updated {updatedAt}",
+      "source2": "Source:",
+      "stage": "Stage:",
+      "area": "Area:",
+      "editEvidence": "Edit evidence",
+      "deleteEvidence": "Delete evidence",
+      "open": "Open",
+      "userOrGroup2": "User or group:",
+      "contact": "Contact:",
+      "relationship": "Relationship:"
+    },
+    "renderMediaCard": {
+      "editingAsset": "Editing asset: {title}",
+      "changesAreSavedAutomatically": "Changes are saved automatically.",
+      "title": "Title",
+      "type": "Type",
+      "notes": "Notes",
+      "usedIn": "Used in",
+      "doneEditing": "Done editing",
+      "updated": "Updated {updatedAt}",
+      "editAsset": "Edit asset",
+      "deleteAsset": "Delete asset",
+      "pinned": "Pinned",
+      "view": "View",
+      "open": "Open",
+      "usedIn2": "Used in",
+      "unpinAsset": "Unpin asset",
+      "pinAssetToTop": "Pin asset to top"
+    },
+    "copyMediaToStartup": {
+      "saved": "Saved"
+    },
+    "renderMediaPreview": {
+      "markdownDocument": "Markdown document"
+    },
+    "renderMediaUsageList": {
+      "notUsedAnywhereYet": "Not used anywhere yet",
+      "placementCropCaptionVersion": "Placement, crop, caption, version...",
+      "publishedUrl": "Published URL...",
+      "result": "Result"
+    },
+    "mediaFormTargetsPicker": {
+      "usedIn": "Used in"
+    },
+    "mediaTargetFilterPicker": {
+      "usedIn": "Used in",
+      "pickARecord": "Pick a record…"
+    },
+    "mountMediaUsedInPicker": {
+      "usedIn": "Used in",
+      "mediaLinksUpdated": "Media links updated"
+    },
+    "renderManagerPagination": {
+      "showingOf": "Showing {start}-{end} of {total}",
+      "previous": "Previous",
+      "page": "Page {page} / {totalPages}",
+      "next": "Next"
+    },
+    "handleCampaignFormSubmit": {
+      "campaignAdded": "Campaign added"
+    },
+    "handleTagFormSubmit": {
+      "tagAdded": "Tag added"
+    },
+    "handleDailyFormSubmit": {
+      "researchLinkAdded": "Research link added"
+    },
+    "handleFeedbackFormSubmit": {
+      "evidenceAdded": "Evidence added"
+    },
+    "handleMediaFormSubmit": {
+      "uploading": "Uploading {name}...",
+      "mediaAdded": "Media added"
+    },
+    "uploadMediaFile": {
+      "uploadingMedia": "Uploading media...",
+      "uploadFailed": "Upload failed",
+      "uploadCancelled": "Upload cancelled"
+    },
+    "deleteItem": {
+      "movedToRecycleBin": "Moved to recycle bin"
+    },
+    "moveProgramToRecycle": {
+      "programMovedToRecycleBin": "Program moved to recycle bin"
+    },
+    "moveFundingToRecycle": {
+      "fundingRecordMovedToRecycle": "Funding record moved to recycle bin"
+    },
+    "deleteAiAccount": {
+      "deleteAiEntry": "Delete AI entry \"{name}\"?",
+      "aiAccessDeleted": "AI access deleted"
+    },
+    "addAiFlowItem": {
+      "currentFlowItemAdded": "Current flow item added"
+    },
+    "deleteAiFlowItem": {
+      "currentFlowEntryDeleted": "Current flow entry deleted",
+      "confirm": "Delete flow entry \"{name}\"?",
+      "item": "item"
+    },
+    "moveAiFlowItem": {
+      "currentFlowReordered": "Current flow reordered"
+    },
+    "reorderAiFlowItem": {
+      "currentFlowReordered": "Current flow reordered"
+    },
+    "toggleEditAllAiFlow": {
+      "currentFlowUpdated": "Current flow updated"
+    },
+    "runTagAction": {
+      "saved": "Saved"
+    },
+    "openDailyLink": {
+      "openedLinksBrowserBlockedPop": "Opened {openedCount}/{length} links - browser blocked pop-ups",
+      "3ClickDoneAndTry": "3. Click Done and try clicking \"Open all\" again.",
+      "openedAllLinks": "Opened all {length} links",
+      "linkOpened": "Link opened"
+    },
+    "openDailyGroup": {
+      "researchLinksOpened": "Research links opened",
+      "openedLinksBrowserBlockedPop": "Opened {openedCount}/{totalCount} links - browser blocked pop-ups",
+      "3ClickDoneAndTry": "3. Click Done and try clicking \"Open all\" again.",
+      "openedAllLinks": "Opened all {totalCount} links"
+    },
+    "updateTheme": {
+      "switchToLightTheme": "Switch to light theme",
+      "switchToDarkTheme": "Switch to dark theme"
+    },
+    "confirmDiscardModalChanges": {
+      "discardUnsavedChangesAllProgress": "Discard unsaved changes? All progress will be lost."
+    },
+    "removeTargetFromWindow": {
+      "moveToTheRecycleBin": "Move \"{name}\" to the recycle bin?",
+      "thisTarget": "this target"
+    },
+    "sectionPages": {
+      "cashOnOffer": "Cash on offer",
+      "ask": "Ask"
+    },
+    "sectionMetrics": {
+      "dueIn7Days": "Due in 7 days",
+      "pipeline": "Pipeline",
+      "whatTheOpenDealsAsk": "What the open deals ask for.",
+      "committed": "Committed",
+      "received": "Received",
+      "expectedValue": "Expected value",
+      "cashOnOfferInOpen": "Cash on offer in open applications, times their probability when you set one."
+    },
+    "addTargetFromPage": {
+      "targetAdded": "Target added"
+    },
+    "top": {},
+    "loadRecordHistory": {
+      "requestFailed": "Request failed ({status})"
+    },
+    "renderRecordHistoryPane": {
+      "saveThisRecordFirstIts": "Save this record first. Its history starts once it exists.",
+      "loadingHistory": "Loading history…",
+      "couldNotLoadTheHistory": "Could not load the history: {error}",
+      "tryAgain": "Try again",
+      "thisDatabaseWasWrittenBefore": "This database was written before changes were recorded, so there is nothing to show.",
+      "editsFromNowOnWill": "Edits from now on will appear here.",
+      "newestOfShown": "newest {length} of {total} shown",
+      "refreshHistory": "Refresh history",
+      "clearComparison": "Clear comparison",
+      "nothingRecordedForThisRecord": "Nothing recorded for this record yet. The next edit will show up here.",
+      "refreshing": "Refreshing…",
+      "reloadThisRecordSHistory": "Reload this record's history"
+    },
+    "renderHistoryComparePanel": {
+      "comparingFrom": "Comparing from {at}.",
+      "pickASecondEntry": "Pick a second entry.",
+      "comparingVersions": "Comparing versions",
+      "oneOfTheseVersionsIs": "One of these versions is a point where the record did not exist,",
+      "soThereIsNothingTo": "so there is nothing to line up field by field.",
+      "theseTwoVersionsHoldThe": "These two versions hold the same values."
+    },
+    "renderHistoryItem": {
+      "approximate": "Approximate",
+      "groupedEditsFrom": "Grouped edits from",
+      "theRecordWasPutIn": "The record was put in the recycle bin with its values untouched.",
+      "theRecordWasTakenOut": "The record was taken out of the recycle bin with its values untouched.",
+      "theRecordWasRemovedIts": "The record was removed. Its last values are kept with this entry.",
+      "theRecordWasCreated": "The record was created.",
+      "noFieldValuesWereRecorded": "No field values were recorded for this change.",
+      "movedToTheRecycleBin": "Moved to the recycle bin",
+      "restoredFromTheRecycleBin": "Restored from the recycle bin",
+      "created": "Created",
+      "deleted": "Deleted",
+      "edited": "Edited",
+      "selected": "Selected",
+      "compare": "Compare",
+      "approximateTooltip": "Reconstructed from a saved snapshot, so the exact time and the grouping are approximate."
+    },
+    "renderHistoryEntryDigest": {
+      "valuesUntouched": "values untouched",
+      "linesAddedAndRemovedAcross": "Lines added and removed across the text fields in this change",
+      "otherFieldsChangedInThis": "Other fields changed in this edit",
+      "notSet": "not set",
+      "recordCreated": "record created",
+      "recordRemoved": "record removed",
+      "nothingRecorded": "nothing recorded"
+    },
+    "renderHistoryActivityItem": {
+      "owner": "Owner: {owner}",
+      "status": "Status: {statusAfter}",
+      "round": "Round: {round}",
+      "previousAction": "Previous action · {previousActionStatus}",
+      "loggedByHand": "Logged by hand",
+      "outcome": "Outcome",
+      "blocker": "Blocker",
+      "note": "Note"
+    },
+    "renderHistoryFieldBlock": {
+      "restoreThisValue": "Restore this value"
+    },
+    "renderHistoryFieldValue": {
+      "onlyTheFirstPartOf": "Only the first part of this value was kept ({length} characters in full)."
+    },
+    "renderHistoryTextDiff": {
+      "resetView": "Reset view",
+      "foldEveryUnchangedLineBack": "Fold every unchanged line back up and put long lines back on one row each",
+      "wordWrap": "Word wrap",
+      "markdownPreview": "Markdown preview",
+      "openTheRenderedMarkdownIn": "Open the rendered markdown in a window",
+      "noVisibleDifferenceInThis": "No visible difference in this field.",
+      "putLongLinesBackOn": "Put long lines back on one row each",
+      "wrapLongLinesInsteadOf": "Wrap long lines instead of scrolling sideways"
+    },
+    "renderHistoryDiffGap": {
+      "showMoreLinesBelowThe": "Show {HISTORY_GAP_STEP} more lines below the change above",
+      "showMoreLinesAboveThe": "Show {HISTORY_GAP_STEP} more lines above the change below",
+      "showAll": "Show all {total}",
+      "showEveryUnchangedLineIn": "Show every unchanged line in this run",
+      "hideAgain": "Hide again",
+      "foldTheseUnchangedLinesBack": "Fold these unchanged lines back up"
+    },
+    "renderHistoryListChange": {
+      "sameValuesThroughout": "same values throughout."
+    },
+    "renderHistoryScalarChange": {
+      "empty": "empty",
+      "notSet": "not set"
+    },
+    "restoreHistoryFieldValue": {
+      "couldNotWorkOutWhere": "Could not work out where {label} lives on this record.",
+      "restored": "Restored {label}",
+      "thatRecordIsNoLonger": "That record is no longer open, so nothing was changed."
+    },
+    "openHistoryPreviewDialog": {
+      "before": "Before",
+      "after": "After"
+    },
+    "renderHistoryRestorePreview": {
+      "theRecordAlreadyHoldsThis": "The record already holds this value, so there is nothing to put back.",
+      "savingReplacesWhatTheRecord": "Saving replaces what the record holds now. The change is recorded, so it can be undone",
+      "fromThisTimelineTheSame": "from this timeline the same way.",
+      "notSet": "not set",
+      "empty": "empty",
+      "valueNow": "Value now",
+      "willBecome": "Will become"
+    },
+    "renderCampaignTagFilters": {
+      "text": "×",
+      "removeTagFilter": "Remove tag filter"
+    },
+    "renderFeedbackTagFilters": {
+      "text": "×",
+      "removeTagFilter": "Remove tag filter"
+    },
+    "formatExtraParamTooltip": {
+      "whyTrackThis": "Why track this",
+      "type": "Type",
+      "examples": "Examples",
+      "defaultPossibilities": "Default possibilities",
+      "noDescription": "No description."
+    },
+    "formatAllCategoriesTooltip": {
+      "allCategories": "All categories",
+      "showsEveryActiveMarketingTarget": "Shows every active marketing target across the tracker.",
+      "hoverIndividualCategoryTabsOr": "Hover individual category tabs or the form help button to see category-specific guidance."
+    },
+    "formatAllProgramCategoriesTooltip": {
+      "allCategories": "All categories",
+      "showsEveryActiveProgramAnd": "Shows every active program and opportunity across the tracker.",
+      "hoverIndividualCategoryTabsOr": "Hover individual category tabs or table pills to see category-specific guidance."
+    },
+    "formatAllFundingCategoriesTooltip": {
+      "allCategories": "All categories",
+      "showsEveryActiveDealAnd": "Shows every active deal and funder in funding.",
+      "hoverIndividualCategoryTabsOr": "Hover individual category tabs or table pills to see category-specific guidance."
+    },
+    "scheduleAutosave": {
+      "saving": "Saving...",
+      "savingChanges": "Saving changes...",
+      "autosaved": "Autosaved"
+    },
+    "flushAutosave": {
+      "autosaved": "Autosaved"
+    },
+    "sendPendingOutboxBatch": {
+      "reloadRequiredBeforeSaving": "Reload required before saving",
+      "thisCachedEditPredatesRecord": "This cached edit predates record locking. It is still stored in this tab. Reload after copying the edit you want to keep.",
+      "thisTabUsesAnOlder": "This tab uses an older save protocol. Its unsaved changes remain in this tab. Reload the app before editing further.",
+      "saveFailedUpdateIsToo": "Save failed: update is too large"
+    },
+    "describeRecordConflicts": {
+      "fieldConflicts": "{fieldCount} field conflicts",
+      "recordConflicts": "{length} record conflicts",
+      "1FieldConflict": "1 field conflict",
+      "1RecordConflict": "1 record conflict"
+    },
+    "showAutomaticMergeNotification": {
+      "mergedEditsToRecords": "Merged edits to {length} records",
+      "mergedConcurrentEdits": "Merged concurrent edits",
+      "tooltip": "Changed elsewhere: {server}. Your changes: {local}. Both versions were saved.",
+      "none": "none"
+    },
+    "persist": {
+      "saving": "Saving...",
+      "savingChanges": "Saving changes...",
+      "saveFailedBrowserStorageUnavailable": "Save failed: browser storage unavailable",
+      "saved": "Saved"
+    },
+    "handleWindowFocus": {
+      "syncingData": "Syncing data...",
+      "updateWaitingForEditor": "Update waiting for editor..."
+    },
+    "showRecordConflictNotification": {
+      "review": "Review",
+      "unknownFields": "unknown fields",
+      "theSameRecord": "the same record",
+      "tooltip": "Needs review: {records}. Changed elsewhere: {server}. Your changes: {local}. Both changed: {both}."
+    },
+    "renderRecordConflictReview": {
+      "changedElsewhere": "Changed elsewhere:",
+      "yourChanges": "Your changes:",
+      "bothChanged": "Both changed:",
+      "changedElsewhere2": "Changed elsewhere",
+      "yourVersion": "Your version",
+      "useAllServerVersions": "Use all server versions",
+      "useTheirs": "Use theirs",
+      "keepAllMyVersions": "Keep all my versions",
+      "keepMine": "Keep mine",
+      "unknown": "Unknown",
+      "wholeRecord": "Whole record"
+    },
+    "showConflictNotification": {
+      "conflictReload": "Conflict: Reload!",
+      "theDatabaseHasBeenUpdated": "The database has been updated in another tab. Please reload to resume editing.",
+      "alert": "The tracker's data was changed elsewhere, in another tab or by another program.\n\nSaving is paused in this tab so those changes are not overwritten. Reload the page to load the latest data."
+    },
+    "buildPersistedState": {
+      "startupTracker": "Startup Tracker"
+    },
+    "buildPatchSnapshot": {
+      "cannotIncrementallySaveEveryRecord": "Cannot incrementally save {section}: every record needs a unique id."
+    },
+    "renderMediaSourceActions": {
+      "copyPath": "Copy path"
+    },
+    "copyMediaPath": {
+      "noPathToCopy": "No path to copy",
+      "pathCopied": "Path copied",
+      "copyFailed": "Copy failed"
+    },
+    "openMediaDocumentModal": {
+      "previewUnavailable": "Preview unavailable",
+      "loadingDocumentContent": "Loading document content...",
+      "loadingDocument": "Loading document...",
+      "loading": "Loading...",
+      "documentLoaded": "Document loaded",
+      "failedToLoadDocumentContent": "Failed to load document content.",
+      "unableToLoadDocument": "Unable to load document",
+      "retry": "Retry",
+      "loadFailed": "Load failed",
+      "documentLoadFailed": "Document load failed",
+      "document": "Document",
+      "markdownDocument": "Markdown document",
+      "failedToFetchDocumentContent": "Failed to fetch document content."
+    },
+    "saveMediaDocumentChanges": {
+      "saveUnavailable": "Save unavailable",
+      "documentSaved": "Document saved",
+      "documentSaveFailed": "Document save failed"
+    },
+    "updateMediaDocumentSaveState": {
+      "loading": "Loading...",
+      "saveFile": "Save file",
+      "uploadedMdOnly": "Uploaded MD only"
+    },
+    "formatDateRange": {
+      "starts": "Starts {startDate}",
+      "ends": "Ends {endDate}"
+    },
+    "markSaved": {
+      "synced": "Synced {timeStr}",
+      "dataSynchronizedWithStorageAt": "Data synchronized with storage at {timeStr}",
+      "conflictReload": "Conflict: Reload!",
+      "theDatabaseHasBeenUpdated": "The database has been updated in another tab. Please reload to resume editing.",
+      "backendOffline": "Backend offline",
+      "backendServerIsOfflineChanges": "Backend server is offline. Changes are saved locally only.",
+      "savedLocallyWaitingToSync": "Saved locally - waiting to sync",
+      "thisBrowserHasKeptThe": "This browser has kept the change and will retry when the VPS is reachable.",
+      "statusAt": "Status: {message} at {timeStr}"
+    },
+    "updateLoadingUi": {
+      "loadingData": "Loading data..."
+    },
+    "getProgramCategoryLabel": {
+      "uncategorized": "Uncategorized"
+    },
+    "getProgramTypeLabel": {
+      "unspecified": "Unspecified"
+    },
+    "getProgramActivityTypeLabel": {
+      "otherType": "Other"
+    },
+    "getProgramPreviousActionStatus": {
+      "noCurrentAction": "No current action"
+    },
+    "getFundingCategoryName": {
+      "uncategorized": "Uncategorized"
+    },
+    "buildCalendarDueByGroups": {
+      "programOpportunity": "Program opportunity"
+    },
+    "formatGlobalSearchFieldLabel": {
+      "application": "Application",
+      "applicationLink": "Application link",
+      "sourceType": "Source type",
+      "nextActionTime": "Next action time",
+      "contact": "Contact",
+      "contactRole": "Contact role",
+      "contactEmail": "Contact email",
+      "targetAmount": "Target amount",
+      "expectedClose": "Expected close",
+      "successMetric": "Success metric",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "examples": "Examples",
+      "pathUrl": "Path / URL",
+      "originalFilename": "Original filename",
+      "storedFilename": "Stored filename",
+      "repeatInterval": "Repeat interval",
+      "repeatUnit": "Repeat unit",
+      "details": "Details"
+    },
+    "appendGlobalSearchFields": {
+      "details": "Details"
+    },
+    "makeGlobalSearchResult": {
+      "area": "Area",
+      "recordType": "Record type",
+      "date": "Date",
+      "updated": "Updated",
+      "untitled": "Untitled",
+      "app": "App"
+    },
+    "renderFeedbackControls": {
+      "allTypes": "All types",
+      "allStages": "All stages",
+      "allEvidenceLevels": "All evidence levels"
+    },
+    "renderCollapsibleTargetSection": {
+      "hide": "Hide",
+      "show": "Show"
+    },
+    "getAiKindLabel": {
+      "subscription": "Subscription",
+      "apiAccess": "API access"
+    },
+    "toggleMediaPin": {
+      "mediaPinned": "Media pinned",
+      "mediaUnpinned": "Media unpinned"
+    },
+    "saveTargetFromWindow": {
+      "targetAdded": "Target added",
+      "targetUpdated": "Target updated"
+    },
+    "historyOriginLabels": {
+      "you": "You",
+      "maintenanceTool": "Maintenance tool",
+      "reconstructed": "Reconstructed",
+      "restore": "Restore",
+      "import": "Import"
+    },
+    "historyValueText": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "historyDayLabel": {
+      "undated": "Undated"
+    },
+    "openHistoryRestoreDialog": {
+      "thatRecordIsNoLonger": "That record is no longer open, so nothing was changed."
+    },
+    "formatConflictField": {
+      "wholeRecord": "Whole record"
+    },
+    "formatConflictValue": {
+      "removed": "(removed)",
+      "empty": "(empty)",
+      "notAvailable": "(not available)"
+    },
+    "getMediaSourceLabel": {
+      "uploadedFile": "Uploaded file",
+      "pcPath": "PC path",
+      "source": "Source"
+    },
+    "formatDateTime": {
+      "noDate": "No date"
+    },
+    "formatDate": {
+      "noDate": "No date"
+    },
+    "markSyncing": {
+      "syncingData": "Syncing data..."
+    },
+    "counts": {
+      "linkedDeal": {
+        "one": "{count} linked deal",
+        "other": "{count} linked deals"
+      },
+      "committedPercent": "{progress}% committed",
+      "target": {
+        "one": "{count} target",
+        "other": "{count} targets"
+      },
+      "program": {
+        "one": "{count} program",
+        "other": "{count} programs"
+      },
+      "fundingRecord": {
+        "one": "{count} funding record",
+        "other": "{count} funding records"
+      },
+      "media": {
+        "one": "{count} media item",
+        "other": "{count} media items"
+      },
+      "campaign": {
+        "one": "{count} campaign",
+        "other": "{count} campaigns"
+      },
+      "entry": {
+        "one": "{count} entry",
+        "other": "{count} entries"
+      },
+      "activeLink": {
+        "one": "{count} active link",
+        "other": "{count} active links"
+      },
+      "link": {
+        "one": "{count} link",
+        "other": "{count} links"
+      },
+      "recordedChange": {
+        "one": "{count} recorded change",
+        "other": "{count} recorded changes"
+      },
+      "loggedUpdate": {
+        "one": "{count} logged update",
+        "other": "{count} logged updates"
+      },
+      "change": {
+        "one": "{count} change",
+        "other": "{count} changes"
+      },
+      "logged": {
+        "one": "{count} logged",
+        "other": "{count} logged"
+      },
+      "field": {
+        "one": "{count} field",
+        "other": "{count} fields"
+      },
+      "note": {
+        "one": "{count} note",
+        "other": "{count} notes"
+      },
+      "unchangedLinesHidden": {
+        "one": "{count} unchanged line hidden",
+        "other": "{count} unchanged lines hidden"
+      },
+      "unchangedLinesShown": {
+        "one": "{count} unchanged line shown",
+        "other": "{count} unchanged lines shown"
+      },
+      "reordered": {
+        "one": "Reordered {count} entry,",
+        "other": "Reordered {count} entries,"
+      },
+      "feedback": {
+        "one": "{count} feedback item",
+        "other": "{count} feedback items"
+      }
+    },
+    "renderTags": {
+      "editingTag": "Editing tag: #{tag}"
+    },
+    "resolveRecordConflictsKeepingMine": {
+      "confirm": "Overwrite the other version of:\n  {records}\n\nYour version replaces what is on the server. The replaced version can still be recovered from its history or a backup."
+    },
+    "resolveRecordConflictsUsingTheirs": {
+      "confirm": "Discard your unsaved edit to:\n  {records}\n\nThe version currently on the server is loaded instead. Your other edits are kept."
+    },
+    "renderMediaDocumentPreview": {
+      "empty": "No content to preview. Use the Edit tab to add Markdown."
+    }
+  },
+  "nav": {
+    "views": "Tracker views",
+    "main": "Main navigation",
+    "breadcrumb": "Breadcrumb"
+  },
+  "sections": {
+    "mk": {
+      "name": "Marketing"
+    },
+    "po": {
+      "name": "Programs"
+    },
+    "fu": {
+      "name": "Funding"
+    },
+    "comp": {
+      "name": "Company"
+    }
+  },
+  "taxonomy": {
+    "fieldLabel": "Categories",
+    "pickOne": "Pick at least one category.",
+    "picked": "Picked categories",
+    "nonePicked": "No category yet. Pick one or more below; the first is the primary.",
+    "primary": "Primary",
+    "makePrimary": "Make primary",
+    "makePrimaryOf": "Make {name} the primary category",
+    "remove": "Remove {name}",
+    "searchPlaceholder": "Search categories…",
+    "searchLabel": "Search categories",
+    "noMatches": "No category matches.",
+    "expand": "Show what is under {name}",
+    "collapse": "Hide what is under {name}",
+    "subcategories": "Subcategories",
+    "types": "Types",
+    "disabled": "turned off",
+    "unknown": "not in the library",
+    "disabledHelp": "This startup turned this category off. Targets keep it, but it is not offered for new ones.",
+    "unknownHelp": "This category is not in the library. The target keeps it until you pick another."
+  },
+  "categories": {
+    "title": "Categories",
+    "intro": "The category library every startup shares: categories, subcategories and types for Marketing, Programs and Funding. Names, descriptions, order, new entries, merges and deletes apply to every startup. The checkboxes turn entries on or off for this startup only; what is off disappears from its pickers and tabs, and targets that use it keep it.",
+    "sectionsLabel": "Section",
+    "addCategory": "Add a category",
+    "addSubcategory": "Add subcategory",
+    "addType": "Add type",
+    "edit": "Edit",
+    "mergeButton": "Merge",
+    "delete": "Delete",
+    "save": "Save",
+    "add": "Add",
+    "cancel": "Cancel",
+    "reset": "Reset to library text",
+    "name": "Name",
+    "shortName": "Short name",
+    "shortNameHint": "Shown on the category tabs.",
+    "description": "Description",
+    "charactersLeft": {
+      "one": "{count} character left",
+      "other": "{count} characters left"
+    },
+    "needsNameAndDescription": "Every entry needs a name and a description.",
+    "custom": "Added here",
+    "usage": {
+      "one": "{count} target",
+      "other": "{count} targets"
+    },
+    "usageHint": "Targets in every startup that use this entry directly.",
+    "onFor": "Use {name} in this startup",
+    "onHint": "On or off for this startup only.",
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "mergeInto": "Merge {name} into",
+    "mergeHint": {
+      "one": "{count} target moves to the entry you pick, in every startup. What is under this entry moves along.",
+      "other": "{count} targets move to the entry you pick, in every startup. What is under this entry moves along."
+    },
+    "merge": "Merge",
+    "deleteUsed": {
+      "one": "{count} target, in some startup, uses {name} or something under it. Choose where it moves first.",
+      "other": "{count} targets, across your startups, use {name} or something under it. Choose where they move first."
+    },
+    "deleteUnused": "No target uses {name}. Delete it and everything under it?",
+    "moveTo": "Move them to",
+    "moveAndDelete": "Move and delete",
+    "saved": "Saved {name}.",
+    "added": "Added {name}.",
+    "resetDone": "{name} has the library text again.",
+    "reordered": "New order saved.",
+    "merged": {
+      "one": "Merged {name} into {into}. {count} target moved.",
+      "other": "Merged {name} into {into}. {count} targets moved."
+    },
+    "deleted": {
+      "one": "Deleted {name}. {count} target moved.",
+      "other": "Deleted {name}. {count} targets moved."
+    },
+    "turnedOn": "{name} is on for this startup.",
+    "turnedOff": "{name} is off for this startup.",
+    "selectionSaved": "Category choice saved",
+    "updatesTitle": {
+      "one": "{count} new entry in the library",
+      "other": "{count} new entries in the library"
+    },
+    "updatesHint": "A newer version of the library brought these. Tick the ones you want; the others are skipped and not offered again.",
+    "addSelected": "Add the ticked entries",
+    "updatesAdded": {
+      "one": "Added {count} entry.",
+      "other": "Added {count} entries."
+    },
+    "export": "Export the library",
+    "import": "Import a library",
+    "imported": "Imported {count} new entries; {skipped} were already here.",
+    "copyHint": "To reuse another startup's on/off choice, use \"Copy settings from another startup\" in Settings > Startups.",
+    "failed": "That did not work: {error}"
+  },
+  "links": {
+    "saveFirst": "Save this record first, then link it to others.",
+    "none": "No links yet.",
+    "add": "Link to",
+    "addPlaceholder": "Search targets, programs, funding, media…",
+    "added": "Link added",
+    "removed": "Link removed",
+    "remove": "Remove the link to {name}",
+    "relation": "Relation",
+    "relations": {
+      "related": "Related",
+      "uses": "Uses",
+      "feedback-about": "Feedback about",
+      "blocks": "Blocks",
+      "follow-up-of": "Follow-up of",
+      "funds": "Funds"
+    }
+  },
+  "search": {
+    "open": "Open search",
+    "label": "Search everything",
+    "placeholder": "Search everything...",
+    "scopeLabel": "Search in",
+    "resultsLabel": "Search results",
+    "noMatches": "No matches yet.",
+    "loadingAll": "Searching every startup…",
+    "failedAll": "Could not search the other startups. Try again in a moment.",
+    "truncated": "Showing the first {count} matches. Add a word to narrow the search.",
+    "kinds": {
+      "marketing": "Marketing",
+      "program": "Programs & Opportunities",
+      "funding": "Funding",
+      "campaign": "Campaign",
+      "media": "Media"
+    }
+  },
+  "calendar": {
+    "today": "Today",
+    "openMonth": "Open month calendar",
+    "closeMonth": "Close month calendar",
+    "intro": "Your dates across marketing, programs, funding and company tasks.",
+    "scopeLabel": "Show dates from",
+    "allLoading": "Loading the other startups' dates…",
+    "allFailed": "Could not load the other startups' dates. Only this startup's are shown.",
+    "sectionsLabel": "Sections",
+    "kindsLabel": "Show",
+    "kinds": {
+      "next_action": "Next actions",
+      "deadline": "Deadlines",
+      "milestone": "Milestones",
+      "payment": "Payments",
+      "company": "Company deadlines",
+      "campaign": "Campaign dates"
+    },
+    "daySectionCount": {
+      "one": "{section}: {count} event",
+      "other": "{section}: {count} events"
+    },
+    "campaigns": "Campaigns",
+    "summary": {
+      "title": "Total items summary",
+      "rangeLabel": "Count over",
+      "range": "Visible days",
+      "allTime": "All time",
+      "rangeHint": "Items with a date from {from} to {to}. One item with three dates counts once; Events counts each date.",
+      "allTimeHint": "Every item, with or without a date. Events counts every date.",
+      "section": "Section",
+      "items": "Items",
+      "events": "Events",
+      "total": "Total",
+      "show": "Show {section} again",
+      "hide": "Hide {section}"
+    }
+  },
+  "backups": {
+    "unnamed": "Backup",
+    "nameWithLabel": "{date} ({label})",
+    "confirmRestore": {
+      "one": "Restore {count} entry from {name}? This replaces the data of every startup and the shared settings.",
+      "other": "Restore {count} entries from {name}? This replaces the data of every startup and the shared settings."
+    },
+    "restored": "Restored the backup"
+  },
+  "scope": {
+    "this": "This startup",
+    "all": "All startups"
+  },
+  "startups": {
+    "caption": "Startup",
+    "menuLabel": "Startups",
+    "newStartup": "New startup…",
+    "manage": "Manage startups…",
+    "pageTitle": "{name} · {app}",
+    "unsynced": {
+      "one": "1 unsynced edit",
+      "other": "{count} unsynced edits"
+    },
+    "conflicted": {
+      "one": "1 edit in conflict",
+      "other": "{count} edits in conflict"
+    },
+    "newTitle": "New startup",
+    "nameLabel": "Name",
+    "nameRequired": "Enter a name for the startup.",
+    "copyFromLabel": "Copy settings from",
+    "copyNothing": "Nothing, start empty",
+    "copyHint": "Copies settings only. Records stay with the startup they belong to.",
+    "create": "Create startup",
+    "creating": "Creating…",
+    "cancel": "Cancel",
+    "createFailed": "Could not create the startup: {error}",
+    "firstTitle": "Create your first startup",
+    "firstIntro": "Each startup keeps its own marketing, programs, funding and company records. You can add more later.",
+    "loadFailed": "Could not load the list of startups. Reload the page to try again."
+  },
+  "setup": {
+    "steps": {
+      "welcome": "Welcome",
+      "basics": "Basics",
+      "startup": "Your startup",
+      "links": "Links",
+      "context": "AI context",
+      "track-mk": "Marketing",
+      "track-po": "Programs",
+      "track-fu": "Funding",
+      "agents": "AI agents",
+      "backups": "Backups",
+      "done": "Done"
+    },
+    "progress": "Step {step} of {total}",
+    "loading": "Loading…",
+    "failedTitle": "This step did not load",
+    "saveLabel": "Setup",
+    "start": "Start",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "finish": "Finish",
+    "close": "Close the setup (you can continue later)",
+    "required": {
+      "name": "Give your startup a name first.",
+      "timeZone": "Pick your time zone first."
+    },
+    "badge": "Finish setup",
+    "badgeHint": "The setup is not finished. Continue where you stopped.",
+    "welcome": {
+      "title": "Welcome to Startup Tracker",
+      "intro": "A few steps to set up the tracker for your startup. Each step is saved as you go, so you can stop and continue later.",
+      "points": {
+        "one": "Track marketing, programs and opportunities, funding and company tasks in one place.",
+        "two": "Everything stays on this computer, in a folder only you can read.",
+        "three": "Only the startup name and your time zone are required. You can skip the rest and change it later in Settings."
+      }
+    },
+    "basics": {
+      "title": "Basics",
+      "intro": "These apply to every startup in this tracker.",
+      "timeZone": "Time zone",
+      "timeZoneHint": "Your browser says {zone}. Dates and reminders use this zone.",
+      "badZone": "\"{zone}\" is not a time zone this browser knows. Pick one from the list.",
+      "dateFormat": "Date format",
+      "theme": "Theme",
+      "mode": "Light or dark",
+      "language": "Language",
+      "languageHint": "English is the only language for now."
+    },
+    "startup": {
+      "title": "Your startup",
+      "addTitle": "Add a startup",
+      "intro": "The name is required. The rest helps the prompts and the Company tab, and you can fill it in later.",
+      "name": "Name",
+      "icon": "Icon",
+      "iconHint": "PNG, SVG, JPG or ICO. Without one, the tracker shows your initials. The browser tab shows it as you edit.",
+      "oneLiner": "One-liner",
+      "description": "Description",
+      "industry": "Industry or sector",
+      "industryPlaceholder": "for example, developer tools",
+      "website": "Website",
+      "country": "Country",
+      "pickCountry": "Pick a country",
+      "template": "Company template",
+      "templateHint": "Fills the Company tab with the usual filings and deadlines for that kind of company.",
+      "noTemplate": "Decide later",
+      "notIncorporated": "Not incorporated yet",
+      "forCountry": "For this country",
+      "generic": "Generic (any country)",
+      "otherCountries": "Other countries",
+      "subdivision": "State or province",
+      "currency": "Default currency",
+      "homeRegion": "Home city or region",
+      "homeRegionPlaceholder": "used to find in-person events"
+    },
+    "links": {
+      "title": "Links",
+      "intro": "Your website, profiles and pages. They show in the Links menu at the top and in prompts that ask for your links. Paste an address and the type is picked for you.",
+      "type": "Link type",
+      "url": "Address",
+      "pastePlaceholder": "Paste an address",
+      "add": "Add link",
+      "up": "Move up",
+      "down": "Move down",
+      "remove": "Remove link"
+    },
+    "context": {
+      "title": "AI context",
+      "intro": "A short text about your company and founders that every prompt carries. The buttons add a sentence to start from.",
+      "counter": {
+        "one": "{count} character (aim for about {target}).",
+        "other": "{count} characters (aim for about {target})."
+      }
+    },
+    "track": {
+      "title": {
+        "mk": "What to track: marketing",
+        "po": "What to track: programs and opportunities",
+        "fu": "What to track: funding"
+      },
+      "intro": "Tick the categories you want to see. The ones marked Recommended are ticked already, and Skip keeps them.",
+      "notice": "This can take 10 to 20 minutes. Pick only what is relevant to you: you will see less noise every day. You can change it later in Extra > Categories.",
+      "everything": "Turn everything on",
+      "search": "Search categories",
+      "counter": "{on} of {total} on",
+      "recommended": "Recommended",
+      "all": "All",
+      "none": "None"
+    },
+    "agents": {
+      "title": "AI agents",
+      "intro": "Optional. Agents found on this computer are listed here. Add one, check that it works and pick a default model, or skip and do it later in Settings > AI agents.",
+      "failed": "Could not read the agents: {error}"
+    },
+    "backups": {
+      "title": "Backups",
+      "intro": "The tracker copies its database before risky changes and on a schedule.",
+      "keep": "Automatic backups to keep",
+      "folder": "Your data folder:",
+      "hint": "Copy this folder to keep a backup elsewhere. Settings > Backups has the rest."
+    },
+    "done": {
+      "title": "Done",
+      "intro": "{name} is ready.",
+      "introNoStartup": "The setup is finished.",
+      "skipped": "You skipped: {steps}. The same settings are in Settings whenever you want them.",
+      "open": "Open the tracker",
+      "another": "Add another startup",
+      "addDemo": "Add a demo startup to explore",
+      "removeDemo": "Delete the demo startup",
+      "openDemo": "Open the demo startup"
+    },
+    "runAgain": "Run setup again",
+    "runAgainHint": "Walks through the same steps for the current startup. Nothing is lost: each step starts from what is saved.",
+    "addGuided": "Start the setup for a new startup",
+    "addGuidedHint": "Name, profile, links, AI context and categories, step by step.",
+    "startSetup": "Start the setup"
+  },
+  "sync": {
+    "restoredConflicts": {
+      "one": "1 edit predates a restore",
+      "other": "{count} edits predate a restore"
+    },
+    "restoredTooltip": "This startup was restored or imported after these edits were made: {records}. Nothing was saved. Open the review to keep your version or use the restored one.",
+    "restoredRecord": "Replaced by a restore or import",
+    "review": "Review",
+    "offline": "the server did not answer"
+  },
+  "recycle": {
+    "moved": "Moved to the recycle bin",
+    "restored": "Restored from the recycle bin",
+    "deletedForever": "Deleted for good",
+    "emptied": "Recycle bin emptied",
+    "deleteTag": "Move tag to the recycle bin",
+    "confirmDeleteTag": "Move the tag \"{name}\" to the recycle bin? Records keep the tag text; the tag's description goes with it.",
+    "confirmDeleteMedia": "Move the media item \"{name}\" to the recycle bin? Uploaded files stay in the media folder.",
+    "confirmDeleteFeedback": "Move the evidence item \"{name}\" to the recycle bin?",
+    "confirmDeleteLink": "Move the research link \"{name}\" to the recycle bin?",
+    "confirmDeletePrompt": "Move the prompt \"{name}\" to the recycle bin?",
+    "confirmDeleteCampaign": "Move the campaign \"{name}\" to the recycle bin?",
+    "confirmDeleteCampaignLinked": {
+      "one": "Move the campaign \"{name}\" to the recycle bin and clear it from 1 linked record?",
+      "other": "Move the campaign \"{name}\" to the recycle bin and clear it from {count} linked records?"
+    }
+  },
+  "linkTypes": {
+    "groups": {
+      "own": "Own sites",
+      "contact": "Contact",
+      "code": "Code",
+      "professional": "Professional",
+      "social": "Social",
+      "video": "Video and audio",
+      "communities": "Communities",
+      "launch": "Launch and makers",
+      "writing": "Writing",
+      "design": "Design",
+      "stores": "Stores",
+      "other": "Other"
+    },
+    "types": {
+      "website": "Website",
+      "blog": "Blog",
+      "docs": "Docs or help center",
+      "newsletter": "Newsletter",
+      "careers": "Careers",
+      "pressKit": "Press kit",
+      "pitchDeck": "Pitch deck",
+      "statusPage": "Status page",
+      "email": "Email",
+      "phone": "Phone",
+      "booking": "Booking link",
+      "github": "GitHub",
+      "gitlab": "GitLab",
+      "bitbucket": "Bitbucket",
+      "linkedinCompany": "LinkedIn company",
+      "linkedinPerson": "LinkedIn person",
+      "crunchbase": "Crunchbase",
+      "wellfound": "Wellfound",
+      "x": "X",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "threads": "Threads",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "pinterest": "Pinterest",
+      "youtube": "YouTube",
+      "tiktok": "TikTok",
+      "twitch": "Twitch",
+      "podcast": "Podcast",
+      "reddit": "Reddit",
+      "discord": "Discord",
+      "slack": "Slack",
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "productHunt": "Product Hunt",
+      "hackerNews": "Hacker News",
+      "indieHackers": "Indie Hackers",
+      "medium": "Medium",
+      "substack": "Substack",
+      "dev": "DEV",
+      "hashnode": "Hashnode",
+      "dribbble": "Dribbble",
+      "behance": "Behance",
+      "appStore": "App Store",
+      "googlePlay": "Google Play",
+      "chromeWebStore": "Chrome Web Store",
+      "other": "Other"
+    }
+  },
+  "settings": {
+    "button": "Settings",
+    "title": "Settings",
+    "close": "Close settings",
+    "sectionsLabel": "Settings sections",
+    "forStartup": "For ",
+    "loading": "Loading…",
+    "loadFailed": "Could not load this section: {error}",
+    "saved": "Saved.",
+    "saveFailed": "Not saved: {error}",
+    "sections": {
+      "profile": "Startup profile",
+      "startups": "Startups",
+      "appearance": "Appearance",
+      "general": "General",
+      "statuses": "Statuses",
+      "agents": "AI agents",
+      "backups": "Backups",
+      "recycle": "Recycle bin",
+      "about": "About"
+    },
+    "sectionNames": {
+      "items": "Marketing targets",
+      "deletedItems": "Deleted marketing targets",
+      "programs": "Programs & opportunities",
+      "deletedPrograms": "Deleted programs",
+      "funding": "Funding",
+      "deletedFunding": "Deleted funding",
+      "fundingRounds": "Funding rounds",
+      "campaigns": "Campaigns",
+      "deletedCampaigns": "Deleted campaigns",
+      "mediaItems": "Media",
+      "deletedMediaItems": "Deleted media",
+      "feedbackItems": "Feedback",
+      "deletedFeedbackItems": "Deleted feedback",
+      "dailyLinks": "Research links",
+      "deletedDailyLinks": "Deleted research links",
+      "prompts": "Prompts",
+      "deletedPrompts": "Deleted prompts",
+      "tagDefinitions": "Tags",
+      "deletedTags": "Deleted tags",
+      "categories": "Categories",
+      "extraParamsDefinition": "Extra parameters",
+      "aiAccounts": "AI accounts",
+      "aiFlow": "AI flow",
+      "profile": "Startup profile",
+      "companyProfile": "Company profile",
+      "companySteps": "Company setup steps",
+      "companyObligations": "Company obligations",
+      "companyDeadlines": "Company deadlines",
+      "companyExpenses": "Company expenses",
+      "timeZone": "Time zone",
+      "updatedAt": "Last change",
+      "name": "Name",
+      "version": "Format version",
+      "deletedCompanySteps": "Deleted company setup steps",
+      "deletedCompanyObligations": "Deleted company obligations",
+      "deletedCompanyExpenses": "Deleted company expenses"
+    },
+    "profile": {
+      "intro": "What the tracker and your prompts know about this startup.",
+      "name": "Name",
+      "oneLiner": "One-liner",
+      "oneLinerHint": "One sentence on what the startup does.",
+      "description": "Description",
+      "industry": "Industry or sector",
+      "industryHint": "Used for {{SECTOR}} in prompts.",
+      "icon": "Icon",
+      "iconHint": "PNG, SVG, JPG or ICO. It is resized to 256 × 256 pixels and also used as the browser tab icon. Without one, the initials are shown.",
+      "iconUpload": "Upload icon",
+      "iconRemove": "Remove icon",
+      "iconSaved": "Icon saved.",
+      "iconRemoved": "Icon removed. The initials are shown instead.",
+      "iconType": "Choose a PNG, SVG, JPG or ICO file.",
+      "iconTooLarge": "Choose an image under 5 MB.",
+      "links": "Website and links",
+      "website": "Website",
+      "linkAdd": "Add link",
+      "linkNumber": "Link {number}",
+      "linkType": "Type of {link}",
+      "linkUrl": "Address of {link}",
+      "linkRemove": "Remove {link}",
+      "country": "Country",
+      "companyTemplate": "Company template",
+      "entityType": "Entity type",
+      "companyLater": "Filled in when you pick a template in the Company tab; you can also type it.",
+      "chooseLater": "Choose later",
+      "notSet": "Not set",
+      "currency": "Default currency",
+      "homeRegion": "Home city or region",
+      "homeRegionHint": "Used when looking for in-person events.",
+      "aiContext": "Company and founders, for AI prompts",
+      "aiContextHint": "Every prompt gets this text as its constraints: who you are, what you may apply for, what to avoid. About 1,000 characters works well.",
+      "maxNewTargetsPerDay": "Most new targets per day",
+      "maxNewTargetsHint": "Prompts that add targets stop at this number. Default 10.",
+      "maxNewTargetsInvalid": "Enter a whole number from 0 to {max}.",
+      "notReady": "The startup's data is still loading. Close Settings and open it again in a moment.",
+      "constraintsPrivacy": "This text is sent to the AI agents you run. Write only what you are comfortable sharing.",
+      "constraintsCount": {
+        "one": "{count} character (aim for about {target}).",
+        "other": "{count} characters (aim for about {target})."
+      },
+      "constraintsEmpty": "Empty: prompts leave the line out.",
+      "constraintsShort": "Under {min} characters, agents may miss what makes you eligible.",
+      "constraintsLong": "Over {max} characters, agents may lose the important parts.",
+      "constraintsGood": "A good length.",
+      "constraintsTipsIntro": "Topics that help an agent judge fit. Select one to add its starting sentence where the cursor is.",
+      "constraintsInsert": "Add a starting sentence about {topic}"
+    },
+    "startups": {
+      "intro": "Every startup keeps its own records, media and recycle bin. Settings on this page are shared.",
+      "tableCaption": "Startups",
+      "name": "Name",
+      "created": "Created",
+      "records": "Records",
+      "media": "Media",
+      "actions": "Actions",
+      "current": "This page",
+      "archived": "Archived",
+      "open": "Open",
+      "openNamed": "Open {name}",
+      "rename": "Rename",
+      "renameNamed": "Rename {name}",
+      "newName": "New name",
+      "saveName": "Save name",
+      "renamed": "Renamed to {name}.",
+      "archive": "Archive",
+      "archiveNamed": "Archive {name}",
+      "unarchive": "Unarchive",
+      "unarchiveNamed": "Unarchive {name}",
+      "archivedDone": "{name} is archived. It is hidden from the switcher until you unarchive it.",
+      "unarchived": "{name} is back in the switcher.",
+      "archiveCurrentConfirm": "Archive {name}? You are working in it now, so you will go to another startup.",
+      "delete": "Delete",
+      "deleteNamed": "Delete {name}",
+      "deleteWarning": "This removes every record, the history and the media files of {name}. A safety backup of the whole database is taken first, so it can be restored from Backups.",
+      "typeName": "Type {name} to confirm",
+      "deleteForever": "Delete startup",
+      "deleted": "{name} was deleted. A safety backup holds a copy.",
+      "deleteFailed": "Could not delete the startup: {error}",
+      "addTitle": "Add a startup",
+      "addQuickTitle": "Quick add, or start from another startup's settings",
+      "copyFields": "Profile fields to copy",
+      "copyRecords": "Copy its records too",
+      "copyShared": "Tags, campaigns, statuses and option lists are shared by every startup already.",
+      "addedNamed": "Created {name}.",
+      "openNew": "Open it"
+    },
+    "appearance": {
+      "intro": "Shared by every startup and every browser that opens this tracker.",
+      "mode": "Colour mode",
+      "modes": {
+        "system": "System",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "theme": "Theme style",
+      "default": "Default",
+      "sectionColors": "Section colours",
+      "sectionColorsHint": "Marketing, Programs, Funding and Company each have a colour, used for chips, counts and dots across the app. The section code is always shown next to it, so colour is never the only signal.",
+      "palettes": {
+        "standard": "Standard",
+        "colorblind": "Colour-blind friendly"
+      },
+      "custom": "Custom",
+      "resetColors": "Reset colours",
+      "lowContrast": "Text in this colour reads at {ratio}:1 on its tint in {modes} mode, below 4.5:1. The tracker uses a darker or lighter shade for text there.",
+      "themes": {
+        "studio": {
+          "name": "Studio",
+          "description": "Frosted glass, soft shadows, blue accents and rounded corners."
+        },
+        "kinpaku": {
+          "name": "Neo Kinpaku",
+          "description": "Dark lacquer with gold accents and fine lines."
+        },
+        "paper": {
+          "name": "Warm Paper Editorial",
+          "description": "Warm paper background, dark ink text and red accents."
+        },
+        "mirai": {
+          "name": "Neo Mirai",
+          "description": "Retro-futuristic cyan and violet on a grid."
+        },
+        "aurora": {
+          "name": "Aurora UI",
+          "description": "Bright gradient background with cyan and violet glass panels."
+        },
+        "cyber": {
+          "name": "OLED Cyber",
+          "description": "Black background, green accents, dense monospace data."
+        },
+        "soft-ui": {
+          "name": "Soft UI Evolution",
+          "description": "Raised surfaces with double shadows and soft curves."
+        },
+        "linear": {
+          "name": "Linear Precision",
+          "description": "Thin borders, indigo accent and small corner radius."
+        },
+        "minimal": {
+          "name": "Stark Minimalist",
+          "description": "Monochrome with sharp corners and an orange accent."
+        },
+        "classic": {
+          "name": "Classic",
+          "description": "The original look of the tracker."
+        }
+      }
+    },
+    "general": {
+      "intro": "Shared by every startup.",
+      "appName": "App name",
+      "appNameHint": "Shown in the sidebar, the footer and the browser tab.",
+      "appNameRequired": "Enter an app name.",
+      "language": "Language",
+      "languages": {
+        "en": "English"
+      },
+      "timeZone": "Time zone",
+      "timeZoneHint": "Type to search. Leave empty to use the browser's time zone.",
+      "browserZone": "Browser time zone ({zone})",
+      "useBrowserZone": "Use browser time zone",
+      "zoneUnknown": "\"{zone}\" is not a time zone this browser knows. Pick one from the list.",
+      "dateFormat": "Date format",
+      "dateFormats": {
+        "system": "Language default ({example})",
+        "short": "Day month year ({example})",
+        "iso": "Year-month-day ({example})"
+      },
+      "weekStart": "Week starts on",
+      "weekStarts": {
+        "monday": "Monday",
+        "sunday": "Sunday"
+      },
+      "pageSize": "Rows per page",
+      "pageSizeHint": "For the target tables in Marketing, Programs and Funding. From 10 to 200.",
+      "pageSizeInvalid": "Enter a whole number from 10 to 200.",
+      "yourName": "Your name",
+      "yourNameHint": "Shown as the author of your edits in History.",
+      "you": "You",
+      "network": "Fetch the agent registry and check for updates",
+      "networkHint": "Turn off to keep the tracker from going online on its own.",
+      "defaultScope": "Search and calendar show",
+      "defaultScopeHint": "Used until you pick a scope in a startup's search or calendar."
+    },
+    "statuses": {
+      "intro": "One list for every startup, used by Marketing, Programs, Funding and Company. Rename, describe and reorder any status, or add your own to a group. The groups and the built-in statuses stay.",
+      "label": "Name of {status}",
+      "description": "Description of {status}",
+      "descriptionPlaceholder": "What this status means",
+      "labelRequired": "A status needs a name.",
+      "moveUp": "Move {status} up",
+      "moveDown": "Move {status} down",
+      "delete": "Delete {status}",
+      "deleteConfirm": "Move and delete",
+      "cancel": "Cancel",
+      "moveTo": "Move every record with {status} to",
+      "moveCampaignsTo": "Move every campaign with {status} to",
+      "deleted": {
+        "one": "Deleted {status}. {count} record moved to {target}.",
+        "other": "Deleted {status}. {count} records moved to {target}."
+      },
+      "deletedCampaign": {
+        "one": "Deleted {status}. {count} campaign moved to {target}.",
+        "other": "Deleted {status}. {count} campaigns moved to {target}."
+      },
+      "builtIn": "Built in",
+      "builtInHelp": "Built-in statuses can be renamed and moved, not deleted.",
+      "newPlaceholder": "Name of the new status",
+      "addTo": "Add a status to {group}",
+      "addCampaign": "Add a campaign status",
+      "add": "Add",
+      "campaignsTitle": "Campaign statuses",
+      "campaignsHint": "A separate, simpler list for campaigns. It has no groups, and any entry can be deleted once its campaigns have moved.",
+      "prioritiesTitle": "Priorities",
+      "prioritiesHint": "The priorities are fixed, from highest to lowest."
+    },
+    "agents": {
+      "intro": "The AI agents you can run prompts with, for every startup. The tracker talks to them over the Agent Client Protocol (ACP).",
+      "warning": "Agents can read and change files and run commands on this computer with your user account's rights.",
+      "yours": "Your agents",
+      "none": "No agents yet. Add one below.",
+      "custom": "Custom command",
+      "states": {
+        "unchecked": "Not checked yet",
+        "not-installed": "Not installed",
+        "needs-login": "Needs login",
+        "incompatible": "Incompatible",
+        "ready": "Ready",
+        "failed": "Last check failed",
+        "consent-needed": "Waiting for your consent to download"
+      },
+      "check": "Check",
+      "checking": "Checking… the first start of an npx agent can take a few minutes",
+      "testPrompt": "Test prompt",
+      "testPromptHint": "Asks the agent to reply \"OK\". Costs a few tokens.",
+      "testReply": "Test reply: {reply}",
+      "loginTerminal": "{name}: run this in a terminal, then check again:",
+      "authenticate": "Log in: {name}",
+      "blocked": "This agent failed its last check, so it cannot run.",
+      "override": "Allow it anyway",
+      "consent": "Starting this agent downloads {package} from the package registry and runs it on this computer. Allow the download?",
+      "remove": "Remove",
+      "removeConfirm": "Remove {name}? Its runs stay in the run list.",
+      "removed": "{name} removed",
+      "options": "Permissions, models and launch settings",
+      "policy": "Permission policy",
+      "defaultModel": "Default model",
+      "agentDefault": "The agent's default",
+      "preferredModels": "Preferred models (shown first when you start a run)",
+      "noModels": "The agent listed no models. Check it, or type a model id as the default.",
+      "command": "Command",
+      "args": "Arguments",
+      "env": "Environment variables (NAME=value, one per line)",
+      "envHint": "Values are kept in the data folder's secrets file and show as ***. Leave *** to keep a value. The agent gets these, PATH and HOME, never the tracker's own secrets.",
+      "envProblem": "These lines are not NAME=value: {lines}",
+      "saveLaunch": "Save launch settings",
+      "confirmCommand": "This agent will run:\n\n{command}\n\nAdd it?",
+      "addTitle": "Add an agent",
+      "sources": {
+        "live": "From the ACP registry, fetched {date}.",
+        "cache": "From the ACP registry, fetched {date}.",
+        "snapshot": "From the copy of the ACP registry that ships with the app.",
+        "catalog": "From the built-in list of agents."
+      },
+      "networkOff": "Fetching the registry is off in Settings > General.",
+      "search": "Search agents",
+      "rescan": "Rescan now",
+      "rescanning": "Rescanning…",
+      "rescanned": "The registry and the installed agents were read again.",
+      "found": "found on this computer",
+      "unavailable": "not available for this computer",
+      "installFirst": "Install {command} first and make sure it is on your PATH.",
+      "download": "Download",
+      "alreadyAdded": "Added",
+      "add": "Add",
+      "added": "{name} added. Check it before the first run.",
+      "customTitle": "A custom command",
+      "customHint": "Any program that speaks ACP over stdin and stdout. It runs exactly as you type it, without a shell.",
+      "name": "Name",
+      "runsTitle": "Runs",
+      "runSettings": {
+        "concurrency": "Runs at the same time",
+        "timeoutMinutes": "Stop a run after (minutes)",
+        "keepRuns": "Runs to keep",
+        "idleMinutes": "Flag as idle after (minutes)"
+      },
+      "saveRuns": "Save",
+      "tokensTitle": "Agent tokens",
+      "tokensHint": "Copied prompts and runs carry a limited token: it adds and updates targets of one startup until it expires. A run's token ends with the run.",
+      "noTokens": "No active tokens.",
+      "tokenRun": "run",
+      "tokenPrompt": "copied prompt",
+      "tokenUntil": "until {date}",
+      "revoke": "Revoke",
+      "revoked": "Token revoked"
+    },
+    "backups": {
+      "intro": "A backup holds the whole database, every startup and the shared settings, plus the media files.",
+      "nowTitle": "Back up now",
+      "backUpNow": "Back up now",
+      "label": "Label (optional)",
+      "labelHint": "Letters, digits, dots, dashes and underscores. Backups taken here are pinned: they are never deleted automatically.",
+      "labelInvalid": "Use only letters, digits, dots, dashes and underscores in the label.",
+      "creating": "Taking a backup…",
+      "created": "Backup taken.",
+      "skipped": "Nothing changed since the newest backup, so no new one was taken.",
+      "createFailed": "Could not take a backup: {error}",
+      "listTitle": "Backups",
+      "none": "No backups yet.",
+      "loadFailed": "Could not load the backups: {error}",
+      "kinds": {
+        "automatic": "Automatic",
+        "safety": "Safety",
+        "pinned": "Pinned"
+      },
+      "incomplete": "Incomplete",
+      "size": "Database {database} · media {media} in {files} files",
+      "countsFor": {
+        "one": "1 record of {name}",
+        "other": "{count} records of {name}"
+      },
+      "noRecords": "No records of this startup in this backup.",
+      "verify": "Verify",
+      "verifying": "Checking the backup…",
+      "verified": "Verified",
+      "verifiedDone": "The backup is sound: the database and every media file match.",
+      "verifyProblems": {
+        "one": "1 problem",
+        "other": "{count} problems"
+      },
+      "verifyFailed": "The backup did not verify: {problems}",
+      "compare": "Compare with current",
+      "compareFailed": "Could not compare: {error}",
+      "compareSame": "This startup is the same as in the backup.",
+      "compareCaption": "What restoring this startup would change",
+      "section": "Section",
+      "current": "Now",
+      "inBackup": "In backup",
+      "added": "Back",
+      "removed": "Gone",
+      "changed": "Changed",
+      "changes": {
+        "added": "Comes back",
+        "removed": "Goes away",
+        "changed": "Changes"
+      },
+      "differentRecords": "Records that differ",
+      "tickHint": "Tick records to restore only those.",
+      "truncated": "Showing the first {count} records that differ.",
+      "restore": "Restore…",
+      "restoreWhat": "What to restore",
+      "scopes": {
+        "startup": "This startup only ({name})",
+        "database": "The whole database",
+        "records": "Only the ticked records"
+      },
+      "scopeHints": {
+        "startup": "Its records and media files come back as they were. Other startups are not touched.",
+        "database": "Every startup and the shared settings go back to this backup.",
+        "records": "The ticked records come back as the backup has them. Nothing else changes."
+      },
+      "compareFirst": "Open \"Compare with current\" to tick records.",
+      "selectedCount": {
+        "one": "1 record ticked.",
+        "other": "{count} records ticked."
+      },
+      "tickFirst": "Tick at least one record in the comparison first.",
+      "safetyFirst": "A safety backup is taken before anything changes. If it fails, nothing is restored.",
+      "restoreConfirm": "Restore",
+      "confirmStartup": "Replace the records of {name} with the backup of {backup}? Unsent edits from before the restore will wait for your decision.",
+      "confirmDatabase": "Replace every startup and the shared settings with the backup of {backup}?",
+      "confirmRecords": {
+        "one": "Put back 1 record from the backup of {backup}?",
+        "other": "Put back {count} records from the backup of {backup}?"
+      },
+      "restoring": "Restoring… the page reloads when it is done.",
+      "restoreFailed": "Nothing was restored: {error}",
+      "download": "Download",
+      "delete": "Delete",
+      "confirmDelete": "Delete the backup of {backup}? This cannot be undone.",
+      "deleted": "Backup deleted.",
+      "deleteFailed": "Could not delete the backup: {error}",
+      "keepTitle": "How many to keep",
+      "keepAutomatic": "Automatic backups",
+      "keepAutomaticHint": "Taken when the server starts and every six hours while you edit. Older ones are deleted.",
+      "keepSafety": "Safety backups",
+      "keepSafetyHint": "Taken before a restore, an import or deleting a startup. Counted separately.",
+      "keepInvalid": "Enter a whole number from 1 to 1000.",
+      "pinnedHint": "Pinned backups are never deleted automatically.",
+      "exportTitle": "Export",
+      "exportHint": "A zip holds JSON per section, the media files and a manifest. JSON leaves the media out.",
+      "exportStartupZip": "{name} (zip)",
+      "exportStartupJson": "{name} (JSON)",
+      "exportAllZip": "All startups (zip)",
+      "exportAllJson": "All startups (JSON)",
+      "exportDatabase": "Whole database (.sqlite)",
+      "includeSensitive": "Include sensitive company values (bank accounts, ID numbers). The database file always holds them.",
+      "automatic": "Take automatic backups (when the tracker starts, and every six hours while you make changes)"
+    },
+    "import": {
+      "title": "Import",
+      "hint": "A zip or JSON export, or a .sqlite database. You see what it holds before anything changes.",
+      "choose": "Choose a file",
+      "reading": "Checking {file}…",
+      "failed": "Import failed: {error}",
+      "mediaFiles": {
+        "one": "1 media file",
+        "other": "{count} media files"
+      },
+      "exportedAt": "Exported {date}",
+      "unmapped": "Statuses this tracker does not know: {statuses}. They are kept as they are and show as Unmapped until you move them.",
+      "databaseSummary": {
+        "one": "A database with 1 startup and {records} records.",
+        "other": "A database with {count} startups and {records} records."
+      },
+      "modes": {
+        "new": "Add as a new startup",
+        "replace": "Replace {name}",
+        "database": "Restore the whole database"
+      },
+      "confirm": {
+        "replace": "Replace every record of {name} with the import?",
+        "database": "Replace every startup and the shared settings with this database?"
+      },
+      "safetyFirst": "A safety backup is taken first.",
+      "applying": "Importing…",
+      "done": "Imported."
+    },
+    "recycle": {
+      "intro": "Deleted records of this startup, plus deleted campaigns, prompts and tags, which every startup shares.",
+      "retention": "Keep deleted records",
+      "retentionHint": "Older ones are deleted for good, once a day. Shared by every startup.",
+      "days": {
+        "one": "1 day",
+        "other": "{count} days"
+      },
+      "keepForever": "Until I empty the bin",
+      "empty": "Empty bin",
+      "confirmEmpty": {
+        "one": "Delete 1 record in the bin of {name} for good?",
+        "other": "Delete {count} records in the bin of {name} for good?"
+      },
+      "emptied": "The recycle bin is empty.",
+      "emptyState": "The recycle bin is empty.",
+      "groups": {
+        "mk": "Marketing (MK)",
+        "po": "Programs & Opportunities (PO)",
+        "fu": "Funding (FU)",
+        "campaigns": "Campaigns",
+        "media": "Media",
+        "feedback": "Feedback",
+        "researchLinks": "Research links",
+        "prompts": "Prompts",
+        "tags": "Tags",
+        "company": "Company"
+      },
+      "untitled": "Untitled",
+      "deletedAt": "Deleted {date}",
+      "restore": "Restore",
+      "restoreNamed": "Restore {name}",
+      "restored": "{name} is back.",
+      "deleteForever": "Delete forever",
+      "deleteForeverNamed": "Delete {name} forever",
+      "confirmDelete": "Delete \"{name}\" for good? This cannot be undone.",
+      "deletedForever": "{name} was deleted for good."
+    },
+    "about": {
+      "version": "Version",
+      "dataFolder": "Data folder",
+      "databasePath": "Database",
+      "mediaDir": "Media folder",
+      "backupDir": "Backup folder",
+      "port": "Port",
+      "schemaVersion": "Database format",
+      "databaseBytes": "Database size",
+      "integrity": "Last integrity check",
+      "notChecked": "Not checked since the server started",
+      "integrityOk": "Passed on {date}",
+      "integrityProblems": "Problems found on {date}: {problems}",
+      "verify": "Verify now",
+      "verifying": "Checking the database…",
+      "verifyOk": "The database passed the integrity check.",
+      "verifyProblems": "The integrity check found problems. Restore the newest verified backup.",
+      "verifyFailed": "Could not run the check: {error}",
+      "terminalTitle": "In a terminal",
+      "terminalHint": "Run this in the tracker's folder to print the same facts. It changes nothing.",
+      "copy": "Copy",
+      "copyNamed": "Copy the command {command}",
+      "copied": "Command copied.",
+      "copyManually": "The command is selected. Press Ctrl+C or Cmd+C to copy it.",
+      "docsTitle": "Docs and license",
+      "docsHint": "The guides are Markdown files in the docs folder of your copy of the tracker:",
+      "repository": "Repository: not published yet.",
+      "license": "License: MIT, see the file",
+      "updatesTitle": "Updates",
+      "updateNotConfigured": "This copy names no repository to update from, so it does not check for updates.",
+      "updateAvailable": "Version {latest} is available (you have {current}). Install it in a terminal with: startup-tracker update",
+      "updateLatest": "{current} is the latest version (checked {date}).",
+      "updateNotChecked": "Not checked yet. The tracker checks once a day while the network switch in Settings > General is on.",
+      "updateCheckNow": "Check for updates now",
+      "updateChecking": "Checking…",
+      "updateFailed": "The check failed: {error}"
+    }
+  },
+  "statusFilter": {
+    "title": "Status filters",
+    "all": "All",
+    "off": "Off",
+    "noneButton": "None",
+    "none": "None",
+    "allSelected": "All selected",
+    "someSelected": "{chosen}/{total} selected",
+    "select": "Select",
+    "selectAll": "all",
+    "selectNone": "none",
+    "unmapped": "Unmapped",
+    "unmappedHelp": "Records whose status is not in the status list. Their value is kept as it was.",
+    "countLabel": "{count} records",
+    "toggleGroup": "Show the {group} statuses",
+    "allStatuses": "All statuses",
+    "calendarTitle": "Calendar filter"
+  },
+  "extra": {
+    "customize": "Customize",
+    "count": {
+      "one": "{count} entry",
+      "other": "{count} entries"
+    },
+    "cancel": "Cancel",
+    "noMatchTitle": "Nothing matches",
+    "noMatchHint": "Change the filter or clear it to see everything.",
+    "kinds": {
+      "mk": "Marketing",
+      "po": "Programs",
+      "fu": "Funding",
+      "comp": "Company",
+      "media": "Media",
+      "feedback": "Feedback",
+      "campaign": "Campaigns",
+      "research": "Research links"
+    },
+    "ai": {
+      "emptyTitle": "No subscriptions or APIs yet",
+      "emptyHint": "Keep the AI subscriptions and API accounts you pay for here, with the models you prefer and their links. The page adds up the monthly cost of your subscriptions. These entries are shared by all your startups.",
+      "newEntry": "New subscription",
+      "added": "AI entry added",
+      "rateLabel": "Exchange rate for the totals",
+      "rateUpdated": "Last changed {date}.",
+      "rateDefault": "The starting rate is {rate}. Change it when the rate moves.",
+      "rateSaved": "Exchange rate saved"
+    },
+    "media": {
+      "emptyTitle": "No media yet",
+      "emptyHint": "Add screenshots, videos, documents and logos, or links to them, and mark where each is used.",
+      "usedInPlaceholder": "Targets, programs, funding, feedback…",
+      "allTypes": "All types",
+      "anyKind": "Anything",
+      "anyTag": "Any tag",
+      "copy": "Copy to another startup",
+      "copyTo": "Copy to",
+      "copyButton": "Copy",
+      "copyHint": "The copy gets the file and its details. Its \"Used in\" links stay here.",
+      "copyNoOther": "There is no other open startup to copy to.",
+      "copySaveFirst": "This media item is not saved yet. Try again once the page says it is saved.",
+      "copied": "Copied to {name}",
+      "copyFailed": "The copy failed: {message}"
+    },
+    "research": {
+      "emptyTitle": "No research links yet",
+      "emptyHint": "Add the communities, pages, searches and newsletters you check regularly. \"Open all\" opens a whole group at once.",
+      "shared": "Shared with all startups",
+      "sharedBadge": "Shared",
+      "sharedHint": "Shows in every startup. Untick it to keep it in this startup only."
+    },
+    "campaigns": {
+      "emptyTitle": "No campaigns yet",
+      "emptyHint": "A campaign groups targets around one goal, such as a launch. Campaigns are shared by all your startups.",
+      "otherStartups": {
+        "one": "In other startups ({count})",
+        "other": "In other startups ({count})"
+      },
+      "otherFailed": "The targets of other startups could not be read."
+    },
+    "tags": {
+      "emptyTitle": "No tags yet",
+      "emptyHint": "Tags are short labels you put on targets, media, feedback and campaigns. They are shared by all your startups.",
+      "name": "Name",
+      "rename": "Rename",
+      "colour": "Colour",
+      "mergeInto": "Merge into",
+      "merge": "Merge",
+      "everywhereHint": "Renaming, merging and deleting change every record that has this tag, in all your startups.",
+      "inStartups": "Used in",
+      "sharedRecords": "Shared campaigns",
+      "usedAcross": {
+        "one": "{count} record in all startups",
+        "other": "{count} records in all startups"
+      },
+      "confirmDeleteUsed": {
+        "one": "Delete #{name}? It is taken off {count} record, in all your startups. The tag itself goes to the recycle bin.",
+        "other": "Delete #{name}? It is taken off {count} records, in all your startups. The tag itself goes to the recycle bin."
+      },
+      "confirmMerge": "Merge #{from} into #{to}? Every record with #{from} gets #{to} instead, in all your startups.",
+      "confirmRenameExisting": "#{to} already exists. Renaming #{from} merges the two. Continue?",
+      "renamed": "Renamed #{from} to #{to}",
+      "merged": "Merged #{from} into #{to}",
+      "deleted": "Deleted #{name}",
+      "saveFirst": "Some edits are not saved yet. Try again once the page says it is saved.",
+      "failed": "The tag change failed: {message}"
+    }
+  },
+  "shared": {
+    "reloaded": "Shared data changed elsewhere and was reloaded",
+    "saveFailed": "Shared data not saved, will retry"
+  },
+  "options": {
+    "label": "Label",
+    "labelPlaceholder": "e.g. Webinar",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional: when to pick it",
+    "idHint": "The id is stored on records and does not change when you rename the option.",
+    "newId": "new",
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "remove": "Remove {name}",
+    "add": "Add option",
+    "save": "Save list",
+    "saved": "Saved. All your startups use this list now.",
+    "reset": "Use the shipped list",
+    "resetConfirm": "Go back to the list that ships with the app? Records keep their values.",
+    "resetDone": "Back to the shipped list.",
+    "blocks": {
+      "none": "No extra fields",
+      "person": "Person and context",
+      "journey": "Journey",
+      "assumption": "Assumption test"
+    },
+    "extra": {
+      "block": "Extra fields",
+      "linkType": "Icon"
+    },
+    "lists": {
+      "mediaTypes": {
+        "title": "Media types",
+        "hint": "Shared by all your startups. Removing a type keeps it on the media that use it."
+      },
+      "feedbackTypes": {
+        "title": "Feedback types",
+        "hint": "Each type can open one block of extra fields: person and context, journey, or assumption test."
+      },
+      "feedbackSources": {
+        "title": "Sources",
+        "hint": "Where feedback came from."
+      },
+      "feedbackStages": {
+        "title": "Stages",
+        "hint": "How far along the person was."
+      },
+      "feedbackAreas": {
+        "title": "Product areas",
+        "hint": "What part of the product it is about."
+      },
+      "feedbackEvidence": {
+        "title": "Evidence strength",
+        "hint": "From weakest to strongest. The header counts the stronger half as strong evidence."
+      },
+      "feedbackRelationships": {
+        "title": "Relationship",
+        "hint": "How well you know the person."
+      },
+      "feedbackJourneySteps": {
+        "title": "Journey steps",
+        "hint": "The steps of the journey block, in order."
+      },
+      "feedbackVerdicts": {
+        "title": "Verdicts",
+        "hint": "The verdicts of an assumption test."
+      },
+      "researchGroups": {
+        "title": "Groups",
+        "hint": "Research links are grouped by these, each with the icon of a link type."
+      },
+      "documentChecklist": {
+        "title": "Documents",
+        "hint": "The documents a program can ask for, shared by all your startups. Programs keep documents you remove, with their status."
+      }
+    },
+    "validateList": {
+      "unknownOptionList": "Unknown option list \"{name}\".",
+      "mustBeAList": "{name} must be a list.",
+      "aListCanHoldUp": "A list can hold up to {MAX_OPTIONS} options.",
+      "isNotAValidId": "\"{id}\" is not a valid id: use lowercase letters, digits and dashes.",
+      "twoOptionsUseTheId": "Two options use the id \"{id}\".",
+      "mustBeOneOfOr": "{key} must be one of: {value} or empty."
+    }
+  },
+  "prompts": {
+    "loading": "Loading the prompts…",
+    "loadFailed": "The shipped prompts could not be read: {message}",
+    "presets": "Presets",
+    "groups": {
+      "mk": "Marketing",
+      "po": "Programs",
+      "fu": "Funding",
+      "general": "General"
+    },
+    "whenToUse": "When to use it",
+    "yours": "yours",
+    "noPresets": "No presets fit the categories turned on for this startup.",
+    "pickPreset": "Pick a preset to set the prompt, the scope and the examples, or set them yourself below.",
+    "showAll": {
+      "one": "Show all ({count} hidden: its categories are off here)",
+      "other": "Show all ({count} hidden: their categories are off here)"
+    },
+    "hideOff": "Hide presets for categories that are off",
+    "deletePreset": "Delete this preset",
+    "deletePresetConfirm": "Delete the preset \"{name}\"? Every startup loses it.",
+    "presetName": "Name of the new preset",
+    "presetSaved": "Preset saved for all startups",
+    "presetDeleted": "Preset deleted",
+    "variables": "Variables",
+    "prompt": "Prompt",
+    "section": "Section",
+    "categories": "Categories",
+    "allCategories": "All categories turned on",
+    "noExamples": "No examples for this variable yet.",
+    "fillIn": "Text for this run",
+    "extraForRun": "More for this run (optional)",
+    "saveExample": "Save this text as an example",
+    "exampleEmpty": "Write the text first, then save it as an example.",
+    "exampleSaved": "Example saved for all startups",
+    "deleteExample": "Delete the example {name}",
+    "deleteExampleConfirm": "Delete the example \"{name}\"? Presets that pick it skip it.",
+    "exampleDeleted": "Example deleted",
+    "fromProfile": "From the startup profile",
+    "notSet": "not set: its line is left out",
+    "editProfile": "Edit the startup profile",
+    "output": "The prompt",
+    "preview": "Preview",
+    "edit": "Edit",
+    "mode": "For",
+    "modeAgent": "An agent that runs commands (with a 24-hour token)",
+    "modeChat": "A chat without tools (JSON reply)",
+    "copy": "Copy prompt",
+    "copyMarkdown": "Copy Markdown",
+    "importResults": "Import AI results",
+    "copied": "Copied.",
+    "copiedWithToken": "Copied, with a token for this startup that stops working at {date}.",
+    "copyFailed": "The browser did not allow copying. Select the preview and copy it by hand.",
+    "tokenFailed": "No token could be made, so nothing was copied: {message}",
+    "tokenLabel": "Copied prompt",
+    "unresolved": "Not filled in: {names}. They are copied as written.",
+    "placeholderLeft": "An example still says \"[write it here before running]\". Fill in its text in the variables.",
+    "nothing": "Nothing to show.",
+    "name": "Name",
+    "body": "Prompt (Markdown; variables in double braces)",
+    "editHint": "Only double braces are variables. Your edit is shared by all startups; a built-in prompt can be reset to the shipped version later.",
+    "save": "Save prompt",
+    "saveEdit": "Save my version",
+    "saved": "Prompt saved",
+    "cancel": "Cancel",
+    "newPrompt": "New prompt",
+    "created": "Prompt created",
+    "untitled": "Untitled prompt",
+    "savePreset": "Save as preset",
+    "reset": "Reset built-in prompt to latest",
+    "resetConfirm": "Replace your version of \"{name}\" with the version shipped with the app?",
+    "resetDone": "Back to the shipped version.",
+    "deletePrompt": "Delete prompt",
+    "exportPack": "Export prompt pack",
+    "importPack": "Import prompt pack",
+    "packReplace": {
+      "one": "{count} prompt, preset or example in this pack has the same id as one you have. Replace it?",
+      "other": "{count} prompts, presets or examples in this pack have the same id as ones you have. Replace them?"
+    },
+    "packImported": "Prompt pack imported",
+    "packDone": "Imported: {added} new, {replaced} replaced.",
+    "packFailed": "The pack was not imported: {message}",
+    "import": {
+      "intro": "Paste the reply of an AI chat. The targets are checked against the fields of each section, and likely duplicates (same link or name) start unticked.",
+      "paste": "The AI reply",
+      "checkButton": "Check",
+      "add": "Add",
+      "target": "Target",
+      "check": "Check",
+      "pick": "Add {name}",
+      "new": "New target.",
+      "duplicate": "Probably already tracked as \"{name}\" (same {reason}).",
+      "duplicateInImport": "Same {reason} as \"{name}\" earlier in this reply.",
+      "by": {
+        "link": "link",
+        "name": "name"
+      },
+      "apply": {
+        "one": "Add {count} target",
+        "other": "Add {count} targets"
+      },
+      "done": {
+        "one": "Added {count} target.",
+        "other": "Added {count} targets."
+      }
+    },
+    "runWith": "Run with…"
+  },
+  "company": {
+    "title": "Company",
+    "tabs": {
+      "profile": "Profile",
+      "setup": "Setup",
+      "obligations": "Obligations",
+      "expenses": "Expenses",
+      "document": "Document"
+    },
+    "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+    "noTemplate": "No company template picked yet",
+    "notIncorporatedNote": "Not incorporated yet: only the profile and the setup steps show. Tick \"Incorporated\" in the profile once the company is registered.",
+    "templatesFailed": "The company templates could not be read: {message}",
+    "templateFailed": "The template \"{id}\" could not be read: {message}",
+    "secretsFailed": "The sensitive values could not be read: {message}",
+    "secretsSaveFailed": "The sensitive values could not be saved: {message}",
+    "secretsLoading": "Reading the sensitive values…",
+    "secretEmpty": "Not set",
+    "showEdit": "Show and edit",
+    "hide": "Hide",
+    "add": "Add",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "saved": "Company saved",
+    "moveToBin": "Move to recycle bin",
+    "movedToBin": "Moved to the recycle bin",
+    "confirmBin": "Move \"{name}\" to the recycle bin?",
+    "required": "{field} is needed.",
+    "yours": "yours",
+    "notSet": "(not set)",
+    "language": "Language of the template text",
+    "languageSaved": "Language saved",
+    "draft": "draft",
+    "pickFirst": "Pick a company template in Profile first.",
+    "pickTemplate": "Pick a country and legal form",
+    "genericOption": "Generic: any other country or legal form",
+    "ranking": "Countries with a template: {title} ({year}).",
+    "rankingSource": "Source",
+    "templateVerified": "Template checked against its sources on {date}.",
+    "sources": "Sources:",
+    "verifiedOn": "checked {date}",
+    "checkLocally": "check locally",
+    "checkLocallyHelp": "The official sources did not settle this. Check it with the authority or an accountant.",
+    "authority": "Authority: {name}",
+    "cost": "Cost: {amount} (as of {date})",
+    "files": "Files and links",
+    "filesAfterSave": "Save first, then attach files from Extra > Media.",
+    "profile": {
+      "entity": "Legal entity",
+      "template": "Country and legal form",
+      "legalForm": "Legal form",
+      "legalFormHelp": "The name of the legal form in your country, for example \"Oy\" or \"BV\".",
+      "countryName": "Country",
+      "pickSubdivision": "Pick one",
+      "subdivisionNeeded": "Some obligations depend on this. Pick one to see them.",
+      "incorporated": "Incorporated",
+      "incorporatedLabel": "The company is registered",
+      "incorporationDate": "Incorporation date",
+      "fiscalYearEnd": "Financial year ends on",
+      "fiscalYearEndHelp": "Month and day, as MM-DD. Most companies use 12-31.",
+      "fiscalYearEndInvalid": "Write the financial year end as MM-DD, for example 12-31.",
+      "monthlyBudget": "Monthly budget ({currency})",
+      "monthlyBudgetHelp": "What the company may spend in a month. Set the currency in Settings > Startup profile.",
+      "conditions": "What applies to the company",
+      "conditionsHelp": "Obligations that depend on one of these show only when it is ticked."
+    },
+    "groups": {
+      "identity": "Identity",
+      "registration": "Registration",
+      "tax": "Tax",
+      "address": "Address",
+      "capital": "Capital",
+      "banking": "Banking",
+      "contact": "Contact",
+      "other": "Other"
+    },
+    "people": {
+      "title": "People",
+      "help": "Directors, shareholders and other officers. Add as many as you have.",
+      "name": "Name",
+      "role": "Role",
+      "ownership": "Ownership %",
+      "appointedOn": "Since",
+      "idNumber": "National ID number",
+      "add": "Add a person",
+      "remove": "Remove",
+      "none": "No people yet.",
+      "unnamed": "this person",
+      "confirmRemove": "Remove {name} from the company's people?",
+      "total": "Ownership adds up to {total}%."
+    },
+    "bank": {
+      "title": "Bank accounts",
+      "help": "Stored on this computer, shown masked, never sent to an AI agent and left out of exports unless you tick them.",
+      "label": "Label",
+      "currency": "Currency",
+      "account": "IBAN or account number",
+      "add": "Add a bank account",
+      "remove": "Remove",
+      "none": "No bank accounts yet.",
+      "confirmRemove": "Remove the bank account {name}?"
+    },
+    "setup": {
+      "progress": "{done} of {total} setup steps done",
+      "after": "After: {steps}",
+      "due": "Due {date}",
+      "doneOn": "Done {date}",
+      "none": "This template has no setup steps. Add your own.",
+      "add": "Add a step",
+      "new": "New setup step"
+    },
+    "obligations": {
+      "title": "Obligations",
+      "deadlines": "Deadlines",
+      "window": "From {from} to {to}. Overdue is worked out from today's date.",
+      "date": "Due",
+      "obligation": "Obligation",
+      "status": "Status",
+      "period": "For {from} to {to}",
+      "noDeadlines": "No deadlines in this window.",
+      "when": "Only if: {conditions}",
+      "notApplying": "Not shown in the deadlines: tick {conditions} in Profile if it applies.",
+      "otherRegion": "Applies in another state or region.",
+      "switchedOff": "You marked this as not applying.",
+      "none": "No obligations yet.",
+      "add": "Add an obligation",
+      "new": "New obligation",
+      "addDate": "Add a date",
+      "dateFor": "Date for {title}"
+    },
+    "needs": {
+      "incorporationDate": "{title}: set the incorporation date in Profile to date it.",
+      "event": "{title}: due after an event. Add the date when you know it.",
+      "date": "{title}: no fixed date. Add it when you know it."
+    },
+    "due": {
+      "day": "day {day}",
+      "lastDay": "the last day",
+      "sameDay": "the same day",
+      "period": {
+        "monthly": "month",
+        "quarterly": "quarter",
+        "annual": "year",
+        "once": "period",
+        "on-event": "period"
+      },
+      "everyMonth": "Every month, by {day}",
+      "fixed": "Every year by {date}",
+      "inPeriodEnd": "By {day} of the last month of each {period}",
+      "afterPeriodEnd": {
+        "one": "By {day} of the month after each {period} ends",
+        "other": "By {day} of the month {count} months after each {period} ends"
+      },
+      "inPeriodStart": "By {day} of the first month of each {period}",
+      "afterPeriodStart": {
+        "one": "By {day} of the month after each {period} starts",
+        "other": "By {day} of the month {count} months after each {period} starts"
+      },
+      "afterYearEnd": {
+        "one": "By {day} of the month after the financial year ends",
+        "other": "By {day} of the month {count} months after the financial year ends"
+      },
+      "beforeYearEnd": {
+        "one": "By {day} of the month before the financial year ends",
+        "other": "By {day}, {count} months before the financial year ends"
+      },
+      "anniversaryMonths": {
+        "one": "1 month after each anniversary of incorporation",
+        "other": "{count} months after each anniversary of incorporation"
+      },
+      "anniversaryDays": {
+        "one": "1 day after each anniversary of incorporation",
+        "other": "{count} days after each anniversary of incorporation"
+      },
+      "event": {
+        "one": "1 day after: {event}",
+        "other": "{count} days after: {event}"
+      },
+      "manual": "No fixed date"
+    },
+    "frequency": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "annual": "Yearly",
+      "once": "Once",
+      "on-event": "When it happens"
+    },
+    "state": {
+      "overdue": "Overdue",
+      "due-soon": "Due soon",
+      "upcoming": "Upcoming",
+      "done": "Done"
+    },
+    "urgent": {
+      "badge": {
+        "one": "1 needs attention",
+        "other": "{count} need attention"
+      }
+    },
+    "budget": {
+      "spent": "{spent} this month",
+      "ofBudget": "{spent} of {budget} this month",
+      "help": "This month's expenses in the startup's currency, against the monthly budget in Profile."
+    },
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "authority": "Authority",
+      "status": "Status",
+      "dueDate": "Due date",
+      "doneOn": "Done on",
+      "notes": "Notes",
+      "frequency": "How often",
+      "dueDay": "Due day",
+      "dueDayHelp": "Day of the month (1 to 31) or \"last\". Leave empty for no fixed date.",
+      "dueMonth": "Due month",
+      "dueMonthHelp": "For a yearly or one-off obligation: the month, 1 to 12.",
+      "applies": "Applies",
+      "disabled": "Does not apply to this company"
+    },
+    "expenses": {
+      "thisMonth": "This month: {totals}.",
+      "within": "Within the {budget} budget.",
+      "over": "Over the {budget} budget.",
+      "date": "Date",
+      "description": "Description",
+      "category": "Category",
+      "amount": "Amount",
+      "currency": "Currency",
+      "recurring": "Repeats",
+      "oneOff": "Does not repeat",
+      "paid": "Paid",
+      "paidLabel": "Paid already",
+      "yes": "Yes",
+      "no": "No",
+      "none": "No expenses yet.",
+      "add": "Add an expense",
+      "new": "New expense",
+      "untitled": "Untitled expense",
+      "other": "Other"
+    },
+    "document": {
+      "help": "A summary of the company from the profile, to paste into an email or a form. Sensitive values never appear in it.",
+      "copy": "Copy Markdown",
+      "copied": "Copied",
+      "copyFailed": "Could not copy: {message}"
+    },
+    "search": {
+      "step": "Company setup step",
+      "obligation": "Company obligation",
+      "deadline": "Company deadline",
+      "expense": "Company expense"
+    },
+    "intro": "The legal entity behind the startup: setup, obligations and expenses."
+  },
+  "agents": {
+    "title": "Agents",
+    "intro": "Prompts run by your AI agents, live and finished. Their changes are saved as they happen and can be undone per run.",
+    "loading": "Loading the runs…",
+    "emptyTitle": "No runs yet",
+    "emptyHint": "Set up an agent in Settings > AI agents, then use \"Run with…\" on the Prompts page.",
+    "listLabel": "Runs",
+    "allStartups": "All startups",
+    "settings": "AI agent settings",
+    "stopAll": "Stop all agents",
+    "stopAllConfirm": {
+      "one": "Stop the agent that is running?",
+      "other": "Stop all {count} agents that are running?"
+    },
+    "badgeWaiting": {
+      "one": "{count} run is waiting for you",
+      "other": "{count} runs are waiting for you"
+    },
+    "changeCount": {
+      "one": "{count} change",
+      "other": "{count} changes"
+    },
+    "overlayLabel": "Agent run",
+    "columns": {
+      "run": "Run",
+      "agent": "Agent and model",
+      "status": "Status",
+      "started": "Started",
+      "duration": "Duration"
+    },
+    "status": {
+      "queued": "Queued",
+      "starting": "Starting",
+      "running": "Running",
+      "waiting": "Waiting for you",
+      "done": "Done",
+      "failed": "Failed",
+      "cancelled": "Cancelled",
+      "interrupted": "Interrupted"
+    },
+    "tabs": {
+      "conversation": "Conversation",
+      "prompt": "Prompt",
+      "changes": "Changes",
+      "permissions": "Permissions",
+      "log": "Log"
+    },
+    "policies": {
+      "allow": {
+        "name": "Allow everything",
+        "hint": "Every permission request is approved at once, without asking."
+      },
+      "research": {
+        "name": "Research only",
+        "hint": "Reading, searching, fetching, thinking and the tracker tools are allowed; editing, deleting, moving files and running commands are refused."
+      },
+      "ask": {
+        "name": "Ask me",
+        "hint": "Each request waits for your answer, and the run shows \"Waiting for you\"."
+      }
+    },
+    "run": {
+      "untitled": "Agent run",
+      "you": "You",
+      "youLong": "You: the prompt ({count} characters)",
+      "agent": "Agent",
+      "thought": "Thinking",
+      "plan": "Plan",
+      "permission": "Permission:",
+      "cancelledAnswer": "Cancelled",
+      "created": "Created {name}",
+      "updated": "Updated {name}",
+      "open": "Open",
+      "tokens": "{used} of {size} tokens",
+      "harness": "Agent",
+      "command": "Command",
+      "model": "Model",
+      "defaultModel": "The agent's default",
+      "policy": "Permissions",
+      "noChanges": "This run has not changed anything in the tracker.",
+      "undo": "Undo this run",
+      "undoHint": "Targets the run created go to the recycle bin and links it made are removed; targets it changed get their earlier version back. A target someone changed after the run is left as it is.",
+      "undoConfirm": {
+        "one": "Undo the {count} change of this run?",
+        "other": "Undo the {count} changes of this run?"
+      },
+      "undoneSummary": "Undone: {undone} put back, {skipped} left as they are.",
+      "skipped": "{id} was left as it is ({reason}).",
+      "noPermissions": "The agent asked for no permissions.",
+      "logHint": {
+        "one": "{count} line, with secrets and tokens replaced by ***.",
+        "other": "{count} lines, with secrets and tokens replaced by ***."
+      },
+      "download": "Download the log",
+      "logEmpty": "The log is empty.",
+      "followUp": "Send a follow-up message",
+      "send": "Send",
+      "nothingYet": "Nothing from the agent yet.",
+      "waitingForYou": "Waiting for you: the agent asks for permission below.",
+      "queued": "Queued: it starts when another run ends (Settings > AI agents sets how many run at once).",
+      "idle": "No update from the agent for a while. It may still be working, or it may be stuck.",
+      "jsonFound": "The agent saved nothing through the tracker tools, but its last message holds targets as JSON.",
+      "importResults": "Import AI results",
+      "cancel": "Cancel",
+      "again": "Run again",
+      "againFailed": "The run could not start again: {message}",
+      "ownWindow": "Open in its own window",
+      "close": "Close",
+      "recordGone": "That target is not in this startup any more."
+    },
+    "dialog": {
+      "title": "Run with an agent",
+      "startup": "Startup: {name}",
+      "agent": "Agent",
+      "model": "Model",
+      "modelPlaceholder": "Model id, or empty for the agent's default",
+      "blockedShort": "blocked",
+      "constraints": "Constraints sent with this prompt",
+      "prompt": "The prompt, as it will be sent",
+      "privacy": "Nothing else goes with the prompt: no Company documents, no files and no sensitive Company values.",
+      "noAgents": "No AI agents set up yet.",
+      "unresolved": "Fill these variables first: {names}",
+      "noHarness": "Pick an agent.",
+      "blocked": "{name} failed its last check. Check it again in Settings > AI agents, or allow it anyway there.",
+      "noConstraints": "The startup's CONSTRAINTS text is empty, so the agent gets no limits from you.",
+      "cancel": "Cancel",
+      "start": "Start"
+    }
+  },
+  "ui": {
+    "common": {
+      "calendar": "Calendar",
+      "marketing": "Marketing",
+      "programsOpportunities": "Programs & Opportunities",
+      "funding": "Funding",
+      "extra": "Extra",
+      "links": "Links",
+      "previousDay": "Previous day",
+      "onThisDay": "On this day",
+      "dueBy": "Due by",
+      "nextDay": "Next day",
+      "campaigns": "Campaigns",
+      "focusQueueAndNewTarget": "Focus queue and new target",
+      "nextActions": "Next actions",
+      "focusQueue": "Focus queue",
+      "showOrHideTheFocus": "Show or hide the focus queue",
+      "whichDates": "Which dates",
+      "focusDate": "Focus date",
+      "today": "Today",
+      "anyDate": "Any date",
+      "focusQueuePages": "Focus queue pages",
+      "new": "New",
+      "addTarget": "Add target",
+      "showOrHideTheAdd": "Show or hide the add form",
+      "name": "Name",
+      "organization": "Organization",
+      "link": "Link",
+      "eGHttpsExampleCom": "e.g. https://example.com/apply",
+      "categories": "Categories",
+      "status": "Status",
+      "priority": "Priority",
+      "veryHigh": "Very High",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "veryLow": "Very Low",
+      "nextAction": "Next action",
+      "eGCheckTheEligibility": "e.g. Check the eligibility rules",
+      "nextActionDate": "Next action date",
+      "time": "Time",
+      "campaign": "Campaign",
+      "tags": "Tags",
+      "eGLaunchPartner": "e.g. launch, partner",
+      "addAndOpenDetails": "Add and open details",
+      "clearForm": "Clear form",
+      "targets": "Targets",
+      "showOrHideTheTargets": "Show or hide the targets",
+      "subcategories": "Subcategories",
+      "types": "Types",
+      "searchNamesNotesLinks": "Search names, notes, links...",
+      "searchTargets": "Search targets",
+      "savedView": "Saved view",
+      "perPage": "Per page",
+      "typeATagPressEnter": "Type a tag, press Enter",
+      "filterByTag": "Filter by tag",
+      "yourFields": "Your fields",
+      "field": "Field",
+      "value": "Value...",
+      "value2": "Value",
+      "add": "Add",
+      "noMatchingTargets": "No matching targets",
+      "clearTheFiltersOrAdd": "Clear the filters, or add a target above.",
+      "targetPages": "Target pages",
+      "stage": "Stage"
+    },
+    "topbar": {
+      "syncingData": "Syncing data...",
+      "searchEverything": "Search everything",
+      "toggleTheme": "Toggle theme",
+      "projectLinks": "Project links",
+      "noLinksYet": "No links yet"
+    },
+    "calendar": {
+      "previous9Days": "Previous 9 days",
+      "openMonthCalendar": "Open month calendar",
+      "calendarDateCarousel": "Calendar date carousel",
+      "calendarDateMode": "Calendar date mode",
+      "next9Days": "Next 9 days",
+      "previousMonth": "Previous month",
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "company": "Company"
+    },
+    "pipeline": {
+      "planTheNextMoveFollow": "Plan the next move. Follow every conversation.",
+      "marketingSummary": "Marketing summary",
+      "eGLaunchWeekPost": "e.g. Launch week post",
+      "eGIndieFoundersForum": "e.g. Indie founders forum",
+      "marketingTargets": "Marketing targets"
+    },
+    "programs": {
+      "keepApplicationsDeadlinesAndNext": "Keep applications, deadlines, and next steps together.",
+      "programsOpportunitiesSummary": "Programs & Opportunities summary",
+      "eGSpringAccelerator2027": "e.g. Spring accelerator 2027",
+      "eGCityInnovationHub": "e.g. City Innovation Hub",
+      "programsOpportunitiesTargets": "Programs & Opportunities targets"
+    },
+    "funding": {
+      "trackOpportunitiesFromFirstContact": "Track opportunities from first contact to funds received.",
+      "fundingSummary": "Funding summary",
+      "eGPreSeedRound": "e.g. Pre-seed round",
+      "eGExampleAngels": "e.g. Example Angels",
+      "fundingTargets": "Funding targets",
+      "fundingRounds": "Funding rounds",
+      "raisePlanning": "Raise planning",
+      "toggleFundingRoundsPanel": "Toggle funding rounds panel",
+      "roundName": "Round name",
+      "preSeed2026": "Pre-seed 2026",
+      "preSeed": "Pre-seed",
+      "target": "Target",
+      "currency": "Currency",
+      "minimumClose": "Minimum close",
+      "expectedClose": "Expected close",
+      "addRound": "Add round"
+    },
+    "extra": {
+      "extraViews": "Extra views",
+      "yourToolsContentAndResearch": "Your tools, content, and research in one place.",
+      "extraPages": "Extra pages",
+      "ai": "AI",
+      "prompts": "Prompts",
+      "media": "Media",
+      "feedback": "Feedback",
+      "researchLinks": "Research links",
+      "fields": "Fields",
+      "filterSubscriptionsAndApis": "Filter subscriptions and APIs",
+      "addSubscriptionOrApi": "Add subscription or API",
+      "filterResearchLinks": "Filter research links",
+      "addLink": "Add link",
+      "groups": "Groups",
+      "addLink2": "Add link",
+      "group": "Group",
+      "title": "Title",
+      "eGFoundersGroupIndustry": "e.g. Founders group, industry newsletter",
+      "httpsFirstExampleHttpsSecond": "https://first.example; https://second.example",
+      "active": "Active",
+      "sharedWithAllStartups": "Shared with all startups",
+      "description": "Description",
+      "whatToLookForRules": "What to look for, rules, angle...",
+      "programsDocumentsChecklist": "Programs documents checklist",
+      "filterMedia": "Filter media",
+      "addMedia": "Add media",
+      "options": "Options",
+      "addMedia2": "Add media",
+      "source": "Source",
+      "uploadFile": "Upload file",
+      "url": "URL",
+      "pcPath": "PC path",
+      "type": "Type",
+      "file": "File",
+      "urlOrPath": "URL or path",
+      "httpsExampleComVideoMp4": "https://example.com/video.mp4 or a file path",
+      "eGLandingPageMockup": "e.g. Landing page mockup",
+      "eGLaunchHomepage": "e.g. launch, homepage",
+      "notes": "Notes",
+      "eGSizeWhereIt": "e.g. Size, where it fits, what to crop",
+      "usedIn": "Used in",
+      "uploadingMediaFile": "Uploading media file...",
+      "clear": "Clear",
+      "allSources": "All sources",
+      "uploads": "Uploads",
+      "urls": "URLs",
+      "pcPaths": "PC paths",
+      "linkedTo": "Linked to",
+      "tag": "Tag",
+      "whichMedia": "Which media",
+      "allMedia": "All media",
+      "notUsedAnywhere": "Not used anywhere",
+      "usedIn2": "Used in…",
+      "mediaPages": "Media pages",
+      "filterFeedback": "Filter feedback",
+      "addFeedback": "Add feedback",
+      "feedbackSummary": "Feedback summary",
+      "signals": "Signals",
+      "needsReview": "Needs review",
+      "strongEvidence": "Strong evidence",
+      "blockers": "Blockers",
+      "whatHappenedWhoItCame": "What happened, who it came from, and how strong the signal is.",
+      "userOrGroup": "User or group",
+      "eGSmallAgencyOwners": "e.g. Small agency owners",
+      "contactNameHandle": "Contact name / handle",
+      "eGNameEmailOr": "e.g. Name, email or handle",
+      "relationshipDepth": "Relationship depth",
+      "productArea": "Product area",
+      "evidenceStrength": "Evidence strength",
+      "eGCouldNotFinish": "e.g. Could not finish sign-up",
+      "sourceLink": "Source link",
+      "https": "https://...",
+      "openLinkInANew": "Open link in a new window",
+      "openLink": "Open link",
+      "about": "About",
+      "whatHappened": "What happened",
+      "eGTheExactWords": "e.g. The exact words, the context and what they tried",
+      "outcomeOrMetric": "Outcome or metric",
+      "eGSignedUpCame": "e.g. Signed up, came back a week later, asked for a quote",
+      "eGReplyFixThe": "e.g. Reply, fix the sign-up form, or keep watching",
+      "evidence": "Evidence",
+      "typeATagPressEnter": "Type a tag, press Enter (autocomplete, instant filter)...",
+      "feedbackPages": "Feedback pages",
+      "filterCampaigns": "Filter campaigns",
+      "addCampaign": "Add campaign",
+      "addCampaign2": "Add campaign",
+      "eGSpringLaunch": "e.g. Spring launch",
+      "start": "Start",
+      "end": "End",
+      "goal": "Goal",
+      "eG50QualifiedSign": "e.g. 50 qualified sign-ups",
+      "hypothesis": "Hypothesis",
+      "eGPartnerNewslettersBring": "e.g. Partner newsletters bring better sign-ups than ads",
+      "successMetric": "Success metric",
+      "eG20DemoCalls": "e.g. 20 demo calls booked in 30 days",
+      "eGWhoItIs": "e.g. Who it is for, the message, the channels",
+      "statusFilter": "Status filter",
+      "campaignPages": "Campaign pages",
+      "filterTags": "Filter tags",
+      "addTag": "Add tag",
+      "addTag2": "Add tag",
+      "eGWarmContact": "e.g. warm-contact",
+      "colour": "Colour",
+      "eGWhenToUse": "e.g. When to use it and what it means",
+      "usage": "Usage",
+      "allTags": "All tags",
+      "usedByTargets": "Used by targets",
+      "usedByPrograms": "Used by programs",
+      "usedByFunding": "Used by funding",
+      "usedByMedia": "Used by media",
+      "usedByCampaigns": "Used by campaigns",
+      "usedByFeedback": "Used by feedback",
+      "unusedDefinitions": "Unused definitions",
+      "withDescription": "With description",
+      "noDescription": "No description",
+      "tagPages": "Tag pages"
+    },
+    "recordConflictModal": {
+      "reviewConflictingChanges": "Review conflicting changes",
+      "theseFieldsChangedDifferentlyChoose": "These fields changed differently. Choose which record version to keep.",
+      "closeConflictReview": "Close conflict review",
+      "decideLater": "Decide later",
+      "useTheirs": "Use theirs",
+      "keepMine": "Keep mine"
+    },
+    "historyPreviewModal": {
+      "markdownPreview": "Markdown preview",
+      "closePreview": "Close preview"
+    },
+    "historyRestoreModal": {
+      "restoreThisValue": "Restore this value?",
+      "cancelRestore": "Cancel restore",
+      "cancel": "Cancel",
+      "restoreThisValue2": "Restore this value"
+    },
+    "mediaDocumentModal": {
+      "document": "Document",
+      "closeDocument": "Close document",
+      "noDocumentLoaded": "No document loaded.",
+      "edit": "Edit",
+      "preview": "Preview",
+      "close": "Close",
+      "saveFile": "Save file"
+    },
+    "shell": {
+      "backToTop": "Back to top"
+    }
+  },
+  "sectionPage": {
+    "savedViews": {
+      "allTargets": "All targets",
+      "overdue": "Overdue",
+      "dueThisWeek": "Due this week",
+      "dueThisMonth": "Due this month",
+      "waitingForAnAnswer": "Waiting for an answer",
+      "noNextAction": "No next action",
+      "highAndVeryHigh": "High and very high",
+      "noCampaign": "No campaign"
+    },
+    "columns": {
+      "category": "Category"
+    },
+    "pageOf": {
+      "showingOf": "Showing {value}-{value2} of {total}",
+      "noTargetsToShow": "No targets to show"
+    },
+    "rowHtml": {
+      "openTheLinkOf": "Open the link of {name}",
+      "uncategorized": "Uncategorized"
+    },
+    "focusCardHtml": {
+      "openTheLink": "Open the link"
+    },
+    "paginationHtml": {
+      "previous": "Previous",
+      "page": "Page {page} / {pages}",
+      "next": "Next"
+    },
+    "create": {
+      "pickAnotherDaySwitchBetween": "Pick another day, switch between \"On this day\" and \"Due by\", or change the status filter.",
+      "nothingOn": "Nothing on {date}",
+      "nothingDueBy": "Nothing due by {date}",
+      "noDatedNextActions": "No dated next actions",
+      "allPriorities": "All priorities",
+      "allCampaigns": "All campaigns",
+      "removeTheTagFilter": "Remove the tag filter {tag}",
+      "removeTheFilter": "Remove the filter {label}",
+      "noCampaign": "No campaign",
+      "giveTheTargetAName": "Give the target a name first.",
+      "added": "Added \"{name}\"."
+    },
+    "moreCategories": "{count} more"
+  },
+  "fieldsEditor": {
+    "sectionLabels": {
+      "programs": "Programs"
+    },
+    "typeLabels": {
+      "shortText": "Short text",
+      "longText": "Long text",
+      "number": "Number",
+      "amountAndCurrency": "Amount and currency",
+      "percent": "Percent",
+      "date": "Date",
+      "dateAndTime": "Date and time",
+      "email": "Email",
+      "oneChoiceFromAList": "One choice from a list",
+      "severalChoicesFromAList": "Several choices from a list",
+      "yesNoOrUnknown": "Yes, no or unknown",
+      "person": "Person"
+    },
+    "sectionTabs": {
+      "section": "Section"
+    },
+    "form": {
+      "eGPartnerTier": "e.g. Partner tier",
+      "eGHowImportantThis": "e.g. How important this partner is for the next quarter.",
+      "eGGold": "e.g. Gold",
+      "eGPartnership": "e.g. Partnership",
+      "oneChoicePerLineAdd": "One choice per line. Add a description after a | if it helps.\ne.g. Gold | Our closest partners",
+      "choices": "Choices",
+      "added": "Added \"{value}\".",
+      "saved": "Saved \"{value}\".",
+      "label": "Label",
+      "type": "Type",
+      "helpText": "Help text",
+      "shownUnderTheFieldIn": "Shown under the field in the target window.",
+      "example": "Example",
+      "shownAsAPlaceholderNever": "Shown as a placeholder, never saved.",
+      "group": "Group",
+      "keyValuesAreStoredUnder": "Key: {key}. Values are stored under this key, which does not change when you rename the field.",
+      "primaryButtonCompact": "primary-button compact",
+      "addField": "Add field",
+      "saveField": "Save field",
+      "cancel": "Cancel"
+    },
+    "row": {
+      "edit": "Edit",
+      "edit2": "Edit {label}",
+      "delete": "Delete",
+      "delete2": "Delete {label}",
+      "deleted": "Deleted \"{label}\".",
+      "deleteConfirm": "Delete the field \"{label}\"? Targets keep their values; they show under \"Other fields\"."
+    },
+    "draw": {
+      "fieldsOfYourOwnFor": "Fields of your own for targets, shared by all your startups. They show in the Extras tab of the target window, after the built-in fields in Details.",
+      "noFieldsOfYourOwn": "No fields of your own for {value} yet.",
+      "addAField": "Add a {value} field"
+    },
+    "render": {
+      "couldNotReadTheFields": "Could not read the fields: {message}"
+    }
+  },
+  "recordWindow": {
+    "tabs": {
+      "overview": "Overview",
+      "edit": "Edit",
+      "details": "Details",
+      "extras": "Extras",
+      "history": "History"
+    },
+    "sectionLabels": {
+      "programs": "Programs"
+    },
+    "ensureOverlay": {
+      "showInList": "Show in list",
+      "moveToRecycleBin": "Move to recycle bin",
+      "cancel": "Cancel",
+      "save": "Save",
+      "close": "Close",
+      "target": "Target"
+    },
+    "open": {
+      "unknownSection": "Unknown section {section}"
+    },
+    "renderTitle": {
+      "new": "New: {name}",
+      "newTarget": "New target",
+      "untitledTarget": "Untitled target"
+    },
+    "updateState": {
+      "notSavedYet": "Not saved yet",
+      "unsavedChanges": "Unsaved changes",
+      "save": "Save"
+    },
+    "overviewHtml": {
+      "allDetails": "All details",
+      "noNotesYetWriteThem": "No notes yet. Write them in the Edit tab."
+    },
+    "allDetailsHtml": {
+      "basics": "Basics",
+      "created": "Created {value}",
+      "lastChanged": "last changed {value}",
+      "nothingFilledInYetThe": "Nothing filled in yet. The Details tab has every field."
+    },
+    "documentLabel": {
+      "document": "Document"
+    },
+    "renderEdit": {
+      "notes": "Notes",
+      "preview": "Preview",
+      "writeInMarkdownBoldLists": "Write in Markdown: **bold**, lists, headings, links."
+    },
+    "updateNotesPreview": {
+      "thePreviewShowsHere": "The preview shows here."
+    },
+    "fieldRowHtml": {
+      "copyId": "Copy ID",
+      "givenWhenSaved": "Given when saved",
+      "noCampaign": "No campaign",
+      "noRound": "No round",
+      "notFound": "{entry} (not found)",
+      "eGLaunchPriorityPartner": "e.g. launch, priority-partner",
+      "every": "Every",
+      "doesNotRepeat": "Does not repeat",
+      "repeatUnit": "Repeat unit"
+    },
+    "suggestionHtml": {
+      "suggested": "Suggested:",
+      "use": "Use"
+    },
+    "renderDetails": {
+      "basics": "Basics"
+    },
+    "groupCount": {
+      "ofFilled": "{filled} of {length} filled",
+      "fields": {
+        "one": "{count} field",
+        "other": "{count} fields"
+      }
+    },
+    "activityHtml": {
+      "edit": "Edit",
+      "remove": "Remove",
+      "empty": "(empty)",
+      "cancel": "Cancel",
+      "updateEntry": "Update entry",
+      "addEntry": "Add entry",
+      "logUpdate": "Log update"
+    },
+    "entryFieldHtml": {
+      "unchanged": "Unchanged"
+    },
+    "documentsHtml": {
+      "status": "{activity}: status",
+      "document": "Document",
+      "noneTracked": "none tracked"
+    },
+    "saveEntry": {
+      "fillInFirst": "Fill in {value} first."
+    },
+    "renderLinks": {
+      "addTheTargetFirstThen": "Add the target first, then link it to other records.",
+      "createALinkedTarget": "Create a linked target",
+      "in": "In {value}"
+    },
+    "renderExtras": {
+      "otherFields": "Other fields",
+      "valuesThisTargetHoldsThat": "Values this target holds that no field above describes, such as fields from an older version or an import. They are kept as they are when you save.",
+      "none": "None."
+    },
+    "otherFieldHtml": {
+      "extraParameter": "extra parameter",
+      "customField": "custom field",
+      "older": "Older {where}"
+    },
+    "renderHistory": {
+      "addTheTargetFirstIts": "Add the target first. Its history starts once it exists."
+    },
+    "onClick": {
+      "idCopied": "ID copied",
+      "couldNotCopyTheId": "Could not copy the ID"
+    },
+    "save": {
+      "isNeeded": "{value} is needed.",
+      "addOrCancelTheEntry": "Add or cancel the entry you are writing first."
+    },
+    "requestClose": {
+      "discardTheChangesYouMade": "Discard the changes you made to this target?"
+    },
+    "historySummary": "{changes}. The History tab has every change.",
+    "noCustomFields": "No fields of your own yet. Add them in Extra > Fields; they show here for every {section} target."
+  },
+  "fields": {
+    "validateCustomField": {
+      "aFieldMustBeAn": "A field must be an object.",
+      "sectionMustBeOneOf": "section must be one of {value}.",
+      "aFieldNeedsALabel": "A field needs a label.",
+      "aLabelCanBeUp": "A label can be up to 80 characters.",
+      "theKeyMustStartWith": "The key must start with a letter and hold only letters and digits.",
+      "isAlreadyAFieldOf": "\"{key}\" is already a field of this section.",
+      "anotherCustomFieldAlreadyUses": "Another custom field already uses \"{key}\".",
+      "typeMustBeOneOf": "type must be one of {value}.",
+      "aListFieldNeedsAt": "A list field needs at least one option.",
+      "twoOptionsHaveTheSame": "Two options have the same value."
+    },
+    "formatValue": {
+      "yes": "Yes",
+      "no": "No",
+      "every": "Every {interval} {value}"
+    },
+    "optionsHtml": {
+      "notSet": "Not set",
+      "notInTheList": "{value} (not in the list)"
+    },
+    "inputHtml": {
+      "currency": "Currency",
+      "to": "to",
+      "minimum": "{label}: minimum",
+      "min": "min",
+      "maximum": "{label}: maximum",
+      "max": "max",
+      "unknown": "Unknown",
+      "yes": "Yes",
+      "no": "No",
+      "notInTheList": "{entry} (not in the list)"
+    }
+  },
+  "itemPicker": {
+    "kindLabels": {
+      "programs": "Programs",
+      "companySteps": "Company steps",
+      "companyExpenses": "Company expenses",
+      "media": "Media",
+      "feedback": "Feedback",
+      "researchLinks": "Research links",
+      "options": "Options"
+    },
+    "chipsHtml": {
+      "remove": "Remove {title}",
+      "notFound": "(not found)"
+    },
+    "listHtml": {
+      "nothingMatches": "Nothing matches.",
+      "nothingToPickYet": "Nothing to pick yet.",
+      "showMoreLeft": "Show more ({value} left)"
+    },
+    "create": {
+      "pickRecords": "Pick records",
+      "typeToSearch": "Type to search…",
+      "picked": "{label}: picked",
+      "all": "All",
+      "show": "Show"
+    }
+  },
+  "aiImport": {
+    "parse": {
+      "upToTargetsCanBe": "Up to {MAX_TARGETS} targets can be imported at once."
+    },
+    "check": {
+      "sectionMustBeMkPo": "\"section\" must be mk, po or fu.",
+      "isNotAFieldOf": "\"{key}\" is not a field of this section and is left out.",
+      "couldNotBeReadAs": "\"{key}\" could not be read as {type} and is left out.",
+      "unknownPriorityIsLeftOut": "Unknown priority \"{priority}\" is left out.",
+      "unknownCategoryIsLeftOut": "Unknown category \"{id}\" is left out.",
+      "categoryBelongsToAnotherSection": "Category \"{id}\" belongs to another section and is left out."
+    }
+  }
+}

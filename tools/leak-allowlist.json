@@ -1,0 +1,13 @@
+{
+  "largeFiles": {
+    "public/app.js": "Browser code, over 1 MB until later parts move it into smaller modules."
+  },
+  "binaries": {
+    "public/assets/fonts/plus-jakarta-sans-latin-ext.woff2": "38e3b8fd8045048eb311d90170a4429ed2c8f405852dc3d91b5af8452758703f",
+    "public/assets/fonts/plus-jakarta-sans-latin.woff2": "153fc85b70298beeb1d61a5f723331649e7f23bb77302a66e61cb3e2fbdb5e79",
+    "docs/assets/screenshot-calendar.png": "ef4f46066dbfead355a8ca801cdf1186237c6357719babcf13fa9f3134eeeebf",
+    "docs/assets/screenshot-marketing.png": "d18f210abc51a221c1e760000030a18b7b2462e0a2d278195c9f6be02ca415b6",
+    "docs/assets/social-preview.png": "a6eed50d2b9bb47bf2e3a734085ca38a65157c098b6e193891c2ccdf07e3dc63"
+  },
+  "allow": []
+}

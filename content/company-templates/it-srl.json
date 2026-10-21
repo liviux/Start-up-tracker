@@ -1,0 +1,537 @@
+{
+  "id": "it-srl",
+  "version": 1,
+  "country": "IT",
+  "countryName": "Italy",
+  "entityType": "S.r.l.",
+  "nameLocal": "Società a responsabilità limitata",
+  "nameEnglish": "Limited liability company",
+  "currency": "EUR",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "iva-payment",
+      "title": "F24 IVA periodica: come e quando si versa",
+      "publisher": "Agenzia delle Entrate",
+      "url": "https://www.agenziaentrate.gov.it/portale/schede/pagamenti/f24ivap10/come-e-quando-si-versa",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "lipe",
+      "title": "Liquidazioni periodiche Iva: che cos'è",
+      "publisher": "Agenzia delle Entrate",
+      "url": "https://www.agenziaentrate.gov.it/portale/schede/comunicazioni/liquidazioni-periodiche-iva/infogen_comunicaz_liquidaz_per_iva",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "iva-return",
+      "title": "Dichiarazione Iva",
+      "publisher": "Agenzia delle Entrate",
+      "url": "https://www.agenziaentrate.gov.it/portale/iva-regole-generali-aliquote-esenzioni-pagamento/dichiarazione-iva",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "iva-balance",
+      "title": "F24 IVA annuale: come e quando si versa",
+      "publisher": "Agenzia delle Entrate",
+      "url": "https://www.agenziaentrate.gov.it/portale/schede/pagamenti/f24-iva-annuale/come-e-quando-si-versa",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "redditi-sc",
+      "title": "Redditi Società di capitali 2026: quando e come si presenta",
+      "publisher": "Agenzia delle Entrate",
+      "url": "https://www.agenziaentrate.gov.it/portale/redditi-societa-di-capitali-2026/quando-e-come-si-presenta-il-modello-redditi-sc",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "bilancio",
+      "title": "Bilancio aziendale d'esercizio",
+      "publisher": "Registro Imprese (InfoCamere for the Chambers of Commerce)",
+      "url": "https://www.registroimprese.it/bilancio-d-esercizio",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "deposito",
+      "title": "Deposito bilanci",
+      "publisher": "Camera di Commercio di Trento",
+      "url": "https://www.tn.camcom.it/imprenditore/registro-delle-imprese/deposito-bilanci",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "diritto-annuale",
+      "title": "Diritto annuale 2026",
+      "publisher": "Camera di Commercio di Roma",
+      "url": "https://www.rm.camcom.it/pagina4190_diritto-annuale-2026.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "srl",
+      "title": "Società a responsabilità limitata (SRL)",
+      "publisher": "Camera di Commercio di Vicenza",
+      "url": "https://www.vi.camcom.it/it/aprire-un-attivita/scegli-la-forma-giuridica-adatta-alla-tua-impresa/societa-a-responsabilita-limitata-srl.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "suap",
+      "title": "Impresa in un giorno: SUAP and starting a business",
+      "publisher": "Impresa in un giorno (Unioncamere and the Ministry for Enterprises)",
+      "url": "https://www.impresainungiorno.gov.it/",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "vat-monthly",
+      "label": "VAT settled monthly",
+      "description": "Liquidazione Iva mensile."
+    },
+    {
+      "id": "vat-quarterly",
+      "label": "VAT settled quarterly",
+      "description": "Liquidazione Iva trimestrale, allowed below the turnover limits."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Denominazione",
+      "description": "The company name, with S.r.l. or S.r.l.s.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "srl"
+      ]
+    },
+    {
+      "key": "rea",
+      "label": "REA number",
+      "description": "The number in the Chamber of Commerce's economic and administrative index.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "srl"
+      ]
+    },
+    {
+      "key": "fiscalCode",
+      "label": "Codice fiscale and partita IVA",
+      "description": "The company's tax code; for a company it is usually also the VAT number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "seat",
+      "label": "Sede legale",
+      "description": "The registered office.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "srl"
+      ]
+    },
+    {
+      "key": "pec",
+      "label": "PEC address",
+      "description": "The company's certified email address.",
+      "example": "",
+      "type": "text",
+      "group": "contact",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "activity",
+      "label": "Oggetto sociale and ATECO code",
+      "description": "What the company does.",
+      "example": "",
+      "type": "textarea",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "shareCapital",
+      "label": "Capitale sociale",
+      "description": "In euros, as in the deed of incorporation.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "srl"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "amministratore",
+        "label": "Amministratore",
+        "description": "Runs the company, alone or as a board."
+      },
+      {
+        "id": "socio",
+        "label": "Socio",
+        "description": "Holds a quota of the capital."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn",
+      "idNumber"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "deed",
+      "title": "Sign the deed of incorporation before a notary",
+      "description": "The company is formed by public deed (atto pubblico) drawn up by a notary.",
+      "authority": "Notary",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "srl"
+      ]
+    },
+    {
+      "id": "capital",
+      "title": "Pay in the capital",
+      "description": "The capital can be as low as 1 euro. Below 10,000 euros, contributions are in cash and paid in full to the directors; from 10,000 euros, at least 25% is paid at incorporation.",
+      "authority": "Directors",
+      "typicalCost": null,
+      "dependsOn": [
+        "deed"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "srl"
+      ]
+    },
+    {
+      "id": "registration",
+      "title": "Registration with the Registro delle Imprese",
+      "description": "The notary files the deed with the Registro delle Imprese of the province of the registered office, through the Comunicazione Unica, which also reaches the Agenzia delle Entrate and the social security bodies. Check the filing deadline with the notary.",
+      "authority": "Notary and Camera di Commercio",
+      "typicalCost": null,
+      "dependsOn": [
+        "deed",
+        "capital"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "srl"
+      ]
+    },
+    {
+      "id": "pec",
+      "title": "Get a PEC address",
+      "description": "A company has a certified email address registered with the Registro delle Imprese.",
+      "authority": "PEC provider",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "suap",
+      "title": "Start the activity with the SUAP",
+      "description": "Some activities need a notice (SCIA) or a permit from the municipality's SUAP before starting.",
+      "authority": "SUAP of the municipality",
+      "typicalCost": null,
+      "dependsOn": [
+        "registration"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "suap"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": "Open the company bank account",
+      "description": "Used for the capital and for paying taxes with F24.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "accountant",
+      "title": "Appoint an accountant (commercialista)",
+      "description": "Agree who keeps the books and files the returns.",
+      "authority": "Your accountant",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "iva-monthly",
+      "title": "VAT settlement and payment, monthly",
+      "description": "Settle and pay the VAT for the previous month with F24 by the 16th.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 16
+      },
+      "conditions": [
+        "vat-monthly"
+      ],
+      "subdivisions": [],
+      "authority": "Agenzia delle Entrate",
+      "checkLocally": false,
+      "sourceIds": [
+        "iva-payment"
+      ]
+    },
+    {
+      "id": "iva-q1",
+      "title": "VAT payment, first quarter",
+      "description": "Quarterly payers pay the first quarter by 16 May, with 1% interest added.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 5,
+        "day": 16
+      },
+      "conditions": [
+        "vat-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": "Agenzia delle Entrate",
+      "checkLocally": false,
+      "sourceIds": [
+        "iva-payment"
+      ]
+    },
+    {
+      "id": "iva-q2",
+      "title": "VAT payment, second quarter",
+      "description": "Quarterly payers pay the second quarter by 20 August.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 8,
+        "day": 20
+      },
+      "conditions": [
+        "vat-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": "Agenzia delle Entrate",
+      "checkLocally": false,
+      "sourceIds": [
+        "iva-payment"
+      ]
+    },
+    {
+      "id": "iva-q3",
+      "title": "VAT payment, third quarter",
+      "description": "Quarterly payers pay the third quarter by 16 November; the fourth goes with the annual balance.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 11,
+        "day": 16
+      },
+      "conditions": [
+        "vat-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": "Agenzia delle Entrate",
+      "checkLocally": false,
+      "sourceIds": [
+        "iva-payment"
+      ]
+    },
+    {
+      "id": "lipe",
+      "title": "Periodic VAT settlement report (LIPE)",
+      "description": "Sent online by the last day of the second month after each quarter. The second quarter's is due by 30 September instead (later than the date shown), and the fourth can go with the annual VAT return.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 2,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Agenzia delle Entrate",
+      "checkLocally": false,
+      "sourceIds": [
+        "lipe"
+      ]
+    },
+    {
+      "id": "iva-annual-balance",
+      "title": "Annual VAT balance",
+      "description": "Pay the VAT due on the annual return by 16 March, at once or in instalments.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 3,
+        "day": 16
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Agenzia delle Entrate",
+      "checkLocally": false,
+      "sourceIds": [
+        "iva-balance"
+      ]
+    },
+    {
+      "id": "iva-annual-return",
+      "title": "Annual VAT return",
+      "description": "Sent online between 1 February and 30 April of the next year.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 4,
+        "day": 30
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Agenzia delle Entrate",
+      "checkLocally": false,
+      "sourceIds": [
+        "iva-return"
+      ]
+    },
+    {
+      "id": "redditi-sc",
+      "title": "Income tax return (Redditi SC)",
+      "description": "Sent online by the last day of the 10th month after the tax period ends (31 October for a calendar year).",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 10,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Agenzia delle Entrate",
+      "checkLocally": false,
+      "sourceIds": [
+        "redditi-sc"
+      ]
+    },
+    {
+      "id": "approve-accounts",
+      "title": "Shareholders approve the financial statements",
+      "description": "Within 120 days of the year end, or 180 days where the articles allow it.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 4,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Shareholders",
+      "checkLocally": false,
+      "sourceIds": [
+        "bilancio"
+      ]
+    },
+    {
+      "id": "file-accounts",
+      "title": "File the financial statements",
+      "description": "The directors file them with the Registro delle Imprese within 30 days of approval (30 May after a 120-day approval).",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 5,
+        "day": 30
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Registro delle Imprese",
+      "checkLocally": false,
+      "sourceIds": [
+        "bilancio",
+        "deposito"
+      ]
+    },
+    {
+      "id": "diritto-annuale",
+      "title": "Chamber of Commerce annual fee (diritto annuale)",
+      "description": "Paid by the date of the first income-tax instalment: 30 June in 2026. A different date can apply; check your Chamber of Commerce.",
+      "frequency": "annual",
+      "due": {
+        "rule": "fixed-date",
+        "month": 6,
+        "day": 30
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Camera di Commercio",
+      "checkLocally": false,
+      "sourceIds": [
+        "diritto-annuale"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- REA: {{rea}}\n- Codice fiscale / partita IVA: {{fiscalCode}}\n- Sede legale: {{seat}}\n- PEC: {{pec}}\n- Oggetto sociale: {{activity}}\n- Capitale sociale: {{shareCapital}} EUR\n\n## Amministratori e soci\n\n{{people}}\n"
+}

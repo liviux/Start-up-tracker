@@ -1,0 +1,677 @@
+{
+  "version": 1,
+  "presets": [
+    {
+      "id": "ev1",
+      "code": "EV1",
+      "name": "Events: conferences in the next 6 months",
+      "section": "po",
+      "description": "Conferences with open speaker calls",
+      "whenToUse": "Monthly",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.visibility.conferences"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-conf"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-conf"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-conf"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-conf"
+        ]
+      }
+    },
+    {
+      "id": "ev2",
+      "code": "EV2",
+      "name": "Events: online showcases and meetups in the next 14 days",
+      "section": "po",
+      "description": "Online demo slots for outside founders",
+      "whenToUse": "Weekly",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.visibility.demo-pitch"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-show"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-show"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-show"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-show"
+        ]
+      }
+    },
+    {
+      "id": "po1",
+      "code": "PO1",
+      "name": "Grants and public funding",
+      "section": "po",
+      "description": "Grants, vouchers, open calls, tax relief, prizes, tenders",
+      "whenToUse": "CONSTRAINTS is complete; weeks to apply",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.grants"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-grant",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-grant"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-grant"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-deadline"
+        ]
+      }
+    },
+    {
+      "id": "po2",
+      "code": "PO2",
+      "name": "Startup support programs",
+      "section": "po",
+      "description": "Accelerators, incubators, studios, fellowships, mentoring",
+      "whenToUse": "You want structured help",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.support"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-prog",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-prog"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-prog"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-deadline"
+        ]
+      }
+    },
+    {
+      "id": "po3",
+      "code": "PO3",
+      "name": "Open-source foundations and support",
+      "section": "po",
+      "description": "Support for open-source projects and maintainers",
+      "whenToUse": "Part of the product is open source",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.partners.open-source"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-oss",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-oss"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-oss"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-deadline"
+        ]
+      }
+    },
+    {
+      "id": "po4",
+      "code": "PO4",
+      "name": "Perks, credits and in-kind resources",
+      "section": "po",
+      "description": "Free or subsidized credits, tools, services, space",
+      "whenToUse": "Before paying for infrastructure or tools",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.perks"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-perk",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-perk"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-perk"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-perk"
+        ]
+      }
+    },
+    {
+      "id": "po5",
+      "code": "PO5",
+      "name": "Market access and customers",
+      "section": "po",
+      "description": "Pilots, design partners, sandboxes, marketplaces, vendor onboarding",
+      "whenToUse": "Ready for real users or buyers",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.market"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-mkt",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-mkt"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-mkt"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-outreach"
+        ]
+      }
+    },
+    {
+      "id": "po6",
+      "code": "PO6",
+      "name": "Partnerships and ecosystem",
+      "section": "po",
+      "description": "Partner, integration, channel, research, public-sector routes",
+      "whenToUse": "You want an ongoing relationship",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.partners"
+        ],
+        "note": "PO3 and PO8 go deeper into two subcategories."
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-part",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-part"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-part"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-outreach"
+        ]
+      }
+    },
+    {
+      "id": "po7",
+      "code": "PO7",
+      "name": "Visibility and recognition",
+      "section": "po",
+      "description": "Awards, rankings, hackathons, pitch events, exhibitions, media programs",
+      "whenToUse": "You want recognition beyond launches and PR",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.visibility.demo-pitch",
+          "po.visibility.awards",
+          "po.visibility.exhibitions",
+          "po.visibility.hackathons",
+          "po.visibility.media"
+        ],
+        "note": "Every subcategory except Conferences and speaking."
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-vis",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-vis"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-vis"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-vis",
+          "s-launch"
+        ]
+      }
+    },
+    {
+      "id": "po8",
+      "code": "PO8",
+      "name": "Platform startup programs",
+      "section": "po",
+      "description": "Startup programs of AI, cloud, developer and app platforms",
+      "whenToUse": "You build on a platform or need its credits",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.partners.platforms"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-plat",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-perk"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-perk",
+          "a-plat"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-perk"
+        ]
+      }
+    },
+    {
+      "id": "po9",
+      "code": "PO9",
+      "name": "Legal, IP and standards",
+      "section": "po",
+      "description": "IP, legal, compliance, certification, standards help",
+      "whenToUse": "Before filing IP or joining a standards body",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "po.legal"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-ip",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-ip"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-ip"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-deadline",
+          "s-ip"
+        ]
+      }
+    },
+    {
+      "id": "mk1",
+      "code": "MK1",
+      "name": "General marketing sweep",
+      "section": "mk",
+      "description": "Adds or improves work in every MK category",
+      "whenToUse": "Monthly, or when the MK calendar is empty",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "allEnabled",
+        "taxonomy": [],
+        "note": "All enabled MK categories."
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-sweep"
+        ],
+        "VERIFIED_ACTIVITY": [],
+        "AVOID": [
+          "a-base",
+          "a-product"
+        ],
+        "SPECIAL_SCHEDULE": []
+      }
+    },
+    {
+      "id": "mk2",
+      "code": "MK2",
+      "name": "Launches and listings",
+      "section": "mk",
+      "description": "Launch platforms, directories, marketplaces, review sites",
+      "whenToUse": "Around a launch or major release",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "mk.launches"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-list"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-list"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-list"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-launch"
+        ]
+      }
+    },
+    {
+      "id": "mk3",
+      "code": "MK3",
+      "name": "Communities and chat",
+      "section": "mk",
+      "description": "Forums, interest communities, chat spaces",
+      "whenToUse": "You want conversations with users",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "mk.communities"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-comm"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-comm"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-comm"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-comm"
+        ]
+      }
+    },
+    {
+      "id": "mk4",
+      "code": "MK4",
+      "name": "PR and outreach",
+      "section": "mk",
+      "description": "Media, newsletters, podcasts, creators, direct outreach",
+      "whenToUse": "You have news or a story to pitch",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "mk.pr",
+          "mk.outreach"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-pr"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-pr"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-pr"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-outreach"
+        ]
+      }
+    },
+    {
+      "id": "fu1",
+      "code": "FU1",
+      "name": "Angels and early-stage funds",
+      "section": "fu",
+      "description": "Active angels, syndicates, scouts, pre-seed and seed funds",
+      "whenToUse": "You are raising (say so in CONSTRAINTS)",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "fu.angels",
+          "fu.vc.seed"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-angel",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-invest"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-invest"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-outreach"
+        ]
+      },
+      "isNew": true
+    },
+    {
+      "id": "fu2",
+      "code": "FU2",
+      "name": "Grants and prizes as money",
+      "section": "fu",
+      "description": "Grant awards, prize money, tax refunds, equity-free cash",
+      "whenToUse": "You want non-dilutive cash; pair with PO1",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "fu.grants"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-gmoney",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program",
+          "v-grant"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-grant"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-deadline"
+        ]
+      },
+      "isNew": true
+    },
+    {
+      "id": "fu3",
+      "code": "FU3",
+      "name": "Debt and alternative financing",
+      "section": "fu",
+      "description": "Loans, guarantees, venture debt, revenue-based financing",
+      "whenToUse": "You have revenue or assets, or need bridge money",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "fu.debt",
+          "fu.hybrid.revenue-linked"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-debt",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-finance"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-finance"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-deadline"
+        ]
+      },
+      "isNew": true
+    },
+    {
+      "id": "fu4",
+      "code": "FU4",
+      "name": "Crowdfunding and community",
+      "section": "fu",
+      "description": "Equity, rewards, pre-order and sponsorship platforms",
+      "whenToUse": "Your audience could fund or pre-order",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "nodes",
+        "taxonomy": [
+          "fu.crowd"
+        ]
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-crowd",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-finance"
+        ],
+        "AVOID": [
+          "a-base",
+          "a-finance"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-campaign"
+        ]
+      },
+      "isNew": true
+    },
+    {
+      "id": "gen1",
+      "code": "GEN1",
+      "name": "Weekly review",
+      "section": "general",
+      "description": "Re-checks dated, overdue and open targets",
+      "whenToUse": "Weekly, one run per section",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "allEnabled",
+        "taxonomy": [],
+        "note": "One section per run, all its categories."
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-review"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-review"
+        ],
+        "AVOID": [
+          "a-review"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-review"
+        ]
+      },
+      "isNew": true
+    },
+    {
+      "id": "gen2",
+      "code": "GEN2",
+      "name": "Research a topic",
+      "section": "general",
+      "description": "Searches the topic typed into F-TOPIC",
+      "whenToUse": "A program series, market or event comes up",
+      "promptId": "target-research",
+      "scope": {
+        "coverage": "chooseEachRun",
+        "taxonomy": [],
+        "note": "One section per run, categories chosen per run."
+      },
+      "examples": {
+        "SEARCH_FOCUS": [
+          "f-topic",
+          "f-shortlist"
+        ],
+        "VERIFIED_ACTIVITY": [
+          "v-program"
+        ],
+        "AVOID": [
+          "a-base"
+        ],
+        "SPECIAL_SCHEDULE": [
+          "s-deadline"
+        ]
+      },
+      "examplesBySection": {
+        "mk": {
+          "VERIFIED_ACTIVITY": [
+            "v-list",
+            "v-comm"
+          ]
+        }
+      },
+      "note": "In MK, use V-LIST or V-COMM instead of V-PROGRAM; keep the one that fits the topic.",
+      "isNew": true
+    }
+  ]
+}

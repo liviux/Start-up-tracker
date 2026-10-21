@@ -1,0 +1,153 @@
+name: Release
+
+# Runs when a version tag such as v1.2.0 is pushed. The tag must have a matching
+# "## [1.2.0]" section in CHANGELOG.md: that section becomes the release notes.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+
+  build:
+    name: Build the release archive
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # The agent lists that ship with the app: a fresh copy of the ACP
+      # registry, and a check that every catalog agent's package version or
+      # download still exists (docs/agents.md).
+      - name: Refresh the ACP registry snapshot
+        run: node tools/update-acp-registry.js
+      - name: Check the catalog's launch commands
+        run: node tools/update-acp-registry.js --from content/acp-registry-snapshot.json --resolve
+      # tools/build-release.js packs the files git tracks (and any production
+      # dependencies) into dist/startup-tracker.tar.gz. Only the two refreshed
+      # agent lists may differ from the tag.
+      - name: Build the archive
+        shell: bash
+        run: |
+          changed="$(git status --porcelain --untracked-files=no | awk '{print $2}' | grep -v -x -e content/acp-registry-snapshot.json -e content/acp-catalog.json || true)"
+          if [ -n "$changed" ]; then
+            echo "Files changed during the build: $changed" >&2
+            exit 1
+          fi
+          node tools/build-release.js --allow-dirty
+      # tools/build-release.js writes SHA256SUMS next to the archive; this
+      # checks it with the system's own tool before anything is published.
+      - name: Check SHA256SUMS
+        working-directory: dist
+        run: |
+          sha256sum -c SHA256SUMS
+          cat SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: dist/
+          if-no-files-found: error
+
+  leak-scan:
+    name: Leak scan
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Scans the whole git history. Repositories owned by an organization also
+      # need a GITLEAKS_LICENSE secret; personal repositories do not.
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: check-leaks on the repository, docs/ included
+        run: node tools/check-leaks.js
+      - uses: actions/download-artifact@v4
+        with:
+          name: release
+          path: dist
+      # Runs the archive's own copy of the check against the archive's files.
+      # Third-party packages in node_modules/ carry their authors' contact
+      # details in package.json, so they are left out of this scan.
+      - name: check-leaks on the release archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for archive in dist/*.tar.gz dist/*.tgz dist/*.zip; do
+            unpacked="$(mktemp -d)"
+            case "$archive" in
+              *.zip) unzip -q "$archive" -d "$unpacked" ;;
+              *) tar -xzf "$archive" -C "$unpacked" ;;
+            esac
+            root="$(dirname "$(find "$unpacked" -path '*/tools/check-leaks.js' -not -path '*/node_modules/*' | head -n 1)")/.."
+            echo "Scanning $archive"
+            (cd "$root" && find . -type f -not -path './node_modules/*' -print0 \
+              | sed -z 's#^\./##' \
+              | xargs -0 node tools/check-leaks.js)
+          done
+
+  publish:
+    name: Publish the GitHub release
+    needs: [build, leak-scan]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release
+          path: dist
+      - name: Release notes from CHANGELOG.md
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v version="$version" '
+            /^## \[/ { if (found) exit; if (index($0, "## [" version "]") == 1) { found = 1; next } }
+            found { print }
+          ' CHANGELOG.md > release-notes.md
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "CHANGELOG.md has no section for ${version}" >&2
+            exit 1
+          fi
+          cat release-notes.md
+      - name: Create the release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=()
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then prerelease=(--prerelease); fi
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --verify-tag \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release-notes.md \
+            "${prerelease[@]}"

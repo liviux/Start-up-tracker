@@ -1,0 +1,571 @@
+{
+  "id": "de-ug",
+  "version": 1,
+  "country": "DE",
+  "countryName": "Germany",
+  "entityType": "UG (haftungsbeschränkt)",
+  "nameLocal": "Unternehmergesellschaft (haftungsbeschränkt)",
+  "nameEnglish": "Mini limited liability company",
+  "currency": "EUR",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-20",
+  "sources": [
+    {
+      "id": "gmbhg-2",
+      "title": "GmbHG § 2: form of the articles",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/gmbhg/__2.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gmbhg-5",
+      "title": "GmbHG § 5: share capital",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/gmbhg/__5.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gmbhg-5a",
+      "title": "GmbHG § 5a: Unternehmergesellschaft",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/gmbhg/__5a.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gmbhg-7",
+      "title": "GmbHG § 7: application for registration",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/gmbhg/__7.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gmbhg-42a",
+      "title": "GmbHG § 42a: annual accounts",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/gmbhg/__42a.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "hgb-264",
+      "title": "HGB § 264: preparing the annual accounts",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/hgb/__264.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "hgb-325",
+      "title": "HGB § 325: publishing the annual accounts",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/hgb/__325.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ao-138",
+      "title": "AO § 138: notifying the start of a business",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/ao_1977/__138.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ao-149",
+      "title": "AO § 149: deadlines for tax returns",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/ao_1977/__149.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ustg-18",
+      "title": "UStG § 18: VAT advance returns",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/ustg_1980/__18.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "estg-41a",
+      "title": "EStG § 41a: wage tax returns",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/estg/__41a.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gwg-20",
+      "title": "GwG § 20: Transparency Register",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/gwg_2017/__20.html",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gewo-14",
+      "title": "GewO § 14: trade registration",
+      "publisher": "Federal Ministry of Justice (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/gewo/__14.html",
+      "verifiedOn": "2026-10-20"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "vat-monthly",
+      "label": "VAT advance returns monthly",
+      "description": "The tax office set a monthly period (the previous year's VAT was over the § 18 UStG limit)."
+    },
+    {
+      "id": "vat-quarterly",
+      "label": "VAT advance returns quarterly",
+      "description": "The default quarterly period."
+    },
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages, including to a managing director on a contract."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name (Firma)",
+      "description": "The name in the commercial register, with GmbH or UG (haftungsbeschränkt).",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "gmbhg-5a"
+      ]
+    },
+    {
+      "key": "registerCourt",
+      "label": "Register court",
+      "description": "The local court (Amtsgericht) that keeps the register entry.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "gmbhg-7"
+      ]
+    },
+    {
+      "key": "registerNumber",
+      "label": "Commercial register number (HRB)",
+      "description": "The HRB number of the entry.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "gmbhg-7"
+      ]
+    },
+    {
+      "key": "seat",
+      "label": "Registered seat and business address",
+      "description": "The seat in the articles and the business address.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "taxNumber",
+      "label": "Tax number (Steuernummer)",
+      "description": "From the tax office after the registration questionnaire.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": false,
+      "sourceIds": [
+        "ao-138"
+      ]
+    },
+    {
+      "key": "vatId",
+      "label": "VAT ID (USt-IdNr.)",
+      "description": "For trade inside the EU.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "shareCapital",
+      "label": "Share capital (Stammkapital)",
+      "description": "In euros, as in the articles.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "gmbhg-5"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "managing-director",
+        "label": "Managing director (Geschäftsführer)",
+        "description": "Runs and represents the company."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder (Gesellschafter)",
+        "description": "Holds one or more shares."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn",
+      "idNumber"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "articles",
+      "title": "Have the articles notarised",
+      "description": "All founders sign the articles (Gesellschaftsvertrag) before a notary; this can be done by video call.",
+      "authority": "Notary",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "gmbhg-2"
+      ]
+    },
+    {
+      "id": "bank-account",
+      "title": "Open a business bank account",
+      "description": "Needed to pay in the share capital.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "articles"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "capital",
+      "title": "Pay in the full share capital",
+      "description": "A UG has less than the 25,000 euro GmbH minimum, must be paid in full before registration, and cannot take contributions in kind. The name must include \"UG (haftungsbeschränkt)\".",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "bank-account"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "gmbhg-5a"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register with the commercial register",
+      "description": "The notary files the application with the register court. The company exists once it is entered.",
+      "authority": "Register court via the notary",
+      "typicalCost": null,
+      "dependsOn": [
+        "capital"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "gmbhg-7"
+      ]
+    },
+    {
+      "id": "trade-registration",
+      "title": "Register the trade (Gewerbeanmeldung)",
+      "description": "Report the start of business to the local trade office at the same time as you start.",
+      "authority": "Gewerbeamt",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "gewo-14"
+      ]
+    },
+    {
+      "id": "tax-registration",
+      "title": "Send the tax registration questionnaire",
+      "description": "Tell the tax office about the new business within one month, electronically (Fragebogen zur steuerlichen Erfassung).",
+      "authority": "Finanzamt",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "ao-138"
+      ]
+    },
+    {
+      "id": "transparency-register",
+      "title": "Report the beneficial owners",
+      "description": "Report the beneficial owners to the Transparency Register without delay.",
+      "authority": "Transparenzregister",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "gwg-20"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "vat-advance-monthly",
+      "title": "VAT advance return (USt-Voranmeldung), monthly",
+      "description": "Submit electronically by the 10th day after each month. A permanent extension (Dauerfristverlängerung) moves this by a month.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 10
+      },
+      "conditions": [
+        "vat-monthly"
+      ],
+      "subdivisions": [],
+      "authority": "Finanzamt",
+      "checkLocally": false,
+      "sourceIds": [
+        "ustg-18"
+      ]
+    },
+    {
+      "id": "vat-advance-quarterly",
+      "title": "VAT advance return (USt-Voranmeldung), quarterly",
+      "description": "Submit electronically by the 10th day after each quarter.",
+      "frequency": "quarterly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 10
+      },
+      "conditions": [
+        "vat-quarterly"
+      ],
+      "subdivisions": [],
+      "authority": "Finanzamt",
+      "checkLocally": false,
+      "sourceIds": [
+        "ustg-18"
+      ]
+    },
+    {
+      "id": "wage-tax",
+      "title": "Wage tax return (Lohnsteuer-Anmeldung)",
+      "description": "By the 10th day after each period. The period is usually the month; it can be the quarter or the year when little wage tax is due.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "relative-to-period-end",
+        "months": 1,
+        "day": 10
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "Finanzamt",
+      "checkLocally": false,
+      "sourceIds": [
+        "estg-41a"
+      ]
+    },
+    {
+      "id": "annual-returns",
+      "title": "Annual tax returns",
+      "description": "Corporate income tax, trade tax and the annual VAT return: due seven months after the calendar year ends. With a tax adviser the deadline is later (§ 149 (3) AO).",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 7,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Finanzamt",
+      "checkLocally": false,
+      "sourceIds": [
+        "ao-149"
+      ]
+    },
+    {
+      "id": "prepare-accounts",
+      "title": "Prepare the annual accounts",
+      "description": "Within the first three months of the new financial year; a small company may take up to six months.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 6,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Managing directors",
+      "checkLocally": false,
+      "sourceIds": [
+        "hgb-264"
+      ]
+    },
+    {
+      "id": "approve-accounts",
+      "title": "Shareholders approve the accounts",
+      "description": "A small company's shareholders decide on the accounts and the use of profit within the first eleven months of the financial year.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 11,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Shareholders",
+      "checkLocally": false,
+      "sourceIds": [
+        "gmbhg-42a"
+      ]
+    },
+    {
+      "id": "publish-accounts",
+      "title": "Publish the annual accounts",
+      "description": "Submit the accounts to the company register no later than one year after the balance sheet date.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 12,
+        "day": "same"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Unternehmensregister",
+      "checkLocally": false,
+      "sourceIds": [
+        "hgb-325"
+      ]
+    },
+    {
+      "id": "transparency-update",
+      "title": "Update the Transparency Register",
+      "description": "Report changes to the beneficial owners without delay.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "relative-to-event",
+        "days": 0,
+        "event": "A change to the beneficial owners"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Transparenzregister",
+      "checkLocally": false,
+      "sourceIds": [
+        "gwg-20"
+      ]
+    },
+    {
+      "id": "trade-changes",
+      "title": "Report changes to the trade office",
+      "description": "Moving or changing the business must be reported when it happens.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "relative-to-event",
+        "days": 0,
+        "event": "Moving or changing the business"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Gewerbeamt",
+      "checkLocally": false,
+      "sourceIds": [
+        "gewo-14"
+      ]
+    },
+    {
+      "id": "legal-reserve",
+      "title": "Set aside the legal reserve",
+      "description": "Each year a quarter of the annual surplus (less any loss carried forward) goes into a legal reserve in the balance sheet, until the capital is raised to the GmbH minimum.",
+      "frequency": "annual",
+      "due": {
+        "rule": "relative-to-fiscal-year-end",
+        "months": 6,
+        "day": "last"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Managing directors",
+      "checkLocally": false,
+      "sourceIds": [
+        "gmbhg-5a"
+      ]
+    },
+    {
+      "id": "insolvency-meeting",
+      "title": "Call a shareholders' meeting if insolvency threatens",
+      "description": "When the company is close to being unable to pay, the shareholders' meeting must be called at once.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "relative-to-event",
+        "days": 0,
+        "event": "Threatened inability to pay"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Managing directors",
+      "checkLocally": false,
+      "sourceIds": [
+        "gmbhg-5a"
+      ]
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Register court: {{registerCourt}}\n- Commercial register number: {{registerNumber}}\n- Seat and address: {{seat}}\n- VAT ID: {{vatId}}\n- Share capital: {{shareCapital}} EUR\n\n## Managing directors and shareholders\n\n{{people}}\n"
+}

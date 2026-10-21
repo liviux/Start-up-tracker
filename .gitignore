@@ -1,0 +1,53 @@
+# Tracker data. The data folders are ~/.startup-tracker and ~/.startup-tracker-dev;
+# these lines catch local overrides that point inside the code folder.
+/data/
+/.dev-data/
+*.sqlite
+*.sqlite3
+*.db
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+*.db-wal
+*.db-shm
+*.db-journal
+*.replaced-*
+/media/
+
+# Plans and private notes, never published
+/plan/
+/.plan/
+
+# Scratch
+/temp/
+/tmp/
+*.tmp
+
+# Logs and runtime files
+*.log
+*.pid
+/run/
+
+# Secrets
+.env
+.env.*
+!.env.example
+/secrets/
+
+# Dependencies and archives
+node_modules/
+*.zip
+*.tgz
+*.tar.gz
+/dist/
+
+# Local agent and editor settings
+.claude/settings.local.json
+.vscode/
+.idea/
+.commandcode/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

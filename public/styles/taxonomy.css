@@ -1,0 +1,195 @@
+/* Category picker (js/taxonomy-picker.js) and the Categories editor
+   (js/categories-editor.js). */
+
+.taxonomy-field {
+  display: grid;
+  gap: 6px;
+  grid-column: 1 / -1;
+}
+
+.taxonomy-picker {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.taxonomy-picker-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.taxonomy-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 3px 4px 3px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+  color: var(--text);
+  font-size: 12.5px;
+}
+
+.taxonomy-chip.is-primary {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.taxonomy-chip.is-flagged {
+  border-style: dashed;
+}
+
+.taxonomy-chip-name {
+  overflow-wrap: anywhere;
+}
+
+.taxonomy-chip-primary,
+.taxonomy-chip-hint {
+  color: var(--muted-strong);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.taxonomy-chip-action,
+.taxonomy-chip-remove {
+  min-height: 24px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--muted-strong);
+  font: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.taxonomy-chip-action:hover,
+.taxonomy-chip-remove:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.taxonomy-chip-empty,
+.taxonomy-picker-empty {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.taxonomy-picker-search {
+  width: 100%;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.taxonomy-picker-tree {
+  max-height: 260px;
+  overflow: auto;
+}
+
+.taxonomy-picker-tree ul {
+  margin: 0;
+  padding: 0 0 0 18px;
+  list-style: none;
+}
+
+.taxonomy-picker-tree > ul {
+  padding-left: 0;
+}
+
+.taxonomy-node > label,
+.taxonomy-node-row > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.taxonomy-node.level-category > .taxonomy-node-row > label,
+.taxonomy-node.level-category > label {
+  font-weight: 650;
+}
+
+.taxonomy-node-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.taxonomy-node-toggle {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  font: inherit;
+  cursor: pointer;
+}
+
+.taxonomy-node:not(:has(.taxonomy-node-row)) > label {
+  margin-left: 24px;
+}
+
+.taxonomy-flag {
+  color: var(--muted-strong);
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.subcategory-badge-pill.is-flagged,
+.hierarchy-pill.is-flagged {
+  border-style: dashed;
+}
+
+/* Extra > Categories */
+.categories-page { display: grid; gap: 14px; }
+.categories-intro { max-width: 80ch; margin: 0; color: var(--text-soft); font-size: 14px; }
+.categories-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.categories-tab { min-height: 32px; padding: 4px 14px; font: inherit; font-size: 13px; cursor: pointer; }
+.categories-tab[aria-selected="false"] { opacity: 0.7; }
+.categories-tab[aria-selected="true"] { outline: 2px solid var(--section, var(--accent)); outline-offset: 1px; }
+.categories-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.categories-search { flex: 1 1 260px; min-height: 36px; padding: 6px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font: inherit; }
+.categories-status { min-height: 1.2em; margin: 0; font-size: 13px; }
+.categories-status[data-kind="error"] { color: var(--red); }
+.categories-tree ul { display: grid; gap: 4px; margin: 0; padding: 0 0 0 22px; list-style: none; }
+.categories-tree > ul { padding-left: 0; }
+.categories-row { display: grid; grid-template-columns: 26px 22px minmax(0, 1fr) auto; align-items: start; gap: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); }
+.categories-row.is-off { opacity: 0.62; }
+.categories-row input[type="checkbox"] { margin-top: 4px; }
+.categories-name { display: grid; gap: 2px; min-width: 0; }
+.categories-name strong { font-size: 14px; }
+.categories-description { color: var(--text-soft); font-size: 12.5px; }
+.categories-usage, .categories-badge { color: var(--muted-strong); font-size: 11.5px; }
+.categories-buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.categories-buttons .secondary-button { min-height: 30px; padding: 2px 10px; font-size: 12px; }
+.categories-icon-button { width: 28px; height: 28px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-soft); font: inherit; cursor: pointer; }
+.categories-icon-button:disabled { opacity: 0.4; cursor: default; }
+.categories-spacer { width: 26px; }
+.categories-form { display: grid; gap: 10px; margin: 6px 0 4px; padding: 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface-strong); }
+.categories-danger { border-color: var(--red); }
+.categories-field { display: grid; gap: 4px; font-size: 13px; }
+.categories-field input, .categories-field textarea, .categories-field select { width: 100%; padding: 6px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font: inherit; }
+.categories-hint, .categories-counter { color: var(--muted-strong); font-size: 12px; }
+.categories-actions, .categories-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.categories-updates { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--accent); border-radius: var(--radius-sm); background: var(--accent-soft); }
+.categories-updates ul { display: grid; gap: 4px; max-height: 220px; margin: 0; padding: 0; overflow: auto; list-style: none; font-size: 13px; }
+
+@media (max-width: 767px) {
+  .categories-row { grid-template-columns: 26px 22px minmax(0, 1fr); }
+  .categories-buttons { grid-column: 1 / -1; justify-content: flex-start; }
+}
