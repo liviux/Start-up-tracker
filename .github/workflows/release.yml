@@ -1,17 +1,57 @@
 name: Release
 
-# Runs when a version tag such as v1.2.0 is pushed. The tag must have a matching
-# "## [1.2.0]" section in CHANGELOG.md: that section becomes the release notes.
+# Runs when a version tag such as v1.2.0 is pushed, or from the Actions tab
+# (Release > Run workflow) with the version typed in: then the workflow makes
+# the tag itself, on the main commit it ran for. The version must match
+# package.json and have a "## [1.2.0]" section in CHANGELOG.md, which becomes
+# the release notes.
 
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, as in package.json (for example 0.1.0)"
+        required: true
 
 permissions:
   contents: read
 
+env:
+  # The version without its "v", from the typed input or the pushed tag.
+  RELEASE_VERSION: ${{ inputs.version || github.ref_name }}
+
 jobs:
+  prepare:
+    name: Check the version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Version matches package.json, and a manual run starts from main
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${RELEASE_VERSION#v}"
+          package="$(node -p "require('./package.json').version")"
+          if [ "$version" != "$package" ]; then
+            echo "Releasing $version, but package.json says $package." >&2
+            exit 1
+          fi
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+              echo "Run the release from main." >&2
+              exit 1
+            fi
+            if gh release view "v$version" >/dev/null 2>&1; then
+              echo "Release v$version exists already." >&2
+              exit 1
+            fi
+          fi
+
   test:
+    needs: prepare
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -129,7 +169,7 @@ jobs:
       - name: Release notes from CHANGELOG.md
         shell: bash
         run: |
-          version="${GITHUB_REF_NAME#v}"
+          version="${RELEASE_VERSION#v}"
           awk -v version="$version" '
             /^## \[/ { if (found) exit; if (index($0, "## [" version "]") == 1) { found = 1; next } }
             found { print }
@@ -144,10 +184,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          tag="v${RELEASE_VERSION#v}"
           prerelease=()
-          if [[ "$GITHUB_REF_NAME" == *-* ]]; then prerelease=(--prerelease); fi
-          gh release create "$GITHUB_REF_NAME" dist/* \
-            --verify-tag \
-            --title "$GITHUB_REF_NAME" \
+          if [[ "$tag" == *-* ]]; then prerelease=(--prerelease); fi
+          # A pushed tag must exist already; a manual run makes it on this commit.
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then where=(--target "$GITHUB_SHA"); else where=(--verify-tag); fi
+          gh release create "$tag" dist/* \
+            "${where[@]}" \
+            --title "$tag" \
             --notes-file release-notes.md \
             "${prerelease[@]}"

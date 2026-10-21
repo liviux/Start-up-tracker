@@ -63,6 +63,13 @@ The server never moves to another port on its own. If the port is taken it says 
 - `tools/`: maintenance and check scripts. `tests/`: `node --test` suites.
 - `docs/`: this documentation, served as it is by GitHub Pages (Docsify from `docs/vendor/`, no build). Screenshots in `docs/assets/` are taken from the demo data only; after replacing one, put its new SHA-256 in `tools/leak-allowlist.json`, which lists every binary file the leak check accepts. `docs/install.sh` and `docs/install.ps1` are copies of the root scripts for the short install URLs, and a test keeps them identical.
 
+## Releases
+
+1. Set the new version in `package.json` (and `npm install --package-lock-only`), `APP_VERSION` in `public/js/api.js`, and move the CHANGELOG's "Unreleased" lines under `## [x.y.z] - <date>`. Commit to `main` and wait for CI to pass.
+2. On GitHub, open **Actions > Release > Run workflow**, keep the branch `main` and type the version (`x.y.z`, without the `v`). Pushing a tag `vx.y.z` instead does the same.
+
+The workflow checks that the version matches `package.json`, runs the tests on Linux, macOS and Windows, refreshes the ACP registry snapshot and checks the agent catalog, builds `startup-tracker.tar.gz` with its `SHA256SUMS`, scans everything for leaks, and publishes the release with the version's CHANGELOG section as its notes. A manual run creates the tag `vx.y.z` on the commit it ran for. The installers and `startup-tracker update` download from the latest release.
+
 ## Interface text
 
 Every string the interface shows comes from `content/i18n/en.json`:
