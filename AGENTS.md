@@ -88,3 +88,4 @@ Clear messages, nothing over 40 MB, no data files ever. Commit with your GitHub 
 ## Human writing
 
 For the README, docs, release notes and UI copy, write plainly and specifically: no inflated claims, no filler, no generic conclusions. See the Humanizer guidance at https://github.com/blader/humanizer.
+There are some shortcuts used frequently - MK (marketing); PO (programs & opportunities); FU (funding); COMP (company).
