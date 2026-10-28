@@ -11,17 +11,6 @@ A local, single-user tracker for a startup's marketing (MK), programs and opport
 - Reviewable content: `content/` (JSON, checked by `npm run check`).
 - Tests: `tests/`. Tools: `tools/`. User docs: `docs/` (Markdown).
 
-## Commands
-
-- `npm install` once, for the development tools.
-- `npm start`: port 57322, data in `~/.startup-tracker`. `npm run dev`: data in `~/.startup-tracker-dev`, port 57323, no browser.
-- `npm test`: every test, with a temporary data folder and random free ports. One file: `node tools/run-tests.js tests/<file>.test.js`.
-- `npm run check`: syntax, CSS, content JSON, ESLint (no warnings allowed), leak scan (add your own patterns with `LEAK_PATTERNS_FILE=<file>`), banned words, and UI text from `content/i18n/en.json` (see docs/development.md, "Interface text").
-- `node bin/startup-tracker.js <command>`: the `startup-tracker` command from the code folder (docs/cli.md). `node tools/build-release.js --allow-dirty` builds a release archive for `install.sh --archive`.
-- `node tools/demo-data.js --data-dir ~/.startup-tracker-dev`: fictional demo data (the folder is always named).
-- A throwaway server: `PORT=0 NO_OPEN=1 STARTUP_TRACKER_HOME=<tmp> node server.js`.
-- Never run tests or development servers against a tracker you use for real work: keep to `npm run dev`, a throwaway data folder and a free port.
-
 ## How to work
 
 - Ask when there are several valid ways forward. Always ask questions when there is ambiguity.
@@ -29,7 +18,6 @@ A local, single-user tracker for a startup's marketing (MK), programs and opport
 - Consider the impact of a change on the other parts of the app.
 - Keep stored data compatible: schema changes need an upgrade path in the store and a test.
 - Fix failing tests, lint errors and warnings you find, even unrelated ones.
-- No end-to-end or full lifecycle tests: the owner reviews the UI. For small changes, run only the related tests and checks.
 - `tests/frontend-sync-contract.test.js` reads `app.js` as text. When code leaves `app.js`, rewrite the affected checks as behaviour tests on the new module in the same commit. Never skip or delete them to make a change pass.
 
 ## No invented data
@@ -38,7 +26,7 @@ Never invent metrics, dates, fees, eligibility or results. Use official pages fo
 
 ## Up-to-date documentation
 
-Search online for current documentation of frameworks and protocols (ACP, MCP, Docsify) instead of relying on memory.
+Search online for current documentation of frameworks and protocols instead of relying on memory.
 
 ## Data
 
@@ -84,7 +72,7 @@ Never delete uncommitted files or work you did not create.
 
 ## Commits
 
-Clear messages, nothing over 40 MB, no data files ever. Commit with your GitHub noreply address. `node tools/install-git-hooks.js` installs a pre-commit hook that runs the leak check on staged files.
+Clear messages, no data files ever. Commit with your GitHub noreply address. `node tools/install-git-hooks.js` installs a pre-commit hook that runs the leak check on staged files.
 
 ## Human writing
 
