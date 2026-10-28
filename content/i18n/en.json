@@ -1594,6 +1594,7 @@
         "dark": "Dark"
       },
       "theme": "Theme style",
+      "themeHint": "Each style changes the layout, type and colours, not only the palette. The preview shows the Calendar view; light and dark mode still apply.",
       "default": "Default",
       "sectionColors": "Section colours",
       "sectionColorsHint": "Marketing, Programs, Funding and Company each have a colour, used for chips, counts and dots across the app. The section code is always shown next to it, so colour is never the only signal.",
@@ -1607,45 +1608,50 @@
       "themes": {
         "studio": {
           "name": "Studio",
-          "description": "Frosted glass, soft shadows, blue accents and rounded corners."
+          "description": "The original look: a left sidebar, white cards and a calm green accent."
         },
-        "kinpaku": {
-          "name": "Neo Kinpaku",
-          "description": "Dark lacquer with gold accents and fine lines."
+        "ledger": {
+          "name": "Ledger",
+          "description": "A wide top bar, a ruled summary strip and figures set like a financial report."
         },
-        "paper": {
-          "name": "Warm Paper Editorial",
-          "description": "Warm paper background, dark ink text and red accents."
+        "nightshift": {
+          "name": "Night Shift",
+          "description": "A dark command console on the left, a cyan key strip and mono telemetry for late work."
         },
-        "mirai": {
-          "name": "Neo Mirai",
-          "description": "Retro-futuristic cyan and violet on a grid."
+        "fieldnotes": {
+          "name": "Field Notes",
+          "description": "Serif headings, a paper masthead and wide margins, like a working notebook."
         },
-        "aurora": {
-          "name": "Aurora UI",
-          "description": "Bright gradient background with cyan and violet glass panels."
+        "meridian": {
+          "name": "Meridian",
+          "description": "A compact left index, thin rules and a single green data colour."
         },
-        "cyber": {
-          "name": "OLED Cyber",
-          "description": "Black background, green accents, dense monospace data."
+        "lacquer": {
+          "name": "Lacquer",
+          "description": "Gold on black lacquer, a centred frame and a quiet vertical nav."
         },
-        "soft-ui": {
-          "name": "Soft UI Evolution",
-          "description": "Raised surfaces with double shadows and soft curves."
+        "shinjuku": {
+          "name": "Shinjuku",
+          "description": "Neon cyan and magenta, a right rail and dense mono labels."
         },
-        "linear": {
-          "name": "Linear Precision",
-          "description": "Thin borders, indigo accent and small corner radius."
+        "quiet": {
+          "name": "Quiet",
+          "description": "A floating pill nav, one centred column and almost no chrome."
         },
-        "minimal": {
-          "name": "Stark Minimalist",
-          "description": "Monochrome with sharp corners and an orange accent."
+        "tactile": {
+          "name": "Tactile",
+          "description": "A bottom dock, soft raised panels and warm, rounded controls."
         },
-        "classic": {
-          "name": "Classic",
-          "description": "The original look of the tracker."
+        "broadsheet": {
+          "name": "Broadsheet",
+          "description": "A newspaper masthead, serif type and ruled columns."
+        },
+        "signal": {
+          "name": "Signal",
+          "description": "A hard-edged switchboard: a top strip, square tabs and safety orange."
         }
-      }
+      },
+      "themeCredit": "Built with {skill}"
     },
     "general": {
       "intro": "Shared by every startup.",

@@ -1,0 +1,2143 @@
+/* Theme: fieldnotes — a founder's working notebook.
+   Paper masthead and horizontal index, one ruled reading column with hanging
+   section marks, serif headings over a restrained sans. Bone paper, moss ink
+   and sage in the dark. Direction from taste-skill's app-screen chapter:
+   colour on data and the current section, never on the chrome. */
+
+/* --------------------------------------------------------------------------
+   1. Tokens — light: bone paper, moss ink, sage accent
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"],
+html:root[data-taste="fieldnotes"][data-active-app-tab] {
+  color-scheme: light;
+
+  --bg: #f3efe4;
+  --surface: #fbf8f0;
+  --surface-soft: #f7f3e8;
+  --surface-strong: #eae5d7;
+  --text: #1e211a;
+  --text-soft: #3b4036;
+  --muted: #626456;
+  --muted-strong: #4c4f43;
+  --border: #d8d3c4;
+  --border-strong: #b6b09f;
+
+  --accent: #315c43;
+  --accent-hover: #244832;
+  --accent-contrast: #fbf8f0;
+  --accent-soft: #e3e9de;
+  --accent-ring: 0 0 0 3px rgb(49 92 67 / 18%);
+
+  --page-accent-rgb: 49, 92, 67;
+  --page-support-rgb: 122, 59, 50;
+  --page-contrast-rgb: 49, 92, 67;
+  --page-title-gradient-end: var(--accent);
+  --page-shell-bg: var(--bg);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-strong);
+  --page-panel-strong-bg: var(--accent-soft);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: none;
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: none;
+  --shadow-soft: none;
+  --shadow-lg: 0 18px 46px rgb(30 33 26 / 18%);
+
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-lg: 0px;
+  --radius-pill: 2px;
+
+  --sidebar-width: 0px;
+  --sidebar-bg: var(--bg);
+  --sidebar-text: var(--text);
+  --sidebar-muted: var(--muted);
+
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --fn-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+  --fn-day-selected: #315c43;
+  --fn-day-dot: #fbf8f0;
+  --control-height: 34px;
+  --control-height-sm: 28px;
+  --pill-height: 20px;
+  --row-gap: 22px;
+
+  --green: #2f6b4a;
+  --red: #8f3a30;
+  --amber: #7d5b19;
+  --teal: #2f5f58;
+  --blue: #365d86;
+  --coral: #8f3a30;
+
+}
+
+/* --------------------------------------------------------------------------
+   2. Tokens — dark: book cloth, warm ink, sage
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"][data-theme="dark"],
+html:root[data-taste="fieldnotes"][data-theme="dark"][data-active-app-tab] {
+  color-scheme: dark;
+
+  --bg: #171912;
+  --surface: #20231b;
+  --surface-soft: #1c1f18;
+  --surface-strong: #2a2e24;
+  --text: #ede9dc;
+  --text-soft: #cfcbbb;
+  --muted: #a2a494;
+  --muted-strong: #bcbead;
+  --border: #353a2e;
+  --border-strong: #545b4b;
+
+  --accent: #a3c8a7;
+  --accent-hover: #bcdbbf;
+  --accent-contrast: #162219;
+  --accent-soft: #29382d;
+  --accent-ring: 0 0 0 3px rgb(163 200 167 / 24%);
+
+  --page-accent-rgb: 163, 200, 167;
+  --page-support-rgb: 205, 143, 124;
+  --page-contrast-rgb: 163, 200, 167;
+  --page-title-gradient-end: var(--accent);
+  --page-shell-bg: var(--bg);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-strong);
+  --page-panel-strong-bg: var(--accent-soft);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: none;
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: none;
+  --shadow-soft: none;
+  --shadow-lg: 0 18px 46px rgb(0 0 0 / 46%);
+
+  --sidebar-bg: var(--bg);
+  --sidebar-text: var(--text);
+  --sidebar-muted: var(--muted);
+
+  --green: #8fceaa;
+  --red: #e79b8d;
+  --amber: #d8b474;
+  --teal: #8fc9bd;
+  --blue: #9bb9db;
+  --coral: #e79b8d;
+  --fn-day-selected: #2e4837;
+  --fn-day-dot: #e7efe4;
+
+}
+
+/* The standard section palette, warmed for this theme and kept out of the
+   way when Settings writes a custom or colour-blind palette. */
+html:root[data-taste="fieldnotes"]:not(:has(style#section-colors)) {
+  --section-mk: #2f5b8a;
+  --section-mk-rgb: 47, 91, 138;
+  --section-mk-bg: #e7ecf1;
+  --section-mk-fg: #2f5b8a;
+  --section-mk-border: #b9c8d6;
+  --section-po: #9a5a1c;
+  --section-po-rgb: 154, 90, 28;
+  --section-po-bg: #f1e8da;
+  --section-po-fg: #8a4f18;
+  --section-po-border: #d8bd9b;
+  --section-fu: #315c43;
+  --section-fu-rgb: 49, 92, 67;
+  --section-fu-bg: #e3e9de;
+  --section-fu-fg: #315c43;
+  --section-fu-border: #b7c8b9;
+  --section-comp: #6b5a3e;
+  --section-comp-rgb: 107, 90, 62;
+  --section-comp-bg: #ece7db;
+  --section-comp-fg: #5f5038;
+  --section-comp-border: #cbbfa8;
+}
+
+html:root[data-taste="fieldnotes"][data-theme="dark"]:not(:has(style#section-colors)) {
+  --section-mk: #8fb0d4;
+  --section-mk-rgb: 143, 176, 212;
+  --section-mk-bg: #1d2b3a;
+  --section-mk-fg: #9ebcdd;
+  --section-mk-border: #35516a;
+  --section-po: #d9a26b;
+  --section-po-rgb: 217, 162, 107;
+  --section-po-bg: #36291c;
+  --section-po-fg: #e0b07d;
+  --section-po-border: #6b4b2c;
+  --section-fu: #a3c8a7;
+  --section-fu-rgb: 163, 200, 167;
+  --section-fu-bg: #29382d;
+  --section-fu-fg: #b0d5b3;
+  --section-fu-border: #46644c;
+  --section-comp: #c3b18e;
+  --section-comp-rgb: 195, 177, 142;
+  --section-comp-bg: #302b22;
+  --section-comp-fg: #cdbd9c;
+  --section-comp-border: #5c523f;
+}
+
+/* --------------------------------------------------------------------------
+   3. Paper: no page gradient, no grid texture
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] body {
+  font-size: 14.5px;
+  line-height: 1.55;
+  background: var(--bg);
+  background-image: none;
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   4. Shell — the sidebar becomes a horizontal paper masthead
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] .app-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100dvh;
+  padding: 0;
+  background: var(--bg);
+}
+
+html:root[data-taste="fieldnotes"] .shell-sidebar {
+  position: relative;
+  inset: auto;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 330px);
+  grid-template-areas:
+    "identity switcher"
+    "nav nav"
+    "footer footer";
+  align-items: end;
+  gap: 0 40px;
+  width: 100%;
+  padding: 26px 40px 0;
+  overflow: visible;
+  background: var(--bg);
+  border-right: 0;
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .shell-sidebar .identity {
+  grid-area: identity;
+  align-self: end;
+  min-width: 0;
+  padding: 0 0 18px;
+}
+
+html:root[data-taste="fieldnotes"] .shell-sidebar .identity-copy {
+  min-width: 0;
+}
+
+html:root[data-taste="fieldnotes"] .shell-sidebar .title-row {
+  gap: 14px;
+  white-space: normal;
+}
+
+html:root[data-taste="fieldnotes"] .shell-sidebar .topbar-logo {
+  width: 34px;
+  height: 34px;
+  filter: none;
+}
+
+html:root[data-taste="fieldnotes"] .shell-sidebar h1 {
+  margin: 0;
+  color: var(--text);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--fn-serif);
+  font-size: clamp(26px, 2.4vw, 34px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+/* Startup switcher: a plain, ruled field on the right of the masthead. */
+
+html:root[data-taste="fieldnotes"] .startup-switcher {
+  grid-area: switcher;
+  justify-self: end;
+  align-self: end;
+  width: 100%;
+  max-width: 330px;
+  min-width: 0;
+  margin: 0 0 18px;
+}
+
+html:root[data-taste="fieldnotes"] .startup-switcher-button {
+  gap: 10px;
+  min-height: 0;
+  padding: 0 0 9px;
+  border: 0;
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: none;
+  color: var(--text);
+  text-align: left;
+}
+
+html:root[data-taste="fieldnotes"] .startup-switcher-button:hover {
+  background: none;
+  border-bottom-color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .startup-switcher.open .startup-switcher-button {
+  border-bottom-color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .startup-icon {
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  border-radius: 2px;
+  background: var(--surface-strong);
+  color: var(--text-soft);
+  font-family: var(--fn-serif);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+html:root[data-taste="fieldnotes"] .startup-switcher-caption {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="fieldnotes"] .startup-switcher-name {
+  color: var(--text);
+  font-family: var(--fn-serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+html:root[data-taste="fieldnotes"] .startup-switcher-chevron {
+  color: var(--muted);
+}
+
+html:root[data-taste="fieldnotes"] .startup-switcher-menu {
+  margin-top: 8px;
+  padding: 6px 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="fieldnotes"] .startup-menu-item {
+  min-height: 38px;
+  border-radius: 0;
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .startup-menu-item:hover,
+html:root[data-taste="fieldnotes"] .startup-menu-item:focus-visible {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="fieldnotes"] .startup-menu-separator {
+  background: var(--border);
+}
+
+/* The horizontal index of destinations. */
+
+html:root[data-taste="fieldnotes"] #appTabs {
+  grid-area: nav;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 26px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  scrollbar-width: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+html:root[data-taste="fieldnotes"] #appTabs::-webkit-scrollbar {
+  display: none;
+}
+
+html:root[data-taste="fieldnotes"] #appTabs .app-tab-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  width: auto;
+  min-height: 44px;
+  padding: 0 0 13px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-align: left;
+  white-space: nowrap;
+  transition: color 150ms, border-color 150ms;
+}
+
+html:root[data-taste="fieldnotes"] #appTabs .app-tab-button img {
+  display: none;
+}
+
+html:root[data-taste="fieldnotes"] #appTabs .app-tab-button[data-section]::after {
+  display: none;
+}
+
+html:root[data-taste="fieldnotes"] #appTabs .app-tab-label {
+  display: inline;
+  flex-direction: row;
+  align-items: baseline;
+  line-height: inherit;
+}
+
+html:root[data-taste="fieldnotes"] #appTabs .app-tab-button:hover {
+  background: transparent !important;
+  color: var(--text) !important;
+  border-color: transparent !important;
+  transform: none;
+}
+
+html:root[data-taste="fieldnotes"] #appTabs .app-tab-button.active {
+  background: transparent !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+  border-bottom-color: var(--section, var(--accent)) !important;
+  font-weight: 600;
+}
+
+html:root[data-taste="fieldnotes"] #appTabs .app-tab-badge {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Folio line. */
+
+html:root[data-taste="fieldnotes"] .shell-sidebar .sidebar-footer {
+  grid-area: footer;
+  position: absolute;
+  right: 40px;
+  bottom: 9px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+html:root[data-taste="fieldnotes"] .sidebar-footer > span:first-child {
+  display: none;
+}
+
+html:root[data-taste="fieldnotes"] .sidebar-version {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+html:root[data-taste="fieldnotes"] .sidebar-version:hover {
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .setup-badge {
+  border-radius: 0;
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+/* Focus stays visible on paper. */
+
+html:root[data-taste="fieldnotes"] .shell-sidebar button:focus-visible,
+html:root[data-taste="fieldnotes"] .shell-sidebar a:focus-visible {
+  outline-color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   5. Top bar — a slim utility rule under the masthead
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  min-height: 50px;
+  gap: 24px;
+  margin: 0;
+  padding: 7px 40px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="fieldnotes"] .shell-breadcrumb {
+  gap: 7px;
+  color: var(--muted);
+  font-family: var(--fn-serif);
+  font-size: 13px;
+}
+
+html:root[data-taste="fieldnotes"] .shell-breadcrumb span:last-child {
+  color: var(--text);
+  font-weight: 600;
+}
+
+html:root[data-taste="fieldnotes"] .topbar-actions {
+  gap: 4px;
+}
+
+html:root[data-taste="fieldnotes"] .topbar .icon-button {
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .topbar .icon-button:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .topbar #settingsButton,
+html:root[data-taste="fieldnotes"] .topbar #projectLinksToggle {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 500;
+  gap: 6px;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .topbar #settingsButton:hover,
+html:root[data-taste="fieldnotes"] .topbar #projectLinksToggle:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .save-state-text {
+  height: auto;
+  margin-right: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--fn-serif);
+  font-size: 12px;
+  font-style: italic;
+  animation: none;
+  transition: color 150ms;
+}
+
+html:root[data-taste="fieldnotes"] .save-state-text.saved,
+html:root[data-taste="fieldnotes"] .save-state-text.synced {
+  color: var(--accent);
+  background: transparent;
+}
+
+html:root[data-taste="fieldnotes"] .global-search.expanded .global-search-field {
+  width: 200px;
+  max-width: 200px;
+  height: 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html:root[data-taste="fieldnotes"] .global-search-field input {
+  font-size: 12px;
+}
+
+html:root[data-taste="fieldnotes"] .global-search-results,
+html:root[data-taste="fieldnotes"] .project-links-menu {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   6. The reading column
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] .app-shell > main {
+  width: 100%;
+  max-width: 1264px;
+  margin: 0 auto;
+  padding: 46px 56px 88px;
+}
+
+html:root[data-taste="fieldnotes"] .shell-heading {
+  margin: 0 0 30px;
+}
+
+html:root[data-taste="fieldnotes"] .shell-heading h2 {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--fn-serif);
+  font-size: clamp(30px, 3vw, 40px);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+}
+
+html:root[data-taste="fieldnotes"] .shell-heading p {
+  margin: 10px 0 0;
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+html:root[data-taste="fieldnotes"] .app-view[data-section] > .shell-heading::before {
+  display: none;
+}
+
+/* Breadcrumb / page title on the calendar reads as a folio head. */
+
+html:root[data-taste="fieldnotes"] #calendarView > .shell-heading h2 {
+  font-size: clamp(32px, 3.4vw, 44px);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView > .shell-heading p {
+  font-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Calendar — a dated page
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-layout-container {
+  gap: 0;
+  margin-top: 0;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-scope {
+  margin: 4px 0 0;
+}
+
+html:root[data-taste="fieldnotes"] .scope-switch {
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+html:root[data-taste="fieldnotes"] .scope-switch-button {
+  min-height: 26px;
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+html:root[data-taste="fieldnotes"] .scope-switch-button:hover {
+  background: none;
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .scope-switch-button[aria-pressed="true"] {
+  border-bottom-color: var(--text);
+  background: none;
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+/* The week strip: a ruled row of dated entries, not cards. */
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-container {
+  gap: 12px;
+  padding: 15px 0 12px;
+  border: 0;
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-top-row {
+  gap: 14px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-nav-column,
+html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-side,
+html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-side-actions {
+  gap: 4px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-nav-btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  box-shadow: none;
+  transition: background-color 150ms, color 150ms;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-nav-btn-sub {
+  width: 28px;
+  height: 30px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-nav-btn:hover {
+  border: 0;
+  background: var(--surface-strong);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-nav-btn:active {
+  transform: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-toggle.active {
+  background: var(--surface-strong);
+  color: var(--text);
+  transform: rotate(180deg);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView #calendarTodayBtn {
+  height: 30px;
+  min-height: 30px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--text-soft);
+  font-size: 12px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView #calendarTodayBtn:hover {
+  background: none;
+  color: var(--accent);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-viewport {
+  min-height: 0;
+  padding: 4px 0 2px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-days-track {
+  padding-top: 0;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-days-strip {
+  gap: 0;
+  grid-template-columns: repeat(9, minmax(72px, 1fr));
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card {
+  position: relative;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  min-height: 96px;
+  padding: 6px 12px 10px 14px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  transition: background-color 150ms, color 150ms;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card:hover {
+  border-color: var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+  transform: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card.today {
+  border-color: var(--border);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card.today::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  right: 9px;
+  width: 5px;
+  height: 5px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card.selected {
+  border-width: 0;
+  box-shadow: none;
+}
+
+/* The shared dark-mode rule paints the selected day blue with white labels.
+   Re-cover that fill with the theme's dark field and keep the labels above it. */
+html:root[data-taste="fieldnotes"][data-theme="dark"] #calendarView .calendar-day-card.selected::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--fn-day-selected);
+  pointer-events: none;
+}
+
+html:root[data-taste="fieldnotes"][data-theme="dark"] #calendarView .calendar-day-card.selected > * {
+  position: relative;
+  z-index: 1;
+}
+
+html:root[data-taste="fieldnotes"][data-theme="dark"] #calendarView .calendar-day-card.selected.today::before {
+  z-index: 2;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card.selected.today::before {
+  background: var(--fn-day-dot);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card .day-name {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--fn-serif);
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card .day-number {
+  margin: 1px 0 0;
+  color: var(--text);
+  font-family: var(--fn-serif);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card .day-month {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card .day-summary {
+  justify-content: flex-start;
+  gap: 0 5px;
+  margin-top: 8px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card .summary-pill {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--section-fg);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+/* Month sheet: dates in ruled cells. */
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-panel {
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-grid {
+  gap: 0;
+  grid-template-columns: 34px repeat(7, minmax(0, 1fr));
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-cell {
+  min-height: 100px;
+  padding: 9px 10px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-cell:nth-child(8n) {
+  border-right: 1px solid var(--border);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-cell.other-month {
+  border-color: var(--border);
+  background: transparent;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-cell.month-start {
+  border-color: var(--border);
+  background: var(--surface);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-cell.month-start .day-number {
+  color: var(--accent);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-month-week-number {
+  color: var(--muted);
+  font-family: var(--fn-serif);
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   8. Calendar filter — a quiet index line
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-filter-bar {
+  margin-top: 12px;
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-filter-shell-summary, .manager-focus-filter-shell-summary) {
+  min-height: 36px;
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-filter-shell, .manager-focus-filter-shell):hover > summary,
+html:root[data-taste="fieldnotes"] :is(.focus-filter-shell, .manager-focus-filter-shell)[open] > summary {
+  border-color: var(--border-strong);
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-filter-shell-title, .manager-focus-filter-shell-title) {
+  color: var(--text-soft);
+  font-family: var(--fn-serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-filter-shell-state, .manager-focus-filter-shell-state) {
+  min-height: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-filter-shell-chevron, .manager-focus-filter-shell-chevron) {
+  color: var(--muted);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-filter-group + .calendar-filter-group {
+  border-top: 1px solid var(--border);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-filter-group-title {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-filter-group-help {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-toggle {
+  min-height: 27px;
+  padding: 2px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-toggle.section-chip[aria-pressed="true"] {
+  border-bottom-color: var(--section);
+  background: none;
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-toggle:not(.section-chip)[aria-pressed="true"] {
+  border-bottom-color: var(--text);
+  background: none;
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-toggle[aria-pressed="false"] {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   9. Calendar detail — a ruled list with hanging section marks
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-container {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 0 13px;
+  border-bottom: 1px solid var(--text);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  font-family: var(--fn-serif);
+  font-size: clamp(26px, 2.5vw, 34px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .focus-date-mode {
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .focus-date-mode-btn {
+  min-height: 26px;
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .focus-date-mode-btn:hover {
+  background: none;
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .focus-date-mode-btn.active {
+  border-bottom-color: var(--text);
+  background: none;
+  color: var(--text);
+  font-weight: 600;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .focus-date-mode-btn .tab-count {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-sections {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-section {
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px 36px;
+  min-width: 0;
+  padding: 22px 0 24px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-section h4 {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  font-family: var(--fn-serif);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-heading {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-heading .section-chip {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--section-fg);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-section h4 .section-count {
+  flex: none;
+  min-width: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-items-list {
+  grid-column: 2;
+  gap: 0;
+  padding: 0;
+  max-height: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-card {
+  width: 100%;
+  padding: 10px 0 12px;
+  gap: 5px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  white-space: normal;
+  box-shadow: none;
+  transition: background-color 150ms;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-card:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-card:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-title {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-detail {
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-badges {
+  gap: 10px;
+  margin-top: 3px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-badges .status-badge,
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-badges .cal-badge,
+html:root[data-taste="fieldnotes"] #calendarView .cat-pill {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--muted-strong);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-badges .status-badge.status-group-done {
+  color: var(--accent);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-badges .status-badge.status-group-in-progress {
+  color: var(--amber);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-item-badges .status-badge.status-group-closed {
+  color: var(--red);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .cal-badge:is(.status-done, .status-completed, .status-depus, .status-active, .status-approved, .status-accepted, .status-received) {
+  color: var(--accent);
+  background: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .cal-badge:is(.status-stopped, .status-rejected) {
+  color: var(--red);
+  background: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .cal-badge:is(.status-in-progress, .status-pending) {
+  color: var(--amber);
+  background: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-empty-text {
+  padding: 4px 0 8px;
+  color: var(--muted);
+  font-family: var(--fn-serif);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* --------------------------------------------------------------------------
+   10. Calendar summary — a ruled ledger at the foot
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-container {
+  margin-top: 34px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-card {
+  gap: 18px;
+  padding: 24px 0 0;
+  border: 0;
+  border-top: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-header-title h3 {
+  color: var(--text);
+  font-family: var(--fn-serif);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-icon {
+  color: var(--muted);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-metrics-grid {
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .summary-metric-box {
+  padding: 0 20px;
+  border-left: 1px solid var(--border);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .summary-metric-box:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .summary-metric-box .metric-box-label {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .summary-metric-box .metric-box-value {
+  color: var(--text);
+  font-family: var(--fn-serif);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .summary-metric-box.metric-total .metric-box-value {
+  color: var(--accent);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-table th,
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-table td {
+  padding: 10px 12px;
+  border-color: var(--border);
+  font-size: 12.5px;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-table th {
+  background: transparent;
+  color: var(--muted);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-table tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-table tfoot tr.grand-total-row td {
+  border-top: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] #calendarView .calendar-summary-table tfoot tr.grand-total-row .highlight-total {
+  color: var(--accent);
+  font-size: 15px;
+}
+
+/* --------------------------------------------------------------------------
+   11. Summary band, panels and tables on the section pages
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="fieldnotes"] .summary-grid,
+html:root[data-taste="fieldnotes"] .manager-summary-grid,
+html:root[data-taste="fieldnotes"] .feedback-summary-grid {
+  margin-bottom: 30px;
+  border: 0;
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--border);
+}
+
+html:root[data-taste="fieldnotes"] .metric-card {
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .metric-label {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+html:root[data-taste="fieldnotes"] .metric-value {
+  color: var(--text);
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+html:root[data-taste="fieldnotes"] .metric-card[data-metric="done"] .metric-value,
+html:root[data-taste="fieldnotes"] .metric-card[data-metric="received"] .metric-value {
+  color: var(--accent);
+}
+
+/* Panels are ruled passages, not boxes. */
+
+html:root[data-taste="fieldnotes"] :is(.panel, .manager-card, .config-panel, .company-card, .company-hero, .settings-section) {
+  padding: 24px 0;
+  border: 0;
+  border-top: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="fieldnotes"] .panel:has(.panel-body.collapsed) {
+  padding: 16px 0;
+}
+
+html:root[data-taste="fieldnotes"] .workbench {
+  gap: 0;
+}
+
+html:root[data-taste="fieldnotes"] .panel-heading {
+  align-items: baseline;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="fieldnotes"] .panel h2,
+html:root[data-taste="fieldnotes"] .tracker-topline h2 {
+  color: var(--text);
+  font-family: var(--fn-serif);
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="fieldnotes"] .panel-heading .eyebrow {
+  display: none;
+}
+
+html:root[data-taste="fieldnotes"] .panel-toggle {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+}
+
+html:root[data-taste="fieldnotes"] .panel-toggle:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .tracker-panel {
+  margin-top: 8px;
+}
+
+html:root[data-taste="fieldnotes"] .tracker-panel.panel {
+  border-top: 1px solid var(--text);
+}
+
+/* Focus queue: ruled entries. */
+
+html:root[data-taste="fieldnotes"] .focus-list {
+  gap: 0;
+}
+
+html:root[data-taste="fieldnotes"] .focus-item {
+  min-height: 0;
+  padding: 14px 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .focus-item:first-child {
+  border-top: 0;
+}
+
+html:root[data-taste="fieldnotes"] .focus-item:hover {
+  border-color: var(--border);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="fieldnotes"] .focus-item strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+html:root[data-taste="fieldnotes"] .focus-date-mode {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+html:root[data-taste="fieldnotes"] .focus-date-mode-btn {
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+}
+
+html:root[data-taste="fieldnotes"] .focus-date-mode-btn.active {
+  background: none;
+  color: var(--text);
+  box-shadow: inset 0 -1px 0 var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .focus-filter-bar,
+html:root[data-taste="fieldnotes"] .focus-list {
+  border-color: var(--border);
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-today-btn, .focus-clear-btn, .focus-nav-btn) {
+  border-radius: 0;
+  border-color: var(--border);
+  background: transparent;
+  color: var(--text-soft);
+}
+
+/* Controls: flat ink actions, underlined secondaries, ruled fields. */
+
+html:root[data-taste="fieldnotes"] :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+  min-height: 34px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="fieldnotes"] .primary-button {
+  border: 1px solid var(--text);
+  background: var(--text);
+  color: var(--accent-contrast);
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .primary-button:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root[data-taste="fieldnotes"] .secondary-button {
+  border: 0;
+  border-bottom: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .secondary-button:hover {
+  border-bottom-color: var(--text);
+  background: transparent;
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] .danger-button {
+  border: 1px solid var(--red);
+  background: transparent;
+  color: var(--red);
+}
+
+html:root[data-taste="fieldnotes"] .icon-button {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="fieldnotes"] .icon-button:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+/* Form fields read as ruled notebook lines. */
+
+html:root[data-taste="fieldnotes"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]), select, textarea) {
+  border: 0;
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] :is(input, select, textarea):focus {
+  border-bottom-color: var(--accent);
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .filters {
+  padding: 12px 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="fieldnotes"] .category-tabs {
+  margin: 14px 0 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Tables: rules and alignment, no zebra. */
+
+html:root[data-taste="fieldnotes"] .table-wrap {
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="fieldnotes"] .section-table {
+  font-size: 13px;
+}
+
+html:root[data-taste="fieldnotes"] .section-table th {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--text);
+  background: transparent;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="fieldnotes"] .section-table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+}
+
+html:root[data-taste="fieldnotes"] .section-table tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="fieldnotes"] .section-table .num,
+html:root[data-taste="fieldnotes"] .section-table .num-val {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Status and priority read as annotations, not chips. */
+
+html:root[data-taste="fieldnotes"] :is(.status-pill, .priority-pill, .category-pill) {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--text-soft);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+html:root[data-taste="fieldnotes"] .section-chip {
+  border-radius: 0;
+  border-color: var(--section-border);
+  background: var(--section-bg);
+  color: var(--section-fg);
+}
+
+/* Settings, dialogs and record sheets: printed pages on the desk. */
+
+html:root[data-taste="fieldnotes"] :is(.settings-panel, .modal, .record-window, .startup-dialog, .changelog-dialog) {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="fieldnotes"] .settings-panel {
+  border-right: 0;
+}
+
+html:root[data-taste="fieldnotes"] .settings-nav {
+  border-right: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="fieldnotes"] .modal-overlay {
+  background: rgb(30 33 26 / 36%);
+}
+
+html:root[data-taste="fieldnotes"] .empty-state,
+html:root[data-taste="fieldnotes"] .focus-empty-state {
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   12. Responsive — masthead folds, index stays on screen
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  html:root[data-taste="fieldnotes"] .app-shell > main {
+    padding: 38px 40px 72px;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-sidebar {
+    padding-inline: 40px;
+  }
+
+  html:root[data-taste="fieldnotes"] .topbar {
+    padding-inline: 40px;
+  }
+}
+
+@media (max-width: 860px) {
+  html:root[data-taste="fieldnotes"] .shell-sidebar {
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 280px);
+    gap: 0 24px;
+    padding: 22px 24px 0;
+  }
+
+  html:root[data-taste="fieldnotes"] .app-shell > main {
+    padding: 32px 24px 64px;
+  }
+
+  html:root[data-taste="fieldnotes"] .topbar {
+    padding-inline: 24px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-section {
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 8px 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  html:root[data-taste="fieldnotes"] .shell-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "identity"
+      "switcher"
+      "nav"
+      "footer";
+    gap: 0;
+    padding: 18px 18px 0;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-sidebar .identity {
+    padding-bottom: 10px;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-sidebar h1 {
+    font-size: 27px;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-sidebar .topbar-logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  html:root[data-taste="fieldnotes"] .startup-switcher {
+    justify-self: stretch;
+    max-width: none;
+    margin-bottom: 12px;
+  }
+
+  html:root[data-taste="fieldnotes"] .startup-switcher-name {
+    font-size: 17px;
+  }
+
+  html:root[data-taste="fieldnotes"] #appTabs {
+    flex-wrap: wrap !important;
+    gap: 0 20px;
+    padding-bottom: 0;
+    overflow-x: visible !important;
+    overflow-y: visible;
+  }
+
+  html:root[data-taste="fieldnotes"] #appTabs .app-tab-button {
+    min-height: 38px;
+    padding: 8px 0;
+    font-size: 13px;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-sidebar .sidebar-footer {
+    display: none;
+  }
+
+  html:root[data-taste="fieldnotes"] .topbar {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 7px 18px;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-breadcrumb {
+    display: none;
+  }
+
+  html:root[data-taste="fieldnotes"] .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 2px;
+  }
+
+  html:root[data-taste="fieldnotes"] .save-state-text {
+    margin-right: auto;
+  }
+
+  html:root[data-taste="fieldnotes"] .app-shell > main {
+    padding: 26px 18px 56px;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-heading h2,
+  html:root[data-taste="fieldnotes"] #calendarView > .shell-heading h2 {
+    font-size: 30px;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-heading p {
+    font-size: 13px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-top-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-side {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    order: 1;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-side-actions {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-strip-viewport {
+    order: 2;
+    width: 100%;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-nav-column {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    order: 3;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, minmax(70px, 1fr));
+    min-width: max-content;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card {
+    min-height: 92px;
+    padding-inline: 10px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card .day-number {
+    font-size: 27px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 18px 0 20px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-items-list {
+    grid-column: 1;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-title {
+    font-size: 27px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-detail-top {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 20px;
+  }
+
+  html:root[data-taste="fieldnotes"] .summary-grid,
+  html:root[data-taste="fieldnotes"] .manager-summary-grid,
+  html:root[data-taste="fieldnotes"] .feedback-summary-grid {
+    border-radius: 0;
+  }
+
+  html:root[data-taste="fieldnotes"] .metric-card {
+    padding: 12px 14px;
+  }
+
+  html:root[data-taste="fieldnotes"] .panel {
+    padding: 20px 0;
+  }
+
+  html:root[data-taste="fieldnotes"] .panel:has(.panel-body.collapsed) {
+    padding: 14px 0;
+  }
+
+  html:root[data-taste="fieldnotes"] .settings-nav {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 460px) {
+  html:root[data-taste="fieldnotes"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    width: auto;
+    padding: 0 6px;
+  }
+
+  html:root[data-taste="fieldnotes"] .topbar :is(#settingsButton, #projectLinksToggle) span {
+    display: inline;
+  }
+
+  html:root[data-taste="fieldnotes"] .shell-sidebar {
+    padding-inline: 16px;
+  }
+
+  html:root[data-taste="fieldnotes"] .app-shell > main {
+    padding: 22px 16px 52px;
+  }
+
+  html:root[data-taste="fieldnotes"] .topbar {
+    padding-inline: 16px;
+  }
+
+  html:root[data-taste="fieldnotes"] .topbar #settingsButton,
+  html:root[data-taste="fieldnotes"] .topbar #projectLinksToggle {
+    padding: 0 4px;
+    font-size: 11.5px;
+  }
+
+  html:root[data-taste="fieldnotes"] .topbar #projectLinksToggle .project-links-chevron {
+    display: none;
+  }
+
+  html:root[data-taste="fieldnotes"] .save-state-text {
+    font-size: 11px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-scope {
+    margin: 0;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card {
+    padding-inline: 8px;
+  }
+
+  html:root[data-taste="fieldnotes"] #calendarView .calendar-day-card .day-number {
+    font-size: 25px;
+  }
+
+  html:root[data-taste="fieldnotes"] .calendar-summary-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Shared badges read as annotations, not chips. */
+
+html:root[data-taste="fieldnotes"] :is(.status-badge, .status-pill, .priority-pill, .priority-badge) {
+  display: inline;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--muted-strong);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+html:root[data-taste="fieldnotes"] :is(.status-badge, .status-pill).status-group-done {
+  color: var(--accent);
+}
+
+html:root[data-taste="fieldnotes"] :is(.status-badge, .status-pill).status-group-in-progress {
+  color: var(--amber);
+}
+
+html:root[data-taste="fieldnotes"] :is(.status-badge, .status-pill).status-group-closed {
+  color: var(--red);
+}
+
+html:root[data-taste="fieldnotes"] .priority-pill[data-priority="Very High"],
+html:root[data-taste="fieldnotes"] .priority-pill[data-priority="High"] {
+  color: var(--red);
+}
+
+html:root[data-taste="fieldnotes"] .priority-pill[data-priority="Medium"] {
+  color: var(--amber);
+}
+
+/* Category filters are an index of words, not a row of pills. */
+
+html:root[data-taste="fieldnotes"] .tab-button {
+  min-height: 30px;
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .tab-button:hover {
+  border-bottom-color: var(--border-strong);
+  background: none;
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="fieldnotes"] .tab-button[aria-selected="true"] {
+  border-bottom-color: var(--text);
+  background: none;
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] .tab-count {
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+html:root[data-taste="fieldnotes"] .focus-list {
+  grid-auto-rows: auto;
+}
+
+html:root[data-taste="fieldnotes"] .focus-date-controls {
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn) {
+  height: 30px;
+  min-height: 30px;
+  border: 0;
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: none;
+  color: var(--muted-strong);
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn):hover {
+  border-bottom-color: var(--text);
+  background: none;
+  color: var(--text);
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-link-open, .linked-target-open) {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  box-shadow: none;
+}
+
+html:root[data-taste="fieldnotes"] :is(.focus-link-open, .linked-target-open):hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+/* The theme keeps the app's own reduced-motion rule; nothing here loops. */

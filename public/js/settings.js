@@ -1263,22 +1263,38 @@
     ]);
 
     const themeName = uid("appearance-theme");
+    const themeThemes = Appearance?.THEMES || ["studio"];
+    const themeLabel = (theme) => t(`settings.appearance.themes.${theme}.name`);
     const themes = el("fieldset", { className: "settings-fieldset" }, [
       el("legend", { text: t("settings.appearance.theme") }),
-      el("div", { className: "taste-theme-grid settings-theme-grid" }, (Appearance?.THEMES || ["studio"]).map((theme) => {
+      el("p", { className: "settings-hint", text: t("settings.appearance.themeHint") }),
+      el("div", { className: "taste-theme-grid settings-theme-grid" }, themeThemes.map((theme) => {
         const radio = el("input", { type: "radio", name: themeName, value: theme, id: uid("theme"), checked: current.theme === theme, className: "visually-hidden" });
         radio.addEventListener("change", () => {
           if (!radio.checked) return;
           container.querySelectorAll(".taste-theme-card").forEach((card) => card.classList.toggle("active", card.dataset.tasteVal === theme));
           persist({ theme });
         });
+        const credit = Appearance?.THEME_CREDITS?.[theme];
         return el("label", { className: `taste-theme-card${current.theme === theme ? " active" : ""}`, for: radio.id, dataset: { tasteVal: theme } }, [
           radio,
-          el("span", { className: "taste-theme-header" }, [
-            el("span", { className: "taste-theme-name", text: t(`settings.appearance.themes.${theme}.name`) }),
-            theme === "studio" ? el("span", { className: "taste-theme-badge default-badge", text: t("settings.appearance.default") }) : null,
+          el("span", { className: "taste-theme-preview" }, [
+            el("img", {
+              src: Appearance?.previewPath?.(theme) || `/assets/theme-previews/${theme}.jpg`,
+              alt: "",
+              loading: "lazy",
+              width: 720,
+              height: 500,
+            }),
           ]),
-          el("span", { className: "taste-theme-desc", text: t(`settings.appearance.themes.${theme}.description`) }),
+          el("span", { className: "taste-theme-body" }, [
+            el("span", { className: "taste-theme-header" }, [
+              el("span", { className: "taste-theme-name", text: themeLabel(theme) }),
+              theme === "studio" ? el("span", { className: "taste-theme-badge default-badge", text: t("settings.appearance.default") }) : null,
+            ]),
+            el("span", { className: "taste-theme-desc", text: t(`settings.appearance.themes.${theme}.description`) }),
+            credit ? el("span", { className: "taste-theme-credit", text: t("settings.appearance.themeCredit", { skill: credit }) }) : null,
+          ]),
         ]);
       })),
     ]);

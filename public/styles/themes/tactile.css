@@ -1,0 +1,1934 @@
+/* Tactile: a warm desk tool with a bottom dock, a fixed brand mark and raised trays.
+   Craft: controls seat 1px on press, one light shadow per surface, rounded but never pill-shaped, labels always visible. */
+
+/* --------------------------------------------------------------------------
+   Tokens: light — warm stone and cream
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="tactile"],
+html:root[data-taste="tactile"][data-active-app-tab] {
+  color-scheme: light;
+
+  --bg: #f0e9dd;
+  --surface: #fbf6ec;
+  --surface-soft: #f6efe3;
+  --surface-strong: #ebe0cf;
+  --text: #2a241d;
+  --text-soft: #4d4438;
+  --muted: #746654;
+  --muted-strong: #5b5043;
+  --border: #dfd2bf;
+  --border-strong: #c3b09a;
+  --accent: #a64f36;
+  --accent-hover: #8c3f2a;
+  --accent-contrast: #fff8ee;
+  --accent-soft: #f2e0d6;
+  --accent-ring: 0 0 0 3px rgb(166 79 54 / 26%);
+  --page-accent-rgb: 166, 79, 54;
+  --page-support-rgb: 166, 79, 54;
+  --page-contrast-rgb: 196, 121, 92;
+  --page-title-gradient-end: var(--accent);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: #f1e8da;
+  --page-panel-strong-bg: var(--accent-soft);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: 0 1px 2px rgb(74 55 36 / 8%);
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: 0 1px 2px rgb(74 55 36 / 8%);
+  --shadow-soft: 0 1px 1px rgb(74 55 36 / 6%);
+  --shadow-lg: 0 22px 60px rgb(58 42 27 / 20%);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --sidebar-width: 0px;
+  --sidebar-bg: var(--surface);
+  --sidebar-text: var(--text);
+  --sidebar-muted: var(--muted);
+
+  --control-height: 38px;
+  --control-height-sm: 30px;
+  --pill-height: 22px;
+  --row-gap: 22px;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* --------------------------------------------------------------------------
+   Tokens: dark — warm charcoal, lit by the same stone tones
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="tactile"][data-theme="dark"],
+html:root[data-taste="tactile"][data-theme="dark"][data-active-app-tab] {
+  color-scheme: dark;
+
+  --bg: #211b16;
+  --surface: #2b241d;
+  --surface-soft: #332b23;
+  --surface-strong: #3d3329;
+  --text: #f2e9db;
+  --text-soft: #d3c5b2;
+  --muted: #a99a86;
+  --muted-strong: #c5b6a2;
+  --border: #473c30;
+  --border-strong: #62523f;
+  --accent: #d68a6e;
+  --accent-hover: #e5a086;
+  --accent-contrast: #26130a;
+  --accent-soft: #3e2c23;
+  --accent-ring: 0 0 0 3px rgb(214 138 110 / 30%);
+  --page-accent-rgb: 214, 138, 110;
+  --page-support-rgb: 214, 138, 110;
+  --page-contrast-rgb: 231, 169, 145;
+  --page-title-gradient-end: var(--accent);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: #362d24;
+  --page-panel-strong-bg: var(--accent-soft);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: 0 1px 2px rgb(0 0 0 / 34%);
+  --shadow-soft: 0 1px 1px rgb(0 0 0 / 28%);
+  --shadow-lg: 0 24px 64px rgb(0 0 0 / 52%);
+
+  --sidebar-bg: var(--surface);
+  --sidebar-text: var(--text);
+  --sidebar-muted: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   Ground and type
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="tactile"] body {
+  min-height: 100dvh;
+  overflow-x: clip;
+  background-color: var(--bg);
+  background-image: none;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html:root[data-taste="tactile"] ::selection {
+  color: var(--accent-contrast);
+  background: var(--accent);
+}
+
+html:root[data-taste="tactile"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Shell: brand and switcher on the top shelf, seven keys in a bottom dock
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="tactile"] .app-shell {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html:root[data-taste="tactile"] .app-shell > main {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 108px 40px 130px;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar {
+  position: static;
+  display: contents;
+  width: auto;
+  height: auto;
+  padding: 0;
+  overflow: visible;
+  background: none;
+  color: var(--text);
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .identity {
+  position: fixed;
+  top: 18px;
+  left: 36px;
+  z-index: 98;
+  padding: 0;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .identity .title-row {
+  gap: 10px;
+  white-space: nowrap;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .topbar-logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  filter: none;
+  box-shadow: 0 1px 2px rgb(74 55 36 / 16%);
+}
+
+html:root[data-taste="tactile"] .shell-sidebar h1 {
+  margin: 0;
+  color: var(--text);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+/* The startup plate sits beside the brand on desktop, below it on a phone. */
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher {
+  position: fixed;
+  top: 14px;
+  left: 232px;
+  z-index: 97;
+  width: 238px;
+  margin: 0;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher-button {
+  gap: 8px;
+  min-height: var(--control-height);
+  padding: 4px 9px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-soft);
+  transition: background-color 140ms ease, border-color 140ms ease, transform 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher-button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px rgb(74 55 36 / 12%);
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher.open .startup-switcher-button {
+  border-color: var(--accent);
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-icon {
+  flex-basis: 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher-caption {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher-name {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher-chevron {
+  flex-basis: 14px;
+  width: 14px;
+  height: 14px;
+  color: var(--muted);
+  transition: transform 150ms ease;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-switcher-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  width: 270px;
+  max-width: calc(100vw - 28px);
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-menu-item {
+  min-height: 38px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  color: var(--text-soft);
+  font-size: 12.5px;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-menu-item:hover,
+html:root[data-taste="tactile"] .shell-sidebar .startup-menu-item:focus-visible {
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-menu-item[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-menu-separator {
+  background: var(--border);
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .startup-unsynced {
+  color: var(--text-soft);
+}
+
+/* The bottom dock: seven physical keys with labels. */
+html:root[data-taste="tactile"] #appTabs {
+  position: fixed;
+  right: auto;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 96;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 2px;
+  width: max-content;
+  max-width: calc(100vw - 28px);
+  height: auto;
+  margin: 0;
+  padding: 7px;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  transform: translateX(-50%);
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 10px 28px rgb(74 55 36 / 16%);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+html:root[data-taste="tactile"][data-theme="dark"] #appTabs {
+  box-shadow: 0 14px 36px rgb(0 0 0 / 38%);
+}
+
+html:root[data-taste="tactile"] #appTabs::-webkit-scrollbar {
+  display: none;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-button {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: auto;
+  min-width: 86px;
+  min-height: 56px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.15;
+  white-space: nowrap;
+  text-align: center;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-button img {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  opacity: 0.78;
+  filter: none;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-label {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 3px;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-label span {
+  display: inline;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-button::after {
+  content: none;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-button:hover {
+  border-color: var(--border);
+  background: var(--surface-soft) !important;
+  color: var(--text) !important;
+  transform: none;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-button.active {
+  border-color: var(--accent) !important;
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  box-shadow: inset 0 1px 2px rgb(74 42 26 / 10%) !important;
+  font-weight: 700;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-button.active img {
+  opacity: 1;
+  filter: none;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-button:active,
+html:root[data-taste="tactile"] #appTabs .app-tab-button.active:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgb(74 42 26 / 18%) !important;
+}
+
+html:root[data-taste="tactile"] #appTabs .app-tab-badge {
+  position: absolute;
+  top: 3px;
+  right: 7px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 3px;
+  border-radius: 5px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 15px;
+}
+
+html:root[data-taste="tactile"] .shell-sidebar .sidebar-footer {
+  display: none;
+}
+
+html:root[data-taste="tactile"] .setup-badge {
+  position: fixed;
+  bottom: calc(98px + env(safe-area-inset-bottom));
+  left: 24px;
+  z-index: 94;
+  width: auto;
+  margin: 0;
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+html:root[data-taste="tactile"] .setup-badge:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="tactile"] .setup-badge-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+}
+
+/* Top bar: a solid shelf for search, mode, settings and links. */
+html:root[data-taste="tactile"] .topbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 72px;
+  margin: 0;
+  padding: 0 36px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="tactile"] .topbar .shell-breadcrumb {
+  display: none;
+}
+
+html:root[data-taste="tactile"] .topbar .topbar-actions {
+  flex-wrap: nowrap;
+  gap: 6px;
+  margin-left: auto;
+}
+
+html:root[data-taste="tactile"] .topbar .icon-button,
+html:root[data-taste="tactile"] .topbar .global-search-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text-soft);
+  box-shadow: var(--shadow-soft);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] .topbar .icon-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="tactile"] .topbar .icon-button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 3px rgb(74 55 36 / 16%);
+}
+
+html:root[data-taste="tactile"] .topbar #settingsButton,
+html:root[data-taste="tactile"] .topbar #projectLinksToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  min-height: 38px !important;
+  padding: 0 11px !important;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text-soft);
+  box-shadow: var(--shadow-soft);
+  font-size: 12px !important;
+  font-weight: 600;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] .topbar #settingsButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+html:root[data-taste="tactile"] .topbar #settingsButton:hover,
+html:root[data-taste="tactile"] .topbar #projectLinksToggle:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="tactile"] .topbar #settingsButton:active,
+html:root[data-taste="tactile"] .topbar #projectLinksToggle:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 3px rgb(74 55 36 / 16%);
+}
+
+html:root[data-taste="tactile"] .topbar .save-state-text {
+  height: 26px;
+  margin: 0 4px 0 0;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-soft);
+  color: var(--muted-strong);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: none;
+}
+
+html:root[data-taste="tactile"] .topbar .save-state-text:is(.saved, .synced) {
+  border-color: var(--border);
+  background: var(--surface-soft);
+  color: var(--muted-strong);
+  animation: none;
+}
+
+html:root[data-taste="tactile"] .topbar .save-state-text.saving {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="tactile"] .topbar .save-state-text.conflict {
+  border-color: var(--red);
+  background: color-mix(in srgb, var(--red) 10%, var(--surface));
+  color: var(--red);
+}
+
+html:root[data-taste="tactile"] .topbar .global-search.expanded .global-search-field {
+  width: 210px;
+  max-width: 210px;
+  height: 38px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: inset 0 1px 2px rgb(74 55 36 / 6%);
+}
+
+html:root[data-taste="tactile"] .global-search-results,
+html:root[data-taste="tactile"] .project-links-menu {
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="tactile"] .global-search-result {
+  --result-border: var(--border);
+  --result-accent: var(--accent);
+  --result-accent-soft: var(--accent-soft);
+  --result-accent-hover: var(--surface-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Headings and surfaces
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="tactile"] .shell-heading {
+  margin: 0 0 26px;
+}
+
+/* One terracotta rule for every page; section colour stays inside the data. */
+html:root[data-taste="tactile"] .app-view[data-section] > .shell-heading::before {
+  content: none;
+  display: none;
+}
+
+html:root[data-taste="tactile"] .shell-heading h2,
+html:root[data-taste="tactile"] #calendarView > .shell-heading h2 {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: clamp(30px, 2.8vw, 38px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+html:root[data-taste="tactile"] .shell-heading h2::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 3px;
+  margin-bottom: 13px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+html:root[data-taste="tactile"] .shell-heading p,
+html:root[data-taste="tactile"] #calendarView > .shell-heading p {
+  max-width: 62ch;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+html:root[data-taste="tactile"] #calendarView > .shell-heading {
+  margin-bottom: 24px;
+}
+
+html:root[data-taste="tactile"] :is(.panel, .manager-card, .manager-group, .config-panel, .company-card, .company-hero, .list-panel, .tracker-panel) {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="tactile"] .panel > .panel-heading {
+  margin: -2px 0 20px;
+}
+
+html:root[data-taste="tactile"] .panel-heading {
+  gap: 16px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="tactile"] .panel h2,
+html:root[data-taste="tactile"] .tracker-topline h2 {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+html:root[data-taste="tactile"] .eyebrow {
+  margin: 0 0 3px;
+  color: var(--muted);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="tactile"] .panel-toggle {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  box-shadow: none;
+  transition: background-color 140ms ease, border-color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] .panel-toggle:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="tactile"] .panel-toggle:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px rgb(74 55 36 / 14%);
+}
+
+/* Summary: one raised shelf with ruled columns. */
+html:root[data-taste="tactile"] :is(.summary-grid, .manager-summary-grid, .feedback-summary-grid) {
+  gap: 1px !important;
+  margin: 0 0 22px !important;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden !important;
+}
+
+html:root[data-taste="tactile"] .metric-card {
+  min-height: 84px !important;
+  padding: 14px 18px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: var(--surface) !important;
+  box-shadow: none !important;
+}
+
+html:root[data-taste="tactile"] .metric-card:hover {
+  border-color: transparent !important;
+  background: var(--surface-soft) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html:root[data-taste="tactile"] .metric-label {
+  color: var(--muted);
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em !important;
+  line-height: 1.35 !important;
+  text-transform: uppercase !important;
+}
+
+html:root[data-taste="tactile"] .metric-value {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 27px !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.035em !important;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="tactile"] .metric-card[data-metric="done"] .metric-value,
+html:root[data-taste="tactile"] .metric-card[data-metric="received"] .metric-value {
+  color: var(--accent);
+}
+
+html:root[data-taste="tactile"] .metric-currency {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Filter plates and form fields sit on the desk. */
+html:root[data-taste="tactile"] .filters {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="tactile"] .facet-filters {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+html:root[data-taste="tactile"] :is(.focus-filter-shell-summary, .manager-focus-filter-shell-summary) {
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-soft);
+  box-shadow: 0 1px 1px rgb(74 55 36 / 5%);
+}
+
+html:root[data-taste="tactile"] .focus-filter-shell-title,
+html:root[data-taste="tactile"] .manager-focus-filter-shell-title {
+  color: var(--text-soft);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+html:root[data-taste="tactile"] .focus-filter-shell-state,
+html:root[data-taste="tactile"] .manager-focus-filter-shell-state {
+  min-height: 21px;
+  padding: 0 7px;
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+html:root[data-taste="tactile"] .focus-filter-shell:hover .focus-filter-shell-summary,
+html:root[data-taste="tactile"] .focus-filter-shell[open] .focus-filter-shell-summary,
+html:root[data-taste="tactile"] .manager-focus-filter-shell:hover .manager-focus-filter-shell-summary,
+html:root[data-taste="tactile"] .manager-focus-filter-shell[open] .manager-focus-filter-shell-summary {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+html:root[data-taste="tactile"] .category-tabs {
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="tactile"] .tab-button {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+html:root[data-taste="tactile"] .tab-button:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="tactile"] .tab-button.active {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Tables: a raised ledger. */
+html:root[data-taste="tactile"] .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: none;
+  overflow: auto;
+}
+
+html:root[data-taste="tactile"] .section-table th,
+html:root[data-taste="tactile"] .data-table th {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="tactile"] .section-table td,
+html:root[data-taste="tactile"] .data-table td {
+  padding: 13px 12px;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+}
+
+html:root[data-taste="tactile"] .section-table tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--surface-soft) 55%, transparent);
+}
+
+html:root[data-taste="tactile"] .section-table tbody tr:hover td {
+  background: var(--surface-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Controls: rounded keys, a single lip of shadow, a true 1px press
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="tactile"] :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+  min-height: 38px;
+  height: 38px;
+  padding: 0 15px;
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  box-shadow: var(--shadow-soft);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] .primary-button {
+  border-color: var(--accent-hover);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: 0 1px 2px rgb(120 55 34 / 22%);
+}
+
+html:root[data-taste="tactile"] .primary-button:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  box-shadow: 0 1px 2px rgb(120 55 34 / 26%);
+  transform: none;
+}
+
+html:root[data-taste="tactile"] .secondary-button {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text-soft);
+}
+
+html:root[data-taste="tactile"] .secondary-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="tactile"] .secondary-button[aria-expanded="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="tactile"] .danger-button {
+  border-color: color-mix(in srgb, var(--red) 35%, var(--border));
+  background: var(--surface);
+  color: var(--red);
+}
+
+html:root[data-taste="tactile"] .danger-button:hover {
+  border-color: var(--red);
+  background: color-mix(in srgb, var(--red) 7%, var(--surface));
+  transform: none;
+}
+
+html:root[data-taste="tactile"] :is(.primary-button, .secondary-button, .ghost-button, .danger-button):active {
+  transform: translateY(1px) !important;
+  box-shadow: inset 0 2px 4px rgb(74 42 26 / 16%) !important;
+}
+
+html:root[data-taste="tactile"] .icon-button {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-soft);
+  box-shadow: none;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] .icon-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="tactile"] .icon-button:active {
+  transform: translateY(1px) !important;
+  box-shadow: inset 0 1px 3px rgb(74 55 36 / 16%);
+}
+
+html:root[data-taste="tactile"] :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,
+  textarea
+) {
+  min-height: 38px;
+  height: 38px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: inset 0 1px 2px rgb(74 55 36 / 5%);
+  font-size: 13px;
+  transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+}
+
+html:root[data-taste="tactile"] textarea {
+  height: auto;
+  min-height: 90px;
+  padding: 8px 10px;
+}
+
+html:root[data-taste="tactile"] :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,
+  textarea
+):hover {
+  border-color: var(--text-soft);
+}
+
+html:root[data-taste="tactile"] :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,
+  textarea
+):focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+html:root[data-taste="tactile"] .global-search-field input {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+html:root[data-taste="tactile"] .label-title,
+html:root[data-taste="tactile"] .filter-label {
+  color: var(--text-soft);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="tactile"] .scope-switch {
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-strong);
+}
+
+html:root[data-taste="tactile"] .scope-switch-button {
+  height: 30px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-strong);
+  font-size: 11.5px;
+  font-weight: 600;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+html:root[data-taste="tactile"] .scope-switch-button:hover {
+  color: var(--text);
+}
+
+html:root[data-taste="tactile"] .scope-switch-button[aria-pressed="true"] {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 1px 1px rgb(74 55 36 / 8%);
+}
+
+html:root[data-taste="tactile"] .focus-date-mode {
+  height: 34px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-strong);
+}
+
+html:root[data-taste="tactile"] .focus-date-mode-btn {
+  height: 28px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted-strong);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+html:root[data-taste="tactile"] .focus-date-mode-btn.active {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-soft);
+}
+
+html:root[data-taste="tactile"] :is(.status-pill, .priority-pill, .category-pill, .tag-pill) {
+  min-height: 22px;
+  height: 22px;
+  padding: 1px 7px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+/* Focus rows are small trays inside the queue tray. */
+html:root[data-taste="tactile"] .focus-item {
+  gap: 7px;
+  padding: 15px 16px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-soft);
+  box-shadow: 0 1px 0 rgb(94 68 43 / 6%);
+  transition: background-color 140ms ease, border-color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] .focus-item:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  box-shadow: 0 1px 0 rgb(94 68 43 / 7%);
+  transform: none;
+}
+
+html:root[data-taste="tactile"] .focus-item:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgb(74 55 36 / 14%);
+}
+
+html:root[data-taste="tactile"] .focus-item strong,
+html:root[data-taste="tactile"] .focus-item .focus-item-title {
+  color: var(--text);
+  font-weight: 600;
+}
+
+html:root[data-taste="tactile"] .focus-link-open {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-soft);
+  box-shadow: var(--shadow-soft);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] .focus-link-open:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--accent);
+  transform: none;
+}
+
+html:root[data-taste="tactile"] .focus-link-open:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 3px rgb(74 55 36 / 16%);
+}
+
+/* --------------------------------------------------------------------------
+   Calendar: the strip is a tray of keys; today has a terracotta notch
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="tactile"] #calendarView .calendar-layout-container {
+  gap: 20px;
+  margin-top: 0;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-strip-container {
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-strip-top-row {
+  gap: 16px;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-nav-column,
+html:root[data-taste="tactile"] #calendarView .calendar-strip-side,
+html:root[data-taste="tactile"] #calendarView .calendar-strip-side-actions {
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-nav-btn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  box-shadow: none;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-nav-btn:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-nav-btn:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 3px rgb(74 55 36 / 16%);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-month-toggle.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="tactile"] #calendarView #calendarTodayBtn {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+  box-shadow: var(--shadow-soft);
+}
+
+html:root[data-taste="tactile"] #calendarView #calendarTodayBtn:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-strip-viewport {
+  min-width: 0;
+  padding: 6px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-strip-viewport::-webkit-scrollbar {
+  height: 4px;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-strip-viewport::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: var(--border-strong);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-days-strip {
+  gap: 8px;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card {
+  position: relative;
+  min-height: 106px;
+  gap: 2px;
+  padding: 10px 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  box-shadow: 0 2px 0 rgb(94 68 43 / 7%);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 3px 0 rgb(94 68 43 / 8%);
+  transform: translateY(-1px);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgb(74 55 36 / 14%);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card .day-name {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card .day-number {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card .day-month {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card .day-summary {
+  margin-top: 7px;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card .summary-pill {
+  min-width: 17px;
+  padding: 1px 5px;
+  border: 1px solid var(--section-border, var(--border));
+  border-radius: 4px;
+  background: var(--section-bg, var(--surface-strong));
+  color: var(--section-fg, var(--text-soft));
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.today {
+  border-color: var(--accent);
+  box-shadow: inset 0 3px 0 var(--accent), 0 2px 0 rgb(94 68 43 / 7%);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.today::before {
+  content: none;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.today .day-name {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.selected {
+  border-color: var(--accent-hover) !important;
+  background: var(--accent) !important;
+  color: var(--accent-contrast) !important;
+  box-shadow: inset 0 2px 4px rgb(84 38 23 / 22%) !important;
+  transform: translateY(1px);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.selected :is(.day-name, .day-number, .day-month) {
+  color: var(--accent-contrast) !important;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.selected .day-name,
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.selected .day-month {
+  opacity: 0.82;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.selected .summary-pill {
+  border-color: rgb(255 248 238 / 28%) !important;
+  background: rgb(255 248 238 / 14%) !important;
+  color: var(--accent-contrast) !important;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-day-card.selected:active {
+  transform: translateY(2px);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-month-panel {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-month-cell {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 1px 0 rgb(94 68 43 / 6%);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-month-cell:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-month-cell.today {
+  border-color: var(--accent);
+  box-shadow: inset 0 2px 0 var(--accent);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-month-cell.other-month {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--surface-soft) 55%, transparent);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-month-cell.month-start {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Detail: the week is the tray, each section is a smaller tray. */
+html:root[data-taste="tactile"] #calendarView .calendar-detail-container {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-detail-top {
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 0;
+  border: 0;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-detail-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: clamp(24px, 2.2vw, 30px);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-detail-sections {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-detail-section {
+  gap: 0;
+  padding: 14px 16px 6px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-detail-section h4 {
+  min-height: 36px;
+  margin: 0;
+  padding: 0 0 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-detail-section h4 .section-count {
+  min-width: 22px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+html:root[data-taste="tactile"] #calendarView .section-chip {
+  min-width: 0;
+  padding: 0 4px 0 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--section-fg, var(--muted));
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-items-list {
+  max-height: 440px;
+  padding-right: 0;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-item-card {
+  gap: 4px;
+  padding: 13px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: background-color 140ms ease, transform 100ms ease-out;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-item-card:last-child {
+  border-bottom: 0;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-item-card:hover {
+  background: var(--surface-soft);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-item-card:active {
+  transform: translateY(1px);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-item-title {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-item-detail {
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+html:root[data-taste="tactile"] #calendarView .cal-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-empty-text {
+  padding: 20px 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-style: normal;
+  text-align: left;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-summary-container {
+  margin-top: 0;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-summary-card {
+  gap: 20px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-summary-header-title h3 {
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-summary-icon {
+  color: var(--accent);
+}
+
+html:root[data-taste="tactile"] #calendarView .calendar-summary-metrics-grid {
+  padding: 18px 0;
+  border-color: var(--border);
+}
+
+html:root[data-taste="tactile"] #calendarView .summary-metric-box {
+  border-left: 1px solid var(--border);
+}
+
+html:root[data-taste="tactile"] #calendarView .summary-metric-box .metric-box-value {
+  font-family: var(--font-sans);
+  font-size: clamp(29px, 2.8vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+html:root[data-taste="tactile"] #calendarView .summary-metric-box.metric-total .metric-box-value {
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Dialogs and settings
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="tactile"] .modal-card,
+html:root[data-taste="tactile"] .settings-panel,
+html:root[data-taste="tactile"] .changelog-dialog,
+html:root[data-taste="tactile"] .startup-dialog,
+html:root[data-taste="tactile"] .setup-wizard {
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background: var(--surface);
+  background-image: none;
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="tactile"] .modal-overlay,
+html:root[data-taste="tactile"] .settings-panel::backdrop {
+  background: rgb(38 28 20 / 48%);
+}
+
+html:root[data-taste="tactile"] .modal-header,
+html:root[data-taste="tactile"] .settings-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="tactile"] .modal-header h2,
+html:root[data-taste="tactile"] .settings-header h2,
+html:root[data-taste="tactile"] .settings-section-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 21px;
+  letter-spacing: -0.025em;
+}
+
+html:root[data-taste="tactile"] .settings-nav {
+  border-right: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="tactile"] .settings-nav-item {
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="tactile"] .settings-nav-item:hover {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+html:root[data-taste="tactile"] .settings-nav-item[aria-current="page"] {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-soft);
+}
+
+html:root[data-taste="tactile"] .settings-badge,
+html:root[data-taste="tactile"] .settings-startup-tag {
+  border-radius: 5px;
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="tactile"] .record-window {
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="tactile"] .back-to-top {
+  right: 24px;
+  bottom: calc(104px + env(safe-area-inset-bottom));
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="tactile"] .skip-link {
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive: two shelves on a phone, dock clears the safe area and content
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 940px) {
+  html:root[data-taste="tactile"] .topbar {
+    min-height: 56px;
+    padding: 0 16px;
+  }
+
+  html:root[data-taste="tactile"] .shell-sidebar .identity {
+    top: 13px;
+    left: 16px;
+  }
+
+  html:root[data-taste="tactile"] .shell-sidebar .startup-switcher {
+    top: 56px;
+    left: 16px;
+    width: 228px;
+  }
+
+  html:root[data-taste="tactile"] .app-shell > main {
+    padding: 126px 22px 126px;
+  }
+
+  html:root[data-taste="tactile"] .topbar #settingsButton,
+  html:root[data-taste="tactile"] .topbar #projectLinksToggle {
+    width: 38px;
+    min-width: 38px;
+    padding: 0 !important;
+    font-size: 0 !important;
+  }
+
+  html:root[data-taste="tactile"] .topbar #settingsButton > span,
+  html:root[data-taste="tactile"] .topbar #projectLinksToggle > span,
+  html:root[data-taste="tactile"] .topbar #projectLinksToggle .project-links-chevron {
+    display: none;
+  }
+
+  html:root[data-taste="tactile"] .topbar #settingsButton svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  html:root[data-taste="tactile"] .topbar #projectLinksToggle svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  html:root[data-taste="tactile"] .topbar .topbar-actions {
+    width: auto;
+    flex-wrap: nowrap;
+  }
+
+  html:root[data-taste="tactile"] .topbar .save-state-text {
+    margin-right: 2px;
+  }
+  html:root[data-taste="tactile"] #calendarView .calendar-strip-top-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "nav side"
+      "strip strip";
+    gap: 10px 12px;
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-nav-column {
+    grid-area: nav;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-strip-side {
+    grid-area: side;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-strip-viewport {
+    grid-area: strip;
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 599px) {
+  html:root[data-taste="tactile"] .shell-sidebar .identity {
+    top: 14px;
+    left: 14px;
+  }
+
+  html:root[data-taste="tactile"] .shell-sidebar h1 {
+    display: none;
+  }
+
+  html:root[data-taste="tactile"] .shell-sidebar .startup-switcher {
+    top: 54px;
+    left: 14px;
+    width: 224px;
+  }
+
+  html:root[data-taste="tactile"] .topbar {
+    min-height: 52px;
+    padding: 0 12px;
+  }
+
+  html:root[data-taste="tactile"] .topbar .topbar-actions {
+    gap: 4px;
+  }
+
+  html:root[data-taste="tactile"] .topbar .icon-button,
+  html:root[data-taste="tactile"] .topbar .global-search-toggle,
+  html:root[data-taste="tactile"] .topbar #settingsButton,
+  html:root[data-taste="tactile"] .topbar #projectLinksToggle {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+  }
+
+  html:root[data-taste="tactile"] .topbar .save-state-text {
+    max-width: 94px;
+    height: 24px;
+    padding: 0 6px;
+    overflow: hidden;
+    font-size: 9.5px;
+    white-space: nowrap;
+  }
+
+  html:root[data-taste="tactile"] .app-shell > main {
+    padding: 120px 14px 122px;
+  }
+
+  html:root[data-taste="tactile"] .shell-heading h2,
+  html:root[data-taste="tactile"] #calendarView > .shell-heading h2 {
+    font-size: 29px;
+  }
+
+  html:root[data-taste="tactile"] .shell-heading h2::before {
+    width: 20px;
+    height: 3px;
+    margin-bottom: 10px;
+  }
+
+  html:root[data-taste="tactile"] #appTabs {
+    right: 8px;
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    left: 8px;
+    width: auto;
+    max-width: none;
+    padding: 5px;
+    border-radius: 15px;
+    transform: none;
+  }
+
+  html:root[data-taste="tactile"] #appTabs .app-tab-button {
+    min-width: 68px;
+    min-height: 52px;
+    padding: 4px 7px;
+    font-size: 9.5px;
+  }
+
+  html:root[data-taste="tactile"] #appTabs .app-tab-button img {
+    width: 17px;
+    height: 17px;
+    flex-basis: 17px;
+  }
+
+  html:root[data-taste="tactile"] #appTabs .app-tab-label {
+    gap: 2px;
+  }
+
+  html:root[data-taste="tactile"] .setup-badge {
+    bottom: calc(90px + env(safe-area-inset-bottom));
+    left: 14px;
+  }
+
+  html:root[data-taste="tactile"] .back-to-top {
+    right: 14px;
+    bottom: calc(92px + env(safe-area-inset-bottom));
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-strip-container {
+    padding: 12px;
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, 84px);
+    width: max-content;
+    min-width: 100%;
+    gap: 6px;
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-day-card {
+    min-height: 100px;
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-detail-section {
+    padding: 12px 12px 4px;
+  }
+
+  html:root[data-taste="tactile"] #calendarView .calendar-summary-card {
+    padding: 16px;
+  }
+
+  html:root[data-taste="tactile"] .metric-card {
+    min-height: 76px !important;
+    padding: 12px 12px !important;
+  }
+
+  html:root[data-taste="tactile"] .metric-value {
+    font-size: 23px !important;
+  }
+
+  html:root[data-taste="tactile"] .settings-panel {
+    width: 100vw;
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:root[data-taste="tactile"] #appTabs .app-tab-button,
+  html:root[data-taste="tactile"] #calendarView .calendar-day-card {
+    transition-duration: 0.01ms;
+  }
+}

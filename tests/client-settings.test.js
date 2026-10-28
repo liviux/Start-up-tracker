@@ -56,21 +56,23 @@ test("time zone, scope and title follow the settings", () => {
 
 test("the appearance is mirrored for the first paint, with system as no key", () => {
   const storage = memoryStorage();
-  Appearance.writeMirror(storage, { mode: "dark", theme: "paper" });
+  Appearance.writeMirror(storage, { mode: "dark", theme: "quiet" });
   assert.equal(storage.getItem(Appearance.THEME_KEY), "dark");
-  assert.equal(storage.getItem(Appearance.TASTE_KEY), "paper");
-  assert.deepEqual(Appearance.readMirror(storage), { mode: "dark", theme: "paper" });
+  assert.equal(storage.getItem(Appearance.TASTE_KEY), "quiet");
+  assert.deepEqual(Appearance.readMirror(storage), { mode: "dark", theme: "quiet" });
   Appearance.writeMirror(storage, { mode: "system", theme: "nonsense" });
   assert.equal(storage.getItem(Appearance.THEME_KEY), null, "boot.js then follows the system");
   assert.equal(storage.getItem(Appearance.TASTE_KEY), "studio");
   assert.equal(Appearance.resolveMode("system", true), "dark");
   assert.equal(Appearance.resolveMode("system", false), "light");
   assert.equal(Appearance.resolveMode("light", true), "light");
-  // The old letters keep meaning what they did: A Linear, B Studio, C Stark Minimalist.
-  assert.equal(Appearance.normalizeTaste("a"), "linear");
+  // Old saved ids open the new theme that carries their idea.
+  assert.equal(Appearance.normalizeTaste("a"), "meridian");
   assert.equal(Appearance.normalizeTaste("b"), "studio");
-  assert.equal(Appearance.normalizeTaste("c"), "minimal");
-  assert.deepEqual(Appearance.readMirror(memoryStorage({ [Appearance.TASTE_KEY]: "c" })), { mode: "system", theme: "minimal" });
+  assert.equal(Appearance.normalizeTaste("c"), "signal");
+  assert.equal(Appearance.normalizeTaste("cyber"), "nightshift");
+  assert.equal(Appearance.normalizeTaste("paper"), "broadsheet");
+  assert.deepEqual(Appearance.readMirror(memoryStorage({ [Appearance.TASTE_KEY]: "c" })), { mode: "system", theme: "signal" });
   const throwing = { getItem: () => { throw new Error("blocked"); } };
   assert.deepEqual(Appearance.readMirror(throwing), { mode: "system", theme: "studio" });
 });

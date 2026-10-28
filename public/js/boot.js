@@ -15,10 +15,16 @@
     // Storage can be blocked by the browser; fall back to the defaults.
   }
   if (theme !== "light" && theme !== "dark") theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  // The first variants were saved as letters: A Linear Precision, B Studio,
-  // C Stark Minimalist (the same table as LEGACY_TASTES in taste-switcher.js).
-  var legacy = { a: "linear", b: "studio", c: "minimal" };
+  // The first variants were saved as letters, and the palette-only themes by
+  // name (the same table as LEGACY_TASTES in taste-switcher.js).
+  var legacy = {
+    a: "meridian", b: "studio", c: "signal",
+    kinpaku: "lacquer", paper: "broadsheet", mirai: "shinjuku", aurora: "fieldnotes",
+    cyber: "nightshift", "soft-ui": "tactile", linear: "meridian", minimal: "signal", classic: "studio"
+  };
+  var themes = ["studio", "ledger", "nightshift", "fieldnotes", "meridian", "lacquer", "shinjuku", "quiet", "tactile", "broadsheet", "signal"];
   if (taste && Object.prototype.hasOwnProperty.call(legacy, taste)) taste = legacy[taste];
+  if (taste && themes.indexOf(taste) === -1) taste = "studio";
   document.documentElement.setAttribute("data-theme", theme);
   document.documentElement.setAttribute("data-taste", taste || "studio");
   // Without /s/<startupId>/ in the address there is no tracker to show, only

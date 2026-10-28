@@ -73,6 +73,14 @@
 .setup-context { min-height: 200px; }
 .setup-hint { margin: 0; color: var(--text-soft); font-size: 12px; font-weight: 400; line-height: 1.45; }
 .setup-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; align-items: start; }
+/* Theme step: the same screenshot cards as Settings, sized for the setup panel. */
+.setup-theme-field { margin-bottom: 4px; }
+.setup-theme-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 175px), 1fr)); gap: 10px; margin-top: 3px; }
+.setup-theme-grid .taste-theme-preview { aspect-ratio: 36 / 25; }
+.setup-theme-grid .taste-theme-body { gap: 3px; padding: 8px 9px 9px; }
+.setup-theme-grid .taste-theme-name { font-size: 0.78rem; }
+.setup-theme-grid .taste-theme-desc { font-size: 0.68rem; }
+.setup-theme-grid .taste-theme-credit { font-size: 0.61rem; }
 .setup-body > .secondary-button { justify-self: start; }
 .setup-check { display: flex; gap: 8px; align-items: center; font-weight: 600; }
 .setup-error { margin: 0; color: var(--danger, #b42318); font-size: 13px; font-weight: 600; }

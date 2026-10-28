@@ -1,0 +1,1810 @@
+/* Theme: ledger (light signature).
+   Direction: a founder's working ledger; a ruled top index replaces the sidebar,
+   a thin utility line holds actions, figures sit on a strict report baseline.
+   Palette source: ui-ux-pro-max color search "warm paper ink green financial"
+   (warm paper ground, ink text, one dark-green data colour).
+   Type: Iowan Old Style / Palatino / Georgia serif for figures and headings,
+   Plus Jakarta Sans for interface text. Scoped to html[data-taste="ledger"]. */
+
+html:root[data-taste="ledger"] {
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino,
+    "Liberation Serif", Georgia, "Times New Roman", serif;
+
+  --bg: #f2efe6;
+  --surface: #fbf9f3;
+  --surface-soft: #f6f2e8;
+  --surface-strong: #eae5d7;
+  --text: #1b1d18;
+  --text-soft: #3d4038;
+  --muted: #62665a;
+  --muted-strong: #4c5146;
+
+  --border: #d5cfbf;
+  --border-strong: #a8a08d;
+
+  --accent: #1e5c40;
+  --accent-hover: #14452f;
+  --accent-contrast: #fbf9f3;
+  --accent-soft: #e2e9df;
+  --accent-ring: 0 0 0 3px rgb(30 92 64 / 22%);
+
+  --page-accent-rgb: 30, 92, 64;
+  --page-support-rgb: 138, 90, 0;
+  --page-contrast-rgb: 27, 29, 24;
+  --page-title-gradient-end: var(--accent);
+
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-soft);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: none;
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: none;
+  --shadow-soft: none;
+  --shadow-lg: 0 18px 48px rgb(27 29 24 / 18%);
+
+  --radius: 2px;
+  --radius-sm: 1px;
+  --radius-lg: 3px;
+  --radius-pill: 0;
+
+  --control-height: 32px;
+  --control-height-sm: 26px;
+  --pill-height: 20px;
+  --row-gap: 16px;
+
+  --sidebar-width: 0px;
+  --sidebar-bg: #e9e3d4;
+  --sidebar-text: var(--text);
+  --sidebar-muted: var(--muted);
+
+  --amber: #8a5a00;
+  --red: #9b2c20;
+  --green: var(--accent);
+  --teal: #245a55;
+  --blue: #2e4c6d;
+
+  --ledger-nav-h: 64px;
+  --ledger-rule: 1px solid var(--text);
+}
+
+html:root[data-taste="ledger"][data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #151610;
+  --surface: #1b1c15;
+  --surface-soft: #202117;
+  --surface-strong: #26281d;
+  --text: #e9e3d3;
+  --text-soft: #c9c3b2;
+  --muted: #9a9787;
+  --muted-strong: #b4b0a0;
+
+  --border: #3a3b2e;
+  --border-strong: #5a5b49;
+
+  --accent: #93c6a5;
+  --accent-hover: #b4dcc2;
+  --accent-contrast: #0f2317;
+  --accent-soft: #263325;
+  --accent-ring: 0 0 0 3px rgb(147 198 165 / 26%);
+
+  --page-accent-rgb: 147, 198, 165;
+  --page-support-rgb: 214 168 90;
+  --page-contrast-rgb: 233, 227, 211;
+
+  --sidebar-bg: #0f100b;
+  --sidebar-text: #d9d3c2;
+  --sidebar-muted: #9a9787;
+
+  --amber: #d6a85a;
+  --red: #e08a7a;
+  --teal: #7fb8ac;
+  --blue: #9ab5d4;
+}
+
+/* ------------------------------------------------------------------ shell */
+
+html[data-taste="ledger"] body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+html:root[data-taste="ledger"] .app-shell {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+html:root[data-taste="ledger"] .app-shell > main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 22px 28px 56px;
+}
+
+/* The sidebar becomes a ruled index band across the top. */
+html:root[data-taste="ledger"] .shell-sidebar {
+  position: sticky;
+  inset: 0 0 auto 0;
+  top: 0;
+  z-index: 70;
+  display: grid;
+  grid-template-columns: auto minmax(150px, 198px) minmax(0, 1fr) auto;
+  grid-template-rows: var(--ledger-nav-h);
+  align-items: center;
+  gap: 0 20px;
+  width: 100%;
+  height: var(--ledger-nav-h);
+  padding: 0 28px;
+  overflow: visible;
+  background: var(--surface);
+  color: var(--text);
+  border-bottom: var(--ledger-rule);
+}
+
+html:root[data-taste="ledger"] .shell-sidebar .identity {
+  min-width: 0;
+  padding: 0;
+}
+
+html:root[data-taste="ledger"] .shell-sidebar .title-row {
+  gap: 9px;
+  white-space: nowrap;
+}
+
+html:root[data-taste="ledger"] .shell-sidebar .topbar-logo {
+  width: 22px;
+  height: 22px;
+  filter: grayscale(1) contrast(1.15);
+}
+
+html:root[data-taste="ledger"] .shell-sidebar h1 {
+  color: var(--text);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+
+/* Startup switcher: a compact ledger field, menu floats below the band. */
+html:root[data-taste="ledger"] .startup-switcher {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+}
+
+html:root[data-taste="ledger"] .startup-switcher-button {
+  min-height: 38px;
+  padding: 4px 8px;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text);
+}
+
+html:root[data-taste="ledger"] .startup-switcher-button:hover {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+}
+
+html:root[data-taste="ledger"] .startup-switcher.open .startup-switcher-button {
+  border-color: var(--text);
+}
+
+html:root[data-taste="ledger"] .startup-switcher .startup-icon {
+  flex-basis: 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 1px;
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="ledger"] .startup-switcher-caption {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-variant-caps: all-small-caps;
+  text-transform: none;
+}
+
+html:root[data-taste="ledger"] .startup-switcher-name {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+html:root[data-taste="ledger"] .startup-switcher-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 90;
+  width: 264px;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--text);
+  border-radius: 1px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="ledger"] .startup-menu-item {
+  border-radius: 0;
+  color: var(--text);
+  font-size: 12px;
+}
+
+html:root[data-taste="ledger"] .startup-menu-item:hover,
+html:root[data-taste="ledger"] .startup-menu-item:focus-visible {
+  background: var(--surface-strong);
+}
+
+html:root[data-taste="ledger"] .startup-menu-item .startup-icon {
+  border-radius: 0;
+}
+
+/* The tabs are an index, not pills. */
+html:root[data-taste="ledger"] #appTabs {
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible !important;
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 0 11px;
+  gap: 6px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button:last-child {
+  border-right: 1px solid var(--border);
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button:active {
+  transform: none;
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button img {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  opacity: 0.62;
+  filter: grayscale(1);
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-label {
+  display: inline;
+  flex-direction: initial;
+  align-items: initial;
+  line-height: 1.2;
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button::after {
+  min-width: 17px;
+  height: 13px;
+  padding: 0 3px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  content: attr(data-shortname);
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button:hover {
+  background: var(--surface-strong) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  transform: none;
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button.active {
+  background: var(--text) !important;
+  border-color: var(--text) !important;
+  color: var(--surface) !important;
+  box-shadow: inset 0 -2px 0 var(--accent) !important;
+  font-weight: 700;
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button.active img {
+  opacity: 1;
+  filter: grayscale(1) invert(1);
+}
+
+html:root[data-taste="ledger"] #appTabs .app-tab-button.active::after {
+  border-color: rgb(255 255 255 / 28%);
+  color: var(--surface);
+}
+
+html:root[data-taste="ledger"] .setup-badge {
+  align-self: center;
+  min-height: 30px;
+  margin: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--amber);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--amber);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+html:root[data-taste="ledger"] .setup-badge-dot {
+  border-radius: 0;
+  background: var(--amber);
+}
+
+html:root[data-taste="ledger"] .sidebar-footer {
+  display: none;
+}
+
+/* The topbar is a thin utility line under the index. */
+html:root[data-taste="ledger"] .topbar {
+  position: relative;
+  top: auto;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0 28px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: none;
+}
+
+html:root[data-taste="ledger"] .shell-breadcrumb {
+  gap: 8px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="ledger"] .shell-breadcrumb span:last-child {
+  color: var(--text);
+  font-weight: 600;
+}
+
+html:root[data-taste="ledger"] .topbar-actions {
+  gap: 4px;
+  margin-left: auto;
+}
+
+html:root[data-taste="ledger"] .topbar .icon-button,
+html:root[data-taste="ledger"] .topbar .global-search-toggle {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border: 1px solid transparent;
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="ledger"] .topbar .icon-button:hover,
+html:root[data-taste="ledger"] .topbar .global-search-toggle:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+}
+
+html:root[data-taste="ledger"] .topbar .icon-button svg {
+  width: 15px;
+  height: 15px;
+}
+
+html:root[data-taste="ledger"] .topbar :is(#settingsButton, #projectLinksToggle) {
+  height: 30px;
+  min-height: 30px;
+  padding: 0 9px;
+  gap: 6px;
+  border: 1px solid transparent;
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+html:root[data-taste="ledger"] .topbar :is(#settingsButton, #projectLinksToggle):hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+}
+
+html:root[data-taste="ledger"] .topbar :is(#settingsButton, #projectLinksToggle) svg {
+  width: 13px;
+  height: 13px;
+  color: var(--accent);
+}
+
+html:root[data-taste="ledger"] .save-state-text {
+  height: 20px;
+  margin-right: 4px;
+  padding: 0 2px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+
+html:root[data-taste="ledger"] .save-state-text.saved,
+html:root[data-taste="ledger"] .save-state-text.synced {
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="ledger"] .global-search.expanded .global-search-field {
+  width: 260px;
+  max-width: 260px;
+  height: 30px;
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html:root[data-taste="ledger"] .global-search-field input {
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+html:root[data-taste="ledger"] .global-search-results,
+html:root[data-taste="ledger"] .project-links-menu {
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="ledger"] .global-search-results {
+  top: calc(100% + 8px);
+}
+
+/* ----------------------------------------------------------- page heading */
+
+html:root[data-taste="ledger"] .shell-heading {
+  display: block;
+  margin: 0 0 16px;
+  padding: 0 0 12px;
+  border-bottom: var(--ledger-rule);
+}
+
+html:root[data-taste="ledger"] .shell-heading h2 {
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 2.8vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  line-height: 1.05;
+}
+
+html:root[data-taste="ledger"] .shell-heading p {
+  max-width: 72ch;
+  margin: 6px 0 0;
+  color: var(--muted-strong);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+html:root[data-taste="ledger"] #calendarView > .shell-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px 24px;
+  margin-bottom: 14px;
+}
+
+html:root[data-taste="ledger"] #calendarView > .shell-heading h2 {
+  font-size: clamp(30px, 2.6vw, 38px);
+  letter-spacing: -0.6px;
+}
+
+html:root[data-taste="ledger"] #calendarView > .shell-heading p {
+  margin-top: 4px;
+  font-size: 11.5px;
+}
+
+html:root[data-taste="ledger"] .scope-switch {
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: var(--surface);
+}
+
+html:root[data-taste="ledger"] .scope-switch-button {
+  min-height: 26px;
+  padding: 2px 10px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+html:root[data-taste="ledger"] .scope-switch-button:first-child {
+  border-left: 0;
+}
+
+html:root[data-taste="ledger"] .scope-switch-button:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="ledger"] .scope-switch-button[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--text);
+  color: var(--surface);
+  box-shadow: none;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------- summary figures */
+
+html:root[data-taste="ledger"] :is(.summary-grid, .manager-summary-grid, .feedback-summary-grid) {
+  position: relative;
+  border: 0;
+  border-top: 2px solid var(--text);
+  border-bottom: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="ledger"] .metric-card {
+  position: relative;
+  border-right: 1px solid var(--border-strong);
+}
+
+html:root[data-taste="ledger"] .metric-card::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: transparent;
+}
+
+html:root[data-taste="ledger"] .metric-card:hover::after,
+html:root[data-taste="ledger"] .metric-card[data-metric="done"]::after {
+  background: var(--accent);
+}
+
+html:root[data-taste="ledger"] .metric-card:last-child {
+  border-right: 0;
+}
+
+html:root[data-taste="ledger"] .metric-label {
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.09em;
+  line-height: 1.3;
+}
+
+html:root[data-taste="ledger"] .metric-value {
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="ledger"] .metric-card[data-metric="done"] .metric-value,
+html:root[data-taste="ledger"] .metric-card[data-metric="received"] .metric-value {
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------- surfaces */
+
+html:root[data-taste="ledger"] :is(.panel, .manager-card, .config-panel, .company-card,
+  .company-hero, .calendar-summary-card, .settings-panel, .modal, .record-window) {
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="ledger"] .panel-heading {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="ledger"] .panel-heading h2,
+html:root[data-taste="ledger"] .panel-heading h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+html:root[data-taste="ledger"] .eyebrow {
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------- calendar band */
+
+html:root[data-taste="ledger"] #calendarView .calendar-layout-container {
+  gap: 14px;
+  margin-top: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-strip-container,
+html:root[data-taste="ledger"] #calendarView .calendar-detail-container,
+html:root[data-taste="ledger"] #calendarView .calendar-summary-card {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-strip-container {
+  gap: 0;
+  padding: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-strip-top-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-nav-column {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-strip-side {
+  flex-direction: row;
+  align-items: center;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-strip-side-actions {
+  flex-direction: row;
+  align-items: center;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-nav-btn {
+  width: 30px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-nav-btn:hover {
+  border-color: var(--text);
+  background: var(--surface-strong);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-month-toggle.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-strip-viewport {
+  min-width: 0;
+  border-radius: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card {
+  isolation: isolate;
+  min-height: 94px;
+  padding: 9px 7px 8px;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  justify-content: flex-start;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card:hover {
+  border-color: var(--border);
+  background: var(--surface-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card:active {
+  transform: none;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card.today {
+  border-color: var(--border);
+  box-shadow: inset 0 2px 0 var(--accent);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card.today::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  left: auto;
+  width: 5px;
+  height: 5px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  box-shadow: none;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card.selected {
+  outline: 2px solid var(--text);
+  outline-offset: -2px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card.selected.today::before {
+  background: var(--accent-contrast);
+}
+
+html:root[data-taste="ledger"][data-theme="dark"] #calendarView .calendar-day-card.selected::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #214b35;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card .day-name,
+html:root[data-taste="ledger"] #calendarView .calendar-day-card .day-month {
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  line-height: 1.3;
+  font-variant-caps: all-small-caps;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card .day-name {
+  margin-bottom: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card .day-month {
+  margin-top: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card .day-number {
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 3px 0 1px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card .day-summary {
+  gap: 2px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+html:root[data-taste="ledger"] #calendarView .summary-pill,
+html:root[data-taste="ledger"] #calendarView .cal-title-badge {
+  min-width: 15px;
+  padding: 0 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 14px;
+  --section-bg: transparent;
+  --section-fg: var(--text-soft);
+  --section-border: var(--border-strong);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-day-card.selected .summary-pill {
+  --section-bg: transparent;
+  --section-fg: var(--accent-contrast);
+  --section-border: rgb(251 249 243 / 42%);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-section .section-chip,
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table .cat-pill {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-strip-side-actions {
+  gap: 6px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-today-btn,
+html:root[data-taste="ledger"] #calendarView .secondary-button {
+  border-radius: 1px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-toggles {
+  margin: 0;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-filter-bar {
+  margin: 0;
+  padding: 6px 12px 8px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+/* Month panel inherits the ruled paper. */
+html:root[data-taste="ledger"] #calendarView .calendar-month-panel {
+  padding: 12px;
+  border: 0;
+  border-top: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-month-title {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-month-cell {
+  border-radius: 0;
+}
+
+/* ------------------------------------------------------- detail + summary */
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-container {
+  padding: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px 20px;
+  padding: 12px 16px;
+  border-bottom: var(--ledger-rule);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: clamp(21px, 1.9vw, 27px);
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-mode-toggle {
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+}
+
+html:root[data-taste="ledger"] #calendarView .focus-date-mode-btn {
+  border-radius: 0;
+  font-size: 10px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-sections {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-section {
+  gap: 0;
+  padding: 0 14px 12px;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-section:last-child {
+  border-right: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-section h4 {
+  min-height: 38px;
+  margin: 0;
+  padding: 10px 0 8px;
+  align-items: center;
+  border-bottom: 1px solid var(--text);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-detail-section h4 .section-count {
+  min-width: 20px;
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 15px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-card {
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-card:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-detail {
+  color: var(--muted-strong);
+  font-size: 11px;
+}
+
+html:root[data-taste="ledger"] #calendarView .cal-badge {
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 15px;
+}
+
+html:root[data-taste="ledger"] #calendarView .cal-badge[class*="type-"] {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--muted-strong);
+}
+
+html:root[data-taste="ledger"] #calendarView .cal-badge:is(.status-done, .status-completed,
+  .status-depus, .status-active, .status-approved, .status-accepted, .status-received) {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-empty-text {
+  padding: 22px 2px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-card {
+  gap: 0;
+  padding: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-header {
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: var(--ledger-rule);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-header-title h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-icon {
+  color: var(--accent);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-subtitle {
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-metrics-grid {
+  gap: 0;
+  padding: 0;
+  border-top: 0;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+html:root[data-taste="ledger"] #calendarView .summary-metric-box {
+  gap: 4px;
+  padding: 10px 16px;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .summary-metric-box .metric-box-label {
+  color: var(--muted-strong);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-caps: all-small-caps;
+}
+
+html:root[data-taste="ledger"] #calendarView .summary-metric-box .metric-box-value {
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="ledger"] #calendarView .summary-metric-box.metric-total .metric-box-value {
+  color: var(--accent);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table-wrapper {
+  overflow-x: auto;
+  border: 0;
+  border-radius: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table {
+  font-size: 11px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table th {
+  background: var(--surface-soft);
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table th,
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table .num-val,
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table tfoot .highlight-total {
+  font-family: var(--font-serif);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 13px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table tfoot tr.grand-total-row td {
+  border-top: 2px solid var(--text);
+  background: transparent;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-summary-table tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-card .status-pill {
+  min-height: 17px;
+  padding: 0 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 15px;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-card .status-pill[data-status-group="done"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-card .status-pill[data-status-group="closed"] {
+  border-color: color-mix(in srgb, var(--red) 45%, var(--border));
+  color: var(--red);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-card .status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 17px;
+  padding: 0 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 15px;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-card .status-badge.status-group-done {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+html:root[data-taste="ledger"] #calendarView .calendar-item-card .status-badge.status-group-closed {
+  border-color: color-mix(in srgb, var(--red) 45%, var(--border));
+  color: var(--red);
+}
+
+/* ----------------------------------------------------------------- filters */
+
+html:root[data-taste="ledger"] :is(.focus-filter-shell-summary, .manager-focus-filter-shell-summary) {
+  min-height: 38px;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="ledger"] :is(.focus-filter-shell, .manager-focus-filter-shell):is(:hover, [open]) > summary {
+  border-color: var(--text);
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="ledger"] :is(.focus-filter-shell-title, .manager-focus-filter-shell-title) {
+  color: var(--muted-strong);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+html:root[data-taste="ledger"] :is(.focus-filter-shell-state, .manager-focus-filter-shell-state) {
+  min-height: 20px;
+  padding: 0 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+}
+
+html:root[data-taste="ledger"] .manager-focus-filter-group summary,
+html:root[data-taste="ledger"] .manager-focus-filter-panel {
+  border-radius: 1px;
+  box-shadow: none;
+}
+
+/* ----------------------------------------------------------------- tables */
+
+html:root[data-taste="ledger"] .table-wrap {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html:root[data-taste="ledger"] .tracker-table,
+html:root[data-taste="ledger"] .data-table {
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+html:root[data-taste="ledger"] :is(.tracker-table, .data-table) thead th {
+  padding: 8px 10px;
+  border-top: 2px solid var(--text);
+  border-bottom: 1px solid var(--text);
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="ledger"] :is(.tracker-table, .data-table) td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+}
+
+html:root[data-taste="ledger"] :is(.tracker-table, .data-table) tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="ledger"] :is(.tracker-table, .data-table) :is(td, th).num-val,
+html:root[data-taste="ledger"] :is(.tracker-table, .data-table) .amount,
+html:root[data-taste="ledger"] :is(.tracker-table, .data-table) .money {
+  font-family: var(--font-serif);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 13px;
+}
+
+/* --------------------------------------------------------------- controls */
+
+html:root[data-taste="ledger"] .primary-button {
+  min-height: 32px;
+  border: 1px solid var(--text);
+  border-radius: 1px;
+  background: var(--text);
+  color: var(--surface);
+  box-shadow: none;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="ledger"] .primary-button:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html:root[data-taste="ledger"] .secondary-button {
+  min-height: 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="ledger"] .secondary-button:hover {
+  border-color: var(--text);
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="ledger"] .icon-button {
+  border-radius: 1px;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="ledger"] .status-pill,
+html:root[data-taste="ledger"] .priority-pill,
+html:root[data-taste="ledger"] .category-pill,
+html:root[data-taste="ledger"] .tag-pill {
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+}
+
+html:root[data-taste="ledger"] .app-tab-badge {
+  border-radius: 0;
+  background: var(--amber);
+  color: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+}
+
+html:root[data-taste="ledger"] .section-chip {
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+html:root[data-taste="ledger"] .calendar-filter-option span {
+  border-radius: 0;
+  font-family: var(--font-sans);
+  font-size: 10px;
+}
+
+html:root[data-taste="ledger"] :is(input, select, textarea) {
+  border-radius: 1px;
+  background: var(--surface);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+html:root[data-taste="ledger"] :is(input, select, textarea):focus {
+  border-color: var(--accent);
+  box-shadow: var(--accent-ring);
+}
+
+html:root[data-taste="ledger"] .form-row label,
+html:root[data-taste="ledger"] .startup-field {
+  color: var(--muted-strong);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-variant-caps: all-small-caps;
+}
+
+/* --------------------------------------------------------- dialogs + focus */
+
+html:root[data-taste="ledger"] .settings-panel,
+html:root[data-taste="ledger"] .modal,
+html:root[data-taste="ledger"] .record-window {
+  border: 1px solid var(--text);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="ledger"] .settings-nav {
+  border-right: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="ledger"] .settings-nav-item[aria-current="page"] {
+  border-left: 2px solid var(--accent);
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html:root[data-taste="ledger"] :is(.settings-section-title, .modal-header h2,
+  .record-window-heading h2) {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+html:root[data-taste="ledger"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+html:root[data-taste="ledger"] .shell-sidebar button:focus-visible,
+html:root[data-taste="ledger"] .shell-sidebar :is(a, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+html:root[data-taste="ledger"] ::selection {
+  background: var(--text);
+  color: var(--surface);
+}
+
+html:root[data-taste="ledger"] .skip-link {
+  border-radius: 0;
+  background: var(--text);
+  color: var(--surface);
+}
+
+/* -------------------------------------------------------------- responsive */
+
+@media (max-width: 1240px) {
+  html:root[data-taste="ledger"] .shell-sidebar {
+    gap: 0 14px;
+    padding-inline: 20px;
+  }
+
+  html:root[data-taste="ledger"] .shell-sidebar h1 {
+    font-size: 17px;
+  }
+
+  html:root[data-taste="ledger"] #appTabs .app-tab-button {
+    padding-inline: 8px;
+    font-size: 10.5px;
+  }
+}
+
+@media (max-width: 1023px) {
+  html:root[data-taste="ledger"] {
+    --ledger-nav-h: 112px;
+  }
+
+  html:root[data-taste="ledger"] .app-shell > main {
+    padding: 20px 20px 48px;
+  }
+
+  html:root[data-taste="ledger"] .shell-sidebar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    height: auto;
+    min-height: var(--ledger-nav-h);
+    gap: 8px 14px;
+    padding: 9px 20px 8px;
+  }
+
+  html:root[data-taste="ledger"] .shell-sidebar .identity {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  html:root[data-taste="ledger"] .startup-switcher {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    width: min(230px, 48vw);
+  }
+
+  html:root[data-taste="ledger"] #appTabs {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    height: 44px;
+    border-top: 1px solid var(--border);
+    padding-top: 6px;
+  }
+
+  html:root[data-taste="ledger"] #appTabs .app-tab-button {
+    justify-content: center;
+    border-left: 1px solid var(--border);
+    border-bottom: 0;
+    padding-inline: 5px;
+    font-size: 10px;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-strip-top-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "nav side"
+      "strip strip";
+    gap: 8px 12px;
+    align-items: center;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-nav-column {
+    grid-area: nav;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-strip-side {
+    grid-area: side;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: auto;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-strip-side-actions {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-strip-viewport {
+    grid-area: strip;
+    width: 100%;
+  }
+
+  html:root[data-taste="ledger"] #appTabs .app-tab-button.active {
+    box-shadow: inset 0 -2px 0 var(--accent) !important;
+  }
+
+  html:root[data-taste="ledger"] #appTabs .app-tab-button::after {
+    display: none;
+  }
+
+  html:root[data-taste="ledger"] .topbar {
+    padding-inline: 20px;
+  }
+
+  html:root[data-taste="ledger"] .shell-breadcrumb {
+    display: flex;
+  }
+}
+
+@media (max-width: 767px) {
+  html:root[data-taste="ledger"] .app-shell > main {
+    padding: 16px 14px 40px;
+  }
+
+  html:root[data-taste="ledger"] .shell-sidebar {
+    padding: 8px 14px 7px;
+  }
+
+  html:root[data-taste="ledger"] .shell-sidebar h1 {
+    font-size: 16px;
+  }
+
+  html:root[data-taste="ledger"] .shell-sidebar .topbar-logo {
+    width: 20px;
+    height: 20px;
+  }
+
+  html:root[data-taste="ledger"] .startup-switcher {
+    width: auto;
+    max-width: 52vw;
+  }
+
+  html:root[data-taste="ledger"] .startup-switcher-caption {
+    display: none;
+  }
+
+  html:root[data-taste="ledger"] .startup-switcher-button {
+    min-height: 34px;
+    max-width: 52vw;
+  }
+
+  html:root[data-taste="ledger"] .startup-switcher-name {
+    max-width: 28vw;
+  }
+
+  html:root[data-taste="ledger"] #appTabs {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0;
+    height: auto;
+    overflow: visible !important;
+  }
+
+  html:root[data-taste="ledger"] #appTabs .app-tab-button {
+    grid-column: span 3;
+    height: auto;
+    min-height: 31px;
+    padding: 4px 3px;
+    border-left: 1px solid var(--border);
+    white-space: normal;
+    text-align: center;
+    line-height: 1.15;
+    font-size: 9.5px;
+  }
+
+  html:root[data-taste="ledger"] #appTabs .app-tab-button:nth-child(n + 5) {
+    grid-column: span 4;
+  }
+
+  html:root[data-taste="ledger"] #appTabs .app-tab-button img {
+    display: none;
+  }
+
+  html:root[data-taste="ledger"] .topbar {
+    height: 38px;
+    min-height: 38px;
+    padding-inline: 14px;
+  }
+
+  html:root[data-taste="ledger"] .shell-breadcrumb {
+    display: none;
+  }
+
+  html:root[data-taste="ledger"] .topbar .icon-button,
+  html:root[data-taste="ledger"] .topbar .global-search-toggle {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+
+  html:root[data-taste="ledger"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    height: 30px;
+    min-height: 30px;
+    padding-inline: 7px;
+  }
+
+  html:root[data-taste="ledger"] .save-state-text {
+    margin-right: 0;
+    font-size: 8px;
+  }
+
+  html:root[data-taste="ledger"] .save-state-text > span:last-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  html:root[data-taste="ledger"] .global-search.expanded .global-search-field {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 14px;
+    left: auto;
+    width: min(300px, calc(100vw - 28px));
+    max-width: none;
+    background: var(--surface);
+    box-shadow: var(--shadow-lg);
+  }
+
+  html:root[data-taste="ledger"] .global-search.expanded .global-search-results {
+    right: 14px;
+    width: min(340px, calc(100vw - 28px));
+  }
+
+  html:root[data-taste="ledger"] .shell-heading {
+    padding-bottom: 10px;
+  }
+
+  html:root[data-taste="ledger"] .shell-heading h2 {
+    font-size: 28px;
+  }
+
+  html:root[data-taste="ledger"] #calendarView > .shell-heading {
+    align-items: flex-start;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-strip-top-row {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-top {
+    padding: 10px 12px;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-section {
+    padding-inline: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-section:nth-child(2n) {
+    border-right: 0;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-section h4 {
+    min-height: 34px;
+    font-size: 9px;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-summary-header {
+    padding: 10px 12px;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .summary-metric-box {
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 479px) {
+  html:root[data-taste="ledger"] .shell-sidebar h1 {
+    display: none;
+  }
+
+  html:root[data-taste="ledger"] #appTabs {
+    height: auto;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, minmax(68px, 1fr));
+    gap: 0;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-day-card {
+    min-width: 68px;
+  }
+
+  html:root[data-taste="ledger"] #appTabs .app-tab-button {
+    min-height: 32px;
+    font-size: 9.5px;
+    letter-spacing: 0.01em;
+  }
+
+  html:root[data-taste="ledger"] .topbar :is(#settingsButton, #projectLinksToggle) span,
+  html:root[data-taste="ledger"] .topbar .project-links-chevron {
+    display: none;
+  }
+
+  html:root[data-taste="ledger"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    width: 32px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-section,
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-section:nth-child(2n) {
+    border-right: 0;
+  }
+
+  html:root[data-taste="ledger"] #calendarView .calendar-detail-section:last-child {
+    border-bottom: 0;
+  }
+}
+

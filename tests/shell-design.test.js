@@ -108,14 +108,23 @@ test("every local asset URL on the page is absolute, because the page is served 
     assert.ok(fs.existsSync(path.join(root, url.split("?")[0])), `${url} must exist in public/`);
   }
   // CSS url()s resolve against the stylesheet, so they may stay relative, but
-  // none may point at the page's own folder.
-  for (const file of fs.readdirSync(path.join(root, "styles"))) {
-    const css = fs.readFileSync(path.join(root, "styles", file), "utf8");
+  // none may point at the page's own folder. Themes live in styles/themes/.
+  const cssFiles = [];
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(file);
+      else if (entry.name.endsWith(".css")) cssFiles.push(file);
+    }
+  };
+  walk(path.join(root, "styles"));
+  for (const file of cssFiles) {
+    const css = fs.readFileSync(file, "utf8");
     for (const match of css.matchAll(/url\((["']?)([^"')]+)\1\)/g)) {
       const target = match[2];
       if (/^(?:data:|https?:|#)/i.test(target)) continue;
-      const resolved = target.startsWith("/") ? path.join(root, target) : path.resolve(root, "styles", target);
-      assert.ok(fs.existsSync(resolved), `${file}: ${target} must resolve to a file`);
+      const resolved = target.startsWith("/") ? path.join(root, target) : path.resolve(path.dirname(file), target);
+      assert.ok(fs.existsSync(resolved), `${path.relative(root, file)}: ${target} must resolve to a file`);
     }
   }
 });
@@ -159,11 +168,11 @@ test("initial paint and application boot respect saved and system themes", () =>
 });
 
 test("the first paint maps saved theme styles the same way as the appearance module", () => {
-  // Before Part 3 the first variants were saved as letters. boot.js runs
+  // Earlier variants were saved as letters, then by palette name. boot.js runs
   // before anything else loads, so it carries its own copy of the table.
   const Appearance = require("../public/scripts/taste-switcher.js");
   const inline = fs.readFileSync(path.join(root, "js", "boot.js"), "utf8");
-  for (const saved of [null, "a", "b", "c", ...Appearance.THEMES]) {
+  for (const saved of [null, "a", "b", "c", ...Object.keys(Appearance.LEGACY_TASTES), "nonsense", ...Appearance.THEMES]) {
     let painted;
     vm.runInNewContext(inline, {
       localStorage: { getItem: (key) => (key === "startup-tracker-taste" ? saved : null) },
@@ -172,12 +181,30 @@ test("the first paint maps saved theme styles the same way as the appearance mod
     });
     assert.equal(painted, Appearance.normalizeTaste(saved), `saved ${saved}`);
   }
-  assert.deepEqual(Appearance.LEGACY_TASTES, { a: "linear", b: "studio", c: "minimal" });
+  assert.deepEqual(Appearance.LEGACY_TASTES, {
+    a: "meridian",
+    b: "studio",
+    c: "signal",
+    kinpaku: "lacquer",
+    paper: "broadsheet",
+    mirai: "shinjuku",
+    aurora: "fieldnotes",
+    cyber: "nightshift",
+    "soft-ui": "tactile",
+    linear: "meridian",
+    minimal: "signal",
+    classic: "studio",
+  });
   // No style sheet still answers to the letters.
   const variants = fs.readFileSync(path.join(root, "styles", "taste-variants.css"), "utf8");
+  const bundle = fs.readFileSync(path.join(root, "styles.css"), "utf8");
   assert.doesNotMatch(variants, /data-taste="[abc]"/);
-  for (const theme of Appearance.THEMES.filter((id) => id !== "classic")) {
-    assert.match(variants, new RegExp(`data-taste="${theme}"`), `${theme} has styles`);
+  assert.match(variants, /data-taste="studio"/, "the default theme keeps its styles");
+  for (const theme of Appearance.THEMES.filter((id) => id !== "studio")) {
+    const file = path.join(root, "styles", "themes", `${theme}.css`);
+    assert.ok(fs.existsSync(file), `${theme} has a stylesheet`);
+    assert.match(fs.readFileSync(file, "utf8"), new RegExp(`data-taste="${theme}"`), `${theme} has scoped styles`);
+    assert.match(bundle, new RegExp(`styles/themes/${theme}\\.css`), `${theme} is imported`);
   }
 });
 

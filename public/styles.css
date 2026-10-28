@@ -25,3 +25,14 @@
 @import url("./styles/taste-variants.css");
 @import url("./styles/consistency.css");
 @import url("./styles/changelog.css");
+/* Theme styles load last: each one may rearrange the shell, not only recolour it. */
+@import url("./styles/themes/ledger.css");
+@import url("./styles/themes/nightshift.css");
+@import url("./styles/themes/fieldnotes.css");
+@import url("./styles/themes/meridian.css");
+@import url("./styles/themes/lacquer.css");
+@import url("./styles/themes/shinjuku.css");
+@import url("./styles/themes/quiet.css");
+@import url("./styles/themes/tactile.css");
+@import url("./styles/themes/broadsheet.css");
+@import url("./styles/themes/signal.css");

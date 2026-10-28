@@ -1,51 +1,80 @@
 /* ==========================================================================
-   STARTUP TRACKER - DESIGN TASTE VARIANTS
-   Based on taste-skill & ui-ux-pro-max-skill guidelines.
-   Includes:
-     - Studio (Apple-inspired fluid depth - Default)
-     - Theme A: Aurora UI (Luminous Northern Lights mesh, electric cyan/violet)
-     - Theme B: OLED Cyber (Deep OLED black, neon emerald telemetry, cockpit density)
-     - Theme C: Soft UI Evolution (Tactile dual-shadow depth, modern neumorphic)
-     - Linear Precision (Matte obsidian, 1px structural borders, electric indigo)
-     - Stark Minimalist (High-utility monochrome, sharp 3px wireframe geometry)
-     - Classic (original baseline)
+   STARTUP TRACKER - DEFAULT THEME AND THEME PICKER
+   Studio (Apple-inspired fluid depth) is the default. The ten layout themes
+   built from the five design skills live in styles/themes/, one file each,
+   and load after this file so they can rearrange the shell.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   CONFIG DRAWER DESIGN STYLE THEMES
+   THEME PICKER
+   Each card is a screenshot of the Calendar view in that theme, then its name,
+   description and the design skill it came from. The screenshot is decorative
+   next to the text, so its alt is empty.
    -------------------------------------------------------------------------- */
 .taste-theme-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-  margin-top: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.settings-theme-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 185px), 1fr));
 }
 
 .taste-theme-card {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 10px 12px;
-  border-radius: var(--radius-sm, 8px);
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
   text-align: left;
-  transition: all 0.16s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   width: 100%;
 }
 
 .taste-theme-card:hover {
-  border-color: var(--accent);
-  background: var(--surface-strong);
-  transform: translateY(-1px);
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
 }
 
 .taste-theme-card.active {
   border-color: var(--accent);
-  background: var(--accent-soft);
-  box-shadow: 0 0 0 2px var(--accent-ring, rgba(var(--page-accent-rgb), 0.2));
+  background: var(--surface);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.taste-theme-preview {
+  display: block;
+  aspect-ratio: 36 / 25;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-strong);
+}
+
+.taste-theme-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.25s ease;
+}
+
+.taste-theme-card:hover .taste-theme-preview img {
+  transform: scale(1.015);
+}
+
+.taste-theme-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 11px 12px 12px;
 }
 
 .taste-theme-header {
@@ -88,6 +117,13 @@
   font-size: 0.73rem;
   color: var(--muted);
   line-height: 1.4;
+}
+
+.taste-theme-credit {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.66rem;
+  letter-spacing: 0.01em;
 }
 
 /* ==========================================================================
@@ -252,854 +288,3 @@ html[data-taste="studio"] .category-pill {
   font-size: 0.73rem;
   padding: 2px 10px;
 }
-
-
-/* ==========================================================================
-   THEME A: "AURORA UI" (Northern Lights Luminous Mesh & Gradient Glass)
-   Based on ui-ux-pro-max-skill Row 10 (Aurora UI)
-   ========================================================================== */
-html:root[data-taste="aurora"],
-html:root[data-taste="aurora"][data-active-app-tab] {
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
-  --accent-soft: rgba(99, 102, 241, 0.15);
-  --accent-ring: 0 0 0 3px rgba(99, 102, 241, 0.3);
-  --page-accent-rgb: 99, 102, 241;
-  --page-focus-border: #06b6d4;
-
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-lg: 16px;
-  --radius-pill: 9999px;
-}
-
-/* Light Mode Aurora */
-html:root[data-taste="aurora"] {
-  --bg: #f8fafc;
-  --surface: rgba(255, 255, 255, 0.88);
-  --surface-soft: rgba(248, 250, 252, 0.75);
-  --surface-strong: #eef2ff;
-  --text: #0f172a;
-  --text-soft: #334155;
-  --muted: #64748b;
-  --border: rgba(99, 102, 241, 0.18);
-  --border-strong: rgba(99, 102, 241, 0.3);
-  --page-shell-bg: rgba(255, 255, 255, 0.86);
-  --page-panel-bg: rgba(255, 255, 255, 0.88);
-  --sidebar-bg: #0f172a;
-  --sidebar-text: #e2e8f0;
-  --sidebar-muted: #94a3b8;
-  --shadow: 0 8px 30px rgba(99, 102, 241, 0.08);
-}
-
-html[data-taste="aurora"] body {
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(at 10% 15%, rgba(99, 102, 241, 0.12) 0px, transparent 45%),
-    radial-gradient(at 85% 20%, rgba(6, 182, 212, 0.12) 0px, transparent 45%),
-    radial-gradient(at 50% 85%, rgba(236, 72, 153, 0.08) 0px, transparent 45%);
-  background-size: 100% 100%;
-}
-
-/* Dark Mode Aurora */
-html:root[data-taste="aurora"][data-theme="dark"],
-html:root[data-taste="aurora"][data-theme="dark"][data-active-app-tab] {
-  --accent: #818cf8;
-  --accent-hover: #6366f1;
-  --accent-soft: rgba(129, 140, 248, 0.2);
-  --accent-ring: 0 0 0 3px rgba(129, 140, 248, 0.35);
-  --page-accent-rgb: 129, 140, 248;
-
-  --bg: #060813;
-  --surface: rgba(15, 23, 42, 0.78);
-  --surface-soft: rgba(15, 23, 42, 0.6);
-  --surface-strong: rgba(30, 41, 59, 0.8);
-  --text: #f8fafc;
-  --text-soft: #cbd5e1;
-  --muted: #8290a8;
-  --border: rgba(99, 102, 241, 0.22);
-  --border-strong: rgba(6, 182, 212, 0.38);
-  --page-shell-bg: rgba(15, 23, 42, 0.82);
-  --page-panel-bg: rgba(15, 23, 42, 0.82);
-  --sidebar-bg: #080c1a;
-  --sidebar-text: #e2e8f0;
-  --sidebar-muted: #8290a8;
-  --shadow: 0 12px 36px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-html[data-taste="aurora"][data-theme="dark"] body {
-  background-color: #060813;
-  background-image:
-    radial-gradient(at 15% 15%, rgba(99, 102, 241, 0.22) 0px, transparent 45%),
-    radial-gradient(at 85% 20%, rgba(6, 182, 212, 0.2) 0px, transparent 45%),
-    radial-gradient(at 50% 85%, rgba(236, 72, 153, 0.16) 0px, transparent 50%);
-  background-size: 100% 100%;
-}
-
-html[data-taste="aurora"] .shell-sidebar {
-  border-right: 1px solid var(--border);
-  background: var(--sidebar-bg);
-  backdrop-filter: blur(20px);
-}
-
-html[data-taste="aurora"] #appTabs .app-tab-button.active {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.28) 0%, rgba(6, 182, 212, 0.2) 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(99, 102, 241, 0.45) !important;
-  box-shadow: 0 0 16px rgba(99, 102, 241, 0.3) !important;
-}
-
-html[data-taste="aurora"] .panel,
-html[data-taste="aurora"] .manager-card {
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  backdrop-filter: blur(24px) saturate(170%);
-  -webkit-backdrop-filter: blur(24px) saturate(170%);
-  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-
-html[data-taste="aurora"] .primary-button {
-  border-radius: 8px;
-  background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.35) !important;
-}
-
-html[data-taste="aurora"] .primary-button:hover {
-  box-shadow: 0 6px 24px rgba(6, 182, 212, 0.5) !important;
-  transform: translateY(-1px);
-}
-
-html[data-taste="aurora"] .metric-card {
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface) !important;
-  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.05) !important;
-}
-
-
-/* ==========================================================================
-   THEME B: "OLED CYBER" (Pitch Black OLED, Neon Emerald Telemetry, Cockpit)
-   Based on ui-ux-pro-max-skill Row 7 & Row 28 (Dark Mode OLED & BI Dashboard)
-   ========================================================================== */
-html:root[data-taste="cyber"],
-html:root[data-taste="cyber"][data-active-app-tab] {
-  --accent: #00f5a0;
-  --accent-hover: #00d68c;
-  --accent-contrast: #000000;
-  --accent-soft: rgba(0, 245, 160, 0.12);
-  --accent-ring: 0 0 0 2px #00f5a0;
-  --page-accent-rgb: 0, 245, 160;
-  --page-focus-border: #00f5a0;
-
-  --radius: 6px;
-  --radius-sm: 4px;
-  --radius-lg: 8px;
-  --radius-pill: 4px;
-
-  --font-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-
-/* Dark Mode OLED Cyber */
-html:root[data-taste="cyber"][data-theme="dark"],
-html:root[data-taste="cyber"][data-theme="dark"][data-active-app-tab] {
-  --bg: #000000;
-  --surface: #0a0d12;
-  --surface-soft: #06080b;
-  --surface-strong: #121820;
-  --text: #f0fdf4;
-  --text-soft: #bbf7d0;
-  --muted: #64748b;
-  --muted-strong: #94a3b8;
-  --border: rgba(0, 245, 160, 0.16);
-  --border-strong: rgba(0, 245, 160, 0.35);
-  --page-shell-bg: #06080c;
-  --page-panel-bg: #0a0d12;
-  --sidebar-bg: #000000;
-  --sidebar-text: #f0fdf4;
-  --sidebar-muted: #64748b;
-  --shadow: 0 0 20px rgba(0, 245, 160, 0.08);
-}
-
-html[data-taste="cyber"][data-theme="dark"] body {
-  background-color: #000000;
-  background-image:
-    linear-gradient(to right, rgba(0, 245, 160, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 245, 160, 0.035) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Light Mode OLED Cyber */
-html:root[data-taste="cyber"] {
-  --accent: #059669;
-  --accent-hover: #047857;
-  --accent-contrast: #ffffff;
-  --accent-soft: rgba(5, 150, 105, 0.12);
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface-soft: #f1f5f9;
-  --surface-strong: #e2e8f0;
-  --text: #0f172a;
-  --text-soft: #1e293b;
-  --muted: #64748b;
-  --border: #cbd5e1;
-  --border-strong: #94a3b8;
-  --page-shell-bg: #ffffff;
-  --page-panel-bg: #ffffff;
-  --sidebar-bg: #05080c;
-  --sidebar-text: #f0fdf4;
-  --sidebar-muted: #64748b;
-}
-
-html[data-taste="cyber"] body {
-  background-color: #f8fafc;
-  background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-html[data-taste="cyber"] .shell-sidebar {
-  border-right: 1px solid var(--border);
-  background: var(--sidebar-bg);
-}
-
-html[data-taste="cyber"] #appTabs .app-tab-button {
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  letter-spacing: 0.02em;
-}
-
-html[data-taste="cyber"] #appTabs .app-tab-button.active {
-  background: rgba(0, 245, 160, 0.15) !important;
-  color: var(--accent) !important;
-  border: 1px solid var(--accent) !important;
-  box-shadow: 0 0 12px rgba(0, 245, 160, 0.25) !important;
-}
-
-html[data-taste="cyber"] .panel,
-html[data-taste="cyber"] .manager-card {
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--page-panel-bg);
-}
-
-html[data-taste="cyber"] .metric-card {
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: var(--surface) !important;
-}
-
-html[data-taste="cyber"] .metric-value {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 850;
-  color: var(--accent);
-}
-
-html[data-taste="cyber"] .primary-button {
-  border-radius: 4px;
-  background: var(--accent) !important;
-  color: #000000 !important;
-  font-weight: 800;
-  border: 1px solid var(--accent) !important;
-  box-shadow: 0 0 12px rgba(0, 245, 160, 0.35) !important;
-}
-
-html[data-taste="cyber"] .status-pill,
-html[data-taste="cyber"] .priority-pill,
-html[data-taste="cyber"] .category-pill {
-  border-radius: 3px;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-
-/* ==========================================================================
-   THEME C: "SOFT UI EVOLUTION" (Tactile Dual-Shadow Depth & Modern Pastels)
-   Based on ui-ux-pro-max-skill Row 19 & Row 2 (Soft UI / Neumorphism)
-   ========================================================================== */
-html:root[data-taste="soft-ui"],
-html:root[data-taste="soft-ui"][data-active-app-tab] {
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-soft: rgba(37, 99, 235, 0.12);
-  --accent-ring: 0 0 0 3px rgba(37, 99, 235, 0.22);
-  --page-accent-rgb: 37, 99, 235;
-
-  --radius: 14px;
-  --radius-sm: 10px;
-  --radius-lg: 18px;
-  --radius-pill: 9999px;
-}
-
-/* Light Mode Soft UI (Tactile dual-shadow depth) */
-html:root[data-taste="soft-ui"] {
-  --bg: #eef2f6;
-  --surface: #eef2f6;
-  --surface-soft: #f4f6fa;
-  --surface-strong: #e2e8f0;
-  --text: #1e293b;
-  --text-soft: #334155;
-  --muted: #64748b;
-  --border: rgba(203, 213, 225, 0.7);
-  --border-strong: #cbd5e1;
-  --page-shell-bg: #eef2f6;
-  --page-panel-bg: #eef2f6;
-  --sidebar-bg: #e2e8f0;
-  --sidebar-text: #1e293b;
-  --sidebar-muted: #64748b;
-  --shadow-soft: 4px 4px 10px rgba(166, 175, 195, 0.35), -4px -4px 10px rgba(255, 255, 255, 0.85);
-  --shadow: 8px 8px 18px rgba(166, 175, 195, 0.4), -8px -8px 18px rgba(255, 255, 255, 0.9);
-}
-
-html[data-taste="soft-ui"] body {
-  background-color: #eef2f6;
-  background-image: none;
-}
-
-/* Dark Mode Soft UI (Velvet depth) */
-html:root[data-taste="soft-ui"][data-theme="dark"],
-html:root[data-taste="soft-ui"][data-theme="dark"][data-active-app-tab] {
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-soft: rgba(59, 130, 246, 0.16);
-  --accent-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
-  --page-accent-rgb: 59, 130, 246;
-
-  --bg: #11141b;
-  --surface: #151821;
-  --surface-soft: #12151d;
-  --surface-strong: #1d222e;
-  --text: #f1f5f9;
-  --text-soft: #cbd5e1;
-  --muted: #8290a8;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
-  --page-shell-bg: #13161f;
-  --page-panel-bg: #151821;
-  --sidebar-bg: #0e1017;
-  --sidebar-text: #e2e8f0;
-  --sidebar-muted: #8290a8;
-  --shadow-soft: 4px 4px 12px rgba(0, 0, 0, 0.4), -2px -2px 8px rgba(255, 255, 255, 0.02);
-  --shadow: 8px 8px 24px rgba(0, 0, 0, 0.55), -4px -4px 14px rgba(255, 255, 255, 0.03);
-}
-
-html[data-taste="soft-ui"][data-theme="dark"] body {
-  background-color: #11141b;
-  background-image: none;
-}
-
-html[data-taste="soft-ui"] .panel,
-html[data-taste="soft-ui"] .manager-card {
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  background: var(--surface);
-}
-
-html[data-taste="soft-ui"] .metric-card {
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-soft) !important;
-  background: var(--surface) !important;
-}
-
-html[data-taste="soft-ui"] .primary-button {
-  border-radius: 10px;
-  background: var(--accent) !important;
-  box-shadow: var(--shadow-soft) !important;
-}
-
-html[data-taste="soft-ui"] .secondary-button {
-  border-radius: 10px;
-  box-shadow: var(--shadow-soft);
-  background: var(--surface);
-}
-
-html[data-taste="soft-ui"] .primary-button:active,
-html[data-taste="soft-ui"] .secondary-button:active {
-  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2), inset -3px -3px 6px rgba(255, 255, 255, 0.1) !important;
-}
-
-
-/* ==========================================================================
-   LINEAR PRECISION & STARK MINIMALIST (Preserved in Theme Collection)
-   ========================================================================== */
-html:root[data-taste="linear"],
-html:root[data-taste="linear"][data-active-app-tab] {
-  --accent: #5e6ad2;
-  --accent-hover: #4f59bd;
-  --accent-soft: rgba(94, 106, 210, 0.12);
-  --accent-ring: 0 0 0 3px rgba(94, 106, 210, 0.25);
-  --page-accent-rgb: 94, 106, 210;
-  --radius: 8px;
-  --radius-sm: 6px;
-  --radius-lg: 10px;
-  --radius-pill: 6px;
-  --font-mono: ui-monospace, 'Geist Mono', SFMono-Regular, monospace;
-}
-
-html:root[data-taste="linear"][data-theme="dark"] {
-  --bg: #0b0c10;
-  --surface: #12131a;
-  --surface-strong: #191b24;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
-  --sidebar-bg: #0e0f15;
-}
-
-html:root[data-taste="minimal"],
-html:root[data-taste="minimal"][data-active-app-tab] {
-  --accent: #f97316;
-  --accent-hover: #ea580c;
-  --radius: 4px;
-  --radius-sm: 3px;
-  --radius-lg: 4px;
-  --radius-pill: 4px;
-  --font-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, monospace;
-}
-
-html:root[data-taste="minimal"][data-theme="dark"] {
-  --bg: #000000;
-  --surface: #0a0a0a;
-  --border: #27272a;
-  --sidebar-bg: #000000;
-}
-
-/* ==========================================================================
-   IMPECCABLE THEME A: "NEO KINPAKU"
-/* ==========================================================================
-   IMPECCABLE THEME A: "NEO KINPAKU"
-   Based on pbakaus/impeccable DESIGN.md (Kinpaku gold & dark urushi lacquer)
-   Restraint in chrome, brilliance in texture.
-   ========================================================================== */
-html:root[data-taste="kinpaku"],
-html:root[data-taste="kinpaku"][data-active-app-tab] {
-  --accent: #e5b035;
-  --accent-hover: #edd476;
-  --accent-contrast: #141310;
-  --accent-soft: rgba(229, 176, 53, 0.15);
-  --accent-ring: 0 0 0 2px rgba(229, 176, 53, 0.4);
-  --page-accent-rgb: 229, 176, 53;
-  --page-focus-border: #e5b035;
-
-  --radius: 5px;
-  --radius-sm: 4px;
-  --radius-lg: 8px;
-  --radius-pill: 4px;
-
-  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-}
-
-/* Dark Mode Neo Kinpaku (Urushi Lacquer + Kinpaku Gold) */
-html:root[data-taste="kinpaku"][data-theme="dark"],
-html:root[data-taste="kinpaku"][data-theme="dark"][data-active-app-tab] {
-  --bg: #0c0b0a;
-  --surface: #151412;
-  --surface-soft: #0f0e0d;
-  --surface-strong: #1e1c19;
-  --text: #f7f5f0;
-  --text-soft: #eae5dc;
-  --muted: #8e887f;
-  --muted-strong: #b2aa9d;
-  --border: rgba(229, 176, 53, 0.2);
-  --border-strong: rgba(229, 176, 53, 0.42);
-  --page-shell-bg: #0c0b0a;
-  --page-panel-bg: #151412;
-  --sidebar-bg: #090807;
-  --sidebar-text: #f7f5f0;
-  --sidebar-muted: #8e887f;
-  --shadow: 0 8px 24px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(229, 176, 53, 0.25);
-}
-
-html[data-taste="kinpaku"][data-theme="dark"] body {
-  background-color: #0c0b0a;
-  background-image:
-    radial-gradient(at 50% 0%, rgba(229, 176, 53, 0.06) 0px, transparent 60%),
-    radial-gradient(at 100% 100%, rgba(56, 178, 172, 0.035) 0px, transparent 50%);
-  background-size: 100% 100%;
-}
-
-/* Light Mode Neo Kinpaku (Vellum Paper + Antique Kinpaku Gold) */
-html:root[data-taste="kinpaku"] {
-  --accent: #b48512;
-  --accent-hover: #966d0c;
-  --accent-contrast: #ffffff;
-  --accent-soft: rgba(180, 133, 18, 0.12);
-  --bg: #faf8f3;
-  --surface: #ffffff;
-  --surface-soft: #f4f0e6;
-  --surface-strong: #ede8dc;
-  --text: #171512;
-  --text-soft: #2c2924;
-  --muted: #6e675b;
-  --border: rgba(180, 133, 18, 0.22);
-  --border-strong: rgba(180, 133, 18, 0.4);
-  --page-shell-bg: #ffffff;
-  --page-panel-bg: #ffffff;
-  --sidebar-bg: #14120f;
-  --sidebar-text: #f7f5f0;
-  --sidebar-muted: #8e887f;
-}
-
-html[data-taste="kinpaku"] .shell-sidebar {
-  border-right: 1px solid var(--border);
-  background: var(--sidebar-bg);
-}
-
-html[data-taste="kinpaku"] #appTabs .app-tab-button {
-  border-radius: 4px;
-  font-size: 12.5px;
-  letter-spacing: 0.03em;
-}
-
-html[data-taste="kinpaku"] #appTabs .app-tab-button.active {
-  background: linear-gradient(135deg, #e5b035 0%, #caa030 100%) !important;
-  color: #141310 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 2px 10px rgba(229, 176, 53, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
-}
-
-html[data-taste="kinpaku"] .panel,
-html[data-taste="kinpaku"] .manager-card {
-  border-radius: 5px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  background: var(--page-panel-bg);
-}
-
-html[data-taste="kinpaku"] .metric-card {
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: var(--surface) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(229, 176, 53, 0.15) !important;
-}
-
-html[data-taste="kinpaku"] .metric-value {
-  font-family: var(--font-mono);
-  color: var(--accent);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-html[data-taste="kinpaku"] .primary-button {
-  border-radius: 4px;
-  background: linear-gradient(135deg, #e5b035 0%, #caa030 100%) !important;
-  color: #141310 !important;
-  font-weight: 800;
-  border: 1px solid rgba(229, 176, 53, 0.4) !important;
-  box-shadow: 0 2px 12px rgba(229, 176, 53, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
-  letter-spacing: 0.02em;
-}
-
-html[data-taste="kinpaku"] .primary-button:hover {
-  background: linear-gradient(135deg, #edd476 0%, #e5b035 100%) !important;
-}
-
-html[data-taste="kinpaku"] .secondary-button {
-  border-radius: 4px;
-  border: 1px solid var(--border);
-}
-
-/* Verdigris patina status & category badges */
-html[data-taste="kinpaku"] .status-pill,
-html[data-taste="kinpaku"] .priority-pill,
-html[data-taste="kinpaku"] .category-pill {
-  border-radius: 3px;
-  border: 1px solid rgba(56, 178, 172, 0.32);
-  background: rgba(56, 178, 172, 0.12);
-  color: #2dd4bf;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-
-/* ==========================================================================
-   IMPECCABLE THEME B: "WARM PAPER EDITORIAL"
-   Based on pbakaus/impeccable (Tactile vellum paper & archival ink)
-   The tactile craft of books, vellum, and print.
-   ========================================================================== */
-html:root[data-taste="paper"],
-html:root[data-taste="paper"][data-active-app-tab] {
-  --accent: #c2410c;
-  --accent-hover: #9a3412;
-  --accent-contrast: #ffffff;
-  --accent-soft: rgba(194, 65, 12, 0.12);
-  --accent-ring: 0 0 0 2px rgba(194, 65, 12, 0.35);
-  --page-accent-rgb: 194, 65, 12;
-  --page-focus-border: #c2410c;
-
-  --radius: 6px;
-  --radius-sm: 4px;
-  --radius-lg: 8px;
-  --radius-pill: 9999px;
-
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
-/* Light Mode Warm Paper */
-html:root[data-taste="paper"] {
-  --bg: #f8f5ee;
-  --surface: #ffffff;
-  --surface-soft: #f2eee3;
-  --surface-strong: #ebe4d5;
-  --text: #1c1917;
-  --text-soft: #38342f;
-  --muted: #6b6357;
-  --border: rgba(60, 50, 40, 0.16);
-  --border-strong: rgba(60, 50, 40, 0.3);
-  --page-shell-bg: #f8f5ee;
-  --page-panel-bg: #ffffff;
-  --sidebar-bg: #221f1c;
-  --sidebar-text: #f5f0e6;
-  --sidebar-muted: #968c7e;
-  --shadow: 0 2px 10px rgba(45, 35, 25, 0.06), 0 1px 2px rgba(45, 35, 25, 0.04);
-}
-
-html[data-taste="paper"] body {
-  background-color: #f8f5ee;
-  background-image: none;
-}
-
-/* Dark Mode Book-Cloth */
-html:root[data-taste="paper"][data-theme="dark"],
-html:root[data-taste="paper"][data-theme="dark"][data-active-app-tab] {
-  --bg: #141210;
-  --surface: #1c1a17;
-  --surface-soft: #171512;
-  --surface-strong: #24211d;
-  --text: #f5f0e6;
-  --text-soft: #dcd4c5;
-  --muted: #968c7e;
-  --border: rgba(245, 240, 230, 0.12);
-  --border-strong: rgba(245, 240, 230, 0.24);
-  --page-shell-bg: #141210;
-  --page-panel-bg: #1c1a17;
-  --sidebar-bg: #0f0d0b;
-  --sidebar-text: #f5f0e6;
-  --sidebar-muted: #968c7e;
-  --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-}
-
-html[data-taste="paper"][data-theme="dark"] body {
-  background-color: #141210;
-  background-image: none;
-}
-
-html[data-taste="paper"] .shell-sidebar {
-  border-right: 1px solid var(--border);
-  background: var(--sidebar-bg);
-}
-
-html[data-taste="paper"] #appTabs .app-tab-button {
-  border-radius: 6px;
-}
-
-html[data-taste="paper"] #appTabs .app-tab-button.active {
-  background: var(--accent) !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(194, 65, 12, 0.3) !important;
-}
-
-html[data-taste="paper"] .panel,
-html[data-taste="paper"] .manager-card {
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-html[data-taste="paper"] .metric-card {
-  border-radius: 5px;
-  border: 1px solid var(--border);
-  background: var(--surface) !important;
-}
-
-/* Cinnabar terracotta seal buttons */
-html[data-taste="paper"] .primary-button {
-  border-radius: 6px;
-  background: #c2410c !important;
-  color: #ffffff !important;
-  font-weight: 700;
-  border: 1px solid #9a3412 !important;
-  box-shadow: 0 2px 8px rgba(194, 65, 12, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  transition: all 0.12s ease;
-}
-
-html[data-taste="paper"] .primary-button:active {
-  transform: translateY(1px);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25) !important;
-}
-
-html[data-taste="paper"] .secondary-button {
-  border-radius: 6px;
-  border: 1px solid var(--border);
-}
-
-/* Stamped label paper pills */
-html[data-taste="paper"] .status-pill,
-html[data-taste="paper"] .priority-pill,
-html[data-taste="paper"] .category-pill {
-  border-radius: 4px;
-  border: 1px dashed rgba(60, 50, 40, 0.25);
-  font-size: 0.72rem;
-}
-
-
-/* ==========================================================================
-   IMPECCABLE THEME C: "NEO MIRAI"
-   Based on pbakaus/impeccable Neo Mirai case study & /impeccable overdrive
-   Technically extraordinary retro-futurism (Tokyo 2042).
-   ========================================================================== */
-html:root[data-taste="mirai"],
-html:root[data-taste="mirai"][data-active-app-tab] {
-  --accent: #00f0ff;
-  --accent-hover: #38bdf8;
-  --accent-contrast: #000000;
-  --accent-soft: rgba(0, 240, 255, 0.14);
-  --accent-ring: 0 0 0 2px #00f0ff;
-  --page-accent-rgb: 0, 240, 255;
-  --page-focus-border: #00f0ff;
-
-  --radius: 3px;
-  --radius-sm: 2px;
-  --radius-lg: 5px;
-  --radius-pill: 2px;
-
-  --font-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
-}
-
-/* Dark Mode Neo Mirai (Tokyo 2042 retro-futurism) */
-html:root[data-taste="mirai"][data-theme="dark"],
-html:root[data-taste="mirai"][data-theme="dark"][data-active-app-tab] {
-  --bg: #070913;
-  --surface: #0e1224;
-  --surface-soft: #090c19;
-  --surface-strong: #161c36;
-  --text: #f0f6ff;
-  --text-soft: #c8daf8;
-  --muted: #627299;
-  --border: rgba(0, 240, 255, 0.22);
-  --border-strong: rgba(0, 240, 255, 0.45);
-  --page-shell-bg: #070913;
-  --page-panel-bg: #0e1224;
-  --sidebar-bg: #04050c;
-  --sidebar-text: #f0f6ff;
-  --sidebar-muted: #627299;
-  --shadow: 0 0 20px rgba(0, 240, 255, 0.08), inset 0 0 0 1px rgba(0, 240, 255, 0.12);
-}
-
-html[data-taste="mirai"][data-theme="dark"] body {
-  background-color: #070913;
-  background-image:
-    linear-gradient(to right, rgba(0, 240, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(168, 85, 247, 0.035) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Light Mode Neo Mirai */
-html:root[data-taste="mirai"] {
-  --accent: #0284c7;
-  --accent-hover: #0369a1;
-  --accent-contrast: #ffffff;
-  --accent-soft: rgba(2, 132, 199, 0.12);
-  --bg: #f0f5fc;
-  --surface: #ffffff;
-  --surface-soft: #e5effa;
-  --surface-strong: #d7e6f6;
-  --text: #0b1528;
-  --text-soft: #1e293b;
-  --muted: #5c6b84;
-  --border: rgba(2, 132, 199, 0.25);
-  --border-strong: rgba(2, 132, 199, 0.42);
-  --page-shell-bg: #ffffff;
-  --page-panel-bg: #ffffff;
-  --sidebar-bg: #060b17;
-  --sidebar-text: #f0f6ff;
-  --sidebar-muted: #627299;
-}
-
-html[data-taste="mirai"] .shell-sidebar {
-  border-right: 1px solid var(--border);
-  background: var(--sidebar-bg);
-}
-
-html[data-taste="mirai"] #appTabs .app-tab-button {
-  border-radius: 2px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-html[data-taste="mirai"] #appTabs .app-tab-button.active {
-  background: rgba(0, 240, 255, 0.16) !important;
-  color: var(--accent) !important;
-  border: 1px solid var(--accent) !important;
-  box-shadow: 0 0 14px rgba(0, 240, 255, 0.35) !important;
-}
-
-html[data-taste="mirai"] .panel,
-html[data-taste="mirai"] .manager-card {
-  border-radius: 3px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-html[data-taste="mirai"] .metric-card {
-  border-radius: 2px;
-  border: 1px solid var(--border);
-  background: var(--surface) !important;
-  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.03);
-}
-
-html[data-taste="mirai"] .metric-value {
-  font-family: var(--font-mono);
-  color: var(--accent);
-  font-weight: 850;
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
-}
-
-/* Holographic neon dual-gradient CTA */
-html[data-taste="mirai"] .primary-button {
-  border-radius: 2px;
-  background: linear-gradient(135deg, #00f0ff 0%, #a855f7 100%) !important;
-  color: #000000 !important;
-  font-weight: 850;
-  border: 1px solid var(--accent) !important;
-  box-shadow: 0 0 18px rgba(0, 240, 255, 0.45) !important;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-html[data-taste="mirai"] .secondary-button {
-  border-radius: 2px;
-  border: 1px solid rgba(0, 240, 255, 0.35) !important;
-  color: var(--accent) !important;
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-}
-
-/* High-density monospace telemetry badges */
-html[data-taste="mirai"] .status-pill,
-html[data-taste="mirai"] .priority-pill,
-html[data-taste="mirai"] .category-pill {
-  border-radius: 2px;
-  border: 1px solid rgba(0, 240, 255, 0.35);
-  background: rgba(0, 240, 255, 0.08);
-  color: #00f0ff;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-

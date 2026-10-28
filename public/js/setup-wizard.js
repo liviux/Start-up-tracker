@@ -303,11 +303,44 @@
           text: t(`settings.general.dateFormats.${format === "system" ? "system" : format === "yyyy-MM-dd" ? "iso" : "short"}`, { example: Dates.formatDateAs(today, I18n.getLocale(), format) }),
           selected: current.dateFormat === format,
         })));
-        const theme = h("select", {}, Appearance.THEMES.map((id) => h("option", { value: id, text: t(`settings.appearance.themes.${id}.name`), selected: current.appearance?.theme === id })));
+        let selectedTheme = Appearance.normalizeTaste(current.appearance?.theme);
         const modeSelect = h("select", {}, Appearance.MODES.map((id) => h("option", { value: id, text: t(`settings.appearance.modes.${id}`), selected: current.appearance?.mode === id })));
-        const preview = () => Appearance.apply?.({ mode: modeSelect.value, theme: theme.value });
-        theme.addEventListener("change", preview);
+        const preview = () => Appearance.apply?.({ mode: modeSelect.value, theme: selectedTheme });
+        const themeGrid = h("div", { className: "taste-theme-grid setup-theme-grid", role: "radiogroup", "aria-label": t("setup.basics.theme") }, Appearance.THEMES.map((id) => {
+          const input = h("input", { type: "radio", name: "setupTheme", value: id, id: `setup-theme-${id}`, className: "visually-hidden", checked: selectedTheme === id });
+          input.addEventListener("change", () => {
+            if (!input.checked) return;
+            selectedTheme = id;
+            themeGrid.querySelectorAll(".taste-theme-card").forEach((card) => card.classList.toggle("active", card.dataset.tasteVal === id));
+            preview();
+          });
+          const credit = Appearance.THEME_CREDITS?.[id];
+          return h("label", { className: `taste-theme-card${selectedTheme === id ? " active" : ""}`, for: input.id, dataset: { tasteVal: id } }, [
+            input,
+            h("span", { className: "taste-theme-preview" }, [
+              h("img", {
+                src: Appearance.previewPath(id),
+                alt: "",
+                loading: "lazy",
+                width: 720,
+                height: 500,
+              }),
+            ]),
+            h("span", { className: "taste-theme-body" }, [
+              h("span", { className: "taste-theme-header" }, [
+                h("span", { className: "taste-theme-name", text: t(`settings.appearance.themes.${id}.name`) }),
+                id === "studio" ? h("span", { className: "taste-theme-badge default-badge", text: t("settings.appearance.default") }) : null,
+              ]),
+              h("span", { className: "taste-theme-desc", text: t(`settings.appearance.themes.${id}.description`) }),
+              credit ? h("span", { className: "taste-theme-credit", text: t("settings.appearance.themeCredit", { skill: credit }) }) : null,
+            ]),
+          ]);
+        }));
         modeSelect.addEventListener("change", preview);
+        const themeField = h("div", { className: "setup-field setup-theme-field" }, [
+          h("span", { className: "setup-label", text: t("setup.basics.theme") }),
+          themeGrid,
+        ]);
         const language = h("select", {}, [h("option", { value: "en", text: t("settings.general.languages.en") })]);
         ui.values.basics = () => ({ timeZone: zone.value.trim() });
         return {
@@ -317,13 +350,14 @@
             field(t("setup.basics.timeZone"), zone, t("setup.basics.timeZoneHint", { zone: detected })),
             zoneList,
             field(t("setup.basics.dateFormat"), dateFormat),
-            h("div", { className: "setup-row" }, [field(t("setup.basics.theme"), theme), field(t("setup.basics.mode"), modeSelect)]),
+            themeField,
+            field(t("setup.basics.mode"), modeSelect),
             field(t("setup.basics.language"), language, t("setup.basics.languageHint")),
           ],
           save: async () => {
             const value = zone.value.trim();
             if (!isTimeZone(value, zones)) throw new Error(t("setup.basics.badZone", { zone: value }));
-            await Settings.save({ timeZone: value, dateFormat: dateFormat.value, appearance: { theme: theme.value, mode: modeSelect.value }, language: language.value });
+            await Settings.save({ timeZone: value, dateFormat: dateFormat.value, appearance: { theme: selectedTheme, mode: modeSelect.value }, language: language.value });
           },
         };
       },

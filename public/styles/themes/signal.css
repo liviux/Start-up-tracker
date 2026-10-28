@@ -1,0 +1,2280 @@
+/* Hallmark · theme: signal (by request) · genre: modern-minimal · shape: app screen · scope: app screen
+ * material: graphite in three steps, pale ink, safety orange for attention, instrument blue for readings,
+ * hairline compartments, mono for measured values · nav: full-width numbered key strip over a command row
+ * signature: the date board as boxed cells and every figure as an instrument readout · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H4 E5 S5 R4 V5 · weakest: R, section codes and counts first competed with the orange; the codes are now instrument blue and orange is kept for the picked date and the one primary action */
+/* Hallmark · waive 24b · three optical steps at 6, 10 and 14px · the switchboard's hairline keys and 10px meter labels need them, not the 4px app scale */
+/* Hallmark · direction: a switchboard a careful operator keeps. The shell is two rows of hardware: the brand,
+ * startup and firmware readout, then seven numbered keys; the command row below holds search, save state, settings
+ * and mode. The Calendar is a board of boxed cells, detail as compartments, figures as readouts. No glow, no terminal cosplay. */
+
+html:root[data-taste="signal"],
+html:root[data-taste="signal"][data-active-app-tab] {
+  color-scheme: light;
+
+  --bg: #eef1f3;
+  --surface: #f6f8f9;
+  --surface-soft: #e9edf0;
+  --surface-strong: #dde3e7;
+  --text: #141a1f;
+  --text-soft: #35414a;
+  --muted: #5a6873;
+  --muted-strong: #45535e;
+  --border: #c5ced5;
+  --border-strong: #8d9aa4;
+  --accent: #b64a05;
+  --accent-hover: #8f3900;
+  --accent-deep: #b64a05;
+  --accent-contrast: #fbfcfd;
+  --accent-soft: #f2ddcf;
+  --accent-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --instrument: #1f5f8c;
+  --instrument-soft: #dbe8f1;
+
+  --page-accent-rgb: 182, 74, 5;
+  --page-support-rgb: 31, 95, 140;
+  --page-contrast-rgb: 20, 26, 31;
+  --page-title-gradient-end: var(--accent);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--bg);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: none;
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: none;
+  --shadow-soft: none;
+  --shadow-lg: none;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --radius-pill: 0;
+
+  --sidebar-width: 0;
+  --sidebar-bg: #171c21;
+  --sidebar-text: #e7edf2;
+  --sidebar-muted: #98a6b2;
+
+  --control-height: 34px;
+  --control-height-sm: 28px;
+  --pill-height: 20px;
+  --row-gap: 14px;
+
+  --font-display: "Nimbus Sans", "Liberation Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Nimbus Sans", "Liberation Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Nimbus Sans", "Liberation Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "DejaVu Sans Mono", "Noto Sans Mono", "Liberation Mono", monospace;
+  --font-label: var(--font-display);
+
+  --section-mk: var(--instrument);
+  --section-mk-bg: var(--instrument-soft);
+  --section-mk-fg: var(--instrument);
+  --section-mk-border: var(--border-strong);
+  --section-po: var(--instrument);
+  --section-po-bg: var(--instrument-soft);
+  --section-po-fg: var(--instrument);
+  --section-po-border: var(--border-strong);
+  --section-fu: var(--instrument);
+  --section-fu-bg: var(--instrument-soft);
+  --section-fu-fg: var(--instrument);
+  --section-fu-border: var(--border-strong);
+  --section-comp: var(--instrument);
+  --section-comp-bg: var(--instrument-soft);
+  --section-comp-fg: var(--instrument);
+  --section-comp-border: var(--border-strong);
+  --status-slate-bg: transparent;
+  --status-slate-color: var(--muted-strong);
+  --status-slate-border: var(--border-strong);
+  --status-slate-solid-bg: var(--text);
+  --status-slate-solid-text: var(--surface);
+  --status-amber-bg: transparent;
+  --status-amber-color: var(--accent);
+  --status-amber-border: var(--accent);
+  --status-amber-solid-bg: var(--accent);
+  --status-amber-solid-text: var(--accent-contrast);
+  --status-indigo-bg: transparent;
+  --status-indigo-color: var(--instrument);
+  --status-indigo-border: var(--instrument);
+  --status-indigo-solid-bg: var(--instrument);
+  --status-indigo-solid-text: var(--surface);
+  --status-green-bg: transparent;
+  --status-green-color: var(--instrument);
+  --status-green-border: var(--instrument);
+  --status-green-solid-bg: var(--instrument);
+  --status-green-solid-text: var(--surface);
+  --status-red-bg: transparent;
+  --status-red-color: var(--accent);
+  --status-red-border: var(--accent);
+  --status-red-solid-bg: var(--accent);
+  --status-red-solid-text: var(--accent-contrast);
+}
+
+html:root[data-taste="signal"][data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #101316;
+  --surface: #171b1f;
+  --surface-soft: #1b2025;
+  --surface-strong: #22282e;
+  --text: #e9eef3;
+  --text-soft: #c2ccd5;
+  --muted: #98a5b1;
+  --muted-strong: #b0bcc7;
+  --border: #2c343b;
+  --border-strong: #46515b;
+  --accent: #ff8a2e;
+  --accent-hover: #ffa45c;
+  --accent-deep: #a8410a;
+  --accent-contrast: #17130d;
+  --accent-soft: #3a2517;
+  --accent-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --instrument: #7fb9e6;
+  --instrument-soft: #1a2b38;
+
+  --page-accent-rgb: 255, 138, 46;
+  --page-support-rgb: 127, 185, 230;
+  --page-contrast-rgb: 233, 238, 243;
+  --page-focus-border: var(--accent);
+  --sidebar-bg: #0b0e11;
+  --sidebar-text: #e9eef3;
+  --sidebar-muted: #94a2ae;
+  --section-mk: var(--instrument);
+  --section-po: var(--instrument);
+  --section-fu: var(--instrument);
+  --section-comp: var(--instrument);
+
+  --page-title-gradient-end: var(--accent);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--bg);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-hover-shadow: none;
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+  --shadow: none;
+  --shadow-soft: none;
+  --shadow-lg: none;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --sidebar-width: 0;
+  --sidebar-bg: #0b0e11;
+  --sidebar-text: var(--text);
+  --sidebar-muted: #94a2ae;
+}
+
+/* ---- Ground and ink ----------------------------------------------------- */
+
+html[data-taste="signal"],
+html[data-taste="signal"] body {
+  overflow-x: clip;
+}
+
+html[data-taste="signal"] {
+  background: var(--bg);
+}
+
+html[data-taste="signal"] body {
+  min-height: 100dvh;
+  background: var(--bg);
+  background-image: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+html[data-taste="signal"] ::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html[data-taste="signal"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--instrument);
+  outline-offset: 2px;
+}
+
+html[data-taste="signal"] #appTabs .app-tab-button:focus-visible,
+html[data-taste="signal"] #calendarView .calendar-day-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+html[data-taste="signal"] :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+html[data-taste="signal"] :is(button, input, select, textarea) {
+  font-family: var(--font-sans);
+}
+
+/* ---- Header: the switchboard face -------------------------------------- */
+
+html[data-taste="signal"] .app-shell {
+  padding-left: 0;
+}
+
+html[data-taste="signal"] .shell-sidebar {
+  position: relative;
+  inset: auto;
+  z-index: 61;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    "brand startup status"
+    "keys keys keys";
+  align-items: center;
+  gap: 0 22px;
+  width: 100%;
+  height: auto;
+  padding: 0 max(16px, calc((100% - 1520px) / 2 + 24px));
+  overflow: visible;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+}
+
+html:root[data-taste="signal"] .shell-sidebar .identity {
+  grid-area: brand;
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0;
+}
+
+html:root[data-taste="signal"] .shell-sidebar .title-row {
+  gap: 9px;
+  min-width: 0;
+  white-space: normal;
+}
+
+html:root[data-taste="signal"] .shell-sidebar .topbar-logo {
+  width: 22px;
+  height: 22px;
+  filter: none;
+}
+
+html:root[data-taste="signal"] .shell-sidebar h1 {
+  max-width: 100%;
+  margin: 0;
+  overflow-wrap: break-word;
+  min-width: 0;
+  background: none;
+  color: var(--sidebar-text);
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+html[data-taste="signal"] .startup-switcher {
+  position: relative;
+  grid-area: startup;
+  width: 208px;
+  margin: 0;
+}
+
+html[data-taste="signal"] .startup-switcher-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--sidebar-text);
+}
+
+html[data-taste="signal"] .startup-switcher-button:hover {
+  border-color: var(--sidebar-muted);
+  background: color-mix(in srgb, var(--sidebar-text) 6%, transparent);
+}
+
+html[data-taste="signal"] .startup-switcher.open .startup-switcher-button {
+  border-color: var(--instrument);
+}
+
+html[data-taste="signal"] .startup-switcher .startup-icon {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  background: var(--sidebar-muted);
+  color: var(--sidebar-bg);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+html[data-taste="signal"] .startup-switcher-caption {
+  color: var(--sidebar-muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.1;
+}
+
+html[data-taste="signal"] .startup-switcher-name {
+  color: var(--sidebar-text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+html[data-taste="signal"] .startup-switcher-chevron {
+  color: var(--sidebar-muted);
+}
+
+html[data-taste="signal"] .startup-switcher-menu {
+  position: absolute;
+  top: calc(100% + 2px);
+  right: 0;
+  left: 0;
+  z-index: 90;
+  margin: 0;
+  padding: 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html[data-taste="signal"] .startup-menu-item {
+  border-radius: 0;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+html[data-taste="signal"] .startup-menu-item:hover {
+  background: var(--surface-soft);
+}
+
+html[data-taste="signal"] .sidebar-footer {
+  grid-area: status;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+html[data-taste="signal"] .sidebar-footer > span:first-child {
+  display: none;
+}
+
+html[data-taste="signal"] .sidebar-version {
+  padding: 2px 6px;
+  border: 1px solid color-mix(in srgb, var(--sidebar-text) 24%, transparent);
+  border-radius: 0;
+  color: var(--sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+}
+
+html[data-taste="signal"] .sidebar-version:hover {
+  border-color: var(--instrument);
+  color: var(--instrument);
+}
+
+/* Seven coded keys, one lit. */
+html[data-taste="signal"] #appTabs {
+  grid-area: keys;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--sidebar-bg);
+  box-shadow: none;
+  counter-reset: signal-key;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-button {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  min-height: 58px;
+  width: auto;
+  padding: 8px 9px;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  box-shadow: none;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-align: left;
+  white-space: normal;
+  transition: background-color 140ms, color 140ms;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-button::before {
+  counter-increment: signal-key;
+  content: counter(signal-key, decimal-leading-zero);
+  flex: 0 0 auto;
+  min-width: 18px;
+  padding-right: 7px;
+  border-right: 1px solid color-mix(in srgb, var(--sidebar-text) 22%, transparent);
+  color: var(--sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-align: left;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-button img {
+  display: none;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-button[data-section]::after {
+  display: none;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-label {
+  display: inline;
+  min-width: 0;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-label span {
+  display: inline;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-button:hover {
+  background: color-mix(in srgb, var(--sidebar-text) 8%, var(--sidebar-bg)) !important;
+  border-color: transparent !important;
+  color: var(--sidebar-text) !important;
+  transform: none;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-button:hover::before {
+  color: var(--instrument);
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-button.active {
+  background: color-mix(in srgb, var(--sidebar-text) 10%, var(--sidebar-bg)) !important;
+  border-color: transparent !important;
+  color: var(--accent) !important;
+  box-shadow: inset 0 3px 0 var(--accent) !important;
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-button.active::before {
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] #appTabs .app-tab-badge {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 0;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+html[data-taste="signal"] .setup-badge {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin: 6px 0;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 11px;
+}
+
+html[data-taste="signal"] .setup-badge-dot {
+  border-radius: 0;
+  background: var(--accent);
+}
+
+/* ---- Command row -------------------------------------------------------- */
+
+html:root[data-taste="signal"] .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 46px;
+  padding: 6px max(16px, calc((100% - 1520px) / 2 + 24px));
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  gap: 16px;
+}
+
+html[data-taste="signal"] .shell-breadcrumb {
+  display: flex;
+  gap: 8px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+html[data-taste="signal"] .shell-breadcrumb span:first-child {
+  color: var(--muted);
+}
+
+html[data-taste="signal"] .shell-breadcrumb span:last-child {
+  color: var(--instrument);
+  font-weight: 600;
+}
+
+html[data-taste="signal"] .shell-breadcrumb span[aria-hidden="true"] {
+  color: var(--accent);
+}
+
+html[data-taste="signal"] .topbar-actions {
+  gap: 6px;
+}
+
+html:root[data-taste="signal"] .topbar .icon-button {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .topbar .icon-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="signal"] .topbar .icon-button svg {
+  width: 15px;
+  height: 15px;
+}
+
+html:root[data-taste="signal"] .topbar :is(#settingsButton, #projectLinksToggle) {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 9px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="signal"] .topbar :is(#settingsButton, #projectLinksToggle):hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html[data-taste="signal"] .save-state-text {
+  height: 24px;
+  margin-right: 2px;
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--instrument);
+  border-radius: 0;
+  background: transparent;
+  color: var(--instrument);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+html[data-taste="signal"] .save-state-text.saved,
+html[data-taste="signal"] .save-state-text.synced {
+  background: transparent;
+  color: var(--instrument);
+}
+
+html[data-taste="signal"] .save-state-text.saving,
+html[data-taste="signal"] .save-state-text.syncing {
+  border-left-color: var(--accent);
+  color: var(--accent);
+}
+
+html[data-taste="signal"] .save-state-text.conflict {
+  border-left-color: var(--accent);
+  color: var(--accent);
+}
+
+html[data-taste="signal"] .global-search-field {
+  height: 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-soft);
+}
+
+html[data-taste="signal"] .global-search.expanded .global-search-field {
+  width: 220px;
+  max-width: 220px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html[data-taste="signal"] .global-search-field input {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+html[data-taste="signal"] .global-search-results,
+html[data-taste="signal"] .project-links-menu {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+html[data-taste="signal"] .global-search-result {
+  border-radius: 0;
+}
+
+/* ---- Page heads --------------------------------------------------------- */
+
+html:root[data-taste="signal"] .app-shell > main {
+  width: 100%;
+  max-width: 1520px;
+  margin: 0 auto;
+  padding: 22px 24px 72px;
+}
+
+html[data-taste="signal"] .app-view > .shell-heading,
+html[data-taste="signal"] .shell-heading {
+  margin: 0 0 18px;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid var(--accent);
+}
+
+html[data-taste="signal"] .shell-heading h2,
+html:root[data-taste="signal"] #calendarView > .shell-heading h2 {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+html[data-taste="signal"] .shell-heading p,
+html:root[data-taste="signal"] #calendarView > .shell-heading p {
+  max-width: 70ch;
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+html[data-taste="signal"] .app-view[data-section] > .shell-heading::before {
+  width: 22px;
+  height: 3px;
+  margin-bottom: 7px;
+  border-radius: 0;
+  background: var(--instrument);
+}
+
+html:root[data-taste="signal"] #calendarView > .shell-heading.calendar-heading {
+  align-items: flex-end;
+  gap: 10px 20px;
+}
+
+html[data-taste="signal"] .scope-switch,
+html[data-taste="signal"] .focus-date-mode {
+  gap: 1px;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--border);
+}
+
+html[data-taste="signal"] .scope-switch-button,
+html[data-taste="signal"] .focus-date-mode-btn {
+  min-height: 28px;
+  height: 28px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+html[data-taste="signal"] .scope-switch-button:hover,
+html[data-taste="signal"] .focus-date-mode-btn:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html[data-taste="signal"] .scope-switch-button[aria-pressed="true"],
+html[data-taste="signal"] .focus-date-mode-btn.active {
+  border-color: transparent;
+  background: var(--text);
+  color: var(--surface);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+html[data-taste="signal"] .focus-date-mode-btn .tab-count,
+html[data-taste="signal"] .focus-date-mode-btn.active .tab-count {
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 0;
+  background: transparent;
+  color: currentColor;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+/* ---- Calendar: the board ------------------------------------------------ */
+
+html:root[data-taste="signal"] #calendarView .calendar-layout-container {
+  gap: 10px;
+  margin-top: 0;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-strip-container {
+  display: flex;
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-strip-top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "nav side"
+    "strip strip";
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-nav-column {
+  grid-area: nav;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 0;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-strip-side {
+  grid-area: side;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 0;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-strip-side-actions {
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-nav-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  box-shadow: none;
+  transition: background-color 140ms, color 140ms, border-color 140ms;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-nav-btn-sub {
+  width: 26px;
+  height: 28px;
+  opacity: 1;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-nav-btn:hover {
+  border-color: var(--accent);
+  background: var(--surface-strong);
+  color: var(--accent);
+  transform: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-nav-btn:active {
+  transform: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-month-toggle.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  transform: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-strip-viewport {
+  grid-area: strip;
+  min-height: 116px;
+  padding: 0;
+  border-radius: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  scroll-snap-type: x mandatory;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-days-strip {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 1px;
+  width: 100%;
+  min-width: 100%;
+  background: var(--border);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card {
+  scroll-snap-align: start;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 114px;
+  padding: 10px 10px 8px;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  text-align: left;
+  box-shadow: none;
+  transition: background-color 140ms, color 140ms;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card:hover {
+  border-color: transparent;
+  background: var(--surface-strong);
+  transform: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card:active {
+  transform: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card.today {
+  border-color: transparent;
+  border-bottom: 3px solid var(--accent);
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card.today::before {
+  content: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card.today .day-name {
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card.today .day-number {
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card.selected {
+  --accent: var(--accent-deep);
+}
+
+html:root[data-taste="signal"][data-theme="dark"] #calendarView .calendar-day-card.selected {
+  --accent-contrast: var(--text);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card.selected .summary-pill[data-section] {
+  --section-bg: var(--accent-contrast);
+  --section-fg: var(--accent);
+  --section-border: var(--accent-contrast);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card .day-name,
+html:root[data-taste="signal"] #calendarView .calendar-day-card .day-month {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card .day-number {
+  margin: 4px 0 0;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card .day-month {
+  margin-top: 4px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-day-card .day-summary {
+  gap: 3px;
+  margin-top: auto;
+  padding-top: 7px;
+  justify-content: flex-start;
+}
+
+html:root[data-taste="signal"] #calendarView .summary-pill,
+html:root[data-taste="signal"] #calendarView .cal-title-badge,
+html:root[data-taste="signal"] #calendarView .day-count {
+  min-width: 17px;
+  padding: 0 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--instrument);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Filter: a compartment of keys ------------------------------------- */
+
+html:root[data-taste="signal"] #calendarView .calendar-filter-bar {
+  margin: 0;
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-shell-summary {
+  min-height: 38px;
+  padding: 7px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-shell:is(:hover, [open]) > .manager-focus-filter-shell-summary {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-shell-title {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-shell-state {
+  min-height: 0;
+  padding: 0 5px;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--instrument);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-shell-chevron {
+  color: var(--muted);
+  transition: transform 160ms;
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-shell-body {
+  padding: 10px;
+  border: 1px solid var(--border-strong);
+  border-top: 0;
+  background: var(--surface);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-toggles {
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-filter-group {
+  gap: 4px;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-filter-group-title {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-filter-group-help {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-toggle {
+  min-height: 26px;
+  padding: 2px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-toggle.section-chip[aria-pressed="true"],
+html:root[data-taste="signal"] #calendarView .calendar-toggle:not(.section-chip)[aria-pressed="true"] {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--surface);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-toggle[aria-pressed="false"] {
+  opacity: 0.5;
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-group summary {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-group:is(:hover, [open]) summary {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+}
+
+html:root[data-taste="signal"] #calendarView .manager-focus-filter-panel {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .focus-filter-label span,
+html:root[data-taste="signal"] #calendarView .status-badge {
+  border-radius: 0;
+  font-family: var(--font-sans);
+}
+
+/* ---- Detail: compartments ---------------------------------------------- */
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-container {
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-top {
+  align-items: center;
+  gap: 10px 20px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-title {
+  flex: 1 1 380px;
+  margin: 0;
+  padding: 0;
+  overflow-wrap: break-word;
+  min-width: 0;
+  border: 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-sections {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-section {
+  min-width: 0;
+  gap: 5px;
+  padding: 12px 14px 14px;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-section h4 {
+  align-items: center;
+  min-height: 0;
+  margin: 0 0 4px;
+  padding: 0 0 7px;
+  gap: 7px;
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-heading {
+  gap: 6px;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-section .section-chip {
+  padding: 0 3px;
+  border: 1px solid var(--instrument);
+  border-radius: 0;
+  background: transparent;
+  color: var(--instrument);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-detail-section h4 .section-count {
+  min-width: 17px;
+  padding: 0 3px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--instrument);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-align: right;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-items-list {
+  gap: 0;
+  padding-right: 2px;
+  max-height: 440px;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-item-card {
+  width: 100%;
+  gap: 3px;
+  padding: 9px 6px 10px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  white-space: normal;
+  box-shadow: none;
+  transition: background-color 140ms;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-item-card:hover {
+  border-color: var(--border);
+  background: var(--surface-soft);
+  transform: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-item-title {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  overflow-wrap: break-word;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-item-detail {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-item-badges {
+  gap: 4px;
+  margin-top: 4px;
+}
+
+html:root[data-taste="signal"] #calendarView .cal-badge {
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  overflow-wrap: break-word;
+}
+
+html:root[data-taste="signal"] #calendarView .cal-badge:is(.status-done, .status-completed, .status-active, .status-approved, .status-accepted, .status-received, .status-depus) {
+  border-color: var(--instrument);
+  background: transparent;
+  color: var(--instrument);
+}
+
+html:root[data-taste="signal"] #calendarView .cal-badge:is(.status-stopped, .status-rejected, .status-in-progress, .status-pending) {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-empty-text {
+  padding: 14px 4px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-style: normal;
+  line-height: 1.5;
+  text-align: left;
+}
+
+/* ---- Summary: instrument readings -------------------------------------- */
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-container {
+  margin-top: 0;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-card {
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-header-title h3 {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-icon {
+  color: var(--instrument);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-subtitle {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-metrics-grid {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 1px;
+  padding: 0;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+
+html:root[data-taste="signal"] #calendarView .summary-metric-box {
+  gap: 5px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="signal"] #calendarView .summary-metric-box:hover {
+  border-color: transparent;
+}
+
+html:root[data-taste="signal"] #calendarView .summary-metric-box .metric-box-label {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="signal"] #calendarView .summary-metric-box .metric-box-value {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+html:root[data-taste="signal"] #calendarView .summary-metric-box.metric-total {
+  background: var(--surface-strong);
+}
+
+html:root[data-taste="signal"] #calendarView .summary-metric-box.metric-total .metric-box-value {
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-table-wrapper {
+  border: 1px solid var(--border);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-table th,
+html:root[data-taste="signal"] #calendarView .calendar-summary-table td {
+  padding: 6px 9px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-table thead th {
+  border-top: 0;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-table td {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-table tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-table tfoot tr.grand-total-row td,
+html:root[data-taste="signal"] #calendarView .calendar-summary-table tfoot tr.grand-total-row th {
+  border-top: 1px solid var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+  font-weight: 600;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-table .cat-pill {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+html:root[data-taste="signal"] #calendarView .calendar-summary-toggle {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+/* ---- Shared surfaces and controls -------------------------------------- */
+
+html[data-taste="signal"] :is(.panel, .config-panel) {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-taste="signal"] :is(.manager-card, .company-card) {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html[data-taste="signal"] .company-hero {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html[data-taste="signal"] .settings-panel {
+  padding: 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-taste="signal"] :is(.modal, .modal-card, .record-window) {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html[data-taste="signal"] .modal-overlay {
+  background: color-mix(in srgb, var(--bg) 76%, transparent);
+}
+
+html[data-taste="signal"] .panel-heading,
+html[data-taste="signal"] .tracker-topline {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="signal"] :is(.panel h2, .tracker-topline h2) {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+html[data-taste="signal"] .panel-toggle {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+}
+
+html[data-taste="signal"] .panel-toggle:hover {
+  border-color: var(--accent);
+  background: var(--surface-strong);
+  color: var(--accent);
+}
+
+/* Buttons: one orange key, everything else a hairline key. */
+html:root[data-taste="signal"] :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+  min-height: 34px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .primary-button {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .primary-button:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  color: var(--accent-contrast);
+  transform: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .secondary-button {
+  border: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--text-soft);
+}
+
+html:root[data-taste="signal"] .secondary-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="signal"] .secondary-button[aria-expanded="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] .danger-button {
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] .icon-button {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .icon-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+  transform: none;
+}
+
+html:root[data-taste="signal"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  box-shadow: none;
+}
+
+html[data-taste="signal"] :is(.status-pill, .priority-pill, .category-pill, .tag-pill, .startup-chip) {
+  min-height: 20px;
+  height: auto;
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: none;
+}
+
+html[data-taste="signal"] .status-pill[data-status-group="done"] {
+  border-color: var(--instrument);
+  background: transparent;
+  color: var(--instrument);
+}
+
+html[data-taste="signal"] .status-pill[data-status-group="closed"] {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] .summary-grid,
+html:root[data-taste="signal"] .manager-summary-grid,
+html:root[data-taste="signal"] .feedback-summary-grid {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html:root[data-taste="signal"] .metric-card {
+  border-right: 1px solid var(--border);
+}
+
+html:root[data-taste="signal"] .metric-label {
+  color: var(--muted);
+  font-family: var(--font-sans);
+}
+
+html:root[data-taste="signal"] .metric-value {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="signal"] .metric-card[data-metric="done"] .metric-value,
+html:root[data-taste="signal"] .metric-card[data-metric="received"] .metric-value {
+  color: var(--instrument);
+}
+
+html[data-taste="signal"] .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-taste="signal"] :is(.tracker-table, .data-table, .section-table) {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+html[data-taste="signal"] :is(.tracker-table, .data-table, .section-table) th {
+  padding: 8px 9px;
+  border: 0;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html[data-taste="signal"] :is(.tracker-table, .data-table, .section-table) td {
+  padding: 8px 9px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html[data-taste="signal"] :is(.tracker-table, .data-table, .section-table) tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html[data-taste="signal"] .settings-nav button {
+  border-radius: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+}
+
+html[data-taste="signal"] .settings-nav button.active,
+html[data-taste="signal"] .settings-nav button[aria-selected="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* ---- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1279px) {
+  html[data-taste="signal"] .shell-sidebar {
+    padding-inline: 20px;
+  }
+
+  html:root[data-taste="signal"] .app-shell > main {
+    padding: 20px 22px 60px;
+  }
+
+  html:root[data-taste="signal"] .topbar {
+    padding-inline: 22px;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button {
+    padding-inline: 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1023px) {
+  html[data-taste="signal"] .shell-sidebar {
+    padding-inline: 16px;
+    gap: 0 14px;
+  }
+
+  html:root[data-taste="signal"] .app-shell > main {
+    padding: 18px 18px 52px;
+  }
+
+  html:root[data-taste="signal"] .topbar {
+    padding-inline: 18px;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button {
+    min-height: 54px;
+    padding: 7px 9px;
+    font-size: 11.5px;
+    gap: 7px;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button::before {
+    min-width: 18px;
+    padding-right: 6px;
+    font-size: 9px;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-detail-sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  html:root[data-taste="signal"] #appTabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    overflow: visible;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button {
+    width: auto;
+    min-height: 46px;
+    padding: 6px 8px;
+    font-size: 11px;
+    gap: 7px;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button::before {
+    min-width: 16px;
+    padding-right: 5px;
+    font-size: 9px;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button[data-app-tab="programs"] {
+    grid-column: span 2;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button[data-app-tab="programs"] .app-tab-label {
+    display: inline;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 767px) {
+  html[data-taste="signal"] .shell-sidebar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand startup"
+      "keys keys";
+    gap: 0 10px;
+    padding: 0 14px;
+  }
+
+  html:root[data-taste="signal"] .shell-sidebar .identity {
+    min-height: 46px;
+  }
+
+  html:root[data-taste="signal"] .shell-sidebar h1 {
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  html:root[data-taste="signal"] .startup-switcher {
+    width: 196px;
+  }
+
+  html[data-taste="signal"] .startup-switcher-button {
+    min-height: 30px;
+    height: 30px;
+    gap: 6px;
+    padding: 0 6px;
+  }
+
+  html[data-taste="signal"] .startup-switcher .startup-icon {
+    flex-basis: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  html[data-taste="signal"] .startup-switcher-caption {
+    display: none;
+  }
+
+  html[data-taste="signal"] .sidebar-footer {
+    display: none;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button {
+    padding: 6px 7px;
+    font-size: 10.5px;
+    gap: 6px;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button::before {
+    font-size: 8.5px;
+  }
+
+  html:root[data-taste="signal"] .topbar {
+    min-height: 44px;
+    padding: 5px 14px;
+    gap: 8px;
+  }
+
+  html[data-taste="signal"] .shell-breadcrumb {
+    display: none;
+  }
+
+  html:root[data-taste="signal"] .topbar-actions {
+    width: 100%;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  html:root[data-taste="signal"] .save-state-text {
+    margin-right: auto;
+    padding-left: 4px;
+  }
+
+  html:root[data-taste="signal"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    padding: 0 7px;
+    font-size: 10.5px;
+  }
+
+  html:root[data-taste="signal"] .global-search.expanded .global-search-field {
+    left: 12px;
+    width: calc(100% - 24px);
+    max-width: none;
+  }
+
+  html:root[data-taste="signal"] .app-shell > main {
+    padding: 16px 14px 48px;
+  }
+
+  html[data-taste="signal"] .shell-heading {
+    margin-bottom: 14px;
+    padding-left: 9px;
+    border-left-width: 2px;
+  }
+
+  html[data-taste="signal"] .shell-heading h2,
+  html:root[data-taste="signal"] #calendarView > .shell-heading h2 {
+    font-size: 26px;
+  }
+
+  html[data-taste="signal"] .scope-switch-button,
+  html[data-taste="signal"] .focus-date-mode-btn {
+    min-height: 26px;
+    height: 26px;
+    padding: 0 7px;
+    font-size: 10px;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-strip-viewport {
+    min-height: 106px;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, minmax(78px, 1fr));
+    width: max-content;
+    min-width: 100%;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-day-card {
+    min-height: 104px;
+    padding: 8px 7px 7px;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-day-card .day-number {
+    font-size: 22px;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-detail-title {
+    flex-basis: 100%;
+    font-size: 19px;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-detail-top {
+    padding: 10px 11px;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-detail-section {
+    padding: 11px 12px 12px;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-items-list {
+    max-height: none;
+  }
+
+  html:root[data-taste="signal"] #calendarView .calendar-summary-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 479px) {
+  html:root[data-taste="signal"] .startup-switcher {
+    width: 190px;
+  }
+
+  html:root[data-taste="signal"] .shell-sidebar h1 {
+    font-size: 12px;
+  }
+
+  html:root[data-taste="signal"] .save-state-text {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-taste="signal"] *,
+  html[data-taste="signal"] *::before,
+  html[data-taste="signal"] *::after {
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+  }
+}
+
+/* ---- Shared compartments outside the Calendar -------------------------- */
+
+html:root[data-taste="signal"] .app-view[data-section] > .shell-heading::before {
+  display: none;
+}
+
+html:root[data-taste="signal"] :is(.summary-grid, .manager-summary-grid, .feedback-summary-grid) {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html:root[data-taste="signal"] :is(.panel, .config-panel) {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .focus-panel {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .panel-heading {
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="signal"] .focus-list {
+  gap: 10px;
+}
+
+html:root[data-taste="signal"] .focus-item {
+  min-height: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  box-shadow: none;
+  transition: background-color 140ms, border-color 140ms;
+}
+
+html:root[data-taste="signal"] .focus-item:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root[data-taste="signal"] .focus-item strong {
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+html:root[data-taste="signal"] .app-view[data-section] .focus-item-main > strong::before,
+html:root[data-taste="signal"] .app-view[data-section] .focus-item-main > .focus-item-title::before {
+  content: none;
+}
+
+html:root[data-taste="signal"] .focus-link-open {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--text-soft);
+}
+
+html:root[data-taste="signal"] .focus-link-open:hover {
+  border-color: var(--instrument);
+  background: var(--instrument);
+  color: var(--surface);
+  transform: none;
+}
+
+html:root[data-taste="signal"] :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn) {
+  min-height: 30px;
+  height: 30px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="signal"] :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn):hover {
+  border-color: var(--accent);
+  background: var(--surface-strong);
+  color: var(--accent);
+  transform: none;
+}
+
+html:root[data-taste="signal"] .focus-date-input {
+  min-height: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .manager-focus-filter-shell-summary {
+  min-height: 38px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .manager-focus-filter-shell:is(:hover, [open]) > .manager-focus-filter-shell-summary {
+  border-color: var(--accent);
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .manager-focus-filter-shell-title {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="signal"] .manager-focus-filter-shell-state {
+  min-height: 0;
+  padding: 0 5px;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--instrument);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+html:root[data-taste="signal"] .manager-focus-filter-group summary {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .manager-focus-filter-group:is(:hover, [open]) summary {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+}
+
+html:root[data-taste="signal"] .manager-focus-filter-panel {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] :is(.filters, .facet-filters) {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="signal"] .priority-pill[data-priority] {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="signal"] .priority-pill[data-priority="High"],
+html:root[data-taste="signal"] .priority-pill[data-priority="Very High"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] .status-pill[data-status-group] {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="signal"] .status-pill[data-status-group="done"] {
+  border-color: var(--instrument);
+  color: var(--instrument);
+}
+
+html:root[data-taste="signal"] .status-pill[data-status-group="in-progress"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+html:root[data-taste="signal"] .status-pill[data-status-group="closed"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* consistency.css pins a blue selected day in dark mode. The switchboard's
+   picked date is safety orange, so the board keeps its own field. */
+html:root[data-taste="signal"][data-theme="dark"] #calendarView .calendar-day-card.selected {
+  background: var(--accent-deep) !important;
+  border-color: var(--accent-deep) !important;
+  color: var(--accent-contrast) !important;
+}
+
+html:root[data-taste="signal"][data-theme="dark"] #calendarView .calendar-day-card.selected :is(.day-name, .day-number, .day-month) {
+  color: var(--accent-contrast) !important;
+}
+
+html[data-taste="signal"] fieldset,
+html[data-taste="signal"] :is(.settings-section, .settings-group, .settings-subpanel) {
+  border-radius: 0;
+}
+
+/* The narrowest supported window: stack the brand row tighter and use a
+   three-column keypad so no label collides with its neighbour. */
+@media (max-width: 380px) {
+  html[data-taste="signal"] .shell-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "brand"
+      "startup"
+      "keys";
+    gap: 0;
+    padding-inline: 12px;
+  }
+
+  html:root[data-taste="signal"] .shell-sidebar .identity {
+    min-height: 38px;
+  }
+
+  html:root[data-taste="signal"] .shell-sidebar h1 {
+    font-size: 11px;
+    letter-spacing: 0.01em;
+  }
+
+  html:root[data-taste="signal"] .startup-switcher {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+
+  html[data-taste="signal"] .startup-switcher-button {
+    height: 28px;
+    min-height: 28px;
+  }
+
+  html:root[data-taste="signal"] #appTabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button[data-app-tab="programs"] {
+    grid-column: auto;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button {
+    min-height: 46px;
+    padding: 6px;
+    font-size: 10px;
+    gap: 5px;
+  }
+
+  html:root[data-taste="signal"] #appTabs .app-tab-button::before {
+    min-width: 13px;
+    padding-right: 4px;
+    font-size: 8px;
+  }
+
+  html:root[data-taste="signal"] .save-state-text {
+    font-size: 9.5px;
+  }
+}

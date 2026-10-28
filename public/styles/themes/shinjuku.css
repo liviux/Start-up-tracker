@@ -1,0 +1,2032 @@
+/* Theme: shinjuku.
+   Direction: Neo Mirai / Tokyo 2042. A right-hand instrument rail, a status
+   strip instead of a top bar, and a wide, lightly asymmetric sheet. Cyan is
+   the signal, magenta is the second channel, and mono carries measurement.
+   The ground is deep blue-black by default; light is a pale blue technical
+   sheet, never neon on white.
+
+   Sources: pbakaus/impeccable DESIGN.md (Neo Kinpaku contrast and restraint
+   rules) and impeccable.style/cases/neo-mirai (retro-futurist composition).
+   The reference's warm amber is replaced by the cyan/magenta brief.
+   All selectors are scoped to html[data-taste="shinjuku"]. */
+
+html:root[data-taste="shinjuku"],
+html:root[data-taste="shinjuku"][data-active-app-tab] {
+  color-scheme: light;
+
+  --sh-cyan: oklch(48% 0.12 210);
+  --sh-cyan-bright: oklch(56% 0.13 205);
+  --sh-magenta: oklch(46% 0.19 350);
+  --sh-magenta-bright: oklch(54% 0.2 350);
+  --sh-ink: oklch(12% 0.03 255);
+  --sh-rule: oklch(30% 0.05 240 / 0.22);
+  --sh-rule-strong: oklch(34% 0.07 225 / 0.5);
+  --sh-cyan-soft: oklch(48% 0.12 210 / 0.1);
+  --sh-magenta-soft: oklch(46% 0.19 350 / 0.1);
+  --sh-rail: 88px;
+  --sh-rail-bg: oklch(15% 0.035 257);
+  --sh-rail-deep: oklch(10% 0.03 257);
+  --sh-rail-text: oklch(94% 0.015 220);
+  --sh-rail-muted: oklch(68% 0.04 225);
+
+  --bg: oklch(94% 0.018 235);
+  --surface: oklch(97.5% 0.012 235);
+  --surface-soft: oklch(92% 0.02 235);
+  --surface-strong: oklch(88% 0.026 235);
+  --text: oklch(21% 0.035 250);
+  --text-soft: oklch(32% 0.035 248);
+  --muted: oklch(47% 0.035 250);
+  --muted-strong: oklch(38% 0.035 250);
+  --border: var(--sh-rule);
+  --border-strong: var(--sh-rule-strong);
+  --accent: var(--sh-cyan);
+  --accent-hover: oklch(42% 0.11 210);
+  --accent-contrast: oklch(98% 0.008 235);
+  --accent-soft: var(--sh-cyan-soft);
+  --accent-ring: 0 0 0 2px var(--sh-cyan);
+  --page-accent-rgb: 0, 110, 131;
+  --page-support-rgb: 157, 3, 103;
+  --page-contrast-rgb: 0, 110, 131;
+  --page-title-gradient-end: var(--sh-cyan);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: oklch(96% 0.015 235);
+  --page-panel-muted-bg: oklch(92.5% 0.02 235);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--sh-cyan);
+  --page-hover-shadow: 0 1px 0 oklch(30% 0.04 240 / 0.08);
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+  --shadow: 0 1px 0 oklch(30% 0.04 240 / 0.07);
+  --shadow-soft: none;
+  --shadow-lg: 0 24px 64px oklch(20% 0.04 250 / 0.22);
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --radius-pill: 0;
+  --sidebar-width: var(--sh-rail);
+  --sidebar-bg: var(--sh-rail-bg);
+  --sidebar-text: var(--sh-rail-text);
+  --sidebar-muted: var(--sh-rail-muted);
+  --control-height: 34px;
+  --control-height-sm: 28px;
+  --pill-height: 20px;
+  --row-gap: 18px;
+  --font-sans: "Plus Jakarta Sans", "Helvetica Neue", "Nimbus Sans", Arial, system-ui, sans-serif;
+  --font-mono: "SFMono-Regular", "Roboto Mono", "Liberation Mono", Menlo, Consolas, monospace;
+  --sh-display: "Arial Narrow", "Liberation Sans Narrow", "Nimbus Sans Narrow", "Helvetica Neue", Arial, sans-serif;
+}
+
+html:root[data-taste="shinjuku"][data-theme="dark"],
+html:root[data-taste="shinjuku"][data-theme="dark"][data-active-app-tab] {
+  color-scheme: dark;
+
+  --sh-cyan: oklch(84% 0.14 195);
+  --sh-cyan-bright: oklch(90% 0.1 195);
+  --sh-magenta: oklch(70% 0.24 350);
+  --sh-magenta-bright: oklch(78% 0.2 350);
+  --sh-ink: oklch(13% 0.03 255);
+  --sh-rule: oklch(62% 0.1 220 / 0.22);
+  --sh-rule-strong: oklch(80% 0.12 200 / 0.5);
+  --sh-cyan-soft: oklch(84% 0.14 195 / 0.1);
+  --sh-magenta-soft: oklch(70% 0.24 350 / 0.1);
+
+  --bg: oklch(13% 0.03 258);
+  --surface: oklch(17% 0.035 258);
+  --surface-soft: oklch(15% 0.032 258);
+  --surface-strong: oklch(21% 0.04 258);
+  --text: oklch(95% 0.012 230);
+  --text-soft: oklch(85% 0.025 228);
+  --muted: oklch(70% 0.04 240);
+  --muted-strong: oklch(78% 0.035 235);
+  --border: var(--sh-rule);
+  --border-strong: var(--sh-rule-strong);
+  --accent: var(--sh-cyan);
+  --accent-hover: var(--sh-cyan-bright);
+  --accent-contrast: var(--sh-ink);
+  --accent-soft: var(--sh-cyan-soft);
+  --accent-ring: 0 0 0 2px var(--sh-cyan);
+  --page-accent-rgb: 30, 230, 231;
+  --page-support-rgb: 255, 72, 179;
+  --page-contrast-rgb: 30, 230, 231;
+  --page-title-gradient-end: var(--sh-cyan);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: oklch(15.5% 0.033 258);
+  --page-panel-muted-bg: oklch(14% 0.03 258);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: oklch(18.5% 0.037 258);
+  --page-elevated-soft-bg: var(--surface);
+  --page-focus-border: var(--sh-cyan);
+  --page-hover-shadow: 0 1px 0 oklch(100% 0 0 / 0.04);
+  --shadow: 0 1px 0 oklch(100% 0 0 / 0.035);
+  --shadow-soft: none;
+  --shadow-lg: 0 30px 80px oklch(2% 0.02 255 / 0.72);
+  --sidebar-bg: var(--sh-rail-deep);
+}
+
+/* ---- Ground ----------------------------------------------------------- */
+
+html:root[data-taste="shinjuku"] body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 80% 45% at 92% -8%, oklch(48% 0.12 210 / 0.1), transparent 58%),
+    radial-gradient(ellipse 50% 32% at 6% 100%, oklch(46% 0.19 350 / 0.045), transparent 65%);
+  background-attachment: fixed;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+html:root[data-taste="shinjuku"][data-theme="dark"] body {
+  background-color: oklch(9.5% 0.028 258);
+  background-image:
+    radial-gradient(ellipse 78% 46% at 94% -8%, oklch(84% 0.14 195 / 0.07), transparent 58%),
+    radial-gradient(ellipse 46% 30% at 3% 100%, oklch(70% 0.24 350 / 0.035), transparent 64%);
+}
+
+html[data-taste="shinjuku"] ::selection {
+  background: var(--sh-cyan);
+  color: var(--sh-ink);
+}
+
+html[data-taste="shinjuku"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html[data-taste="shinjuku"] ::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: var(--sh-rule-strong);
+}
+
+html[data-taste="shinjuku"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--sh-cyan);
+}
+
+/* ---- Shell: right rail, status strip, wide sheet ---------------------- */
+
+html:root[data-taste="shinjuku"] .app-shell {
+  padding-right: var(--sh-rail);
+  padding-left: 0;
+}
+
+html:root[data-taste="shinjuku"] .app-shell::before {
+  content: "";
+  position: fixed;
+  top: 96px;
+  bottom: 38px;
+  left: 22px;
+  z-index: 2;
+  width: 1px;
+  background: linear-gradient(180deg, var(--sh-cyan) 0, var(--sh-rule) 11%, var(--sh-rule) 89%, transparent 100%);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+html:root[data-taste="shinjuku"] .app-shell::after {
+  content: "";
+  position: fixed;
+  top: 96px;
+  left: 19px;
+  z-index: 2;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--sh-cyan);
+  background: var(--bg);
+  pointer-events: none;
+}
+
+html:root[data-taste="shinjuku"] .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 52px;
+  margin: 0;
+  padding: 0 26px 0 46px;
+  border: 0;
+  border-top: 2px solid var(--sh-cyan);
+  border-bottom: 1px solid var(--sh-rule-strong);
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="shinjuku"] .topbar::after {
+  content: "";
+  position: absolute;
+  right: 24px;
+  bottom: 4px;
+  width: 82px;
+  height: 5px;
+  background: repeating-linear-gradient(90deg, var(--sh-cyan) 0 1px, transparent 1px 8px);
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+html:root[data-taste="shinjuku"] .app-shell > main {
+  width: 100%;
+  max-width: 1560px;
+  margin: 0 auto 0 0;
+  padding: 34px 68px 78px 46px;
+  background: transparent;
+}
+
+/* The rail */
+html:root[data-taste="shinjuku"] .shell-sidebar {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  width: var(--sh-rail);
+  padding: 0 0 12px;
+  overflow-y: auto;
+  border-right: 0;
+  border-left: 1px solid var(--sh-rule-strong);
+  background:
+    linear-gradient(180deg, oklch(17% 0.04 257) 0%, var(--sh-rail-deep) 42%, oklch(8% 0.028 257) 100%);
+  color: var(--sidebar-text);
+  box-shadow: inset 6px 0 0 -5px oklch(84% 0.14 195 / 0.24);
+  scrollbar-width: thin;
+  scrollbar-color: var(--sh-rule-strong) transparent;
+}
+
+html:root[data-taste="shinjuku"] .shell-sidebar .identity {
+  justify-content: center;
+  padding: 16px 8px 15px;
+  border-bottom: 1px solid var(--sh-rule);
+}
+
+html:root[data-taste="shinjuku"] .shell-sidebar .title-row {
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  white-space: normal;
+}
+
+html:root[data-taste="shinjuku"] .shell-sidebar .topbar-logo {
+  width: 25px;
+  height: 25px;
+  filter: grayscale(1) brightness(1.8) sepia(1) saturate(3) hue-rotate(130deg);
+}
+
+html:root[data-taste="shinjuku"] .shell-sidebar h1 {
+  max-width: 72px;
+  margin: 0;
+  color: var(--sh-rail-text);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* The switcher compresses to a tile on the rail. */
+html:root[data-taste="shinjuku"] .startup-switcher {
+  margin: 9px 7px 10px;
+}
+
+html:root[data-taste="shinjuku"] .startup-switcher-button {
+  position: relative;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 63px;
+  padding: 7px 4px 6px;
+  border: 1px solid var(--sh-rule);
+  border-radius: 0;
+  background: oklch(84% 0.14 195 / 0.035);
+  color: var(--sh-rail-text);
+  text-align: center;
+}
+
+html:root[data-taste="shinjuku"] .startup-switcher-button:hover {
+  border-color: var(--sh-rule-strong);
+  background: oklch(84% 0.14 195 / 0.08);
+}
+
+html:root[data-taste="shinjuku"] .startup-switcher.open .startup-switcher-button {
+  border-color: var(--sh-cyan);
+}
+
+html:root[data-taste="shinjuku"] .startup-icon {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border-radius: 0;
+  background: oklch(84% 0.14 195 / 0.1);
+  color: var(--sh-cyan);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+html:root[data-taste="shinjuku"] .startup-switcher-text {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+html:root[data-taste="shinjuku"] .startup-switcher-caption {
+  display: none;
+}
+
+html:root[data-taste="shinjuku"] .startup-switcher-name {
+  max-width: 65px;
+  margin: 0 auto;
+  overflow: hidden;
+  color: var(--sh-rail-text);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  white-space: normal;
+  word-break: break-word;
+}
+
+html:root[data-taste="shinjuku"] .startup-switcher-chevron {
+  position: absolute;
+  top: 4px;
+  right: 3px;
+  width: 9px;
+  height: 9px;
+}
+
+html:root[data-taste="shinjuku"] .startup-switcher-menu {
+  position: fixed;
+  top: 92px;
+  right: calc(var(--sh-rail) + 10px);
+  z-index: 90;
+  width: 220px;
+  max-height: 60vh;
+  margin-top: 0;
+  padding: 5px;
+  overflow-y: auto;
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: 0;
+  background: var(--sh-rail-deep);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="shinjuku"] .startup-menu-item {
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 38px;
+  padding: 5px 7px;
+  border-radius: 0;
+  color: var(--sh-rail-text);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+html:root[data-taste="shinjuku"] .startup-menu-item:hover,
+html:root[data-taste="shinjuku"] .startup-menu-item:focus-visible {
+  background: var(--sh-cyan-soft);
+  color: var(--sh-cyan);
+}
+
+html:root[data-taste="shinjuku"] .startup-menu-name {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 10.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html:root[data-taste="shinjuku"] .startup-menu-item .startup-icon {
+  flex-basis: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+html:root[data-taste="shinjuku"] .startup-menu-separator {
+  background: var(--sh-rule);
+}
+
+/* Seven instrument keys */
+html:root[data-taste="shinjuku"] #appTabs {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  overflow: visible !important;
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-button {
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  min-height: 57px;
+  padding: 7px 0 6px;
+  border: 0;
+  border-top: 1px solid oklch(84% 0.14 195 / 0.13);
+  border-radius: 0;
+  background: transparent;
+  color: var(--sh-rail-muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-align: center;
+  transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-button > span:not(.app-tab-badge) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-button::after {
+  content: attr(data-shortname);
+  display: block;
+  flex: none;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  margin-left: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: currentColor;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-button img {
+  flex-basis: 17px;
+  width: 17px;
+  height: 17px;
+  opacity: 0.58;
+  filter: invert(1);
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-button:hover {
+  background: oklch(84% 0.14 195 / 0.06) !important;
+  color: var(--sh-cyan-bright) !important;
+  border-color: transparent !important;
+  transform: none;
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-button.active {
+  background: oklch(84% 0.14 195 / 0.1) !important;
+  color: var(--sh-cyan) !important;
+  box-shadow: inset 2px 0 0 var(--sh-cyan) !important;
+  font-weight: 600;
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-button.active img {
+  opacity: 1;
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-button[data-section]::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  width: 3px;
+  height: 3px;
+  background: var(--section);
+}
+
+html:root[data-taste="shinjuku"] #appTabs .app-tab-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  min-width: 12px;
+  height: 12px;
+  padding: 0 2px;
+  border: 1px solid var(--sh-rail-deep);
+  border-radius: 0;
+  background: var(--sh-magenta);
+  color: var(--sh-ink);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 600;
+  line-height: 10px;
+}
+
+html:root[data-taste="shinjuku"] .setup-badge {
+  margin: 7px;
+  padding: 6px 3px;
+  border: 1px solid var(--sh-rule);
+  border-radius: 0;
+  background: transparent;
+  color: var(--sh-rail-text);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+html:root[data-taste="shinjuku"] .setup-badge-dot {
+  flex-basis: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 0;
+  background: var(--sh-magenta);
+}
+
+html:root[data-taste="shinjuku"] .sidebar-footer {
+  gap: 3px;
+  margin-top: auto;
+  padding: 13px 6px 0;
+  border-top: 1px solid var(--sh-rule);
+  color: var(--sh-rail-muted);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="shinjuku"] .sidebar-footer > span:first-child {
+  display: none;
+}
+
+html:root[data-taste="shinjuku"] .sidebar-version {
+  justify-self: center;
+  color: var(--sh-rail-muted);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.06em;
+}
+
+/* ---- Status strip ----------------------------------------------------- */
+
+html:root[data-taste="shinjuku"] .topbar .shell-breadcrumb {
+  gap: 9px;
+  align-items: center;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="shinjuku"] .topbar .shell-breadcrumb::before {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--sh-cyan);
+  background: var(--sh-cyan-soft);
+}
+
+html:root[data-taste="shinjuku"] .topbar .shell-breadcrumb span:last-child {
+  color: var(--text);
+  font-weight: 500;
+}
+
+html:root[data-taste="shinjuku"] .topbar .save-state-text {
+  height: 22px;
+  margin-right: 4px;
+  padding: 0 7px;
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--sh-cyan);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="shinjuku"] .topbar .save-state-text.saved,
+html:root[data-taste="shinjuku"] .topbar .save-state-text.synced {
+  border-color: oklch(84% 0.14 195 / 0.35);
+  background: var(--sh-cyan-soft);
+  color: var(--sh-cyan);
+}
+
+html:root[data-taste="shinjuku"] .topbar .save-state-text.syncing {
+  border-color: oklch(70% 0.24 350 / 0.4);
+  color: var(--sh-magenta);
+}
+
+html:root[data-taste="shinjuku"] .topbar :is(.icon-button, #settingsButton, #projectLinksToggle) {
+  height: 30px;
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid var(--sh-rule);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="shinjuku"] .topbar :is(.icon-button, #settingsButton, #projectLinksToggle):hover {
+  border-color: var(--sh-cyan);
+  background: var(--sh-cyan-soft);
+  color: var(--sh-cyan);
+  transform: none;
+}
+
+html:root[data-taste="shinjuku"] .topbar :is(#settingsButton, #projectLinksToggle) svg {
+  width: 13px;
+  height: 13px;
+}
+
+html:root[data-taste="shinjuku"] .global-search-field,
+html:root[data-taste="shinjuku"] .global-search.expanded .global-search-field {
+  height: 30px;
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: 0;
+  background: var(--page-panel-muted-bg);
+}
+
+html:root[data-taste="shinjuku"] .global-search-field input {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+html:root[data-taste="shinjuku"] .global-search-field input::placeholder {
+  color: var(--muted);
+}
+
+html:root[data-taste="shinjuku"] .project-links-menu,
+html:root[data-taste="shinjuku"] .global-search-results {
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="shinjuku"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--sh-magenta);
+  outline-offset: 2px;
+}
+
+html:root[data-taste="shinjuku"][data-theme="dark"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline-color: var(--sh-cyan-bright);
+}
+
+/* ---- Page headings --------------------------------------------------- */
+
+html:root[data-taste="shinjuku"] .shell-heading {
+  margin: 0 0 28px;
+  padding: 0 0 18px;
+  border-bottom: 1px solid var(--sh-rule-strong);
+}
+
+html:root[data-taste="shinjuku"] .shell-heading h2 {
+  color: var(--text);
+  font-family: var(--sh-display);
+  font-size: clamp(32px, 3.4vw, 44px);
+  font-stretch: condensed;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+html:root[data-taste="shinjuku"] .shell-heading h2::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 2px;
+  margin-top: 14px;
+  background: var(--sh-cyan);
+}
+
+html:root[data-taste="shinjuku"] .shell-heading p {
+  margin-top: 10px;
+  max-width: 66ch;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+html:root[data-taste="shinjuku"] #calendarView > .shell-heading {
+  margin-bottom: 26px;
+  padding-bottom: 17px;
+}
+
+html:root[data-taste="shinjuku"] #calendarView > .shell-heading h2 {
+  font-family: var(--sh-display);
+  font-size: clamp(34px, 3.8vw, 47px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+html:root[data-taste="shinjuku"] #calendarView > .shell-heading p {
+  margin-top: 9px;
+  font-size: 12.5px;
+}
+
+html:root[data-taste="shinjuku"] .eyebrow {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* The heading rule carries the structure; the app's extra section stripe
+   would put a second, differently coloured bar above every page title. */
+html[data-taste="shinjuku"] .app-view[data-section] > .shell-heading::before {
+  display: none;
+}
+
+/* ---- Panels and figures --------------------------------------------- */
+
+html[data-taste="shinjuku"] :is(.panel, .manager-card, .config-panel, .company-card, .company-hero, .calendar-summary-card, .record-window-card, .settings-panel, .modal-card, .modal) {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--page-panel-bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-taste="shinjuku"] .panel {
+  padding: 24px 26px;
+}
+
+html[data-taste="shinjuku"] .panel-heading,
+html[data-taste="shinjuku"] .tracker-topline {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="shinjuku"] .panel h2,
+html[data-taste="shinjuku"] .tracker-topline h2 {
+  color: var(--text);
+  font-family: var(--sh-display);
+  font-size: 21px;
+  font-stretch: condensed;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] .manager-card,
+html[data-taste="shinjuku"] .company-card {
+  background: var(--page-panel-soft-bg);
+}
+
+html[data-taste="shinjuku"] .manager-card-header,
+html[data-taste="shinjuku"] .manager-group-header {
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="shinjuku"] .manager-card-header strong,
+html[data-taste="shinjuku"] .manager-group-header h3 {
+  color: var(--text);
+}
+
+html[data-taste="shinjuku"] .company-hero h3 {
+  color: var(--text);
+  font-family: var(--sh-display);
+  font-size: 24px;
+  font-stretch: condensed;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] :is(.company-budget, .company-urgent-btn) {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+html[data-taste="shinjuku"] .company-budget.is-over,
+html[data-taste="shinjuku"] .company-urgent-btn {
+  border-color: oklch(46% 0.19 350 / 0.5);
+  color: var(--sh-magenta);
+}
+
+html[data-taste="shinjuku"] .company-urgent-btn:hover {
+  border-color: var(--sh-magenta);
+  background: var(--sh-magenta-soft);
+}
+
+html[data-taste="shinjuku"] .company-urgent-list {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html[data-taste="shinjuku"] .company-language {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+}
+
+html[data-taste="shinjuku"] .company-language-btn {
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+
+html[data-taste="shinjuku"] .company-count {
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+html[data-taste="shinjuku"] .summary-grid,
+html[data-taste="shinjuku"] .manager-summary-grid,
+html[data-taste="shinjuku"] .feedback-summary-grid {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--border);
+  overflow: hidden;
+}
+
+html[data-taste="shinjuku"] .metric-card {
+  border-right: 1px solid var(--border);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] .metric-card:last-child {
+  border-right: 0;
+}
+
+html[data-taste="shinjuku"] .metric-label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] .metric-value {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-taste="shinjuku"] .focus-item {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--page-panel-soft-bg);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] .focus-item:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-taste="shinjuku"] .focus-item strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---- Controls -------------------------------------------------------- */
+
+html[data-taste="shinjuku"] :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+  height: 34px;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  box-shadow: none;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+html[data-taste="shinjuku"] .primary-button {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html[data-taste="shinjuku"] .primary-button:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  color: var(--accent-contrast);
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-taste="shinjuku"] .secondary-button {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html[data-taste="shinjuku"] .secondary-button:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  transform: none;
+}
+
+html[data-taste="shinjuku"] .ghost-button {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+html[data-taste="shinjuku"] .danger-button {
+  border-color: oklch(58% 0.15 35 / 0.5);
+  background: transparent;
+  color: oklch(58% 0.15 35);
+}
+
+html[data-taste="shinjuku"][data-theme="dark"] .danger-button {
+  color: oklch(72% 0.14 35);
+}
+
+html[data-taste="shinjuku"] .icon-button,
+html[data-taste="shinjuku"] .panel-toggle {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] .icon-button:hover,
+html[data-taste="shinjuku"] .panel-toggle:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  transform: none;
+}
+
+html[data-taste="shinjuku"] :is(.scope-switch, .focus-date-mode) {
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-taste="shinjuku"] :is(.manager-focus-filter-shell-summary, .focus-filter-shell-summary) {
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--page-panel-muted-bg);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] :is(.manager-focus-filter-shell, .focus-filter-shell):is(:hover, [open]) > :is(.manager-focus-filter-shell-summary, .focus-filter-shell-summary) {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] :is(.manager-focus-filter-shell-title, .focus-filter-shell-title) {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.11em;
+}
+
+html[data-taste="shinjuku"] :is(.manager-focus-filter-shell-state, .focus-filter-shell-state) {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+html[data-taste="shinjuku"] :is(.manager-focus-filter-shell-chevron, .focus-filter-shell-chevron) {
+  color: var(--muted);
+}
+
+html[data-taste="shinjuku"] .scope-switch-button,
+html[data-taste="shinjuku"] .focus-date-mode-btn {
+  min-height: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] .scope-switch-button[aria-pressed="true"],
+html[data-taste="shinjuku"] .focus-date-mode-btn.active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--page-panel-muted-bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] :is(input, select, textarea):focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+html[data-taste="shinjuku"] :is(input, textarea)::placeholder {
+  color: var(--muted);
+}
+
+html[data-taste="shinjuku"] :is(input, textarea) {
+  caret-color: var(--accent);
+}
+
+html[data-taste="shinjuku"] :is(input[type="checkbox"], input[type="radio"]) {
+  accent-color: var(--accent);
+}
+
+html[data-taste="shinjuku"] .shell-sidebar :is(button, a):focus-visible {
+  outline: 2px solid var(--sh-cyan);
+  outline-offset: 2px;
+}
+
+html[data-taste="shinjuku"] :is(.status-pill, .priority-pill, .category-pill) {
+  min-height: 19px;
+  padding: 0 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] .status-pill[data-status-group="done"] {
+  border-color: oklch(48% 0.12 210 / 0.55);
+  color: var(--accent);
+}
+
+/* ---- Tables ---------------------------------------------------------- */
+
+html[data-taste="shinjuku"] :is(.table-wrap, .calendar-summary-table-wrapper) {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-taste="shinjuku"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) {
+  border-collapse: collapse;
+}
+
+html[data-taste="shinjuku"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) thead th {
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--page-panel-muted-bg);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) td {
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+}
+
+html[data-taste="shinjuku"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) tbody tr:hover {
+  background: var(--accent-soft);
+}
+
+html[data-taste="shinjuku"] :is(.tracker-table, .data-table) .num-val,
+html[data-taste="shinjuku"] .calendar-summary-table .num-val {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Calendar: the console ------------------------------------------ */
+
+html[data-taste="shinjuku"] #calendarView .calendar-layout-container {
+  gap: 16px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-strip-container {
+  position: relative;
+  gap: 16px;
+  padding: 18px 18px 14px;
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
+  border-radius: 0;
+  background: var(--page-panel-bg);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-strip-container::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 88px;
+  width: 38px;
+  height: 2px;
+  background: var(--sh-magenta);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-strip-top-row {
+  gap: 16px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-nav-btn {
+  width: 31px;
+  height: 31px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-nav-btn-sub {
+  width: 28px;
+  height: 31px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-nav-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  transform: none;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-strip-viewport {
+  padding-top: 12px;
+  padding-bottom: 5px;
+  border-radius: 0;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-days-strip {
+  gap: 4px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card {
+  min-height: 102px;
+  padding: 10px 6px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--page-panel-muted-bg);
+  color: var(--text-soft);
+  box-shadow: inset 0 1px 0 oklch(84% 0.14 195 / 0.05);
+  transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card:hover {
+  border-color: var(--accent);
+  background: var(--surface-strong);
+  box-shadow: inset 0 0 0 1px var(--accent-soft);
+  transform: none;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card.today {
+  border-color: var(--sh-magenta);
+  box-shadow:
+    inset 0 0 0 1px oklch(70% 0.24 350 / 0.36),
+    0 0 14px oklch(70% 0.24 350 / 0.16);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card.today::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--sh-magenta);
+  font-size: 0;
+  line-height: 0;
+  box-shadow: none;
+}
+
+/* consistency.css pins a blue selected day with !important in dark mode.
+   The instrument's selected key is cyan, so these overrides are required. */
+html[data-taste="shinjuku"][data-theme="dark"] #calendarView .calendar-day-card.selected {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  box-shadow:
+    inset 0 0 0 1px oklch(84% 0.14 195 / 0.4),
+    0 0 16px oklch(84% 0.14 195 / 0.18) !important;
+}
+
+html[data-taste="shinjuku"][data-theme="dark"] #calendarView .calendar-day-card.selected :is(.day-name, .day-number, .day-month) {
+  color: var(--accent-contrast) !important;
+}
+
+html[data-taste="shinjuku"][data-theme="dark"] #calendarView .calendar-day-card.selected .summary-pill {
+  border-color: oklch(13% 0.03 255 / 0.3) !important;
+  background: transparent !important;
+  color: var(--accent-contrast) !important;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card.today.selected::before {
+  background: var(--accent-contrast);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card .day-name {
+  margin-bottom: 2px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card .day-number {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card .day-month {
+  margin-top: 2px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-day-card.today:not(.selected) .day-number {
+  color: var(--text);
+}
+
+html[data-taste="shinjuku"] #calendarView .summary-pill,
+html[data-taste="shinjuku"] #calendarView .cal-title-badge {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 0 3px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-strip-side .secondary-button {
+  height: 31px;
+  min-height: 31px;
+  font-size: 8.5px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-container {
+  padding: 22px 22px 26px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--page-panel-bg);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-top {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-title {
+  color: var(--text);
+  font-family: var(--sh-display);
+  font-size: clamp(23px, 2.2vw, 29px);
+  font-stretch: condensed;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-mode-toggle {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-mode-toggle .focus-date-mode-btn {
+  height: 26px;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.06em;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-mode-toggle .focus-date-mode-btn.active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-sections {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-section {
+  min-width: 0;
+  padding: 12px 12px 10px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--page-panel-soft-bg);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-section h4 {
+  min-height: 38px;
+  margin: 0;
+  padding: 0 0 9px;
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-section h4 .section-count {
+  min-width: 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-items-list {
+  gap: 0;
+  padding-right: 0;
+  max-height: 390px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-item-card {
+  padding: 11px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+  transition: background-color 140ms ease;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-item-card:last-child {
+  border-bottom: 0;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-item-card:hover {
+  background: var(--accent-soft);
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-item-title {
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-item-detail {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+html[data-taste="shinjuku"] #calendarView .cal-badge {
+  padding: 1px 4px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-empty-text {
+  padding: 20px 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-filter-bar {
+  margin-top: 0;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-toggles {
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-filter-group + .calendar-filter-group {
+  border-top-color: var(--border);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-filter-group-title {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-filter-group-help {
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-toggle {
+  min-height: 26px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-toggle:not(.section-chip)[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-toggle[aria-pressed="false"] {
+  text-decoration: none;
+  opacity: 0.44;
+}
+
+/* ---- Calendar summary ------------------------------------------------ */
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-card {
+  gap: 16px;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--page-panel-bg);
+  box-shadow: none;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-header-title h3 {
+  color: var(--text);
+  font-family: var(--sh-display);
+  font-size: 19px;
+  font-stretch: condensed;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-icon {
+  color: var(--accent);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-subtitle {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-metrics-grid {
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+
+html[data-taste="shinjuku"] #calendarView .summary-metric-box {
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 0;
+  background: var(--page-panel-bg);
+  transition: background-color 140ms ease;
+}
+
+html[data-taste="shinjuku"] #calendarView .summary-metric-box:hover {
+  background: var(--surface-strong);
+  border-color: transparent;
+  transform: none;
+}
+
+html[data-taste="shinjuku"] #calendarView .summary-metric-box.metric-total {
+  border-left: 0;
+  background: var(--accent-soft);
+}
+
+html[data-taste="shinjuku"] #calendarView .summary-metric-box .metric-box-label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+html[data-taste="shinjuku"] #calendarView .summary-metric-box .metric-box-value {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-table-wrapper {
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-table th,
+html[data-taste="shinjuku"] #calendarView .calendar-summary-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-table th {
+  background: var(--page-panel-muted-bg);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-table tbody tr:hover {
+  background: var(--accent-soft);
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-summary-table tfoot tr.grand-total-row td {
+  border-top: 1px solid var(--border-strong);
+  background: var(--surface-strong);
+}
+
+/* ---- Dialogs and settings ------------------------------------------- */
+
+html[data-taste="shinjuku"] .settings-panel {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: var(--shadow-lg);
+}
+
+html[data-taste="shinjuku"] .settings-nav {
+  border-right: 1px solid var(--border);
+  background: var(--page-panel-muted-bg);
+}
+
+html[data-taste="shinjuku"] .settings-nav button,
+html[data-taste="shinjuku"] .settings-section h3 {
+  color: var(--text);
+}
+
+html[data-taste="shinjuku"] .settings-section {
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="shinjuku"] .modal-overlay {
+  background: oklch(6% 0.025 255 / 0.76);
+}
+
+html[data-taste="shinjuku"] .modal-card,
+html[data-taste="shinjuku"] .record-window-card {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--bg);
+}
+
+html[data-taste="shinjuku"] .modal-header,
+html[data-taste="shinjuku"] .record-window-header {
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="shinjuku"] .modal-footer,
+html[data-taste="shinjuku"] .record-window-footer {
+  border-top: 1px solid var(--border);
+}
+
+html[data-taste="shinjuku"] .record-window-tab.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---- Tablet and phone: the rail becomes a top strip ------------------ */
+
+@media (max-width: 1023px) {
+  html:root[data-taste="shinjuku"] .app-shell {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  html:root[data-taste="shinjuku"] .app-shell::before,
+  html:root[data-taste="shinjuku"] .app-shell::after {
+    display: none;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-sidebar {
+    position: sticky;
+    inset: auto;
+    top: 0;
+    z-index: 120;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "identity switcher"
+      "nav nav"
+      "setup setup";
+    align-items: center;
+    width: 100%;
+    padding: 0 10px 5px;
+    overflow: visible;
+    border-left: 0;
+    border-bottom: 1px solid var(--sh-rail-deep);
+    background: var(--sh-rail-bg);
+    box-shadow: none;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-sidebar .identity {
+    grid-area: identity;
+    justify-content: flex-start;
+    padding: 8px 6px;
+    border: 0;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-sidebar .title-row {
+    flex-direction: row;
+    gap: 9px;
+    align-items: center;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-sidebar .topbar-logo {
+    width: 23px;
+    height: 23px;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-sidebar h1 {
+    max-width: 190px;
+    font-size: 8.5px;
+    line-height: 1.4;
+    letter-spacing: 0.15em;
+    text-align: left;
+  }
+
+  html:root[data-taste="shinjuku"] .startup-switcher {
+    grid-area: switcher;
+    margin: 5px 0 5px 8px;
+    position: relative;
+  }
+
+  html:root[data-taste="shinjuku"] .startup-switcher-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    width: min(260px, calc(100vw - 24px));
+    max-height: 60vh;
+    margin-top: 0;
+  }
+
+  html:root[data-taste="shinjuku"] .startup-switcher-button {
+    flex-direction: row;
+    gap: 6px;
+    min-height: 38px;
+    padding: 4px 6px;
+    text-align: left;
+  }
+
+  html:root[data-taste="shinjuku"] .startup-switcher-text {
+    width: auto;
+  }
+
+  html:root[data-taste="shinjuku"] .startup-switcher-name {
+    max-width: 118px;
+    margin: 0;
+    font-size: 9px;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  html:root[data-taste="shinjuku"] .startup-switcher-chevron {
+    position: static;
+    width: 12px;
+    height: 12px;
+  }
+
+  html:root[data-taste="shinjuku"] #appTabs {
+    grid-area: nav;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0;
+    margin: 0 -10px;
+    padding: 0 6px 4px;
+    border: 0;
+    background: none;
+    overflow: visible !important;
+  }
+
+  html:root[data-taste="shinjuku"] #appTabs .app-tab-button {
+    flex-direction: column;
+    gap: 3px;
+    width: auto;
+    min-height: 43px;
+    padding: 4px 1px 3px;
+    border: 0;
+    border-right: 1px solid oklch(84% 0.14 195 / 0.14);
+    border-top: 1px solid oklch(84% 0.14 195 / 0.18);
+    font-size: 7.5px;
+  }
+
+  html:root[data-taste="shinjuku"] #appTabs .app-tab-button:last-child {
+    border-right: 0;
+  }
+
+  html:root[data-taste="shinjuku"] #appTabs .app-tab-button img {
+    width: 15px;
+    height: 15px;
+  }
+
+  html:root[data-taste="shinjuku"] #appTabs .app-tab-button::after {
+    font-size: 8.5px;
+  }
+
+  html:root[data-taste="shinjuku"] #appTabs .app-tab-button.active {
+    box-shadow: inset 0 2px 0 var(--sh-cyan) !important;
+  }
+
+  html:root[data-taste="shinjuku"] #appTabs .app-tab-button[data-section]::before {
+    top: 5px;
+    right: 8px;
+  }
+
+  html:root[data-taste="shinjuku"] #appTabs .app-tab-badge {
+    top: 4px;
+    right: 5px;
+  }
+
+  html:root[data-taste="shinjuku"] .setup-badge {
+    grid-area: setup;
+    margin: 5px 0;
+    padding: 5px 8px;
+    text-align: left;
+  }
+
+  html:root[data-taste="shinjuku"] .sidebar-footer {
+    display: none;
+  }
+
+  html:root[data-taste="shinjuku"] .topbar {
+    top: 101px;
+    min-height: 48px;
+    padding: 7px 14px 7px 18px;
+    border-top: 1px solid var(--sh-cyan);
+  }
+
+  html:root[data-taste="shinjuku"] .app-shell:has(#finishSetupButton:not([hidden])) .topbar {
+    top: 133px;
+  }
+
+  html:root[data-taste="shinjuku"] .topbar::after {
+    display: none;
+  }
+
+  html:root[data-taste="shinjuku"] .app-shell > main {
+    max-width: none;
+    padding: 26px 18px 54px;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-heading {
+    margin-bottom: 22px;
+    padding-bottom: 15px;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-heading h2,
+  html:root[data-taste="shinjuku"] #calendarView > .shell-heading h2 {
+    font-size: 33px;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-heading h2::after {
+    margin-top: 11px;
+  }
+}
+
+@media (max-width: 767px) {
+  html:root[data-taste="shinjuku"] .topbar .shell-breadcrumb {
+    display: none;
+  }
+
+  html:root[data-taste="shinjuku"] .summary-grid.section-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="shinjuku"] .summary-grid.section-metrics > .metric-card:last-child:nth-child(3n + 1) {
+    grid-column: auto;
+  }
+
+  html:root[data-taste="shinjuku"] .topbar .save-state-text {
+    margin-right: auto;
+    height: 20px;
+    max-width: none;
+    padding: 0 5px;
+    overflow: visible;
+    font-size: 7.5px;
+    text-overflow: clip;
+  }
+
+  html:root[data-taste="shinjuku"] .topbar-actions {
+    gap: 4px;
+  }
+
+  html:root[data-taste="shinjuku"] .topbar :is(.icon-button, #settingsButton, #projectLinksToggle) {
+    width: 38px;
+    min-width: 38px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  html:root[data-taste="shinjuku"] .topbar #settingsButton span,
+  html:root[data-taste="shinjuku"] .topbar #projectLinksToggle span,
+  html:root[data-taste="shinjuku"] .topbar .project-links-chevron {
+    display: none;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView > .shell-heading {
+    gap: 12px;
+  }
+
+  html:root[data-taste="shinjuku"] .calendar-scope {
+    margin: 0;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-strip-container {
+    padding: 14px 10px 10px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-strip-top-row {
+    gap: 9px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-strip-side {
+    order: 1;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-strip-viewport {
+    order: 2;
+    min-height: 90px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-nav-column {
+    order: 3;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, minmax(60px, 1fr));
+    gap: 4px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-day-card {
+    min-height: 84px;
+    min-width: 60px;
+    padding: 7px 3px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-day-card .day-number {
+    font-size: 22px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-container {
+    padding: 16px 12px 18px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-title {
+    font-size: 22px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-section {
+    padding: 10px 10px 8px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-summary-card {
+    padding: 16px 12px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-summary-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="shinjuku"] .panel {
+    padding: 16px 14px;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-heading h2,
+  html:root[data-taste="shinjuku"] #calendarView > .shell-heading h2 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 420px) {
+  html:root[data-taste="shinjuku"] .app-shell > main {
+    padding-inline: 14px;
+  }
+
+  html:root[data-taste="shinjuku"] .shell-sidebar .topbar-logo {
+    width: 21px;
+    height: 21px;
+  }
+
+  html:root[data-taste="shinjuku"] .startup-switcher-name {
+    max-width: 94px;
+  }
+
+  html:root[data-taste="shinjuku"] #calendarView .calendar-day-card .day-number {
+    font-size: 20px;
+  }
+}

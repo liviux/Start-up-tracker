@@ -1,0 +1,2057 @@
+/* Theme: nightshift (dark signature).
+   Direction: a late-night operations desk; a left command console with a
+   horizontal key strip above the workspace, graphite surfaces and cyan readouts.
+   Palette source: ui-ux-pro-max color search "dark graphite cyan telemetry
+   operations" (three graphite steps, pale ink, cyan instrument, amber attention).
+   Type: Plus Jakarta Sans for language, ui-monospace for measurements and codes.
+   Scoped to html[data-taste="nightshift"]. */
+
+html:root[data-taste="nightshift"] {
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", "Roboto Mono",
+    Menlo, Consolas, "Liberation Mono", monospace;
+  --console-width: 300px;
+  --navstrip-h: 54px;
+  --topbar-h: 48px;
+  --shell-top: 102px;
+  --compact-shell-h: 104px;
+
+  --bg: #e7edef;
+  --surface: #f4f8f9;
+  --surface-soft: #eef3f5;
+  --surface-strong: #dee7ea;
+  --text: #0f171a;
+  --text-soft: #2f3e43;
+  --muted: #5b6b70;
+  --muted-strong: #48585d;
+
+  --border: #c6d3d7;
+  --border-strong: #97a9af;
+
+  --accent: #0a6270;
+  --accent-hover: #084c57;
+  --accent-contrast: #f3fbfb;
+  --accent-soft: #d8eaec;
+  --accent-ring: 0 0 0 3px rgb(10 98 112 / 24%);
+
+  --page-accent-rgb: 10, 98, 112;
+  --page-support-rgb: 138, 90, 0;
+  --page-contrast-rgb: 15, 23, 26;
+  --page-title-gradient-end: var(--accent);
+
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-soft);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: none;
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: none;
+  --shadow-soft: none;
+  --shadow-lg: 0 20px 56px rgb(7 14 16 / 22%);
+
+  --radius: 3px;
+  --radius-sm: 2px;
+  --radius-lg: 4px;
+  --radius-pill: 2px;
+
+  --control-height: 30px;
+  --control-height-sm: 26px;
+  --pill-height: 20px;
+  --row-gap: 12px;
+
+  --sidebar-width: 0px;
+  --sidebar-bg: #0d1316;
+  --sidebar-text: #d3dee2;
+  --sidebar-muted: #8d9da3;
+
+  --amber: #8a5a00;
+  --red: #a32b24;
+  --green: #0f7a5a;
+  --teal: #0a6270;
+  --blue: #225f8a;
+}
+
+html:root[data-taste="nightshift"][data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0b0d0f;
+  --surface: #13171a;
+  --surface-soft: #171c20;
+  --surface-strong: #1d2327;
+  --text: #e6edf0;
+  --text-soft: #bcc8cd;
+  --muted: #8d9ba1;
+  --muted-strong: #a3b0b6;
+
+  --border: #283136;
+  --border-strong: #3c474d;
+
+  --accent: #56d6e8;
+  --accent-hover: #7fe6f2;
+  --accent-contrast: #04191d;
+  --accent-soft: rgb(86 214 232 / 12%);
+  --accent-ring: 0 0 0 3px rgb(86 214 232 / 26%);
+
+  --page-accent-rgb: 86, 214, 232;
+  --page-support-rgb: 224, 164, 88;
+  --page-contrast-rgb: 140, 230, 255;
+
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-soft);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+
+  --shadow-lg: 0 24px 64px rgb(0 0 0 / 55%);
+
+  --sidebar-bg: #060809;
+  --sidebar-text: #d3dee2;
+  --sidebar-muted: #8d9da3;
+
+  --amber: #e0a458;
+  --red: #f08c7c;
+  --green: #63c7a4;
+  --teal: #56d6e8;
+  --blue: #7cb6dd;
+}
+
+/* ------------------------------------------------------------------ shell */
+
+html[data-taste="nightshift"] body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+html:root[data-taste="nightshift"] .app-shell {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: var(--shell-top) 0 0 var(--console-width);
+}
+
+html:root[data-taste="nightshift"] .app-shell > main {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 18px 26px 48px;
+}
+
+/* The sidebar is a fixed command console, not a nav list. */
+html:root[data-taste="nightshift"] .shell-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  left: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: var(--console-width);
+  height: 100dvh;
+  padding: 24px 20px 18px;
+  overflow: visible;
+  background: var(--sidebar-bg);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 27px,
+    rgb(255 255 255 / 2.5%) 27px 28px
+  );
+  color: var(--sidebar-text);
+  border-right: 1px solid color-mix(in srgb, var(--sidebar-text) 14%, transparent);
+}
+
+html:root[data-taste="nightshift"] .shell-sidebar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 132px;
+  background: var(--accent);
+}
+
+html:root[data-taste="nightshift"] .shell-sidebar .identity {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0 0 18px;
+  border-bottom: 1px solid color-mix(in srgb, var(--sidebar-text) 12%, transparent);
+}
+
+html:root[data-taste="nightshift"] .shell-sidebar .identity::after {
+  content: "";
+  width: 34px;
+  height: 2px;
+  background: var(--accent);
+}
+
+html:root[data-taste="nightshift"] .shell-sidebar .title-row {
+  gap: 10px;
+  white-space: normal;
+}
+
+html:root[data-taste="nightshift"] .shell-sidebar .topbar-logo {
+  width: 30px;
+  height: 30px;
+  filter: brightness(1.35) saturate(0.7);
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgb(86 214 232 / 20%);
+}
+
+html:root[data-taste="nightshift"] .shell-sidebar h1 {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  clip-path: none;
+  border: 0;
+  color: var(--sidebar-text);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  white-space: normal;
+}
+
+/* Startup switcher: a full-width console field. */
+html:root[data-taste="nightshift"] .startup-switcher {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  margin: 18px 0 0;
+}
+
+html:root[data-taste="nightshift"] .startup-switcher-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 10px;
+  gap: 10px;
+  border: 1px solid color-mix(in srgb, var(--sidebar-text) 18%, transparent);
+  border-radius: 3px;
+  background: rgb(255 255 255 / 3%);
+  color: var(--sidebar-text);
+}
+
+html:root[data-taste="nightshift"] .startup-switcher-button:hover {
+  border-color: rgb(86 214 232 / 55%);
+  background: rgb(86 214 232 / 8%);
+}
+
+html:root[data-taste="nightshift"] .startup-switcher.open .startup-switcher-button {
+  border-color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] .startup-switcher .startup-icon {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 8%);
+  color: var(--sidebar-text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+html:root[data-taste="nightshift"] .startup-switcher-text {
+  position: static;
+  display: grid;
+  flex: 1 1 auto;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+}
+
+html:root[data-taste="nightshift"] .startup-switcher-caption {
+  color: var(--sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="nightshift"] .startup-switcher-name {
+  overflow: hidden;
+  color: var(--sidebar-text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html:root[data-taste="nightshift"] .startup-switcher-chevron {
+  display: block;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--sidebar-muted);
+  fill: currentColor;
+}
+
+html:root[data-taste="nightshift"] .startup-switcher-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  z-index: 90;
+  width: auto;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="nightshift"] .startup-menu-item {
+  min-height: 38px;
+  border-radius: 2px;
+  color: var(--text);
+  font-size: 12px;
+}
+
+html:root[data-taste="nightshift"] .startup-menu-item .startup-icon {
+  border-radius: 2px;
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="nightshift"] .startup-menu-item:hover,
+html:root[data-taste="nightshift"] .startup-menu-item:focus-visible {
+  background: var(--surface-strong);
+}
+
+html:root[data-taste="nightshift"] .startup-menu-separator {
+  background: var(--border);
+}
+
+html:root[data-taste="nightshift"] .startup-unsynced {
+  padding-left: 0;
+  color: var(--amber);
+}
+
+/* Horizontal key strip across the top of the workspace. */
+html:root[data-taste="nightshift"] #appTabs {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: var(--console-width);
+  z-index: 75;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  width: auto;
+  height: var(--navstrip-h);
+  margin: 0;
+  padding: 0 10px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none;
+}
+
+html:root[data-taste="nightshift"] #appTabs::-webkit-scrollbar {
+  display: none;
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: auto;
+  min-height: 0;
+  height: 100%;
+  padding: 0 13px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button:last-child {
+  border-right: 1px solid var(--border);
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button img {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+  filter: none;
+}
+
+html:root[data-taste="nightshift"][data-theme="dark"] #appTabs .app-tab-button img {
+  filter: invert(1);
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-label {
+  display: inline;
+  flex-direction: initial;
+  align-items: initial;
+  line-height: 1.25;
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button::after {
+  content: attr(data-shortname);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 14px;
+  padding: 0 3px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button:hover {
+  border-color: var(--border) !important;
+  background: var(--surface-soft) !important;
+  color: var(--text) !important;
+  transform: none;
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button:hover img {
+  opacity: 0.9;
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button.active {
+  border-color: var(--border) !important;
+  background: var(--surface-strong) !important;
+  color: var(--accent) !important;
+  box-shadow: inset 0 -2px 0 var(--accent) !important;
+  font-weight: 600;
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button.active::after {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] #appTabs .app-tab-button.active img {
+  opacity: 1;
+}
+
+html:root[data-taste="nightshift"][data-theme="dark"] #appTabs .app-tab-button.active img {
+  filter: invert(82%) sepia(35%) saturate(680%) hue-rotate(140deg) brightness(104%);
+}
+
+html:root[data-taste="nightshift"] .app-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 15px;
+  margin-left: 2px;
+  padding: 0 3px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--amber);
+  color: #1a1206;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 15px;
+}
+
+html:root[data-taste="nightshift"] .setup-badge {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  min-height: 34px;
+  margin: 24px 0 0;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--amber) 45%, transparent);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+html:root[data-taste="nightshift"] .setup-badge:hover {
+  background: rgb(224 164 88 / 8%);
+}
+
+html:root[data-taste="nightshift"] .setup-badge-dot {
+  flex: 0 0 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--amber);
+}
+
+html:root[data-taste="nightshift"] .sidebar-footer {
+  display: grid;
+  gap: 5px;
+  margin-top: auto;
+  padding: 16px 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--sidebar-text) 12%, transparent);
+  color: var(--sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.04em;
+}
+
+html:root[data-taste="nightshift"] .sidebar-footer > span:first-child {
+  color: var(--sidebar-text);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+html:root[data-taste="nightshift"] .sidebar-version {
+  color: var(--sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.04em;
+}
+
+html:root[data-taste="nightshift"] .sidebar-version:hover {
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------- instrument strip */
+
+html:root[data-taste="nightshift"] .topbar {
+  position: fixed;
+  top: var(--navstrip-h);
+  right: 0;
+  left: var(--console-width);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  min-height: var(--topbar-h);
+  height: var(--topbar-h);
+  margin: 0;
+  padding: 0 26px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: none;
+}
+
+html:root[data-taste="nightshift"] .shell-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="nightshift"] .shell-breadcrumb::before {
+  content: "";
+  flex: 0 0 5px;
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+}
+
+html:root[data-taste="nightshift"] .shell-breadcrumb span:last-child {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+html:root[data-taste="nightshift"] .topbar-actions {
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin-left: auto;
+}
+
+html:root[data-taste="nightshift"] .topbar .icon-button,
+html:root[data-taste="nightshift"] .topbar .global-search-toggle {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--text-soft);
+}
+
+html:root[data-taste="nightshift"] .topbar .icon-button:hover,
+html:root[data-taste="nightshift"] .topbar .global-search-toggle:hover {
+  border-color: var(--accent);
+  background: var(--surface-strong);
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] .topbar .icon-button svg {
+  width: 15px;
+  height: 15px;
+}
+
+html:root[data-taste="nightshift"] .topbar :is(#settingsButton, #projectLinksToggle) {
+  height: 30px;
+  min-height: 30px;
+  padding: 0 9px;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+html:root[data-taste="nightshift"] .topbar :is(#settingsButton, #projectLinksToggle):hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+}
+
+html:root[data-taste="nightshift"] .topbar :is(#settingsButton, #projectLinksToggle) svg {
+  width: 13px;
+  height: 13px;
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] .save-state-text {
+  height: 20px;
+  margin-right: 4px;
+  padding: 0 2px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+
+html:root[data-taste="nightshift"] .save-state-text.saved,
+html:root[data-taste="nightshift"] .save-state-text.synced {
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] .global-search.expanded .global-search-field {
+  width: 260px;
+  max-width: 260px;
+  height: 30px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  background: var(--surface);
+}
+
+html:root[data-taste="nightshift"] .global-search-field input {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+html:root[data-taste="nightshift"] .global-search-results,
+html:root[data-taste="nightshift"] .project-links-menu {
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="nightshift"] .global-search-results {
+  top: calc(100% + 8px);
+}
+
+/* ----------------------------------------------------------- page heading */
+
+html:root[data-taste="nightshift"] .shell-heading {
+  display: block;
+  margin: 0 0 14px;
+  padding: 0 0 11px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+html:root[data-taste="nightshift"] .shell-heading h2 {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: clamp(26px, 2.1vw, 32px);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+
+html:root[data-taste="nightshift"] .shell-heading p {
+  max-width: 74ch;
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+html:root[data-taste="nightshift"] #calendarView > .shell-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 20px;
+  margin-bottom: 12px;
+}
+
+html:root[data-taste="nightshift"] #calendarView > .shell-heading h2 {
+  font-size: clamp(26px, 2vw, 30px);
+}
+
+html:root[data-taste="nightshift"] #calendarView > .shell-heading p {
+  margin-top: 4px;
+  font-size: 10.5px;
+}
+
+html:root[data-taste="nightshift"] .scope-switch {
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+}
+
+html:root[data-taste="nightshift"] .scope-switch-button {
+  min-height: 26px;
+  padding: 2px 9px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+html:root[data-taste="nightshift"] .scope-switch-button:first-child {
+  border-left: 0;
+}
+
+html:root[data-taste="nightshift"] .scope-switch-button:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="nightshift"] .scope-switch-button[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: none;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------- summary figures */
+
+html:root[data-taste="nightshift"] :is(.summary-grid, .manager-summary-grid, .feedback-summary-grid) {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 var(--accent);
+}
+
+html:root[data-taste="nightshift"] .metric-card {
+  border-right: 1px solid var(--border);
+}
+
+html:root[data-taste="nightshift"] .metric-card:last-child {
+  border-right: 0;
+}
+
+html:root[data-taste="nightshift"] .metric-label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+}
+
+html:root[data-taste="nightshift"] .metric-value {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.05em;
+}
+
+html:root[data-taste="nightshift"] .metric-card:not([data-metric="done"]):not([data-metric="received"]) .metric-value {
+  color: var(--text);
+}
+
+html:root[data-taste="nightshift"] .metric-card[data-metric="done"] .metric-value,
+html:root[data-taste="nightshift"] .metric-card[data-metric="received"] .metric-value {
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------- surfaces */
+
+html:root[data-taste="nightshift"] :is(.panel, .manager-card, .config-panel, .company-card,
+  .company-hero, .calendar-summary-card, .settings-panel, .modal, .record-window) {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="nightshift"] .panel-heading {
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="nightshift"] .panel-heading h2,
+html:root[data-taste="nightshift"] .panel-heading h3 {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="nightshift"] .eyebrow {
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------- calendar band */
+
+html:root[data-taste="nightshift"] #calendarView .calendar-layout-container {
+  gap: 12px;
+  margin-top: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-strip-container,
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-container,
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-card {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-strip-container {
+  gap: 0;
+  padding: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-strip-top-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-nav-column {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-strip-side {
+  flex-direction: row;
+  align-items: center;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-strip-side-actions {
+  flex-direction: row;
+  align-items: center;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-nav-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-nav-btn:hover {
+  border-color: var(--accent);
+  background: var(--surface-strong);
+  color: var(--accent);
+  transform: none;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-month-toggle.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-strip-viewport {
+  min-width: 0;
+  border-radius: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card {
+  isolation: isolate;
+  min-height: 88px;
+  padding: 8px 6px 7px;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  justify-content: flex-start;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card:hover {
+  border-color: var(--border);
+  background: var(--surface-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card:active {
+  transform: none;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card.today {
+  border-color: var(--border);
+  box-shadow: inset 0 -2px 0 var(--amber);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card.today::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  left: auto;
+  width: 5px;
+  height: 5px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--amber);
+  box-shadow: none;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card.selected {
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+  --accent-contrast: #f4fbfb;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card.selected.today::before {
+  background: #f4fbfb;
+}
+
+html:root[data-taste="nightshift"][data-theme="dark"] #calendarView .calendar-day-card.selected::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #0a4b54;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card.selected .summary-pill {
+  --section-bg: rgb(255 255 255 / 14%);
+  --section-fg: #f4fbfb;
+  --section-border: rgb(255 255 255 / 30%);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card .day-name,
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card .day-month {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card .day-name {
+  margin-bottom: 2px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card .day-month {
+  margin-top: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card .day-number {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 23px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.06em;
+  line-height: 1.05;
+  margin: 2px 0 1px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-day-card .day-summary {
+  gap: 2px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .summary-pill,
+html:root[data-taste="nightshift"] #calendarView .cal-title-badge {
+  min-width: 15px;
+  padding: 0 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 13px;
+  --section-bg: transparent;
+  --section-fg: var(--text-soft);
+  --section-border: var(--border-strong);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-strip-side-actions {
+  gap: 6px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-toggles {
+  margin: 0;
+  padding: 7px 10px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-filter-bar {
+  margin: 0;
+  padding: 6px 10px 8px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-month-panel {
+  padding: 10px;
+  border: 0;
+  border-top: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-month-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-month-cell {
+  border-radius: 0;
+}
+
+/* ------------------------------------------------------- detail + summary */
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-container {
+  padding: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 18px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: clamp(15px, 1.4vw, 19px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-mode-toggle {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+}
+
+html:root[data-taste="nightshift"] #calendarView .focus-date-mode-btn {
+  border-radius: 1px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-sections {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-section {
+  gap: 0;
+  padding: 0 12px 10px;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-section:last-child {
+  border-right: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-section h4 {
+  min-height: 36px;
+  margin: 0;
+  padding: 9px 0 7px;
+  align-items: center;
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-section h4 .section-count {
+  min-width: 19px;
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  line-height: 14px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-detail-section .section-chip {
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 14px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-card {
+  padding: 9px 2px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-card:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-title {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-detail {
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .cal-badge {
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 14px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .cal-badge[class*="type-"] {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--muted);
+}
+
+html:root[data-taste="nightshift"] #calendarView .cal-badge:is(.status-done, .status-completed,
+  .status-depus, .status-active, .status-approved, .status-accepted, .status-received) {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-empty-text {
+  padding: 20px 2px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  line-height: 1.6;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-card {
+  gap: 0;
+  padding: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-header {
+  gap: 7px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-header-title h3 {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-icon {
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-subtitle {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-metrics-grid {
+  gap: 0;
+  padding: 0;
+  border-top: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="nightshift"] #calendarView .summary-metric-box {
+  gap: 4px;
+  padding: 9px 14px;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .summary-metric-box .metric-box-label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-variant-caps: all-small-caps;
+}
+
+html:root[data-taste="nightshift"] #calendarView .summary-metric-box .metric-box-value {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: clamp(26px, 2.4vw, 32px);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.05em;
+}
+
+html:root[data-taste="nightshift"] #calendarView .summary-metric-box.metric-total .metric-box-value {
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table-wrapper {
+  overflow-x: auto;
+  border: 0;
+  border-radius: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table {
+  font-size: 10.5px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table th {
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table th,
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table td {
+  padding: 6px 9px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table .num-val,
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table tfoot .highlight-total {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table tfoot tr.grand-total-row td {
+  border-top: 1px solid var(--accent);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-summary-table tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] #calendarView .cat-pill {
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-card .status-pill {
+  min-height: 17px;
+  padding: 0 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  line-height: 15px;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-card .status-pill[data-status-group="done"] {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-card .status-pill[data-status-group="closed"] {
+  border-color: color-mix(in srgb, var(--red) 45%, var(--border));
+  color: var(--red);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-card .status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 17px;
+  padding: 0 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  line-height: 15px;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-card .status-badge.status-group-done {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] #calendarView .calendar-item-card .status-badge.status-group-closed {
+  border-color: color-mix(in srgb, var(--red) 45%, var(--border));
+  color: var(--red);
+}
+
+/* ----------------------------------------------------------------- filters */
+
+html:root[data-taste="nightshift"] :is(.focus-filter-shell-summary, .manager-focus-filter-shell-summary) {
+  min-height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="nightshift"] :is(.focus-filter-shell, .manager-focus-filter-shell):is(:hover, [open]) > summary {
+  border-color: var(--accent);
+  background: var(--surface-strong);
+  box-shadow: none;
+}
+
+html:root[data-taste="nightshift"] :is(.focus-filter-shell-title, .manager-focus-filter-shell-title) {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+html:root[data-taste="nightshift"] :is(.focus-filter-shell-state, .manager-focus-filter-shell-state) {
+  min-height: 20px;
+  padding: 0 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+}
+
+html:root[data-taste="nightshift"] .manager-focus-filter-group summary,
+html:root[data-taste="nightshift"] .manager-focus-filter-panel {
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+/* ----------------------------------------------------------------- tables */
+
+html:root[data-taste="nightshift"] .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+}
+
+html:root[data-taste="nightshift"] .tracker-table,
+html:root[data-taste="nightshift"] .data-table {
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+html:root[data-taste="nightshift"] :is(.tracker-table, .data-table) thead th {
+  position: sticky;
+  top: 0;
+  padding: 7px 9px;
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="nightshift"] :is(.tracker-table, .data-table) td {
+  padding: 8px 9px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+}
+
+html:root[data-taste="nightshift"] :is(.tracker-table, .data-table) tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] :is(.tracker-table, .data-table) :is(td, th).num-val,
+html:root[data-taste="nightshift"] :is(.tracker-table, .data-table) .amount,
+html:root[data-taste="nightshift"] :is(.tracker-table, .data-table) .money {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------- controls */
+
+html:root[data-taste="nightshift"] .primary-button {
+  min-height: 30px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="nightshift"] .primary-button:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  color: var(--accent-contrast);
+}
+
+html:root[data-taste="nightshift"] .secondary-button {
+  min-height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="nightshift"] .secondary-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html:root[data-taste="nightshift"] .icon-button {
+  border-radius: 2px;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="nightshift"] .status-pill,
+html:root[data-taste="nightshift"] .priority-pill,
+html:root[data-taste="nightshift"] .category-pill,
+html:root[data-taste="nightshift"] .tag-pill {
+  border-radius: 1px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+
+html:root[data-taste="nightshift"] .section-chip {
+  border-radius: 1px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+html:root[data-taste="nightshift"] .calendar-filter-option span {
+  border-radius: 1px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+html:root[data-taste="nightshift"] :is(input, select, textarea) {
+  border-radius: 2px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+html:root[data-taste="nightshift"] :is(input, select, textarea):focus {
+  border-color: var(--accent);
+  box-shadow: var(--accent-ring);
+}
+
+html:root[data-taste="nightshift"] .form-row label,
+html:root[data-taste="nightshift"] .startup-field {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------- dialogs + focus */
+
+html:root[data-taste="nightshift"] .settings-panel,
+html:root[data-taste="nightshift"] .modal,
+html:root[data-taste="nightshift"] .record-window {
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="nightshift"] .settings-nav {
+  border-right: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="nightshift"] .settings-nav-item[aria-current="page"] {
+  border-left: 2px solid var(--accent);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--accent);
+}
+
+html:root[data-taste="nightshift"] :is(.settings-section-title, .modal-header h2,
+  .record-window-heading h2) {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="nightshift"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+html:root[data-taste="nightshift"] .shell-sidebar :is(button, a, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+html:root[data-taste="nightshift"] ::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html:root[data-taste="nightshift"] .skip-link {
+  border-radius: 2px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* -------------------------------------------------------------- responsive */
+
+@media (max-width: 1199px) {
+  html:root[data-taste="nightshift"] .app-shell > main {
+    padding: 16px 20px 44px;
+  }
+
+  html:root[data-taste="nightshift"] .topbar {
+    padding-inline: 20px;
+  }
+
+  html:root[data-taste="nightshift"] #appTabs .app-tab-button {
+    padding-inline: 10px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 1023px) {
+  html:root[data-taste="nightshift"] {
+    --shell-top: 0px;
+    --compact-shell-h: 108px;
+  }
+
+  html:root[data-taste="nightshift"] .app-shell {
+    padding: 0;
+  }
+
+  html:root[data-taste="nightshift"] .shell-sidebar {
+    position: sticky;
+    inset: 0 0 auto 0;
+    width: 100%;
+    height: var(--compact-shell-h);
+    padding: 8px 16px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 44px 44px;
+    align-items: center;
+    gap: 4px 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  html:root[data-taste="nightshift"] .shell-sidebar::before {
+    display: none;
+  }
+
+  html:root[data-taste="nightshift"] .shell-sidebar .identity {
+    grid-column: 1;
+    grid-row: 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  html:root[data-taste="nightshift"] .shell-sidebar .identity::after {
+    display: none;
+  }
+
+  html:root[data-taste="nightshift"] .shell-sidebar h1 {
+    font-size: 15px;
+  }
+
+  html:root[data-taste="nightshift"] .shell-sidebar .topbar-logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  html:root[data-taste="nightshift"] .startup-switcher {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    width: min(250px, 44vw);
+    margin: 0;
+  }
+
+  html:root[data-taste="nightshift"] .startup-switcher-button {
+    min-height: 40px;
+    padding: 4px 8px;
+  }
+
+  html:root[data-taste="nightshift"] .startup-switcher-caption {
+    display: none;
+  }
+
+  html:root[data-taste="nightshift"] .startup-switcher-menu {
+    right: 0;
+    left: auto;
+    width: min(260px, calc(100vw - 28px));
+  }
+
+  html:root[data-taste="nightshift"] #appTabs {
+    position: static;
+    top: auto;
+    right: auto;
+    left: auto;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    height: 44px;
+    padding: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 0;
+  }
+
+  html:root[data-taste="nightshift"] #appTabs .app-tab-button {
+    height: 100%;
+    min-height: 0;
+    padding-inline: 10px;
+    font-size: 9px;
+  }
+
+  html:root[data-taste="nightshift"] #appTabs .app-tab-button img {
+    flex-basis: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  html:root[data-taste="nightshift"] .topbar {
+    position: sticky;
+    top: var(--compact-shell-h);
+    right: auto;
+    left: auto;
+    height: 44px;
+    min-height: 44px;
+    padding-inline: 16px;
+    z-index: 70;
+  }
+
+  html:root[data-taste="nightshift"] .shell-breadcrumb {
+    display: flex;
+  }
+
+  html:root[data-taste="nightshift"] .topbar-actions {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  html:root[data-taste="nightshift"] .app-shell > main {
+    padding: 16px 20px 44px;
+  }
+
+  html:root[data-taste="nightshift"] .setup-badge,
+  html:root[data-taste="nightshift"] .sidebar-footer {
+    display: none;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-strip-top-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "nav side"
+      "strip strip";
+    gap: 8px 12px;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-strip-viewport {
+    grid-area: strip;
+    width: 100%;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-strip-side {
+    grid-area: side;
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-nav-column {
+    grid-area: nav;
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-section {
+    border-bottom: 1px solid var(--border);
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-section:nth-child(2n) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  html:root[data-taste="nightshift"] {
+    --compact-shell-h: 106px;
+  }
+
+  html:root[data-taste="nightshift"] .shell-sidebar {
+    padding: 7px 14px;
+    grid-template-rows: 44px 44px;
+    gap: 4px 12px;
+  }
+
+  html:root[data-taste="nightshift"] .shell-sidebar h1 {
+    font-size: 14px;
+  }
+
+  html:root[data-taste="nightshift"] .startup-switcher {
+    width: min(230px, 45vw);
+  }
+
+  html:root[data-taste="nightshift"] #appTabs {
+    height: 44px;
+  }
+
+  html:root[data-taste="nightshift"] #appTabs .app-tab-button {
+    padding-inline: 9px;
+    font-size: 8.5px;
+  }
+
+  html:root[data-taste="nightshift"] .app-shell > main {
+    padding: 14px 14px 38px;
+  }
+
+  html:root[data-taste="nightshift"] .topbar {
+    top: var(--compact-shell-h);
+    height: 44px;
+    min-height: 44px;
+    padding-inline: 14px;
+  }
+
+  html:root[data-taste="nightshift"] .shell-breadcrumb {
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  html:root[data-taste="nightshift"] .shell-breadcrumb span:first-child,
+  html:root[data-taste="nightshift"] .shell-breadcrumb span:nth-child(2) {
+    display: none;
+  }
+
+  html:root[data-taste="nightshift"] .topbar-actions {
+    width: auto;
+    flex: 0 1 auto;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  html:root[data-taste="nightshift"] .topbar .icon-button,
+  html:root[data-taste="nightshift"] .topbar .global-search-toggle {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  html:root[data-taste="nightshift"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    height: 40px;
+    min-height: 40px;
+    padding-inline: 8px;
+  }
+
+  html:root[data-taste="nightshift"] .save-state-text {
+    margin-right: 0;
+    font-size: 8px;
+  }
+
+  html:root[data-taste="nightshift"] .save-state-text > span:last-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  html:root[data-taste="nightshift"] .global-search.expanded .global-search-field {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 14px;
+    left: auto;
+    width: min(290px, calc(100vw - 28px));
+    max-width: none;
+    background: var(--surface);
+    box-shadow: var(--shadow-lg);
+  }
+
+  html:root[data-taste="nightshift"] .global-search.expanded .global-search-results {
+    right: 0;
+    width: min(320px, calc(100vw - 28px));
+  }
+
+  html:root[data-taste="nightshift"] .shell-heading h2 {
+    font-size: 24px;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView > .shell-heading {
+    align-items: flex-start;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-strip-container,
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-container,
+  html:root[data-taste="nightshift"] #calendarView .calendar-summary-card {
+    border-radius: 2px;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-top {
+    padding: 8px 10px;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-section,
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-section:nth-child(2n) {
+    border-right: 0;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-section:last-child {
+    border-bottom: 0;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-summary-header {
+    padding: 8px 10px;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .summary-metric-box {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 479px) {
+  html:root[data-taste="nightshift"] .topbar :is(#settingsButton, #projectLinksToggle) span,
+  html:root[data-taste="nightshift"] .topbar .project-links-chevron {
+    display: none;
+  }
+
+  html:root[data-taste="nightshift"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  html:root[data-taste="nightshift"] #appTabs .app-tab-button {
+    padding-inline: 8px;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, minmax(56px, 1fr));
+    gap: 0;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-day-card {
+    min-width: 56px;
+  }
+
+  html:root[data-taste="nightshift"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* The selected day is the console's own deep teal, not the shared blue that
+   consistency.css pins in dark mode. */
+html:root[data-taste="nightshift"][data-theme="dark"] #calendarView .calendar-day-card.selected {
+  background: #0a4b54 !important;
+  border-color: var(--accent) !important;
+  color: #f4fbfb !important;
+}
+
+html:root[data-taste="nightshift"][data-theme="dark"] #calendarView .calendar-day-card.selected :is(.day-name, .day-number, .day-month) {
+  color: #f4fbfb !important;
+}

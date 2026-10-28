@@ -1,0 +1,2213 @@
+/* Hallmark · theme: broadsheet (by request) · genre: editorial · shape: app screen · scope: app screen
+ * material: buff stock, near-black ink, two rule weights, one vermilion · nav: masthead, section index, utility strip
+ * signature: the nine-day strip as a dated index over ruled columns · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R5 V5 · weakest: E, the utility strip first read as an icon row; it now sits on the masthead baseline at one control height, ruled like the index it serves */
+/* Hallmark · waive 24b · three optical steps at 6, 10 and 14px · the broadsheet's hairlines and small print need them; the 4px scale would loosen the index */
+/* Hallmark · direction: a company front page, not a newspaper costume. The shell is a masthead with the seven
+ * destinations as section links, a utility strip beneath, and the Calendar set as the day's edition: a dated
+ * index, ruled columns for the four desks, figures as a market table. Controls stay real, quoted and legible. */
+
+html:root[data-taste="broadsheet"],
+html:root[data-taste="broadsheet"][data-active-app-tab] {
+  color-scheme: light;
+
+  --bg: #efe6d2;
+  --surface: #f7f0de;
+  --surface-soft: #f2e9d5;
+  --surface-strong: #e7dcc2;
+  --text: #191510;
+  --text-soft: #3a3226;
+  --muted: #655947;
+  --muted-strong: #4d4233;
+  --border: #cbbca0;
+  --border-strong: #8f7f63;
+  --accent: #bf351b;
+  --accent-hover: #962810;
+  --accent-deep: #bf351b;
+  --accent-contrast: #fbf5e6;
+  --accent-soft: #eed9cd;
+  --accent-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+
+  --page-accent-rgb: 191, 53, 27;
+  --page-support-rgb: 143, 127, 99;
+  --page-contrast-rgb: 25, 21, 16;
+  --page-title-gradient-end: var(--text);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-soft);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: none;
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: none;
+  --shadow-soft: none;
+  --shadow-lg: none;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --radius-pill: 0;
+
+  --sidebar-width: 0;
+  --sidebar-bg: var(--bg);
+  --sidebar-text: var(--text-soft);
+  --sidebar-muted: var(--muted);
+
+  --control-height: 34px;
+  --control-height-sm: 28px;
+  --pill-height: 20px;
+  --row-gap: 18px;
+
+  --font-display: "Nimbus Roman", "Times New Roman", "Liberation Serif", Times, serif;
+  --font-body: "P052", "Palatino Linotype", "URW Bookman", Georgia, "Times New Roman", serif;
+  --font-sans: "Nimbus Sans Narrow", "Liberation Sans Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "DejaVu Sans Mono", "Nimbus Mono PS", "Liberation Mono", monospace;
+  --font-label: var(--font-sans);
+
+  --section-mk: var(--text);
+  --section-mk-bg: var(--surface-soft);
+  --section-mk-fg: var(--text);
+  --section-mk-border: var(--border-strong);
+  --section-po: var(--text);
+  --section-po-bg: var(--surface-soft);
+  --section-po-fg: var(--text);
+  --section-po-border: var(--border-strong);
+  --section-fu: var(--text);
+  --section-fu-bg: var(--surface-soft);
+  --section-fu-fg: var(--text);
+  --section-fu-border: var(--border-strong);
+  --section-comp: var(--text);
+  --section-comp-bg: var(--surface-soft);
+  --section-comp-fg: var(--text);
+  --section-comp-border: var(--border-strong);
+  --status-slate-bg: transparent;
+  --status-slate-color: var(--text-soft);
+  --status-slate-border: var(--border-strong);
+  --status-slate-solid-bg: var(--text);
+  --status-slate-solid-text: var(--bg);
+  --status-amber-bg: transparent;
+  --status-amber-color: var(--text-soft);
+  --status-amber-border: var(--border-strong);
+  --status-amber-solid-bg: var(--text);
+  --status-amber-solid-text: var(--bg);
+  --status-indigo-bg: transparent;
+  --status-indigo-color: var(--text-soft);
+  --status-indigo-border: var(--border-strong);
+  --status-indigo-solid-bg: var(--text);
+  --status-indigo-solid-text: var(--bg);
+  --status-green-bg: transparent;
+  --status-green-color: var(--accent);
+  --status-green-border: var(--accent);
+  --status-green-solid-bg: var(--accent);
+  --status-green-solid-text: var(--accent-contrast);
+  --status-red-bg: transparent;
+  --status-red-color: var(--accent);
+  --status-red-border: var(--accent);
+  --status-red-solid-bg: var(--accent);
+  --status-red-solid-text: var(--accent-contrast);
+}
+
+html:root[data-taste="broadsheet"][data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #14110d;
+  --surface: #1a1611;
+  --surface-soft: #201b15;
+  --surface-strong: #2a241a;
+  --text: #f0e7d3;
+  --text-soft: #d8ccb2;
+  --muted: #ab9c80;
+  --muted-strong: #c2b396;
+  --border: #3b3326;
+  --border-strong: #5c513d;
+  --accent: #ea7755;
+  --accent-hover: #f39377;
+  --accent-deep: #a33a1e;
+  --accent-contrast: #1a120c;
+  --accent-soft: #3a231b;
+  --accent-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+
+  --page-accent-rgb: 234, 119, 85;
+  --page-support-rgb: 92, 81, 61;
+  --page-contrast-rgb: 240, 231, 211;
+  --page-focus-border: var(--accent);
+  --sidebar-bg: var(--bg);
+  --sidebar-text: var(--text-soft);
+  --sidebar-muted: var(--muted);
+  --section-mk: var(--text);
+  --section-po: var(--text);
+  --section-fu: var(--text);
+  --section-comp: var(--text);
+
+  --page-title-gradient-end: var(--text);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-soft);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-hover-shadow: none;
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+  --shadow: none;
+  --shadow-soft: none;
+  --shadow-lg: none;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --sidebar-width: 0;
+  --sidebar-bg: var(--bg);
+  --sidebar-text: var(--text-soft);
+  --sidebar-muted: var(--muted);
+}
+
+/* ---- Paper and ink ------------------------------------------------------ */
+
+html[data-taste="broadsheet"],
+html[data-taste="broadsheet"] body {
+  overflow-x: clip;
+}
+
+html[data-taste="broadsheet"] {
+  background: var(--bg);
+}
+
+html[data-taste="broadsheet"] body {
+  min-height: 100dvh;
+  background: var(--bg);
+  background-image: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: auto;
+}
+
+html[data-taste="broadsheet"] ::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+html[data-taste="broadsheet"] :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+html[data-taste="broadsheet"] :is(button, input, select, textarea) {
+  font-family: var(--font-sans);
+}
+
+html[data-taste="broadsheet"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+html[data-taste="broadsheet"] #appTabs .app-tab-button:focus-visible,
+html[data-taste="broadsheet"] #calendarView .calendar-day-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+/* ---- Masthead ----------------------------------------------------------- */
+
+html[data-taste="broadsheet"] .app-shell {
+  padding-left: 0;
+}
+
+html[data-taste="broadsheet"] .shell-sidebar {
+  position: relative;
+  inset: auto;
+  z-index: 61;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    "identity switcher issue"
+    "tabs tabs tabs";
+  align-items: end;
+  gap: 0 32px;
+  width: 100%;
+  height: auto;
+  padding: 24px max(20px, calc((100% - 1440px) / 2 + 48px)) 0;
+  overflow: visible;
+  background: var(--bg);
+  color: var(--text);
+}
+
+html:root[data-taste="broadsheet"] .shell-sidebar .identity {
+  grid-area: identity;
+  align-items: flex-end;
+  padding: 0 0 8px;
+}
+
+html:root[data-taste="broadsheet"] .shell-sidebar .title-row {
+  gap: 0;
+  min-width: 0;
+  white-space: normal;
+}
+
+html:root[data-taste="broadsheet"] .shell-sidebar .topbar-logo {
+  display: none;
+}
+
+html:root[data-taste="broadsheet"] .shell-sidebar h1 {
+  max-width: 100%;
+  margin: 0;
+  overflow-wrap: break-word;
+  min-width: 0;
+  background: none;
+  color: var(--text);
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 4.6vw, 68px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  white-space: normal;
+}
+
+/* The startup switcher is the issue line: which company this edition covers. */
+html[data-taste="broadsheet"] .startup-switcher {
+  position: relative;
+  grid-area: switcher;
+  align-self: end;
+  width: 250px;
+  margin: 0 0 8px;
+}
+
+html[data-taste="broadsheet"] .startup-switcher-button {
+  min-height: 50px;
+  padding: 6px 11px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+html[data-taste="broadsheet"] .startup-switcher-button:hover {
+  background: var(--surface-soft);
+  border-color: var(--text);
+}
+
+html[data-taste="broadsheet"] .startup-switcher.open .startup-switcher-button {
+  border-color: var(--text);
+}
+
+html[data-taste="broadsheet"] .startup-switcher-caption {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html[data-taste="broadsheet"] .startup-switcher-name {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+html[data-taste="broadsheet"] .startup-switcher-caption,
+html[data-taste="broadsheet"] .startup-switcher-name {
+  line-height: 1.3;
+}
+
+html[data-taste="broadsheet"] .startup-icon {
+  border-radius: 0;
+  background: var(--surface-strong);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+html[data-taste="broadsheet"] .startup-switcher-chevron {
+  color: var(--muted);
+}
+
+html[data-taste="broadsheet"] .startup-switcher-menu {
+  position: absolute;
+  top: calc(100% + 3px);
+  right: 0;
+  left: 0;
+  z-index: 90;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] .startup-menu-item {
+  border-radius: 0;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+html[data-taste="broadsheet"] .startup-menu-item:hover {
+  background: var(--surface-strong);
+}
+
+html[data-taste="broadsheet"] .sidebar-footer {
+  grid-area: issue;
+  align-self: end;
+  justify-self: end;
+  display: grid;
+  gap: 1px;
+  margin: 0 0 12px;
+  padding: 0 0 2px;
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+}
+
+html[data-taste="broadsheet"] .sidebar-footer > span:first-child {
+  display: none;
+}
+
+html[data-taste="broadsheet"] .sidebar-version {
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+html[data-taste="broadsheet"] .sidebar-version:hover {
+  color: var(--accent);
+}
+
+/* Seven sections, ruled like the index of a front page. */
+html[data-taste="broadsheet"] #appTabs {
+  grid-area: tabs;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  margin: 16px 0 0;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 0;
+  border-top: 3px solid var(--text);
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  scrollbar-width: thin;
+}
+
+html:root[data-taste="broadsheet"] #appTabs .app-tab-button {
+  flex: 0 0 auto;
+  width: auto;
+  min-height: 46px;
+  padding: 9px 16px 11px;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: left;
+  white-space: nowrap;
+  box-shadow: none;
+  transition: background-color 140ms, color 140ms;
+}
+
+html:root[data-taste="broadsheet"] #appTabs .app-tab-button:last-child {
+  border-right: 0;
+}
+
+html:root[data-taste="broadsheet"] #appTabs .app-tab-button img {
+  display: none;
+}
+
+html:root[data-taste="broadsheet"] #appTabs .app-tab-button[data-section]::after {
+  display: none;
+}
+
+html:root[data-taste="broadsheet"] #appTabs .app-tab-label {
+  flex-direction: row;
+  gap: 0.28em;
+  align-items: baseline;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+html:root[data-taste="broadsheet"] #appTabs .app-tab-button:hover {
+  background: var(--surface-soft) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] #appTabs .app-tab-button.active {
+  background: transparent !important;
+  border-color: var(--border) !important;
+  color: var(--accent) !important;
+  box-shadow: inset 0 -3px 0 var(--accent) !important;
+  font-weight: 700;
+}
+
+html:root[data-taste="broadsheet"] #appTabs .app-tab-badge {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 0;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+html[data-taste="broadsheet"] .setup-badge {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin: 8px 0 0;
+  border-radius: 0;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 11px;
+}
+
+html[data-taste="broadsheet"] .setup-badge-dot {
+  border-radius: 0;
+  background: var(--accent);
+}
+
+/* ---- Utility strip ------------------------------------------------------ */
+
+html:root[data-taste="broadsheet"] .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 46px;
+  padding: 6px max(20px, calc((100% - 1440px) / 2 + 48px));
+  border: 0;
+  border-top: 0;
+  border-bottom: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  gap: 16px;
+}
+
+html[data-taste="broadsheet"] .shell-breadcrumb {
+  gap: 7px;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-style: normal;
+  letter-spacing: 0;
+}
+
+html[data-taste="broadsheet"] .shell-breadcrumb span:last-child {
+  color: var(--text);
+  font-weight: 700;
+}
+
+html[data-taste="broadsheet"] .topbar-actions {
+  gap: 6px;
+}
+
+html:root[data-taste="broadsheet"] .topbar .icon-button {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .topbar .icon-button:hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] .topbar .icon-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+html:root[data-taste="broadsheet"] .topbar :is(#settingsButton, #projectLinksToggle) {
+  height: 34px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="broadsheet"] .topbar :is(#settingsButton, #projectLinksToggle):hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+html[data-taste="broadsheet"] .save-state-text {
+  height: 26px;
+  margin-right: 4px;
+  padding: 0 6px;
+  border: 0;
+  border-left: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+html[data-taste="broadsheet"] .save-state-text.saved,
+html[data-taste="broadsheet"] .save-state-text.synced {
+  background: transparent;
+  color: var(--accent);
+}
+
+html[data-taste="broadsheet"] .global-search-field {
+  height: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-taste="broadsheet"] .global-search.expanded .global-search-field {
+  width: 200px;
+  max-width: 200px;
+  height: 34px;
+  padding: 0 8px;
+  border-radius: 0;
+  background: var(--surface);
+}
+
+html[data-taste="broadsheet"] .global-search-field input {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+}
+
+html[data-taste="broadsheet"] .global-search-results,
+html[data-taste="broadsheet"] .project-links-menu {
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+html[data-taste="broadsheet"] .global-search-result {
+  border-radius: 0;
+}
+
+/* ---- Page heads --------------------------------------------------------- */
+
+html:root[data-taste="broadsheet"] .app-shell > main {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 30px 48px 90px;
+}
+
+html[data-taste="broadsheet"] .app-view > .shell-heading,
+html[data-taste="broadsheet"] .shell-heading {
+  margin: 0 0 22px;
+  padding-top: 13px;
+  border-top: 3px solid var(--text);
+}
+
+html[data-taste="broadsheet"] .shell-heading h2,
+html:root[data-taste="broadsheet"] #calendarView > .shell-heading h2 {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(34px, 3.4vw, 50px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+html[data-taste="broadsheet"] .shell-heading p,
+html:root[data-taste="broadsheet"] #calendarView > .shell-heading p {
+  max-width: 68ch;
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+html[data-taste="broadsheet"] .app-view[data-section] > .shell-heading::before {
+  width: 56px;
+  height: 3px;
+  margin-bottom: 8px;
+  border-radius: 0;
+  background: var(--section, var(--text));
+}
+
+html:root[data-taste="broadsheet"] #calendarView > .shell-heading.calendar-heading {
+  align-items: flex-end;
+  gap: 12px 24px;
+}
+
+html[data-taste="broadsheet"] .scope-switch,
+html[data-taste="broadsheet"] .focus-date-mode {
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-taste="broadsheet"] .scope-switch-button,
+html[data-taste="broadsheet"] .focus-date-mode-btn {
+  min-height: 30px;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] .scope-switch-button:first-child,
+html[data-taste="broadsheet"] .focus-date-mode-btn:first-child {
+  border-left: 0;
+}
+
+html[data-taste="broadsheet"] .scope-switch-button:hover,
+html[data-taste="broadsheet"] .focus-date-mode-btn:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+html[data-taste="broadsheet"] .scope-switch-button[aria-pressed="true"],
+html[data-taste="broadsheet"] .focus-date-mode-btn.active {
+  border-color: var(--border);
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] .focus-date-mode-btn .tab-count,
+html[data-taste="broadsheet"] .focus-date-mode-btn.active .tab-count {
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 0;
+  background: transparent;
+  color: currentColor;
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+}
+
+/* ---- Calendar: the dated index ----------------------------------------- */
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-layout-container {
+  gap: 0;
+  margin-top: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-strip-container {
+  gap: 8px;
+  padding: 12px 0 0;
+  border: 0;
+  border-top: 3px solid var(--text);
+  border-bottom: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-strip-top-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-nav-column {
+  order: 1;
+  flex: 0 0 auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 5px;
+  padding: 0 10px 8px 0;
+  border-right: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-strip-side {
+  order: 2;
+  flex: 1 1 auto;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 0 0 8px 10px;
+  border-left: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-strip-viewport {
+  order: 3;
+  flex: 1 0 100%;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-strip-side-actions {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-nav-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  transition: background-color 140ms, color 140ms, border-color 140ms;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-nav-btn-sub {
+  width: 28px;
+  height: 32px;
+  opacity: 1;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-nav-btn:hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-nav-btn:active {
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-month-toggle.active {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-strip-viewport {
+  min-height: 152px;
+  padding: 0;
+  border-radius: 0;
+  scrollbar-width: thin;
+  scroll-snap-type: x mandatory;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-days-strip {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+  min-width: 100%;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card {
+  scroll-snap-align: start;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 140px;
+  padding: 11px 10px 9px;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  text-align: left;
+  box-shadow: none;
+  transition: background-color 140ms, color 140ms;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card:last-child {
+  border-right: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card:hover {
+  border-color: var(--border);
+  background: var(--surface-soft);
+  transform: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card:active {
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card.today {
+  border-color: var(--border);
+  border-top: 4px solid var(--accent);
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card.today::before {
+  content: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card.today .day-name,
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card.today .day-number {
+  color: var(--accent);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card.selected {
+  --accent: var(--accent-deep);
+}
+
+html:root[data-taste="broadsheet"][data-theme="dark"] #calendarView .calendar-day-card.selected {
+  --accent-contrast: var(--text);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card.selected .summary-pill[data-section] {
+  --section-bg: var(--accent-contrast);
+  --section-fg: var(--accent);
+  --section-border: var(--accent-contrast);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card .day-name,
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card .day-month {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card .day-number {
+  margin: 2px 0 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card .day-month {
+  margin-top: 3px;
+  color: var(--text-soft);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-style: italic;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-day-card .day-summary {
+  gap: 3px;
+  margin-top: auto;
+  padding-top: 8px;
+  justify-content: flex-start;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .summary-pill,
+html:root[data-taste="broadsheet"] #calendarView .cal-title-badge,
+html:root[data-taste="broadsheet"] #calendarView .day-count {
+  min-width: 16px;
+  padding: 0 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Filter: a ruled classified strip ---------------------------------- */
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-filter-bar {
+  margin: 0;
+  border-bottom: 1px solid var(--text);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-shell-summary {
+  min-height: 42px;
+  padding: 8px 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-shell:is(:hover, [open]) > .manager-focus-filter-shell-summary {
+  border: 0;
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-shell-title {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-shell-state {
+  min-height: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-shell-chevron {
+  color: var(--text-soft);
+  transition: transform 160ms;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-shell-body {
+  padding: 0 0 14px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-toggles {
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-filter-group {
+  gap: 4px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-filter-group-title {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-filter-group-help {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-toggle {
+  min-height: 28px;
+  padding: 2px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-toggle.section-chip[aria-pressed="true"],
+html:root[data-taste="broadsheet"] #calendarView .calendar-toggle:not(.section-chip)[aria-pressed="true"] {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-toggle[aria-pressed="false"] {
+  opacity: 0.5;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-group summary {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-group:is(:hover, [open]) summary {
+  background: var(--surface-soft);
+  border-color: var(--text);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .manager-focus-filter-panel {
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .focus-filter-label span,
+html:root[data-taste="broadsheet"] #calendarView .status-badge {
+  border-radius: 0;
+  font-family: var(--font-sans);
+}
+
+/* ---- Detail: ruled columns --------------------------------------------- */
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-container {
+  padding: 18px 0 0;
+  border: 0;
+  border-top: 3px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-top {
+  align-items: flex-end;
+  gap: 14px 24px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-title {
+  flex: 1 1 420px;
+  margin: 0 0 16px;
+  padding: 0 0 10px;
+  overflow-wrap: break-word;
+  min-width: 0;
+  border-bottom: 1px solid var(--text);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(26px, 2.6vw, 38px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section {
+  min-width: 0;
+  gap: 4px;
+  padding: 0 18px 10px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section:last-child {
+  padding-right: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section h4 {
+  align-items: baseline;
+  min-height: 0;
+  margin: 0 0 6px;
+  padding: 0 0 7px;
+  gap: 8px;
+  border-bottom: 3px solid var(--text);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-heading {
+  gap: 6px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section .section-chip {
+  padding: 0 4px;
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section h4 .section-count {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  text-align: right;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-items-list {
+  gap: 0;
+  padding-right: 4px;
+  max-height: 440px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-item-card {
+  width: 100%;
+  gap: 3px;
+  padding: 11px 0 12px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  white-space: normal;
+  box-shadow: none;
+  transition: background-color 140ms;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-item-card:first-child {
+  border-top-color: var(--border-strong);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-item-card:hover {
+  border-color: var(--border);
+  background: var(--surface-soft);
+  transform: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-item-title {
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-item-detail {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-item-badges {
+  gap: 5px;
+  margin-top: 4px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .cal-badge {
+  padding: 0 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  overflow-wrap: break-word;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .cal-badge:is(.status-done, .status-completed, .status-active, .status-approved, .status-accepted, .status-received, .status-depus) {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .cal-badge:is(.status-stopped, .status-rejected) {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-empty-text {
+  padding: 18px 0;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.5;
+  text-align: left;
+}
+
+/* ---- Summary: the market table ----------------------------------------- */
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-container {
+  margin-top: 20px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-card {
+  gap: 14px;
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 3px solid var(--text);
+  border-bottom: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-header-title h3 {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-icon {
+  color: var(--accent);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-subtitle {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-metrics-grid {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0;
+  padding: 0;
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .summary-metric-box {
+  gap: 2px;
+  padding: 10px 16px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .summary-metric-box:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .summary-metric-box:hover {
+  border-color: var(--border);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .summary-metric-box .metric-box-label {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .summary-metric-box .metric-box-value {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .summary-metric-box.metric-total .metric-box-value {
+  color: var(--accent);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table-wrapper {
+  border: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table th,
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table td {
+  padding: 7px 10px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table thead th {
+  border-top: 0;
+  border-bottom: 1px solid var(--text);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table td {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table tfoot tr.grand-total-row td,
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table tfoot tr.grand-total-row th {
+  border-top: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-table .cat-pill {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-summary-toggle {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+/* ---- Shared surfaces and controls -------------------------------------- */
+
+html[data-taste="broadsheet"] :is(.panel, .config-panel) {
+  padding: 18px 0;
+  border: 0;
+  border-top: 3px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-taste="broadsheet"] .settings-panel {
+  padding: 22px;
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-taste="broadsheet"] :is(.manager-card, .company-card) {
+  padding: 14px 0;
+  border: 0;
+  border-top: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] .company-hero {
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] :is(.modal, .modal-card, .record-window) {
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] .modal-overlay {
+  background: color-mix(in srgb, var(--text) 55%, transparent);
+}
+
+html[data-taste="broadsheet"] .panel-heading,
+html[data-taste="broadsheet"] .tracker-topline {
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--text);
+}
+
+html[data-taste="broadsheet"] :is(.panel h2, .tracker-topline h2) {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+html[data-taste="broadsheet"] .panel-toggle {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html[data-taste="broadsheet"] .panel-toggle:hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* Buttons: one ink block, one double-ruled outline. */
+html:root[data-taste="broadsheet"] :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+  min-height: 34px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .primary-button {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .primary-button:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  color: var(--accent-contrast);
+  transform: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .secondary-button {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text);
+}
+
+html:root[data-taste="broadsheet"] .secondary-button:hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] .secondary-button[aria-expanded="true"] {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+html:root[data-taste="broadsheet"] .danger-button {
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="broadsheet"] .icon-button {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .icon-button:hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] :is(.status-pill, .priority-pill, .category-pill, .tag-pill, .startup-chip) {
+  min-height: 20px;
+  height: auto;
+  padding: 1px 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] .status-pill[data-status-group="done"] {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html[data-taste="broadsheet"] .status-pill[data-status-group="closed"] {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+html:root[data-taste="broadsheet"] .metric-card {
+  border-right: 1px solid var(--border);
+}
+
+html:root[data-taste="broadsheet"] .metric-label {
+  color: var(--muted);
+  font-family: var(--font-sans);
+}
+
+html:root[data-taste="broadsheet"] .metric-value {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="broadsheet"] .metric-card[data-metric="done"] .metric-value,
+html:root[data-taste="broadsheet"] .metric-card[data-metric="received"] .metric-value {
+  color: var(--accent);
+}
+
+html[data-taste="broadsheet"] .table-wrap {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-taste="broadsheet"] :is(.tracker-table, .data-table, .section-table) {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+html[data-taste="broadsheet"] :is(.tracker-table, .data-table, .section-table) th {
+  padding: 8px 10px;
+  border: 0;
+  border-bottom: 1px solid var(--text);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html[data-taste="broadsheet"] :is(.tracker-table, .data-table, .section-table) td {
+  padding: 9px 10px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html[data-taste="broadsheet"] :is(.tracker-table, .data-table, .section-table) tbody tr:hover {
+  background: var(--surface-soft);
+}
+
+html[data-taste="broadsheet"] .settings-nav button {
+  border-radius: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+}
+
+html[data-taste="broadsheet"] .settings-nav button.active,
+html[data-taste="broadsheet"] .settings-nav button[aria-selected="true"] {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* ---- Responsive -------------------------------------------------------- */
+
+@media (max-width: 1279px) {
+  html[data-taste="broadsheet"] .shell-sidebar {
+    padding-inline: 32px;
+  }
+
+  html:root[data-taste="broadsheet"] .app-shell > main {
+    padding: 26px 32px 72px;
+  }
+
+  html:root[data-taste="broadsheet"] .topbar {
+    padding-inline: 32px;
+  }
+
+  html:root[data-taste="broadsheet"] .shell-sidebar h1 {
+    font-size: 48px;
+  }
+
+  html:root[data-taste="broadsheet"] .startup-switcher {
+    width: 224px;
+  }
+
+  html:root[data-taste="broadsheet"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    font-size: 10.5px;
+  }
+}
+
+@media (max-width: 1023px) {
+  html[data-taste="broadsheet"] .shell-sidebar {
+    padding: 18px 24px 0;
+  }
+
+  html:root[data-taste="broadsheet"] .app-shell > main {
+    padding: 24px 24px 64px;
+  }
+
+  html:root[data-taste="broadsheet"] .topbar {
+    padding-inline: 24px;
+  }
+
+  html:root[data-taste="broadsheet"] .shell-sidebar h1 {
+    font-size: 42px;
+  }
+
+  html[data-taste="broadsheet"] .shell-breadcrumb {
+    display: flex;
+  }
+
+  html:root[data-taste="broadsheet"] #appTabs .app-tab-button {
+    font-size: 15px;
+    padding-inline: 13px;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section {
+    padding: 0 16px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section:nth-child(even) {
+    padding-right: 0;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section:nth-child(-n + 2) {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  html[data-taste="broadsheet"] .shell-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "identity"
+      "switcher"
+      "tabs";
+    gap: 0;
+    padding: 16px 16px 0;
+  }
+
+  html:root[data-taste="broadsheet"] .shell-sidebar .identity {
+    padding-bottom: 6px;
+  }
+
+  html:root[data-taste="broadsheet"] .shell-sidebar h1 {
+    font-size: clamp(32px, 10vw, 40px);
+    line-height: 1;
+  }
+
+  html:root[data-taste="broadsheet"] .startup-switcher {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  html[data-taste="broadsheet"] .startup-switcher-button {
+    min-height: 42px;
+  }
+
+  html[data-taste="broadsheet"] .sidebar-footer {
+    display: none;
+  }
+
+  html[data-taste="broadsheet"] #appTabs {
+    margin-top: 10px;
+  }
+
+  html:root[data-taste="broadsheet"] #appTabs .app-tab-button {
+    min-height: 42px;
+    padding: 8px 9px 9px;
+    font-size: 13px;
+  }
+
+  html:root[data-taste="broadsheet"] .topbar {
+    min-height: 48px;
+    padding: 6px 16px;
+    gap: 8px;
+  }
+
+  html[data-taste="broadsheet"] .shell-breadcrumb {
+    display: none;
+  }
+
+  html:root[data-taste="broadsheet"] .topbar-actions {
+    width: 100%;
+    gap: 5px;
+    justify-content: flex-end;
+  }
+
+  html:root[data-taste="broadsheet"] .save-state-text {
+    margin-right: auto;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  html:root[data-taste="broadsheet"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    padding: 0 8px;
+    font-size: 10px;
+  }
+
+  html:root[data-taste="broadsheet"] .topbar .icon-button {
+    width: 34px;
+    height: 34px;
+  }
+
+  html:root[data-taste="broadsheet"] .global-search.expanded .global-search-field {
+    left: 12px;
+    width: calc(100% - 24px);
+    max-width: none;
+  }
+
+  html:root[data-taste="broadsheet"] .app-shell > main {
+    padding: 20px 16px 56px;
+  }
+
+  html[data-taste="broadsheet"] .app-view > .shell-heading,
+  html[data-taste="broadsheet"] .shell-heading {
+    padding-top: 11px;
+    margin-bottom: 18px;
+  }
+
+  html[data-taste="broadsheet"] .shell-heading h2,
+  html:root[data-taste="broadsheet"] #calendarView > .shell-heading h2 {
+    font-size: 34px;
+  }
+
+  html[data-taste="broadsheet"] .shell-heading p,
+  html:root[data-taste="broadsheet"] #calendarView > .shell-heading p {
+    font-size: 14px;
+  }
+
+  html[data-taste="broadsheet"] .scope-switch-button,
+  html[data-taste="broadsheet"] .focus-date-mode-btn {
+    min-height: 28px;
+    height: 28px;
+    padding: 0 8px;
+    font-size: 10.5px;
+  }
+
+  /* Controls share one row above the date index. */
+  html:root[data-taste="broadsheet"] #calendarView .calendar-strip-top-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-nav-column {
+    order: 1;
+    flex: 0 0 auto;
+    width: auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 4px;
+    padding: 0 0 8px;
+    border-right: 0;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-strip-side {
+    order: 2;
+    flex: 1 1 auto;
+    width: auto;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 0 0 8px;
+    border-left: 0;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-strip-viewport {
+    order: 3;
+    flex: 1 0 100%;
+    min-height: 138px;
+    padding: 2px 0 0;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, minmax(84px, 1fr));
+    width: max-content;
+    min-width: 100%;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-day-card {
+    min-height: 126px;
+    padding: 9px 8px 8px;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-day-card .day-number {
+    font-size: 36px;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-title {
+    flex-basis: 100%;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-top {
+    align-items: flex-start;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section,
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section:nth-child(odd),
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section:nth-child(even) {
+    padding: 14px 0 16px;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section:first-child {
+    border-top: 1px solid var(--text);
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section h4 {
+    font-size: 17px;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-items-list {
+    max-height: none;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-summary-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .summary-metric-box:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .summary-metric-box:nth-child(n + 3) {
+    border-top: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 479px) {
+  html:root[data-taste="broadsheet"] .save-state-text {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-taste="broadsheet"] *,
+  html[data-taste="broadsheet"] *::before,
+  html[data-taste="broadsheet"] *::after {
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+  }
+}
+
+/* ---- Shared sheets outside the Calendar -------------------------------- */
+/* These surfaces also carry a 12px radius in shared sheets; the plot is flat. */
+
+html:root[data-taste="broadsheet"] .app-view[data-section] > .shell-heading::before {
+  display: none;
+}
+
+html:root[data-taste="broadsheet"] :is(.summary-grid, .manager-summary-grid, .feedback-summary-grid) {
+  border: 0;
+  border-top: 3px solid var(--text);
+  border-bottom: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="broadsheet"] :is(.panel, .config-panel) {
+  padding: 18px 0;
+  border: 0;
+  border-top: 3px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .focus-panel {
+  padding: 18px 0;
+  border: 0;
+  border-top: 3px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .panel-heading {
+  border-bottom: 1px solid var(--text);
+}
+
+html:root[data-taste="broadsheet"] .focus-list {
+  gap: 0 28px;
+}
+
+html:root[data-taste="broadsheet"] .focus-item {
+  min-height: 0;
+  padding: 12px 0 13px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: background-color 140ms;
+}
+
+html:root[data-taste="broadsheet"] .focus-item:hover {
+  border-color: var(--border);
+  background: var(--surface-soft);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] .focus-item strong {
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+html:root[data-taste="broadsheet"] .app-view[data-section] .focus-item-main > strong::before,
+html:root[data-taste="broadsheet"] .app-view[data-section] .focus-item-main > .focus-item-title::before {
+  content: none;
+}
+
+html:root[data-taste="broadsheet"] .focus-link-open {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="broadsheet"] .focus-link-open:hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn) {
+  min-height: 30px;
+  height: 30px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="broadsheet"] :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn):hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+  transform: none;
+}
+
+html:root[data-taste="broadsheet"] .focus-date-input {
+  min-height: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .manager-focus-filter-shell-summary {
+  min-height: 38px;
+  padding: 7px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .manager-focus-filter-shell:is(:hover, [open]) > .manager-focus-filter-shell-summary {
+  border-color: var(--text);
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .manager-focus-filter-shell-title {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="broadsheet"] .manager-focus-filter-shell-state {
+  min-height: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+html:root[data-taste="broadsheet"] .manager-focus-filter-group summary {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .manager-focus-filter-group:is(:hover, [open]) summary {
+  border-color: var(--text);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="broadsheet"] .manager-focus-filter-panel {
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] :is(.filters, .facet-filters) {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="broadsheet"] .priority-pill[data-priority] {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="broadsheet"] .priority-pill[data-priority="High"],
+html:root[data-taste="broadsheet"] .priority-pill[data-priority="Very High"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+html:root[data-taste="broadsheet"] .status-pill[data-status-group] {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="broadsheet"] .status-pill[data-status-group="done"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* consistency.css pins a blue selected day in dark mode. The edition's picked
+   day is the same vermilion as its today rule, not the default blue. */
+html:root[data-taste="broadsheet"][data-theme="dark"] #calendarView .calendar-day-card.selected {
+  background: var(--accent-deep) !important;
+  border-color: var(--accent-deep) !important;
+  color: var(--accent-contrast) !important;
+}
+
+html:root[data-taste="broadsheet"][data-theme="dark"] #calendarView .calendar-day-card.selected :is(.day-name, .day-number, .day-month) {
+  color: var(--accent-contrast) !important;
+}
+
+html[data-taste="broadsheet"] fieldset,
+html[data-taste="broadsheet"] :is(.settings-section, .settings-group, .settings-subpanel) {
+  border-radius: 0;
+}

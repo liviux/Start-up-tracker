@@ -1,0 +1,1875 @@
+/* Theme: lacquer.
+   Direction: Neo Kinpaku. Kinpaku gold and verdigris patina on warm urushi
+   black; small radii, gold hairlines, almost no shadow. Dark is the signature
+   mode. Light is vellum paper with antique gold, keeping the same architecture.
+
+   Sources: pbakaus/impeccable DESIGN.md (Neo Kinpaku tokens, weights and
+   material rules), skill/reference/craft.md, layout.md and typeset.md.
+   All selectors are scoped to html[data-taste="lacquer"]. */
+
+html:root[data-taste="lacquer"],
+html:root[data-taste="lacquer"][data-active-app-tab] {
+  color-scheme: light;
+
+  /* Kinpaku anchors, taken from DESIGN.md. */
+  --lk-gold: oklch(84% 0.19 80.46);
+  --lk-gold-pale: oklch(86% 0.07 84);
+  --lk-gold-rich: oklch(77% 0.13 82);
+  --lk-gold-deep: oklch(61% 0.085 78);
+  --lk-patina: oklch(70% 0.12 188);
+  --lk-patina-deep: oklch(49% 0.08 188);
+  --lk-patina-text: oklch(76% 0.088 190);
+  --lk-ink: oklch(14% 0.018 95);
+  --lk-vermilion: oklch(58% 0.15 35);
+
+  /* Light: vellum, antique gold and patina as the readable small accent. */
+  --lk-paper: oklch(97% 0.012 95);
+  --lk-paper-deep: oklch(93.5% 0.014 95);
+  --lk-paper-raised: oklch(99% 0.008 95);
+  --lk-rule: oklch(52% 0.07 78 / 0.3);
+  --lk-rule-strong: oklch(45% 0.065 78 / 0.58);
+  --lk-patina-rule: oklch(49% 0.08 188 / 0.32);
+  --lk-cta-bg: oklch(52% 0.1 74);
+  --lk-cta-ink: oklch(98% 0.008 95);
+  --lk-signal: oklch(42% 0.095 74);
+  --lk-today-bg: oklch(80% 0.13 82);
+  --lk-today-ink: var(--lk-ink);
+  --lk-sidebar: oklch(9% 0.008 95);
+  --lk-sidebar-deep: oklch(5% 0.004 95);
+  --lk-sidebar-text: oklch(90% 0 0);
+  --lk-sidebar-muted: oklch(66% 0 0);
+
+  --bg: var(--lk-paper);
+  --surface: var(--lk-paper-raised);
+  --surface-soft: oklch(95% 0.012 95);
+  --surface-strong: oklch(91.5% 0.014 95);
+  --text: oklch(18% 0.02 95);
+  --text-soft: oklch(25% 0.018 95);
+  --muted: oklch(45% 0.015 95);
+  --muted-strong: oklch(38% 0.015 95);
+  --border: var(--lk-rule);
+  --border-strong: var(--lk-rule-strong);
+  --accent: var(--lk-cta-bg);
+  --accent-hover: oklch(45% 0.09 74);
+  --accent-contrast: var(--lk-cta-ink);
+  --accent-soft: oklch(61% 0.085 78 / 0.12);
+  --accent-ring: 0 0 0 2px var(--lk-patina-deep);
+  --page-accent-rgb: 139, 95, 24;
+  --page-support-rgb: 20, 111, 105;
+  --page-contrast-rgb: 139, 95, 24;
+  --page-title-gradient-end: var(--lk-cta-bg);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: oklch(95.5% 0.012 95);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--lk-patina-deep);
+  --page-hover-shadow: 0 1px 0 oklch(30% 0.02 95 / 0.08);
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+  --shadow: 0 1px 2px oklch(30% 0.02 95 / 0.06);
+  --shadow-soft: 0 1px 1px oklch(30% 0.02 95 / 0.05);
+  --shadow-lg: 0 28px 70px oklch(25% 0.02 95 / 0.2);
+  --radius: 3px;
+  --radius-sm: 2px;
+  --radius-lg: 5px;
+  --radius-pill: 2px;
+  --sidebar-width: 224px;
+  --sidebar-bg: var(--lk-sidebar);
+  --sidebar-text: var(--lk-sidebar-text);
+  --sidebar-muted: var(--lk-sidebar-muted);
+  --control-height: 38px;
+  --control-height-sm: 30px;
+  --pill-height: 22px;
+  --row-gap: 22px;
+  --font-sans: "Plus Jakarta Sans", "Helvetica Neue", "Nimbus Sans", Arial, system-ui, sans-serif;
+  --font-mono: "SFMono-Regular", "Roboto Mono", "Liberation Mono", Menlo, Consolas, monospace;
+  --lk-display: "Helvetica Neue", "Nimbus Sans", "Liberation Sans", Arial, sans-serif;
+}
+
+html:root[data-taste="lacquer"][data-theme="dark"],
+html:root[data-taste="lacquer"][data-theme="dark"][data-active-app-tab] {
+  color-scheme: dark;
+
+  --lk-rule: oklch(74% 0.09 82 / 0.24);
+  --lk-rule-strong: oklch(74% 0.09 82 / 0.6);
+  --lk-patina-rule: oklch(70% 0.105 190 / 0.3);
+  --lk-cta-bg: var(--lk-gold);
+  --lk-cta-ink: var(--lk-ink);
+  --lk-signal: var(--lk-gold);
+  --lk-today-bg: var(--lk-gold);
+  --lk-today-ink: var(--lk-ink);
+
+  --bg: oklch(7% 0.006 95);
+  --surface: oklch(11% 0.006 95);
+  --surface-soft: oklch(9% 0.005 95);
+  --surface-strong: oklch(15% 0.008 95);
+  --text: oklch(91% 0 0);
+  --text-soft: oklch(88% 0 0);
+  --muted: oklch(72% 0 0);
+  --muted-strong: oklch(80% 0 0);
+  --border: var(--lk-rule);
+  --border-strong: var(--lk-rule-strong);
+  --accent: var(--lk-gold);
+  --accent-hover: var(--lk-gold-pale);
+  --accent-contrast: var(--lk-ink);
+  --accent-soft: oklch(84% 0.19 80.46 / 0.13);
+  --accent-ring: 0 0 0 2px var(--lk-patina);
+  --page-accent-rgb: 255, 186, 0;
+  --page-support-rgb: 15, 182, 172;
+  --page-contrast-rgb: 255, 186, 0;
+  --page-title-gradient-end: var(--lk-gold);
+  --page-shell-bg: var(--surface-soft);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: oklch(9.5% 0.005 95);
+  --page-panel-muted-bg: oklch(8.5% 0.005 95);
+  --page-panel-strong-bg: var(--surface-strong);
+  --page-elevated-bg: oklch(12.5% 0.006 95);
+  --page-elevated-soft-bg: var(--surface);
+  --page-focus-border: var(--lk-rule-strong);
+  --page-hover-shadow: 0 1px 0 oklch(100% 0 0 / 0.04);
+  --shadow: 0 0 0 1px oklch(78% 0 0 / 0.04);
+  --shadow-soft: 0 1px 0 oklch(100% 0 0 / 0.03);
+  --shadow-lg: 0 32px 80px oklch(2% 0.004 95 / 0.72);
+  --sidebar-bg: var(--lk-sidebar-deep);
+}
+
+/* ---- Ground ------------------------------------------------------------ */
+
+html:root[data-taste="lacquer"] body {
+  background-color: oklch(92.5% 0.015 95);
+  background-image:
+    radial-gradient(ellipse 75% 45% at 58% 0%, oklch(84% 0.19 80.46 / 0.055), transparent 62%),
+    repeating-linear-gradient(90deg, oklch(25% 0.02 95 / 0.018) 0 1px, transparent 1px 9px);
+  background-attachment: fixed;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+html:root[data-taste="lacquer"][data-theme="dark"] body {
+  background-color: oklch(4.6% 0.004 95);
+  background-image:
+    radial-gradient(ellipse 78% 48% at 60% -4%, oklch(84% 0.19 80.46 / 0.06), transparent 60%),
+    repeating-linear-gradient(135deg, oklch(100% 0 0 / 0.012) 0 1px, transparent 1px 7px);
+}
+
+html[data-taste="lacquer"] ::selection {
+  background: var(--lk-gold-rich);
+  color: var(--lk-ink);
+}
+
+html[data-taste="lacquer"] :is(a, .link) {
+  text-underline-offset: 0.22em;
+}
+
+html[data-taste="lacquer"] ::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+html[data-taste="lacquer"] ::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: var(--lk-rule-strong);
+}
+
+html[data-taste="lacquer"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--lk-gold-rich);
+}
+
+/* ---- The framed stage -------------------------------------------------- */
+
+html:root[data-taste="lacquer"] .app-shell {
+  padding-left: var(--sidebar-width);
+}
+
+html:root[data-taste="lacquer"] .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: calc(100% - 48px);
+  max-width: 1200px;
+  min-height: 64px;
+  margin: 22px auto 0;
+  padding: 0 30px;
+  border: 1px solid var(--lk-rule-strong);
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+  background: var(--bg);
+  box-shadow:
+    inset 0 0 0 4px var(--bg),
+    inset 0 0 0 5px var(--lk-rule);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="lacquer"] .app-shell > main {
+  width: calc(100% - 48px);
+  max-width: 1200px;
+  margin: 0 auto 38px;
+  padding: 54px 52px 82px;
+  border: 1px solid var(--lk-rule-strong);
+  border-top: 1px solid var(--lk-rule);
+  border-radius: 0 0 3px 3px;
+  background: var(--bg);
+  box-shadow:
+    inset 0 0 0 4px var(--bg),
+    inset 0 0 0 5px var(--lk-rule);
+}
+
+/* ---- The lacquer spine ------------------------------------------------ */
+
+html:root[data-taste="lacquer"] .shell-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--sidebar-width);
+  padding: 0 0 22px;
+  overflow-y: auto;
+  border-right: 1px solid var(--lk-rule-strong);
+  background:
+    linear-gradient(178deg, oklch(10% 0.007 95) 0%, var(--lk-sidebar-deep) 68%, oklch(4% 0.004 95) 100%);
+  color: var(--sidebar-text);
+  box-shadow: inset -6px 0 0 -5px var(--lk-rule);
+  scrollbar-width: thin;
+  scrollbar-color: var(--lk-rule-strong) transparent;
+}
+
+html:root[data-taste="lacquer"] .shell-sidebar .identity {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 28px 22px 26px;
+  border-bottom: 1px solid var(--lk-rule);
+}
+
+html:root[data-taste="lacquer"] .shell-sidebar .title-row {
+  gap: 11px;
+  min-width: 0;
+}
+
+html:root[data-taste="lacquer"] .shell-sidebar .topbar-logo {
+  width: 29px;
+  height: 29px;
+  filter: grayscale(1) brightness(1.5) sepia(1) saturate(2.6) hue-rotate(3deg);
+}
+
+html:root[data-taste="lacquer"] .shell-sidebar h1 {
+  max-width: 150px;
+  color: var(--lk-gold);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="lacquer"] .startup-switcher {
+  margin: 14px 14px 18px;
+}
+
+html:root[data-taste="lacquer"] .startup-switcher-button {
+  min-height: 50px;
+  padding: 8px;
+  border: 1px solid var(--lk-rule);
+  border-radius: 2px;
+  background: oklch(84% 0.19 80.46 / 0.045);
+  color: var(--sidebar-text);
+  gap: 8px;
+}
+
+html:root[data-taste="lacquer"] .startup-switcher-button .startup-icon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+}
+
+html:root[data-taste="lacquer"] .startup-switcher-chevron {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+}
+
+html:root[data-taste="lacquer"] .startup-switcher-button:hover {
+  border-color: var(--lk-rule-strong);
+  background: oklch(84% 0.19 80.46 / 0.09);
+}
+
+html:root[data-taste="lacquer"] .startup-switcher.open .startup-switcher-button {
+  border-color: var(--lk-gold-deep);
+}
+
+html:root[data-taste="lacquer"] .startup-switcher-caption {
+  color: var(--lk-sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+}
+
+html:root[data-taste="lacquer"] .startup-switcher-name {
+  color: var(--sidebar-text);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+html:root[data-taste="lacquer"] .startup-switcher-menu {
+  border: 1px solid var(--lk-rule-strong);
+  border-radius: 2px;
+  background: oklch(7% 0.006 95);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="lacquer"] .startup-menu-item {
+  color: var(--sidebar-text);
+  border-radius: 0;
+}
+
+html:root[data-taste="lacquer"] .startup-menu-item:hover,
+html:root[data-taste="lacquer"] .startup-menu-item:focus-visible {
+  background: oklch(84% 0.19 80.46 / 0.1);
+  color: var(--lk-gold);
+}
+
+html:root[data-taste="lacquer"] .startup-menu-separator {
+  background: var(--lk-rule);
+}
+
+html:root[data-taste="lacquer"] #appTabs {
+  gap: 0;
+  margin: 0 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+html:root[data-taste="lacquer"] #appTabs .app-tab-button {
+  gap: 11px;
+  min-height: 50px;
+  padding: 11px 12px;
+  border: 0;
+  border-bottom: 1px solid oklch(74% 0.09 82 / 0.13);
+  border-radius: 0;
+  background: transparent;
+  color: var(--sidebar-text);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+html:root[data-taste="lacquer"] #appTabs .app-tab-button::after {
+  content: none;
+}
+
+html:root[data-taste="lacquer"] #appTabs .app-tab-button img {
+  flex-basis: 18px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+  filter: invert(1) sepia(1) saturate(0.5);
+}
+
+html:root[data-taste="lacquer"] #appTabs .app-tab-button:hover {
+  background: oklch(84% 0.19 80.46 / 0.06) !important;
+  color: var(--lk-gold) !important;
+  border-color: transparent !important;
+}
+
+html:root[data-taste="lacquer"] #appTabs .app-tab-button.active {
+  background: oklch(84% 0.19 80.46 / 0.11) !important;
+  color: var(--lk-gold) !important;
+  box-shadow: inset 2px 0 0 var(--lk-gold) !important;
+  font-weight: 600;
+}
+
+html:root[data-taste="lacquer"] #appTabs .app-tab-button.active img {
+  opacity: 1;
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(1deg);
+}
+
+html:root[data-taste="lacquer"] #appTabs .app-tab-badge {
+  margin-left: auto;
+  border: 1px solid var(--lk-rule-strong);
+  border-radius: 0;
+  background: oklch(84% 0.19 80.46 / 0.14);
+  color: var(--lk-gold);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+html:root[data-taste="lacquer"] .setup-badge {
+  margin: 10px 14px;
+  border: 1px solid var(--lk-rule);
+  border-radius: 2px;
+  background: oklch(84% 0.19 80.46 / 0.07);
+  color: var(--sidebar-text);
+  font-size: 11.5px;
+}
+
+html:root[data-taste="lacquer"] .setup-badge-dot {
+  border-radius: 0;
+  background: var(--lk-gold-rich);
+}
+
+html:root[data-taste="lacquer"] .sidebar-footer {
+  gap: 4px;
+  margin-top: auto;
+  padding: 22px 22px 0;
+  border-top: 1px solid var(--lk-rule);
+  color: var(--lk-sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="lacquer"] .sidebar-footer > span:first-child {
+  color: var(--sidebar-text);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+html:root[data-taste="lacquer"] .sidebar-version {
+  color: var(--lk-sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.13em;
+}
+
+/* ---- Top bar as a quiet line inside the frame ------------------------- */
+
+html:root[data-taste="lacquer"] .topbar .shell-breadcrumb {
+  gap: 11px;
+  align-items: center;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="lacquer"] .topbar .shell-breadcrumb::before {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 5px;
+  margin-right: 2px;
+  background: var(--lk-gold);
+}
+
+html:root[data-taste="lacquer"] .topbar .shell-breadcrumb span:last-child {
+  color: var(--text);
+  font-weight: 500;
+}
+
+html:root[data-taste="lacquer"] .topbar .save-state-text {
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--lk-rule);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="lacquer"] .topbar .save-state-text.saved,
+html:root[data-taste="lacquer"] .topbar .save-state-text.synced {
+  border-color: oklch(70% 0.105 190 / 0.3);
+  background: transparent;
+  color: var(--lk-patina-text);
+}
+
+html:root[data-taste="lacquer"] .topbar :is(.icon-button, #settingsButton, #projectLinksToggle) {
+  height: 34px;
+  min-height: 34px;
+  border: 1px solid var(--lk-rule);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+html:root[data-taste="lacquer"] .topbar :is(.icon-button, #settingsButton, #projectLinksToggle):hover {
+  border-color: var(--lk-rule-strong);
+  background: oklch(84% 0.19 80.46 / 0.07);
+  color: var(--lk-gold);
+  transform: none;
+}
+
+html:root[data-taste="lacquer"] .topbar #settingsButton span {
+  display: inline;
+}
+
+html:root[data-taste="lacquer"] .global-search .global-search-toggle:focus-visible,
+html:root[data-taste="lacquer"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--lk-patina-deep);
+  outline-offset: 3px;
+}
+
+html:root[data-taste="lacquer"][data-theme="dark"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline-color: var(--lk-patina);
+}
+
+html:root[data-taste="lacquer"] .global-search-field,
+html:root[data-taste="lacquer"] .global-search.expanded .global-search-field {
+  height: 34px;
+  border: 1px solid var(--lk-rule);
+  border-radius: 1px;
+  background: var(--page-panel-muted-bg);
+}
+
+html:root[data-taste="lacquer"] .global-search-field input {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+}
+
+html:root[data-taste="lacquer"] .global-search-field input::placeholder {
+  color: var(--muted);
+}
+
+html:root[data-taste="lacquer"] .project-links-menu,
+html:root[data-taste="lacquer"] .global-search-results {
+  border: 1px solid var(--lk-rule-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---- Page headings ---------------------------------------------------- */
+
+html:root[data-taste="lacquer"] .shell-heading {
+  margin: 0 0 40px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--lk-rule);
+}
+
+html:root[data-taste="lacquer"] .shell-heading h2 {
+  color: var(--text);
+  font-family: var(--lk-display);
+  font-size: clamp(38px, 3.4vw, 50px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+html:root[data-taste="lacquer"] .shell-heading h2::after {
+  content: "";
+  display: block;
+  width: 54px;
+  height: 1px;
+  margin-top: 18px;
+  background: var(--lk-gold);
+}
+
+html:root[data-taste="lacquer"] .shell-heading p {
+  margin-top: 12px;
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+html:root[data-taste="lacquer"] #calendarView > .shell-heading {
+  margin-bottom: 34px;
+  padding-bottom: 24px;
+}
+
+html:root[data-taste="lacquer"] #calendarView > .shell-heading h2 {
+  font-family: var(--lk-display);
+  font-size: clamp(38px, 3.6vw, 52px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+html:root[data-taste="lacquer"] #calendarView > .shell-heading p {
+  margin-top: 11px;
+  font-size: 13px;
+}
+
+html:root[data-taste="lacquer"] .eyebrow {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* The app adds a section stripe above section-page headings. The framed
+   heading rule already carries that structure, so the stripe is redundant. */
+html[data-taste="lacquer"] .app-view[data-section] > .shell-heading::before {
+  display: none;
+}
+
+/* ---- Panels, cards, figures ------------------------------------------- */
+
+html[data-taste="lacquer"] :is(.panel, .manager-card, .config-panel, .company-card, .company-hero, .calendar-summary-card, .record-window-card, .settings-panel, .modal-card, .modal) {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--page-panel-bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-taste="lacquer"] .panel {
+  padding: 30px 32px;
+}
+
+html[data-taste="lacquer"] .panel-heading,
+html[data-taste="lacquer"] .tracker-topline {
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="lacquer"] .panel h2,
+html[data-taste="lacquer"] .tracker-topline h2 {
+  color: var(--text);
+  font-family: var(--lk-display);
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+html[data-taste="lacquer"] .manager-card,
+html[data-taste="lacquer"] .company-card {
+  background: var(--page-panel-soft-bg);
+}
+
+html[data-taste="lacquer"] .manager-card-header,
+html[data-taste="lacquer"] .manager-group-header {
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="lacquer"] .manager-card-header strong,
+html[data-taste="lacquer"] .manager-group-header h3 {
+  color: var(--text);
+}
+
+html[data-taste="lacquer"] .company-hero h3 {
+  color: var(--text);
+  font-family: var(--lk-display);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+html[data-taste="lacquer"] :is(.company-budget, .company-urgent-btn) {
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--lk-signal);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+html[data-taste="lacquer"] .company-budget.is-over {
+  border-color: oklch(52% 0.15 35 / 0.55);
+  color: oklch(48% 0.15 35);
+}
+
+html[data-taste="lacquer"][data-theme="dark"] .company-budget.is-over {
+  color: oklch(72% 0.13 35);
+}
+
+html[data-taste="lacquer"] .company-urgent-btn:hover {
+  border-color: var(--lk-cta-bg);
+  background: var(--accent-soft);
+}
+
+html[data-taste="lacquer"] .company-urgent-list {
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html[data-taste="lacquer"] .company-language {
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+}
+
+html[data-taste="lacquer"] .company-language-btn {
+  border-radius: 0;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+html[data-taste="lacquer"] .company-count {
+  border-radius: 0;
+  background: transparent;
+  color: var(--lk-signal);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+html[data-taste="lacquer"] .summary-grid,
+html[data-taste="lacquer"] .manager-summary-grid,
+html[data-taste="lacquer"] .feedback-summary-grid {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+html[data-taste="lacquer"] .metric-card {
+  border-right: 1px solid var(--border);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] .metric-card:last-child {
+  border-right: 0;
+}
+
+html[data-taste="lacquer"] .metric-label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] .metric-value {
+  color: var(--lk-signal);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-taste="lacquer"] .focus-item {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--page-panel-soft-bg);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] .focus-item:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-taste="lacquer"] .focus-item strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---- Controls -------------------------------------------------------- */
+
+html[data-taste="lacquer"] :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+  height: 38px;
+  min-height: 38px;
+  padding: 0 18px;
+  border-radius: 1px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  box-shadow: none;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+html[data-taste="lacquer"] .primary-button {
+  border: 1px solid var(--lk-rule-strong);
+  background: var(--lk-cta-bg);
+  color: var(--lk-cta-ink);
+}
+
+html[data-taste="lacquer"] .primary-button:hover {
+  border-color: var(--lk-gold-deep);
+  background: var(--lk-gold-pale);
+  color: var(--lk-ink);
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-taste="lacquer"][data-theme="dark"] .primary-button:hover {
+  background: oklch(89% 0.12 82);
+}
+
+html[data-taste="lacquer"] .secondary-button {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] .secondary-button:hover {
+  border-color: var(--lk-cta-bg);
+  background: var(--accent-soft);
+  color: var(--lk-signal);
+  transform: none;
+}
+
+html[data-taste="lacquer"][data-theme="dark"] .secondary-button:hover {
+  color: var(--lk-gold);
+}
+
+html[data-taste="lacquer"] .ghost-button {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+html[data-taste="lacquer"] .danger-button {
+  border-color: oklch(58% 0.15 35 / 0.45);
+  background: transparent;
+  color: var(--lk-vermilion, oklch(58% 0.15 35));
+}
+
+html[data-taste="lacquer"][data-theme="dark"] .danger-button {
+  color: oklch(70% 0.14 35);
+}
+
+html[data-taste="lacquer"] .icon-button,
+html[data-taste="lacquer"] .panel-toggle {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--muted-strong);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] .icon-button:hover,
+html[data-taste="lacquer"] .panel-toggle:hover {
+  border-color: var(--border-strong);
+  background: var(--accent-soft);
+  color: var(--lk-signal);
+  transform: none;
+}
+
+html[data-taste="lacquer"] :is(.scope-switch, .focus-date-mode) {
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+}
+
+html[data-taste="lacquer"] :is(.manager-focus-filter-shell-summary, .focus-filter-shell-summary) {
+  min-height: 36px;
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: var(--page-panel-muted-bg);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] :is(.manager-focus-filter-shell, .focus-filter-shell):is(:hover, [open]) > :is(.manager-focus-filter-shell-summary, .focus-filter-shell-summary) {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] :is(.manager-focus-filter-shell-title, .focus-filter-shell-title) {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+
+html[data-taste="lacquer"] :is(.manager-focus-filter-shell-state, .focus-filter-shell-state) {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--lk-signal);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+html[data-taste="lacquer"] :is(.manager-focus-filter-shell-chevron, .focus-filter-shell-chevron) {
+  color: var(--muted);
+}
+
+html[data-taste="lacquer"] .scope-switch-button,
+html[data-taste="lacquer"] .focus-date-mode-btn {
+  min-height: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+html[data-taste="lacquer"] .scope-switch-button[aria-pressed="true"],
+html[data-taste="lacquer"] .focus-date-mode-btn.active {
+  background: var(--lk-cta-bg);
+  color: var(--lk-cta-ink);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: var(--page-panel-muted-bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] :is(input, select, textarea):focus {
+  border-color: var(--lk-patina-deep);
+  box-shadow: 0 0 0 2px oklch(49% 0.08 188 / 0.16);
+}
+
+html[data-taste="lacquer"][data-theme="dark"] :is(input, select, textarea):focus {
+  border-color: var(--lk-patina);
+  box-shadow: 0 0 0 2px oklch(70% 0.12 188 / 0.18);
+}
+
+html[data-taste="lacquer"] :is(input, textarea)::placeholder {
+  color: var(--muted);
+}
+
+html[data-taste="lacquer"] :is(input, textarea) {
+  caret-color: var(--lk-signal);
+}
+
+html[data-taste="lacquer"] :is(input[type="checkbox"], input[type="radio"]) {
+  accent-color: var(--lk-cta-bg);
+}
+
+html[data-taste="lacquer"] .shell-sidebar :is(button, a):focus-visible {
+  outline: 2px solid var(--lk-gold);
+  outline-offset: 2px;
+}
+
+html[data-taste="lacquer"] :is(.status-pill, .priority-pill, .category-pill) {
+  min-height: 20px;
+  padding: 1px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] .status-pill[data-status-group="done"],
+html[data-taste="lacquer"] .status-pill[data-status-group="in-progress"] {
+  border-color: oklch(70% 0.105 190 / 0.5);
+  color: var(--lk-patina-deep);
+}
+
+html[data-taste="lacquer"][data-theme="dark"] .status-pill[data-status-group="done"],
+html[data-taste="lacquer"][data-theme="dark"] .status-pill[data-status-group="in-progress"] {
+  color: var(--lk-patina-text);
+}
+
+/* ---- Tables ---------------------------------------------------------- */
+
+html[data-taste="lacquer"] :is(.table-wrap, .calendar-summary-table-wrapper) {
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+}
+
+html[data-taste="lacquer"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) {
+  border-collapse: collapse;
+}
+
+html[data-taste="lacquer"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) thead th {
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--page-panel-muted-bg);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) td {
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+}
+
+html[data-taste="lacquer"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) tbody tr:hover {
+  background: oklch(84% 0.19 80.46 / 0.055);
+}
+
+html[data-taste="lacquer"] :is(.tracker-table, .data-table) .num-val,
+html[data-taste="lacquer"] .calendar-summary-table .num-val {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Calendar: the lacquered cabinet --------------------------------- */
+
+html[data-taste="lacquer"] #calendarView .calendar-layout-container {
+  gap: 20px;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-strip-container {
+  gap: 18px;
+  padding: 24px 24px 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--page-panel-bg);
+  box-shadow:
+    inset 0 0 0 4px var(--page-panel-bg),
+    inset 0 0 0 5px var(--border);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-strip-top-row {
+  gap: 18px;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-nav-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-nav-btn-sub {
+  width: 30px;
+  height: 34px;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-nav-btn:hover {
+  border-color: var(--border-strong);
+  background: var(--accent-soft);
+  color: var(--lk-signal);
+  transform: none;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-strip-viewport {
+  padding-top: 16px;
+  padding-bottom: 8px;
+  border-radius: 0;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-days-strip {
+  gap: 6px;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card {
+  min-height: 108px;
+  padding: 12px 8px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: var(--page-panel-muted-bg);
+  color: var(--text-soft);
+  box-shadow:
+    inset 0 0 0 3px var(--page-panel-muted-bg),
+    inset 0 0 0 4px var(--border);
+  transition: background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  box-shadow:
+    inset 0 0 0 3px var(--surface-strong),
+    inset 0 0 0 4px var(--border-strong);
+  transform: none;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card.today {
+  border-color: var(--lk-today-bg);
+  background: var(--lk-today-bg);
+  color: var(--lk-today-ink);
+  box-shadow:
+    inset 0 0 0 3px var(--lk-today-bg),
+    inset 0 0 0 4px oklch(14% 0.018 95 / 0.35);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card.today::before {
+  display: none;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card.selected {
+  box-shadow: none;
+}
+
+/* consistency.css pins a blue selected day with !important in dark mode.
+   The signature state is a kinpaku field, so this one override is required. */
+html[data-taste="lacquer"][data-theme="dark"] #calendarView .calendar-day-card.selected {
+  background: var(--lk-today-bg) !important;
+  border-color: var(--lk-today-bg) !important;
+}
+
+html[data-taste="lacquer"][data-theme="dark"] #calendarView .calendar-day-card.selected :is(.day-name, .day-number, .day-month) {
+  color: var(--lk-today-ink) !important;
+}
+
+html[data-taste="lacquer"][data-theme="dark"] #calendarView .calendar-day-card.selected .summary-pill {
+  border-color: oklch(14% 0.018 95 / 0.3) !important;
+  background: transparent !important;
+  color: var(--lk-today-ink) !important;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card .day-name {
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card .day-number {
+  color: var(--text);
+  font-family: var(--lk-display);
+  font-size: 31px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card .day-month {
+  margin-top: 3px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card.today:not(.selected) :is(.day-name, .day-number, .day-month) {
+  color: var(--lk-today-ink);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card.today:not(.selected) .summary-pill {
+  border-color: oklch(14% 0.018 95 / 0.32);
+  background: transparent;
+  color: var(--lk-today-ink);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-day-card.selected :is(.day-name, .day-month) {
+  opacity: 0.78;
+}
+
+html[data-taste="lacquer"] #calendarView .summary-pill,
+html[data-taste="lacquer"] #calendarView .cal-title-badge {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 1px 4px;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-strip-side .secondary-button {
+  height: 34px;
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-container {
+  padding: 30px 32px 34px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--page-panel-bg);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-top {
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--lk-patina-rule);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-title {
+  color: var(--text);
+  font-family: var(--lk-display);
+  font-size: clamp(25px, 2.4vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-mode-toggle {
+  border: 1px solid var(--border);
+  border-radius: 1px;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-mode-toggle .focus-date-mode-btn {
+  height: 28px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-mode-toggle .focus-date-mode-btn.active {
+  background: var(--lk-cta-bg);
+  color: var(--lk-cta-ink);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-sections {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-section {
+  min-width: 0;
+  padding: 0 20px 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-section:first-child {
+  padding-left: 0;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-section + .calendar-detail-section {
+  border-left: 1px solid var(--lk-patina-rule);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-section h4 {
+  min-height: 44px;
+  margin: 0;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--lk-patina-rule);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-detail-section h4 .section-count {
+  min-width: 22px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-items-list {
+  gap: 0;
+  padding-right: 2px;
+  max-height: 400px;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-item-card {
+  padding: 13px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+  transition: background-color 150ms ease;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-item-card:last-child {
+  border-bottom: 0;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-item-card:hover {
+  background: oklch(84% 0.19 80.46 / 0.055);
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-item-title {
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-item-detail {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+html[data-taste="lacquer"] #calendarView .cal-badge {
+  padding: 2px 5px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-empty-text {
+  padding: 22px 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-filter-bar {
+  margin-top: 0;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-toggles {
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-filter-group + .calendar-filter-group {
+  border-top-color: var(--border);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-filter-group-title {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-filter-group-help {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-toggle {
+  min-height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-toggle:not(.section-chip)[aria-pressed="true"] {
+  border-color: var(--lk-cta-bg);
+  background: var(--accent-soft);
+  color: var(--lk-signal);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-toggle[aria-pressed="false"] {
+  text-decoration: none;
+  opacity: 0.46;
+}
+
+/* ---- Calendar summary ------------------------------------------------ */
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-card {
+  gap: 18px;
+  padding: 24px 26px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--page-panel-bg);
+  box-shadow: none;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-header-title h3 {
+  color: var(--text);
+  font-family: var(--lk-display);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-icon {
+  color: var(--lk-gold-deep);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-subtitle {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-metrics-grid {
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+
+html[data-taste="lacquer"] #calendarView .summary-metric-box {
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 0;
+  background: var(--page-panel-bg);
+  transition: background-color 150ms ease;
+}
+
+html[data-taste="lacquer"] #calendarView .summary-metric-box:hover {
+  background: var(--surface-strong);
+  border-color: transparent;
+  transform: none;
+}
+
+html[data-taste="lacquer"] #calendarView .summary-metric-box.metric-total {
+  border-left: 0;
+  background: var(--accent-soft);
+}
+
+html[data-taste="lacquer"] #calendarView .summary-metric-box .metric-box-label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+html[data-taste="lacquer"] #calendarView .summary-metric-box .metric-box-value {
+  color: var(--lk-signal);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-table-wrapper {
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-table th,
+html[data-taste="lacquer"] #calendarView .calendar-summary-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-table th {
+  background: var(--page-panel-muted-bg);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-table tbody tr:hover {
+  background: oklch(84% 0.19 80.46 / 0.055);
+}
+
+html[data-taste="lacquer"] #calendarView .calendar-summary-table tfoot tr.grand-total-row td {
+  border-top: 1px solid var(--border-strong);
+  background: var(--surface-strong);
+}
+
+/* ---- Dialogs and settings ------------------------------------------- */
+
+html[data-taste="lacquer"] .settings-panel {
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--bg);
+  box-shadow: var(--shadow-lg);
+}
+
+html[data-taste="lacquer"] .settings-nav {
+  border-right: 1px solid var(--border);
+  background: var(--page-panel-muted-bg);
+}
+
+html[data-taste="lacquer"] .settings-nav button,
+html[data-taste="lacquer"] .settings-section h3 {
+  color: var(--text);
+}
+
+html[data-taste="lacquer"] .settings-section {
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="lacquer"] .modal-overlay {
+  background: oklch(4% 0.004 95 / 0.72);
+}
+
+html[data-taste="lacquer"] .modal-card,
+html[data-taste="lacquer"] .record-window-card {
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--bg);
+}
+
+html[data-taste="lacquer"] .modal-header,
+html[data-taste="lacquer"] .record-window-header {
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-taste="lacquer"] .modal-footer,
+html[data-taste="lacquer"] .record-window-footer {
+  border-top: 1px solid var(--border);
+}
+
+html[data-taste="lacquer"] .record-window-tab.active {
+  border-color: var(--accent);
+  color: var(--lk-signal);
+}
+
+/* ---- Phone: the spine becomes a lacquer drawer ----------------------- */
+
+@media (max-width: 1023px) {
+  html:root[data-taste="lacquer"] .app-shell {
+    padding-left: 0;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+
+  html:root[data-taste="lacquer"] .shell-sidebar {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    padding: 0;
+    overflow: visible;
+    border-right: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  html:root[data-taste="lacquer"] .shell-sidebar .identity {
+    padding: 14px 18px;
+    border-top: 1px solid var(--lk-gold-deep);
+    border-bottom: 1px solid var(--lk-rule);
+    background: var(--lk-sidebar-deep);
+  }
+
+  html:root[data-taste="lacquer"] .shell-sidebar h1 {
+    max-width: none;
+    font-size: 10px;
+  }
+
+  html:root[data-taste="lacquer"] .startup-switcher {
+    margin: 0;
+    padding: 8px 18px;
+    border-bottom: 1px solid var(--lk-rule);
+    background: var(--lk-sidebar-deep);
+  }
+
+  html:root[data-taste="lacquer"] .startup-switcher-button {
+    min-height: 42px;
+  }
+
+  html:root[data-taste="lacquer"] #appTabs {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 90;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 4px 0 calc(4px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--lk-gold-deep);
+    background: var(--lk-sidebar-deep);
+    box-shadow: 0 -1px 0 oklch(74% 0.09 82 / 0.22);
+    overflow: visible !important;
+  }
+
+  html:root[data-taste="lacquer"] #appTabs .app-tab-button {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: auto;
+    min-height: 54px;
+    padding: 6px 2px 5px;
+    border: 0;
+    border-right: 1px solid oklch(74% 0.09 82 / 0.14);
+    font-size: 9px;
+    text-align: center;
+  }
+
+  html:root[data-taste="lacquer"] #appTabs .app-tab-button:last-child {
+    border-right: 0;
+  }
+
+  html:root[data-taste="lacquer"] #appTabs .app-tab-button > span:not(.app-tab-badge) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  html:root[data-taste="lacquer"] #appTabs .app-tab-button::after {
+    content: attr(data-shortname);
+    display: block;
+    flex: none;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    margin-left: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: currentColor;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.14em;
+  }
+
+  html:root[data-taste="lacquer"] #appTabs .app-tab-button img {
+    width: 17px;
+    height: 17px;
+  }
+
+  html:root[data-taste="lacquer"] #appTabs .app-tab-button.active {
+    background: oklch(84% 0.19 80.46 / 0.1) !important;
+    box-shadow: inset 0 2px 0 var(--lk-gold) !important;
+  }
+
+  html:root[data-taste="lacquer"] #appTabs .app-tab-badge {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    min-width: 14px;
+    height: 14px;
+    padding: 0 3px;
+    font-size: 8px;
+    line-height: 14px;
+  }
+
+  html:root[data-taste="lacquer"] .setup-badge {
+    margin: 8px 18px;
+  }
+
+  html:root[data-taste="lacquer"] .sidebar-footer {
+    display: none;
+  }
+
+  html:root[data-taste="lacquer"] .topbar {
+    width: 100%;
+    max-width: none;
+    min-height: 52px;
+    margin: 0;
+    padding: 8px 18px;
+    border: 0;
+    border-bottom: 1px solid var(--lk-rule-strong);
+    border-radius: 0;
+    background: var(--bg);
+    box-shadow: none;
+  }
+
+  html:root[data-taste="lacquer"] .app-shell > main {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 30px 18px 46px;
+    border: 0;
+    border-radius: 0;
+    background: var(--bg);
+    box-shadow: none;
+  }
+
+  html:root[data-taste="lacquer"] .shell-heading {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+  }
+
+  html:root[data-taste="lacquer"] .shell-heading h2,
+  html:root[data-taste="lacquer"] #calendarView > .shell-heading h2 {
+    font-size: 34px;
+    letter-spacing: -0.035em;
+  }
+
+  html:root[data-taste="lacquer"] .shell-heading h2::after {
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 767px) {
+  html:root[data-taste="lacquer"] .topbar .shell-breadcrumb {
+    display: none;
+  }
+
+  html:root[data-taste="lacquer"] .summary-grid.section-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="lacquer"] .summary-grid.section-metrics > .metric-card:last-child:nth-child(3n + 1) {
+    grid-column: auto;
+  }
+
+  html:root[data-taste="lacquer"] .topbar .save-state-text {
+    margin-right: auto;
+    max-width: none;
+    padding: 0 7px;
+    overflow: visible;
+    font-size: 8px;
+    text-overflow: clip;
+  }
+
+  html:root[data-taste="lacquer"] .topbar-actions {
+    gap: 5px;
+  }
+
+  html:root[data-taste="lacquer"] .topbar :is(.icon-button, #settingsButton, #projectLinksToggle) {
+    height: 38px;
+    min-height: 38px;
+    width: 38px;
+    padding: 0;
+  }
+
+  html:root[data-taste="lacquer"] .topbar #settingsButton span,
+  html:root[data-taste="lacquer"] .topbar #projectLinksToggle span,
+  html:root[data-taste="lacquer"] .topbar .project-links-chevron {
+    display: none;
+  }
+
+  html:root[data-taste="lacquer"] .topbar :is(#settingsButton, #projectLinksToggle) {
+    justify-content: center;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView > .shell-heading {
+    gap: 14px;
+  }
+
+  html:root[data-taste="lacquer"] .calendar-scope {
+    margin: 0;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-strip-container {
+    padding: 18px 14px 14px;
+    box-shadow:
+      inset 0 0 0 3px var(--page-panel-bg),
+      inset 0 0 0 4px var(--border);
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-strip-top-row {
+    gap: 10px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-strip-side {
+    order: 1;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-strip-viewport {
+    order: 2;
+    min-height: 96px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-nav-column {
+    order: 3;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, minmax(62px, 1fr));
+    gap: 5px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-day-card {
+    min-height: 88px;
+    min-width: 62px;
+    padding: 8px 4px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-day-card .day-number {
+    font-size: 24px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-detail-container {
+    padding: 20px 16px 22px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-detail-title {
+    font-size: 23px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-detail-section {
+    padding: 0;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-detail-section + .calendar-detail-section {
+    padding-top: 18px;
+    border-top: 1px solid var(--lk-patina-rule);
+    border-left: 0;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-detail-section h4 {
+    min-height: 0;
+    font-size: 12.5px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-summary-card {
+    padding: 18px 14px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-summary-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="lacquer"] .panel {
+    padding: 20px 16px;
+  }
+
+  html:root[data-taste="lacquer"] .shell-heading h2,
+  html:root[data-taste="lacquer"] #calendarView > .shell-heading h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 420px) {
+  html:root[data-taste="lacquer"] .app-shell > main {
+    padding-inline: 14px;
+  }
+
+  html:root[data-taste="lacquer"] #calendarView .calendar-day-card .day-number {
+    font-size: 22px;
+  }
+}
