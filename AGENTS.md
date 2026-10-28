@@ -24,7 +24,8 @@ A local, single-user tracker for a startup's marketing (MK), programs and opport
 
 ## How to work
 
-- Ask when there are several valid ways forward.
+- Ask when there are several valid ways forward. Always ask questions when there is ambiguity.
+- Use subagents whenever you consider.
 - Consider the impact of a change on the other parts of the app.
 - Keep stored data compatible: schema changes need an upgrade path in the store and a test.
 - Fix failing tests, lint errors and warnings you find, even unrelated ones.
