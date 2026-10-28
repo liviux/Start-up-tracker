@@ -2,6 +2,12 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-10-28
+
+### Fixed
+- Settings > Startups keeps long startup names, the record and media numbers and the row actions inside the panel instead of overlapping; narrow panels show the list as cards.
+- Rename, Archive or Unarchive, Delete and Open in that list are icon buttons with tooltips and accessible labels, so all four fit on one row.
+
 ## [0.2.0] - 2026-10-28
 
 ### Added
@@ -53,5 +59,6 @@ The first public release.
 ### Security
 - The local server accepts changes only from the tracker page or with the API token, serves only the app's own files, keeps uploads inside the media folder and sends a strict content security policy. The old whole-state save route is gone.
 
+[0.2.1]: https://github.com/liviux/Start-up-tracker/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/liviux/Start-up-tracker/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/liviux/Start-up-tracker/releases/tag/v0.1.0

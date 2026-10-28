@@ -236,6 +236,8 @@
 .settings-table thead th { color: var(--muted-strong); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
 .settings-table .is-number { font-variant-numeric: tabular-nums; text-align: right; }
 .settings-startup-name { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 600; }
+.settings-startup-title { display: flex; flex: 0 1 auto; align-items: center; gap: 8px; min-width: 0; max-width: 100%; }
+.settings-startup-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .settings-startup-icon { flex-basis: 24px; width: 24px; height: 24px; background: transparent; }
 .settings-detail-row td { background: var(--surface-strong); }
 .settings-add-startup { display: grid; gap: 12px; padding-top: 14px; border-top: 1px solid var(--border); }

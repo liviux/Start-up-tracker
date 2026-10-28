@@ -516,6 +516,17 @@
     return el("button", { type: "button", className: "secondary-button", ...props }, props.icon ? [icon(props.icon), el("span", { text })] : text);
   }
 
+  // A table row has room for four actions only when each one is an icon with
+  // its name in the accessible label and the toolbar tooltip.
+  function iconAction(label, iconName, options = {}) {
+    return el("button", {
+      type: "button",
+      className: `icon-button${options.danger ? " danger-hover" : ""}`,
+      "aria-label": label,
+      "data-tooltip": label,
+    }, icon(iconName));
+  }
+
   function sectionTitle(id) {
     return t(`settings.sections.${id}`);
   }
@@ -1002,12 +1013,16 @@
 
     const rows = list.map((startup) => {
       const isCurrent = startup.id === Api.startupId;
-      const nameCell = el("td", { className: "settings-startup-name" }, [
-        el("span", { className: "startup-icon settings-startup-icon", "aria-hidden": "true" }, el("img", { src: Icon.iconFor(startup), alt: "" })),
-        el("span", { text: startup.name }),
-        isCurrent ? el("span", { className: "settings-badge", text: t("settings.startups.current") }) : null,
-        startup.archived ? el("span", { className: "settings-badge is-muted", text: t("settings.startups.archived") }) : null,
-      ]);
+      const nameCell = el("td", { className: "settings-startup-cell" },
+        el("div", { className: "settings-startup-name" }, [
+          el("span", { className: "settings-startup-title" }, [
+            el("span", { className: "startup-icon settings-startup-icon", "aria-hidden": "true" }, el("img", { src: Icon.iconFor(startup), alt: "" })),
+            el("span", { className: "settings-startup-label", text: startup.name }),
+          ]),
+          isCurrent ? el("span", { className: "settings-badge", text: t("settings.startups.current") }) : null,
+          startup.archived ? el("span", { className: "settings-badge is-muted", text: t("settings.startups.archived") }) : null,
+        ])
+      );
       const actions = el("td", { className: "settings-row-actions" });
       const actionButtons = el("div", { className: "settings-startup-actions" });
       const detail = el("tr", { className: "settings-detail-row", hidden: true }, el("td", { colSpan: 5 }));
@@ -1023,7 +1038,7 @@
         focus?.focus();
       };
 
-      const renameButton = button(t("settings.startups.rename"), { "aria-label": t("settings.startups.renameNamed", { name: startup.name }) });
+      const renameButton = iconAction(t("settings.startups.renameNamed", { name: startup.name }), "edit");
       renameButton.addEventListener("click", () => {
         const input = el("input", { type: "text", maxLength: 120, value: startup.name });
         const form = el("form", { className: "settings-inline-form", novalidate: true }, [
@@ -1048,9 +1063,10 @@
         openDetail(form);
       });
 
-      const archiveButton = button(startup.archived ? t("settings.startups.unarchive") : t("settings.startups.archive"), {
-        "aria-label": t(startup.archived ? "settings.startups.unarchiveNamed" : "settings.startups.archiveNamed", { name: startup.name }),
-      });
+      const archiveButton = iconAction(
+        t(startup.archived ? "settings.startups.unarchiveNamed" : "settings.startups.archiveNamed", { name: startup.name }),
+        startup.archived ? "archive-restore" : "archive"
+      );
       archiveButton.addEventListener("click", async () => {
         if (!startup.archived && isCurrent && !root.confirm(t("settings.startups.archiveCurrentConfirm", { name: startup.name }))) return;
         try {
@@ -1066,7 +1082,7 @@
         }
       });
 
-      const deleteButton = el("button", { type: "button", className: "danger-button", text: t("settings.startups.delete"), "aria-label": t("settings.startups.deleteNamed", { name: startup.name }) });
+      const deleteButton = iconAction(t("settings.startups.deleteNamed", { name: startup.name }), "trash", { danger: true });
       deleteButton.addEventListener("click", () => {
         const input = el("input", { type: "text", autocomplete: "off", spellcheck: "false" });
         const confirmButton = el("button", { type: "submit", className: "danger-button", text: t("settings.startups.deleteForever"), disabled: true });
@@ -1096,7 +1112,13 @@
         openDetail(form);
       });
 
-      const openLink = isCurrent || startup.archived ? null : el("a", { className: "secondary-button", href: Api.pageUrl(startup.id), text: t("settings.startups.open"), "aria-label": t("settings.startups.openNamed", { name: startup.name }) });
+      const openLabel = t("settings.startups.openNamed", { name: startup.name });
+      const openLink = isCurrent || startup.archived ? null : el("a", {
+        className: "icon-button",
+        href: Api.pageUrl(startup.id),
+        "aria-label": openLabel,
+        "data-tooltip": openLabel,
+      }, icon("forward"));
       if (openLink) {
         openLink.addEventListener("click", async (event) => {
           if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

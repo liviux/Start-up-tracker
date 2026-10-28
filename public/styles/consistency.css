@@ -1310,6 +1310,8 @@ html:root .settings-nav-item {
 
 html:root .settings-content {
   padding: 20px 24px 28px;
+  container-type: inline-size;
+  container-name: settings-content;
 }
 
 html:root .settings-section {
@@ -1952,17 +1954,27 @@ html:root .settings-status-row .settings-badge {
   align-items: center;
 }
 
-/* Settings · Startups: dates stay on one line and the three actions share a
-   row on desktop; on a phone the table narrows instead of clipping. */
+/* Settings · Startups: the icon actions fit on one row without squeezing the
+   date, record and media columns. When the panel leaves less room than the
+   table needs, the rows become cards. */
 html:root .settings-startups-table {
   table-layout: fixed;
 }
 
-html:root .settings-startups-table :is(th, td):nth-child(1) { width: 34%; }
-html:root .settings-startups-table :is(th, td):nth-child(2) { width: 14%; white-space: nowrap; }
-html:root .settings-startups-table :is(th, td):nth-child(3) { width: 8%; }
-html:root .settings-startups-table :is(th, td):nth-child(4) { width: 8%; }
-html:root .settings-startups-table :is(th, td):nth-child(5) { width: 36%; }
+html:root .settings-startups-table :is(th, td) {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+html:root .settings-startups-table :is(th, td):nth-child(1) { width: 32%; }
+html:root .settings-startups-table :is(th, td):nth-child(2) { width: 16%; white-space: nowrap; }
+html:root .settings-startups-table :is(th, td):nth-child(3) { width: 13.5%; }
+html:root .settings-startups-table :is(th, td):nth-child(4) { width: 13.5%; }
+html:root .settings-startups-table :is(th, td):nth-child(5) { width: 25%; }
+
+html:root .settings-startups-table td.is-number {
+  white-space: nowrap;
+}
 
 html:root .settings-startups-table td.settings-row-actions {
   display: table-cell;
@@ -1974,14 +1986,26 @@ html:root .settings-startups-table .settings-startup-actions {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-end;
-  gap: 6px;
+  gap: 4px;
 }
 
-html:root .settings-startups-table .settings-startup-name > span:nth-child(2) {
+html:root .settings-startups-table .settings-startup-actions a.icon-button {
+  text-decoration: none;
+}
+
+html:root .settings-startups-table .settings-startup-name > .settings-badge {
+  flex: 0 0 auto;
+}
+
+html:root .settings-startups-table .settings-startup-label {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-@media (max-width: 720px) {
+@container settings-content (max-width: 620px) {
   html:root .settings-table-wrap:has(.settings-startups-table) {
     overflow: visible;
   }
@@ -2030,7 +2054,8 @@ html:root .settings-startups-table .settings-startup-name > span:nth-child(2) {
     font-size: 12.5px;
   }
 
-  html:root .settings-startups-table td.settings-startup-name {
+  html:root .settings-startups-table td.settings-startup-cell {
+    display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 8px;
@@ -2039,7 +2064,14 @@ html:root .settings-startups-table .settings-startup-name > span:nth-child(2) {
     border-bottom: 1px solid var(--border);
   }
 
-  html:root .settings-startups-table .settings-startup-name > span:nth-child(2) {
+  html:root .settings-startups-table .settings-startup-cell .settings-startup-name {
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  html:root .settings-startups-table .settings-startup-label {
+    overflow: visible;
     white-space: normal;
     overflow-wrap: anywhere;
   }
@@ -2072,13 +2104,6 @@ html:root .settings-startups-table .settings-startup-name > span:nth-child(2) {
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 6px;
-  }
-
-  html:root .settings-startups-table .settings-startup-actions :is(.secondary-button, .danger-button) {
-    height: 32px;
-    min-height: 32px;
-    padding: 0 8px;
-    font-size: 11.5px;
   }
 
   html:root .settings-startups-table .settings-detail-row td {
