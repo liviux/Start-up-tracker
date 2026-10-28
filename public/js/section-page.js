@@ -164,9 +164,11 @@
     const cells = [
       `<td class="sp-priority">${priorityPill(row.priority)}</td>`,
       `<td class="sp-name">
-        <button type="button" class="sp-open" data-sp-open="${escapeHtml(row.id)}">${escapeHtml(row.name || "Untitled target")}</button>
+        <div class="sp-name-line">
+          <button type="button" class="sp-open" data-sp-open="${escapeHtml(row.id)}">${escapeHtml(row.name || "Untitled target")}</button>
+          ${row.link ? `<a class="sp-external" href="${escapeHtml(row.link)}" target="_blank" rel="noreferrer noopener" data-sp-external aria-label="${tHtml("sectionPage.rowHtml.openTheLinkOf", { name: escapeHtml(row.name) })}" title="${escapeHtml(row.link)}">↗</a>` : ""}
+        </div>
         ${row.organization ? `<span class="sp-organization">${escapeHtml(row.organization)}</span>` : ""}
-        ${row.link ? `<a class="sp-external" href="${escapeHtml(row.link)}" target="_blank" rel="noreferrer noopener" data-sp-external aria-label="${tHtml("sectionPage.rowHtml.openTheLinkOf", { name: escapeHtml(row.name) })}" title="${escapeHtml(row.link)}">↗</a>` : ""}
       </td>`,
       `<td class="sp-category">${row.categoryPath ? `<span>${escapeHtml(row.categoryPath)}</span>` : `<span class="sp-muted">${escapeHtml(t("sectionPage.rowHtml.uncategorized"))}</span>`}${row.categoryFlag ? ` <span class="taxonomy-flag">${escapeHtml(row.categoryFlag)}</span>` : ""}${row.categoryCount > 1 ? ` <span class="sp-more" title="${escapeHtml(t("sectionPage.moreCategories", { count: row.categoryCount - 1 }))}">+${row.categoryCount - 1}</span>` : ""}</td>`,
       `<td class="sp-status">${statusHtml(row.status)}</td>`,
@@ -183,15 +185,15 @@
     return `<div class="focus-item sp-focus-item${row.link ? " has-link" : ""}" data-sp-open="${escapeHtml(row.id)}" role="button" tabindex="0">
       <div class="focus-item-main">
         <strong>${escapeHtml(row.name || "Untitled target")}</strong>
+        ${row.categoryPath ? `<span class="focus-sub" title="${escapeHtml(row.categoryPath)}">${escapeHtml(row.categoryPath)}</span>` : ""}
         <div class="focus-meta">
-          ${row.categoryPath ? `<span class="focus-sub">${escapeHtml(row.categoryPath)}</span>` : ""}
           ${statusHtml(row.status)}
           ${priorityPill(row.priority)}
-          ${when ? `<span>${escapeHtml(when)}</span>` : ""}
+          ${when ? `<span class="focus-when">${escapeHtml(when)}</span>` : ""}
           ${row.campaignName ? `<span>${escapeHtml(row.campaignName)}</span>` : ""}
           ${row.owner ? `<span>${escapeHtml(row.owner)}</span>` : ""}
         </div>
-        ${row.nextAction ? `<span class="focus-next">${escapeHtml(row.nextAction)}</span>` : ""}
+        ${row.nextAction ? `<span class="focus-next" title="${escapeHtml(row.nextAction)}">${escapeHtml(row.nextAction)}</span>` : ""}
       </div>
       ${row.link ? `<a class="focus-link-open" href="${escapeHtml(row.link)}" target="_blank" rel="noreferrer noopener" data-sp-external aria-label="${escapeHtml(t("sectionPage.focusCardHtml.openTheLink"))}">↗</a>` : ""}
     </div>`;
@@ -257,8 +259,18 @@
       const holder = q("[data-sp-metrics]");
       if (!holder) return;
       holder.innerHTML = (hooks.metrics?.(all.map((row) => row.record)) || [])
-        .map((metric) => `<article class="metric-card"${metric.help ? ` title="${escapeHtml(metric.help)}"` : ""}><span class="metric-value">${escapeHtml(metric.value)}</span><span class="metric-label">${escapeHtml(metric.label)}</span></article>`)
+        .map((metric) => `<article class="metric-card"${metric.help ? ` title="${escapeHtml(metric.help)}"` : ""}><span class="metric-value">${metricValueHtml(metric.value)}</span><span class="metric-label">${escapeHtml(metric.label)}</span></article>`)
         .join("");
+    }
+
+    // A currency code is a unit, not part of the number: set it smaller so
+    // "GBP 295K" stays on one line inside a narrow summary cell.
+    function metricValueHtml(value) {
+      const text = String(value ?? "");
+      const match = text.match(/^([A-Z]{3})\s+(.+)$/);
+      return match
+        ? `<span class="metric-currency">${escapeHtml(match[1])}</span><span class="metric-amount">${escapeHtml(match[2])}</span>`
+        : escapeHtml(text);
     }
 
     // ---- focus queue ----------------------------------------------------------

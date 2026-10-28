@@ -221,7 +221,7 @@
         <nav class="app-tabs" id="appTabs" role="tablist" aria-label="Tracker views" data-i18n-aria-label="nav.views">
           <button class="app-tab-button active" type="button" role="tab" aria-selected="true" data-app-tab="calendar" data-shortname="CA"><img src="/assets/icons/calendar-week.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.calendar">Calendar</span></button>
           <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="pipeline" data-section="mk" data-shortname="MK"><img src="/assets/icons/target-arrow.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.marketing">Marketing</span></button>
-          <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="programs" data-section="po" data-shortname="PO"><img src="/assets/icons/rocket.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.programsOpportunities">Programs &amp; Opportunities</span></button>
+          <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="programs" data-section="po" data-shortname="PO"><img src="/assets/icons/rocket.svg" width="20" height="20" alt="" aria-hidden="true"><span class="app-tab-label"><span data-i18n="nav.programsAnd">Programs &amp;</span> <span data-i18n="nav.opportunities">Opportunities</span></span></button>
           <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="funding" data-section="fu" data-shortname="FU"><img src="/assets/icons/wallet.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.funding">Funding</span></button>
           <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="company" data-section="comp" data-shortname="COMP"><img src="/assets/icons/building.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="company.title">Company</span><span class="app-tab-badge" data-company-urgent-count hidden></span></button>
           <button class="app-tab-button" type="button" role="tab" aria-selected="false" data-app-tab="extra" data-shortname="EX" data-active-subtab="ai"><img src="/assets/icons/layout-grid.svg" width="20" height="20" alt="" aria-hidden="true"><span data-i18n="ui.common.extra">Extra</span></button>
@@ -230,7 +230,7 @@
         <button class="setup-badge" id="finishSetupButton" type="button" title="The setup is not finished. Continue where you stopped." data-i18n-title="setup.badgeHint" hidden>
           <span class="setup-badge-dot" aria-hidden="true"></span><span data-i18n="setup.badge">Finish setup</span>
         </button>
-        <div class="sidebar-footer"><span data-app-name>Startup Tracker</span><span id="appVersionLabel"></span></div>
+        <div class="sidebar-footer"><span data-app-name>Startup Tracker</span><button class="sidebar-version" id="appVersionButton" type="button" aria-haspopup="dialog" aria-controls="changelogDialog" data-i18n-tooltip="changelog.open"><span id="appVersionLabel"></span></button></div>
       </aside>
       <header class="topbar">
         <nav class="shell-breadcrumb" aria-label="Breadcrumb" data-i18n-aria-label="nav.breadcrumb"><span id="breadcrumbStartup"></span><span aria-hidden="true">/</span><span id="breadcrumbView" aria-current="page" data-i18n="ui.common.calendar">Calendar</span></nav>
@@ -280,6 +280,8 @@
             aria-haspopup="dialog"
             aria-expanded="false"
             aria-controls="settingsPanel"
+            aria-label="Settings"
+            data-i18n-aria-label="settings.button"
           >
             <svg aria-hidden="true"><use href="#icon-config"></use></svg>
             <span data-i18n="settings.button">Settings</span>
@@ -310,11 +312,16 @@
       <main id="mainContent" tabindex="-1">
 
         <section class="app-view active" id="calendarView" data-app-view="calendar" aria-label="Calendar" data-i18n-aria-label="ui.common.calendar">
-          <header class="shell-heading"><h2 data-i18n="ui.common.calendar">Calendar</h2><p data-i18n="calendar.intro">Your dates across marketing, programs, funding and company tasks.</p></header>
-          <div class="scope-switch calendar-scope" id="calendarScopeSwitch" role="group" aria-label="Show dates from" data-i18n-aria-label="calendar.scopeLabel">
-            <button type="button" class="scope-switch-button" data-calendar-scope="this" aria-pressed="true" data-i18n="scope.this">This startup</button>
-            <button type="button" class="scope-switch-button" data-calendar-scope="all" aria-pressed="false" data-i18n="scope.all">All startups</button>
-          </div>
+          <header class="shell-heading calendar-heading">
+            <div class="calendar-heading-text">
+              <h2 data-i18n="ui.common.calendar">Calendar</h2>
+              <p data-i18n="calendar.intro">Your dates across marketing, programs, funding and company tasks.</p>
+            </div>
+            <div class="scope-switch calendar-scope" id="calendarScopeSwitch" role="group" aria-label="Show dates from" data-i18n-aria-label="calendar.scopeLabel">
+              <button type="button" class="scope-switch-button" data-calendar-scope="this" aria-pressed="true" data-i18n="scope.this">This startup</button>
+              <button type="button" class="scope-switch-button" data-calendar-scope="all" aria-pressed="false" data-i18n="scope.all">All startups</button>
+            </div>
+          </header>
           <p class="calendar-scope-status" id="calendarScopeStatus" role="status" hidden></p>
 
           <div class="calendar-layout-container">
@@ -341,11 +348,9 @@
                 </div>
                 
                 <div class="calendar-strip-side">
-                  <div class="focus-date-mode calendar-mode-toggle" role="group" aria-label="Calendar date mode" data-i18n-aria-label="ui.calendar.calendarDateMode">
-                    <button type="button" class="focus-date-mode-btn active" data-calendar-mode="on"><span data-i18n="ui.common.onThisDay">On this day</span> <span class="tab-count">0</span></button>
-                    <button type="button" class="focus-date-mode-btn" data-calendar-mode="by"><span data-i18n="ui.common.dueBy">Due by</span> <span class="tab-count">0</span></button>
-                  </div>
                   <div class="calendar-strip-side-actions">
+                    <button class="secondary-button" id="calendarTodayBtn" type="button" data-i18n="calendar.today">Today</button>
+
                     <div class="calendar-nav-group calendar-nav-right">
                       <button class="calendar-nav-btn calendar-nav-btn-sub" id="calendarNextDay" type="button" title="Next day" data-i18n-title="ui.common.nextDay">
                         <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -354,8 +359,6 @@
                         <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
                       </button>
                     </div>
-                    
-                    <button class="secondary-button" id="calendarTodayBtn" type="button" data-i18n="calendar.today">Today</button>
                   </div>
                 </div>
               </div>
@@ -384,7 +387,13 @@
             <div class="calendar-filter-bar focus-filter-shell-host" id="calendarFilterBar"></div>
 
             <div class="calendar-detail-container">
-              <h3 class="calendar-detail-title" id="calendarDetailTitle"></h3>
+              <div class="calendar-detail-top">
+                <h3 class="calendar-detail-title" id="calendarDetailTitle"></h3>
+                <div class="focus-date-mode calendar-mode-toggle" role="group" aria-label="Calendar date mode" data-i18n-aria-label="ui.calendar.calendarDateMode">
+                  <button type="button" class="focus-date-mode-btn active" data-calendar-mode="on"><span data-i18n="ui.common.onThisDay">On this day</span> <span class="tab-count">0</span></button>
+                  <button type="button" class="focus-date-mode-btn" data-calendar-mode="by"><span data-i18n="ui.common.dueBy">Due by</span> <span class="tab-count">0</span></button>
+                </div>
+              </div>
               
               <div class="calendar-detail-sections">
                 <div class="calendar-detail-section marketing" data-section="mk">
@@ -540,6 +549,7 @@
               <div class="subcategory-tabs type-tabs" id="mkTypeTabs" role="tablist" aria-label="Types" data-i18n-aria-label="ui.common.types"></div>
               <div class="filters section-filters">
                 <label class="search-field">
+                  <span class="filter-label" data-i18n="ui.common.search">Search</span>
                   <svg aria-hidden="true"><use href="#icon-search"></use></svg>
                   <input type="search" data-sp-search placeholder="Search names, notes, links..." aria-label="Search targets" data-i18n-aria-label="ui.common.searchTargets" data-i18n-placeholder="ui.common.searchNamesNotesLinks">
                 </label>
@@ -702,6 +712,7 @@
               <div class="subcategory-tabs type-tabs" id="programNodeTypeTabs" role="tablist" aria-label="Types" data-i18n-aria-label="ui.common.types"></div>
               <div class="filters section-filters">
                 <label class="search-field">
+                  <span class="filter-label" data-i18n="ui.common.search">Search</span>
                   <svg aria-hidden="true"><use href="#icon-search"></use></svg>
                   <input type="search" data-sp-search placeholder="Search names, notes, links..." aria-label="Search targets" data-i18n-aria-label="ui.common.searchTargets" data-i18n-placeholder="ui.common.searchNamesNotesLinks">
                 </label>
@@ -864,6 +875,7 @@
               <div class="subcategory-tabs type-tabs" id="fundingNodeTypeTabs" role="tablist" aria-label="Types" data-i18n-aria-label="ui.common.types"></div>
               <div class="filters section-filters">
                 <label class="search-field">
+                  <span class="filter-label" data-i18n="ui.common.search">Search</span>
                   <svg aria-hidden="true"><use href="#icon-search"></use></svg>
                   <input type="search" data-sp-search placeholder="Search names, notes, links..." aria-label="Search targets" data-i18n-aria-label="ui.common.searchTargets" data-i18n-placeholder="ui.common.searchNamesNotesLinks">
                 </label>
@@ -1706,6 +1718,27 @@
       </form>
     </dialog>
 
+    <dialog class="changelog-dialog" id="changelogDialog" aria-labelledby="changelogTitle">
+      <div class="changelog-shell">
+        <header class="changelog-header">
+          <div class="changelog-heading">
+            <h2 id="changelogTitle" data-i18n="changelog.title">Latest changes</h2>
+            <p data-i18n="changelog.intro">Newest first. The full file is in the repository.</p>
+          </div>
+          <div class="changelog-actions">
+            <a class="secondary-button compact" id="changelogFullLink" href="https://github.com/liviux/Start-up-tracker/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer" data-i18n="changelog.full">Full changelog</a>
+            <button class="settings-close" id="changelogClose" type="button" aria-label="Close changelog" data-i18n-aria-label="changelog.close">
+              <svg viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+        </header>
+        <div class="changelog-body" id="changelogBody"></div>
+        <div class="changelog-footer" id="changelogMoreRow" hidden>
+          <button class="secondary-button compact" id="changelogMore" type="button" data-i18n="changelog.more">Read more</button>
+        </div>
+      </div>
+    </dialog>
+
     <main class="first-startup" id="firstStartupScreen" aria-labelledby="firstStartupTitle" hidden>
       <form class="startup-form first-startup-card" id="firstStartupForm" novalidate>
         <img src="/assets/logo.svg" class="first-startup-logo" alt="" width="40" height="40">
@@ -1756,6 +1789,7 @@
     <script src="/js/options.js"></script>
     <script src="/js/global-data.js"></script>
     <script src="/js/setup-wizard.js"></script>
+    <script src="/js/changelog.js"></script>
     <script src="/js/startups.js"></script>
     <script src="/scripts/defaults.js"></script>
     <script src="/scripts/record-conflict-merge.js"></script>

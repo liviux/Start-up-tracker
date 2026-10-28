@@ -72,7 +72,7 @@ See [AI agents](agents.md) for what these do.
 
 | Route | What it does |
 |---|---|
-| `GET /api/agents` | `{ registry: { source, fetchedAt, version, problem, network, agents }, harnesses, settings, policies, platform }`. `source` is `live`, `cache`, `snapshot` or `catalog`. Each registry agent has `kind` (`npx`, `uvx`, `binary`), `launch`, `installed` and `added`. Harnesses show environment variable names with `***` values and `blocked` when the last check failed without an override. |
+| `GET /api/agents` | `{ registry: { source, fetchedAt, version, problem, network, agents }, harnesses, settings, policies, platform }`. `source` is `live`, `cache`, `snapshot` or `catalog`. Each registry agent has `kind` (`npx`, `uvx`, `binary`), `launch`, `installed`, `installedBin` (the agent's own command when it can run without a download) and `added`. Harnesses show environment variable names with `***` values and `blocked` when the last check failed without an override. |
 | `POST /api/agents/rescan` | The same, after fetching the registry again (when the network setting allows it). |
 | `POST /api/agents/harnesses` | Body: `{ registryId }` or `{ custom: { command, args } }`, optional `name`. With `preview: true` it answers `{ preview }`, the exact command line, and stores nothing. It stores the agent only with `confirmed: true`; otherwise 400 `confirmNeeded` with `preview`. |
 | `PATCH /api/agents/harnesses/<id>` | `name`, `args`, `command` (custom agents), `policy` (`allow`, `research`, `ask`), `defaultModel`, `preferredModels`, `env` (an object; `"***"` keeps a stored value), `overrideBlock`, `downloadConsent`. A changed custom command line needs `confirmed: true`. |
@@ -186,7 +186,7 @@ A backup is a folder in `backups/` holding `tracker.sqlite` (the whole database,
 
 Three kinds:
 
-- `automatic`: when the server starts and the data changed since the newest backup, and every six hours while edits are made, unless the setting `backups.automatic` is `false`. The newest `backups.keepAutomatic` are kept.
+- `automatic`: when the server starts and the data changed since the newest backup, and every `backups.intervalHours` (six by default) while edits are made, unless the setting `backups.automatic` is `false`. The newest `backups.keepAutomatic` are kept.
 - `safety`: before a restore, an import or deleting a startup. The newest `backups.keepSafety` are kept, so they never push out automatic backups.
 - `pinned`: taken on request, with an optional label. They never rotate away.
 
@@ -254,3 +254,4 @@ The setup's progress is kept in the global `setupState` section.
 - `/media/<startupId>/<file>` serves an upload. A link from before startups existed, `/media/<file>`, redirects to the startup folder that holds the file.
 - `POST /api/s/<startupId>/media/copy` with `{ mediaId, to }` copies a media item, and its file when it is an upload, to another open startup: `{ media, to }`. The copy gets a new id and `copiedFrom: { startupId, id }`; its links stay behind.
 - `GET /api/health` answers `{ ok, filePath, mediaDir, version, revision, startupCount }`.
+- `GET /api/changelog` answers the text of `CHANGELOG.md` as `text/markdown`, uncached. The version at the bottom of the sidebar reads it.

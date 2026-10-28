@@ -1,6 +1,6 @@
 {
   "section": "mk",
-  "libraryVersion": 1,
+  "libraryVersion": 2,
   "nodes": [
     {
       "id": "mk.launches",
@@ -115,8 +115,8 @@
       "id": "mk.launches.marketplaces",
       "level": "subcategory",
       "parentId": "mk.launches",
-      "name": "Marketplaces and app stores",
-      "description": "Stores and marketplaces where people find, buy or install products, for example app stores, browser extension stores, online marketplaces, delivery apps or package registries. Pick it for listings that live inside a platform.",
+      "name": "Store and registry listings",
+      "description": "App stores, package registries and extension marketplaces where people find and install products like yours. Pick it for a listing; for a marketplace seller, co-sell or partner program, use Programs > Market access.",
       "order": 3,
       "recommended": false
     },
@@ -380,42 +380,6 @@
       "name": "Community event",
       "description": "Taking part in or running an event inside a chat community, such as a voice session, an office hour or a challenge. Pick it when the event is hosted on the community's own space.",
       "order": 4,
-      "recommended": false
-    },
-    {
-      "id": "mk.communities.associations",
-      "level": "subcategory",
-      "parentId": "mk.communities",
-      "name": "Professional associations",
-      "description": "Membership organizations for a profession or an industry, such as trade bodies, guilds and societies. Pick it when members are your customers or can refer them.",
-      "order": 4,
-      "recommended": false
-    },
-    {
-      "id": "mk.communities.associations.membership",
-      "level": "type",
-      "parentId": "mk.communities.associations",
-      "name": "Membership",
-      "description": "Joining an association and keeping the membership active. Pick it for the decision to join, the fee and the benefits you plan to use.",
-      "order": 1,
-      "recommended": false
-    },
-    {
-      "id": "mk.communities.associations.member-post",
-      "level": "type",
-      "parentId": "mk.communities.associations",
-      "name": "Member post",
-      "description": "A post or message in the association's member forum, list or group, or a mention in its member newsletter. Pick it for anything you publish through the association's own channels.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.communities.associations.working-group",
-      "level": "type",
-      "parentId": "mk.communities.associations",
-      "name": "Working group",
-      "description": "Joining a committee, working group or task force of the association. Pick it when you take an ongoing role that puts you in front of other members.",
-      "order": 3,
       "recommended": false
     },
     {
@@ -1160,440 +1124,6 @@
       "recommended": false
     },
     {
-      "id": "mk.pr.awards",
-      "level": "subcategory",
-      "parentId": "mk.pr",
-      "name": "Awards and rankings",
-      "description": "Awards, prizes and published lists that rank or recognize companies, products or founders. Pick it for entries made mainly for visibility; prize money and support programs go in their own sections.",
-      "order": 5,
-      "recommended": false
-    },
-    {
-      "id": "mk.pr.awards.nomination",
-      "level": "type",
-      "parentId": "mk.pr.awards",
-      "name": "Nomination",
-      "description": "Being nominated, or asking someone to nominate you, for an award. Pick it when the award works by nomination rather than open entry.",
-      "order": 1,
-      "recommended": false
-    },
-    {
-      "id": "mk.pr.awards.application",
-      "level": "type",
-      "parentId": "mk.pr.awards",
-      "name": "Application",
-      "description": "Entering an award or competition yourself, with the forms and materials it asks for. Pick it for open calls for entries.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.pr.awards.list-submission",
-      "level": "type",
-      "parentId": "mk.pr.awards",
-      "name": "List submission",
-      "description": "Submitting your company or a founder to a published list, such as a ranking of startups to watch in a city or an industry. Pick it for lists that take submissions.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.events",
-      "level": "category",
-      "parentId": null,
-      "name": "Events",
-      "shortName": "Events",
-      "description": "Events you attend, speak at, exhibit at or host, in person or online. Pick it for anything with a date and a venue or a link to join.",
-      "order": 6,
-      "recommended": true
-    },
-    {
-      "id": "mk.events.conferences",
-      "level": "subcategory",
-      "parentId": "mk.events",
-      "name": "Conferences and trade shows",
-      "description": "Large industry events with talks, exhibitors and many attendees, including trade fairs and scientific meetings. Pick it for events you travel to or plan months ahead.",
-      "order": 1,
-      "recommended": true
-    },
-    {
-      "id": "mk.events.conferences.attend",
-      "level": "type",
-      "parentId": "mk.events.conferences",
-      "name": "Attend",
-      "description": "Going to an event to meet people, learn and talk to potential customers or partners. Pick it when you go without a talk or a booth.",
-      "order": 1,
-      "recommended": true
-    },
-    {
-      "id": "mk.events.conferences.speaking-submission",
-      "level": "type",
-      "parentId": "mk.events.conferences",
-      "name": "Speaking or abstract submission",
-      "description": "Applying to speak, or submitting an abstract or paper, through the event's call for proposals. Pick it for the application and its outcome.",
-      "order": 2,
-      "recommended": true
-    },
-    {
-      "id": "mk.events.conferences.talk-poster",
-      "level": "type",
-      "parentId": "mk.events.conferences",
-      "name": "Talk or poster",
-      "description": "Giving a talk, sitting on a panel or presenting a poster at the event. Pick it once you are accepted, for preparing and delivering it.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.conferences.exhibit",
-      "level": "type",
-      "parentId": "mk.events.conferences",
-      "name": "Exhibit",
-      "description": "Having a booth, table or stand at the event. Pick it for booth planning, materials, staffing and the leads you collect.",
-      "order": 4,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.conferences.sponsor",
-      "level": "type",
-      "parentId": "mk.events.conferences",
-      "name": "Sponsor",
-      "description": "Paying the organizer for visibility at the event, such as a logo, a session or a side event. Pick it for any paid event sponsorship, with or without a booth.",
-      "order": 5,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.local-events",
-      "level": "subcategory",
-      "parentId": "mk.events",
-      "name": "Meetups and local events",
-      "description": "Smaller in-person events in your city or region, such as meetups, local business events, markets and fairs. Pick it for events close to home, including ones you host.",
-      "order": 2,
-      "recommended": true
-    },
-    {
-      "id": "mk.events.local-events.attend",
-      "level": "type",
-      "parentId": "mk.events.local-events",
-      "name": "Attend",
-      "description": "Going to a meetup or local event to meet people. Pick it for events you join as a guest, including regular groups you attend.",
-      "order": 1,
-      "recommended": true
-    },
-    {
-      "id": "mk.events.local-events.talk-demo",
-      "level": "type",
-      "parentId": "mk.events.local-events",
-      "name": "Give a talk or demo",
-      "description": "Speaking or showing your product at a meetup or local event. Pick it when you are on the program, not only in the room.",
-      "order": 2,
-      "recommended": true
-    },
-    {
-      "id": "mk.events.local-events.host",
-      "level": "type",
-      "parentId": "mk.events.local-events",
-      "name": "Host",
-      "description": "Organizing a meetup, workshop, open day or launch party yourself. Pick it for events where you pick the date, the venue and the guests.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.local-events.pop-up",
-      "level": "type",
-      "parentId": "mk.events.local-events",
-      "name": "Pop-up or in-store event",
-      "description": "A temporary shop, a market stall, a tasting or an event at your own premises. Pick it when people come to see, try or buy the product in person.",
-      "order": 4,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.local-events.sponsor",
-      "level": "type",
-      "parentId": "mk.events.local-events",
-      "name": "Sponsor",
-      "description": "Supporting a local event, team or group with money, products or space in return for visibility. Pick it for local sponsorships of any size.",
-      "order": 5,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.online-events",
-      "level": "subcategory",
-      "parentId": "mk.events",
-      "name": "Webinars and online events",
-      "description": "Live events held online, such as webinars, virtual summits and online workshops. Pick it for sessions people join through a link at a set time.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.online-events.host",
-      "level": "type",
-      "parentId": "mk.events.online-events",
-      "name": "Host a webinar",
-      "description": "Running your own online session, from sign-ups and reminders to the live session and follow-up email. Pick it for webinars you organize.",
-      "order": 1,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.online-events.guest-speaker",
-      "level": "type",
-      "parentId": "mk.events.online-events",
-      "name": "Guest speaker or panelist",
-      "description": "Speaking at an online event run by someone else, alone or on a panel. Pick it when another organizer invites you or accepts your proposal.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.online-events.workshop",
-      "level": "type",
-      "parentId": "mk.events.online-events",
-      "name": "Workshop or online class",
-      "description": "A hands-on session where attendees learn by doing, often in small groups. Pick it when the format is teaching rather than presenting.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.pitch-events",
-      "level": "subcategory",
-      "parentId": "mk.events",
-      "name": "Pitch and demo events",
-      "description": "Events where startups present to an audience of investors, customers or the press. Pick it for the marketing side of pitching; the programs and prizes behind them can be tracked in their own sections.",
-      "order": 4,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.pitch-events.demo-day",
-      "level": "type",
-      "parentId": "mk.events.pitch-events",
-      "name": "Demo day",
-      "description": "The closing event of a program where each startup presents to invited guests. Pick it for preparing the demo and following up with the people you met.",
-      "order": 1,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.pitch-events.pitch-competition",
-      "level": "type",
-      "parentId": "mk.events.pitch-events",
-      "name": "Pitch competition",
-      "description": "An event where startups pitch on stage and a jury picks winners. Pick it for the visibility side of the competition.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.pitch-events.showcase",
-      "level": "type",
-      "parentId": "mk.events.pitch-events",
-      "name": "Showcase or exhibition table",
-      "description": "A table or slot in a startup showcase where visitors walk around and try products. Pick it when you show the product rather than pitch it.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.hackathons",
-      "level": "subcategory",
-      "parentId": "mk.events",
-      "name": "Hackathons and challenges",
-      "description": "Time-limited events where people build or solve something, often in teams. Pick it when the event puts your product or brand in front of people who make things.",
-      "order": 5,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.hackathons.take-part",
-      "level": "type",
-      "parentId": "mk.events.hackathons",
-      "name": "Take part",
-      "description": "Joining a hackathon or challenge as a participant or a team. Pick it when building something there also shows your skills or product.",
-      "order": 1,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.hackathons.sponsor",
-      "level": "type",
-      "parentId": "mk.events.hackathons",
-      "name": "Sponsor",
-      "description": "Sponsoring a challenge, a prize or a track so participants use your product or work on your problem. Pick it for sponsor deals with organizers.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.events.hackathons.mentor-judge",
-      "level": "type",
-      "parentId": "mk.events.hackathons",
-      "name": "Mentor or judge",
-      "description": "Helping teams as a mentor or scoring projects as a judge. Pick it when you give time rather than money.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners",
-      "level": "category",
-      "parentId": null,
-      "name": "Partnerships and co-marketing",
-      "shortName": "Partnerships",
-      "description": "Growth that comes from working with other companies and people who already reach your audience. Pick it for joint campaigns, integrations, referral programs and sales partners.",
-      "order": 7,
-      "recommended": true
-    },
-    {
-      "id": "mk.partners.co-marketing",
-      "level": "subcategory",
-      "parentId": "mk.partners",
-      "name": "Co-marketing",
-      "description": "Marketing done together with another company that shares your audience but does not compete with you. Pick it for joint campaigns where both sides promote the result.",
-      "order": 1,
-      "recommended": true
-    },
-    {
-      "id": "mk.partners.co-marketing.joint-content",
-      "level": "type",
-      "parentId": "mk.partners.co-marketing",
-      "name": "Joint content",
-      "description": "An article, guide, video or report made with a partner and shared by both. Pick it for content with two names on it.",
-      "order": 1,
-      "recommended": true
-    },
-    {
-      "id": "mk.partners.co-marketing.joint-webinar",
-      "level": "type",
-      "parentId": "mk.partners.co-marketing",
-      "name": "Joint webinar or event",
-      "description": "An online or in-person event run together with a partner. Pick it when both sides invite their audiences.",
-      "order": 2,
-      "recommended": true
-    },
-    {
-      "id": "mk.partners.co-marketing.list-swap",
-      "level": "type",
-      "parentId": "mk.partners.co-marketing",
-      "name": "Newsletter or audience swap",
-      "description": "An agreement to mention each other in newsletters, posts or channels. Pick it for simple exchanges of promotion with no money involved.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.co-marketing.joint-offer",
-      "level": "type",
-      "parentId": "mk.partners.co-marketing",
-      "name": "Bundle or joint offer",
-      "description": "A combined product, discount or package offered with a partner, such as a bundle or a local cross-promotion. Pick it when customers get something from both of you.",
-      "order": 4,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.integrations",
-      "level": "subcategory",
-      "parentId": "mk.partners",
-      "name": "Integrations and ecosystem listings",
-      "description": "Listings and pages that come from working with another product or platform, such as integration directories and plugin galleries. Pick it when your product connects to or builds on someone else's.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.integrations.integration-listing",
-      "level": "type",
-      "parentId": "mk.partners.integrations",
-      "name": "Integration listing",
-      "description": "A page in another product's integration directory that shows how your product connects to it. Pick it for getting listed and keeping the listing current.",
-      "order": 1,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.integrations.partner-directory",
-      "level": "type",
-      "parentId": "mk.partners.integrations",
-      "name": "Partner directory",
-      "description": "A listing in a platform's directory of certified or recommended partners, such as service providers or solution partners. Pick it when you qualify as a partner.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.integrations.template-listing",
-      "level": "type",
-      "parentId": "mk.partners.integrations",
-      "name": "Template or plugin listing",
-      "description": "Publishing a template, plugin, theme or add-on in another product's gallery so its users find you. Pick it when the add-on brings people to your main product.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.referrals",
-      "level": "subcategory",
-      "parentId": "mk.partners",
-      "name": "Affiliates and referrals",
-      "description": "Programs that reward people for sending you customers. Pick it for setting up and running affiliate, referral and ambassador programs.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.referrals.affiliate-program",
-      "level": "type",
-      "parentId": "mk.partners.referrals",
-      "name": "Affiliate program",
-      "description": "A program that pays partners, sites or creators a commission on sales they refer. Pick it for program setup, recruiting affiliates and tracking their results.",
-      "order": 1,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.referrals.referral-program",
-      "level": "type",
-      "parentId": "mk.partners.referrals",
-      "name": "Referral program",
-      "description": "A program that rewards existing customers for bringing new ones, for example with a discount or credit. Pick it for customer-to-customer referrals.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.referrals.ambassador-program",
-      "level": "type",
-      "parentId": "mk.partners.referrals",
-      "name": "Ambassador program",
-      "description": "A group of fans or users who represent your brand, often with perks, early access or recognition instead of commission. Pick it when you recruit and support ambassadors.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.channels",
-      "level": "subcategory",
-      "parentId": "mk.partners",
-      "name": "Resellers and channels",
-      "description": "Companies that sell, stock or deliver your product to their own customers. Pick it for building sales channels through other businesses.",
-      "order": 4,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.channels.reseller-outreach",
-      "level": "type",
-      "parentId": "mk.partners.channels",
-      "name": "Reseller outreach",
-      "description": "Contacting companies that could resell your product. Pick it for first contact, agreements and onboarding resellers.",
-      "order": 1,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.channels.distributor",
-      "level": "type",
-      "parentId": "mk.partners.channels",
-      "name": "Distributor",
-      "description": "A company that buys and distributes your product to shops or other sellers in a market or region. Pick it for distribution deals, often for physical products.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.channels.retail-placement",
-      "level": "type",
-      "parentId": "mk.partners.channels",
-      "name": "Retail stockist",
-      "description": "Getting your product onto the shelves of a shop or a chain, or into its online store. Pick it for pitches to buyers and the follow-up after a shop stocks you.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "mk.partners.channels.agency-partner",
-      "level": "type",
-      "parentId": "mk.partners.channels",
-      "name": "Agency or service partner",
-      "description": "An agency or consultancy that recommends, sets up or delivers your product for its clients. Pick it for partners who bring customers through their own services.",
-      "order": 4,
-      "recommended": false
-    },
-    {
       "id": "mk.outreach",
       "level": "category",
       "parentId": null,
@@ -2333,6 +1863,47 @@
       "description": "Setting up the alerts, saved searches or tools that find mentions of your brand, product and competitors. Pick it for the setup and its upkeep.",
       "order": 5,
       "recommended": false
+    },
+    {
+      "id": "mk.content.webinars",
+      "level": "subcategory",
+      "parentId": "mk.content",
+      "name": "Webinars and online events",
+      "description": "Events you run yourself: a webinar, a live demo, a workshop or a guest slot. Pick it for the work of planning and hosting; use Programs > Visibility for events someone else runs.",
+      "order": 6,
+      "recommended": true
+    },
+    {
+      "id": "mk.content.webinars.host-webinar",
+      "level": "type",
+      "parentId": "mk.content.webinars",
+      "name": "Host a webinar",
+      "description": "You plan and host the session, invite the audience and follow up with the recording. Pick it when the event is yours.",
+      "order": 1
+    },
+    {
+      "id": "mk.content.webinars.guest-webinar",
+      "level": "type",
+      "parentId": "mk.content.webinars",
+      "name": "Speak at someone else's webinar",
+      "description": "You are a guest on another organization's webinar or live stream. Pick it for the talk and the follow-up, and track the host as a partner.",
+      "order": 2
+    },
+    {
+      "id": "mk.content.webinars.workshop",
+      "level": "type",
+      "parentId": "mk.content.webinars",
+      "name": "Run a workshop",
+      "description": "A hands-on session where people build or try something with your product. Pick it for the preparation, the live teaching and the materials.",
+      "order": 3
+    },
+    {
+      "id": "mk.communities.own-community.host-meetup",
+      "level": "type",
+      "parentId": "mk.communities.own-community",
+      "name": "Host a meetup",
+      "description": "You organize a local or online meetup for your community, customers or peers. Pick it for the planning, the venue, the invitations and the follow-up.",
+      "order": 5
     }
   ]
 }

@@ -48,6 +48,12 @@ test("state API compresses reads and applies idempotent incremental writes", asy
     assert.equal(health.mediaDir, mediaDir);
     assert.equal(health.startupCount, 1);
 
+    const changelogResponse = await browserFetch(`${serverUrl}api/changelog`);
+    assert.equal(changelogResponse.status, 200);
+    assert.match(changelogResponse.headers.get("content-type"), /text\/markdown/);
+    assert.equal(changelogResponse.headers.get("cache-control"), "no-store");
+    assert.match(await changelogResponse.text(), new RegExp(`\\[${require("../package.json").version.replace(/\./g, "\\.")}\\]`));
+
     const initialResponse = await browserFetch(stateUrl, {
       headers: { "Accept-Encoding": "br" },
     });
@@ -552,7 +558,7 @@ test("backups rotate per kind by the keep settings while pinned ones are kept", 
 
     const settings = await sendJson(`${server.url}api/settings`, "PATCH", { settings: { backups: { keepSafety: 2, keepAutomatic: 1 } } });
     assert.equal(settings.status, 200);
-    assert.deepEqual((await settings.json()).settings.backups, { automatic: true, keepSafety: 2, keepAutomatic: 1 });
+    assert.deepEqual((await settings.json()).settings.backups, { automatic: true, intervalHours: 6, keepSafety: 2, keepAutomatic: 1 });
 
     // Deleting a startup takes a safety backup. Each one is taken after a
     // change, so these are four genuinely different backups rather than

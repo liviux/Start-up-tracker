@@ -257,21 +257,19 @@
     {
       "id": "po7",
       "code": "PO7",
-      "name": "Visibility and recognition",
+      "name": "Visibility and events",
       "section": "po",
-      "description": "Awards, rankings, hackathons, pitch events, exhibitions, media programs",
+      "description": "Demo/pitch events, hackathons and exhibitions",
       "whenToUse": "You want recognition beyond launches and PR",
       "promptId": "target-research",
       "scope": {
         "coverage": "nodes",
         "taxonomy": [
           "po.visibility.demo-pitch",
-          "po.visibility.awards",
           "po.visibility.exhibitions",
-          "po.visibility.hackathons",
-          "po.visibility.media"
+          "po.visibility.hackathons"
         ],
-        "note": "Every subcategory except Conferences and speaking."
+        "note": "Conferences and speaking are a separate preset; awards are left out."
       },
       "examples": {
         "SEARCH_FOCUS": [

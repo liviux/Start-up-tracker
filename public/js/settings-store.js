@@ -31,7 +31,7 @@
     defaultScope: "startup",
     appearance: Object.freeze({ mode: "system", theme: "studio" }),
     sectionColors: Object.freeze({ palette: "standard", mk: "", po: "", fu: "", comp: "" }),
-    backups: Object.freeze({ automatic: true, keepAutomatic: 20, keepSafety: 20 }),
+    backups: Object.freeze({ automatic: true, intervalHours: 6, keepAutomatic: 20, keepSafety: 20 }),
     recycleBin: Object.freeze({ retentionDays: 30 }),
   });
 

@@ -1,4 +1,42 @@
 /* Calendar presentation; date navigation, carousel geometry and status hooks stay in calendar.css. */
+#calendarView > .shell-heading {
+  margin-bottom: 16px;
+}
+
+#calendarView > .shell-heading.calendar-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 20px;
+}
+
+#calendarView .calendar-heading-text {
+  min-width: 0;
+}
+
+#calendarView > .shell-heading h2 {
+  font-size: clamp(22px, 1.8vw, 27px);
+  letter-spacing: -0.7px;
+}
+
+#calendarView > .shell-heading p {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+#calendarView .calendar-scope {
+  flex-shrink: 0;
+  margin: 2px 0 0;
+}
+
+#calendarView .calendar-scope .scope-switch-button {
+  min-height: 24px;
+  height: 24px;
+  padding: 0 8px;
+  font-size: 11.5px;
+}
+
 #calendarView .calendar-layout-container {
   gap: 24px;
   margin-top: 0;
@@ -702,11 +740,46 @@
   }
 }
 
-/* Section toggles and event types (Part 5). */
+/* Section toggles, event types and statuses live inside the calendar filter,
+   so the days keep one filter control instead of two stacked bars. */
 #calendarView .calendar-toggles {
   display: grid;
-  gap: 8px;
-  margin: 14px 0 6px;
+  gap: 10px;
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+#calendarView .calendar-filter-group {
+  display: grid;
+  gap: 6px;
+}
+
+#calendarView .calendar-filter-group + .calendar-filter-group {
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+#calendarView .calendar-filter-group-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+
+#calendarView .calendar-filter-group-title {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#calendarView .calendar-filter-group-help {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+#calendarView .calendar-filter-status-head {
+  margin: 0;
 }
 
 #calendarView .calendar-toggle-row {
@@ -714,13 +787,6 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-}
-
-#calendarView .calendar-toggle-label {
-  margin-right: 2px;
-  color: var(--muted-strong);
-  font-size: 12px;
-  font-weight: 600;
 }
 
 #calendarView .calendar-toggle {

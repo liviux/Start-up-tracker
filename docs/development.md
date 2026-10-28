@@ -65,7 +65,7 @@ The server never moves to another port on its own. If the port is taken it says 
 
 ## Releases
 
-1. Set the new version in `package.json` (and `npm install --package-lock-only`), `APP_VERSION` in `public/js/api.js`, and move the CHANGELOG's "Unreleased" lines under `## [x.y.z] - <date>`. Commit to `main` and wait for CI to pass.
+1. Set the new version in `package.json` and `package-lock.json` (with `npm version <major|minor|patch> --no-git-tag-version`), `APP_VERSION` in `public/js/api.js`, and add the release notes under `## [x.y.z] - <date>` at the top of `CHANGELOG.md`. Commit to `main` and wait for CI to pass.
 2. On GitHub, open **Actions > Release > Run workflow**, keep the branch `main` and type the version (`x.y.z`, without the `v`). Pushing a tag `vx.y.z` instead does the same.
 
 The workflow checks that the version matches `package.json`, runs the tests on Linux, macOS and Windows, refreshes the ACP registry snapshot and checks the agent catalog, builds `startup-tracker.tar.gz` with its `SHA256SUMS`, scans everything for leaks, and publishes the release with the version's CHANGELOG section as its notes. A manual run creates the tag `vx.y.z` on the commit it ran for. The installers and `startup-tracker update` download from the latest release.

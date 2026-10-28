@@ -17,11 +17,11 @@ Data that has not changed since the newest backup is not backed up again.
 
 | Kind | When | How many are kept |
 |---|---|---|
-| Automatic | When the server starts and the data changed since the newest backup, and every six hours while you are editing | The newest 20 (you can change this) |
+| Automatic | When the server starts and the data changed since the newest backup, and at the interval you set (six hours by default) while you are editing | The newest 20 (you can change this) |
 | Safety | Before a restore, an import or deleting a startup | The newest 20 (you can change this), counted apart from automatic ones |
 | Pinned | When you click **Back up now**, with an optional label | All of them, until you delete them |
 
-Automatic backups can be turned off in **Settings > Backups** (or in the setup). Safety backups always run.
+Automatic backups can be turned off in **Settings > Backups** (or in the setup), and the interval can be any whole number of hours from 1 to 8760; six is the default. Safety backups always run.
 
 If a safety backup cannot be taken, the restore, import or delete it was for does not happen.
 

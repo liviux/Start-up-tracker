@@ -88,8 +88,15 @@
   // Asks the server for the command, shows it, and sends again with
   // "confirmed" when you agree. Returns the answer, or null when declined.
   // send(false) either previews ({ preview }) or saves what needs no
-  // confirmation.
-  async function withConfirmation(t, send, { first = false } = {}) {
+  // confirmation. confirmCommand draws the themed dialog; without it (a test,
+  // or a browser that cannot show one) the built-in confirm is used.
+  async function withConfirmation(t, send, {
+    first = false,
+    confirmCommand = null,
+    title = t("settings.agents.confirmTitle"),
+    intro = t("settings.agents.confirmIntro"),
+    confirmText = t("settings.agents.add"),
+  } = {}) {
     let answer;
     try {
       answer = await send(false);
@@ -98,8 +105,16 @@
       answer = { preview: error.preview };
     }
     if (!answer.preview) return answer;
-    const text = [t("settings.agents.confirmCommand", { command: answer.preview }), first ? `\n\n${t("settings.agents.warning")}` : ""].join("");
-    if (!root.confirm(text)) return null;
+    const accepted = confirmCommand
+      ? await confirmCommand({
+        title,
+        intro,
+        command: answer.preview,
+        warning: first ? t("settings.agents.warning") : "",
+        confirmText,
+      })
+      : root.confirm([t("settings.agents.confirmCommand", { command: answer.preview }), first ? `\n\n${t("settings.agents.warning")}` : ""].join(""));
+    if (!accepted) return null;
     return send(true);
   }
 
@@ -109,6 +124,48 @@
     const { el, t, Api } = ctx;
     const ui = { overview: null, tokens: [], query: "", busy: new Set(), messages: new Map(), status: "" };
     const status = el("p", { className: "settings-status", role: "status" });
+
+    // A themed replacement for window.confirm: the command sits in a code
+    // block, the warning keeps its amber note, and the buttons use the same
+    // style as the rest of the page.
+    function ask({ title, intro, command = "", warning = "", confirmText = t("settings.agents.add") }) {
+      return new Promise((resolve) => {
+        const dialog = el("dialog", { className: "agent-dialog agent-command-dialog", "aria-labelledby": "agentCommandTitle" });
+        let settled = false;
+        const finish = (answer) => {
+          if (settled) return;
+          settled = true;
+          dialog.close();
+          dialog.remove();
+          resolve(answer);
+        };
+        dialog.addEventListener("cancel", (event) => {
+          event.preventDefault();
+          finish(false);
+        });
+        const confirm = el("button", {
+          type: "button",
+          className: "primary-button",
+          text: confirmText,
+          on: { click: () => finish(true) },
+        });
+        dialog.append(
+          el("div", { className: "agent-dialog-body" }, [
+            el("h3", { id: "agentCommandTitle", text: title }),
+            intro ? el("p", { className: "agent-dialog-intro", text: intro }) : null,
+            command ? el("pre", { className: "agent-dialog-command", text: command }) : null,
+            warning ? el("p", { className: "agent-warning", text: warning }) : null,
+          ]),
+          el("footer", { className: "agent-dialog-actions" }, [
+            el("button", { type: "button", className: "text-button", text: t("settings.agents.cancel"), on: { click: () => finish(false) } }),
+            confirm,
+          ]),
+        );
+        root.document.body.append(dialog);
+        dialog.showModal();
+        confirm.focus();
+      });
+    }
 
     async function load({ rescan = false } = {}) {
       const [overview, tokens] = await Promise.all([
@@ -184,7 +241,13 @@
 
     function save(harness, patch, { confirmFirst = false } = {}) {
       return run(`save:${harness.id}`, async () => {
-        const body = await withConfirmation(t, (confirmed) => request(Api.urls.harness(harness.id), { method: "PATCH", body: { ...patch, confirmed } }), { first: confirmFirst });
+        const body = await withConfirmation(t, (confirmed) => request(Api.urls.harness(harness.id), { method: "PATCH", body: { ...patch, confirmed } }), {
+          first: confirmFirst,
+          confirmCommand: ask,
+          title: t("settings.agents.confirmChangeTitle"),
+          intro: t("settings.agents.confirmChangeIntro"),
+          confirmText: t("settings.agents.saveLaunch"),
+        });
         if (!body) return;
         replaceHarness(body.harness);
         say(t("settings.saved"));
@@ -218,9 +281,12 @@
           el("option", { value: "", text: t("settings.agents.agentDefault"), selected: !harness.defaultModel }),
           ...models.map((model) => el("option", { value: model.value, text: model.name, selected: harness.defaultModel === model.value })),
         ])
-        : el("input", { type: "text", value: harness.defaultModel || "", placeholder: t("agents.dialog.modelPlaceholder"), on: { change: (event) => save(harness, { defaultModel: event.target.value.trim() }) } });
+        : el("div", { className: "agent-model-empty" }, [
+          el("p", { className: "settings-hint", text: t("settings.agents.modelsAfterCheck") }),
+          el("input", { type: "text", value: harness.defaultModel || "", placeholder: t("agents.dialog.modelPlaceholder"), on: { change: (event) => save(harness, { defaultModel: event.target.value.trim() }) } }),
+        ]);
       const preferred = models.length
-        ? el("div", { className: "settings-check-grid" }, models.map((model) => el("label", { className: "settings-check" }, [
+        ? el("div", { className: "agent-model-grid" }, models.map((model) => el("label", { className: "agent-model-check" }, [
           el("input", {
             type: "checkbox",
             checked: (harness.preferredModels || []).includes(model.value),
@@ -233,7 +299,7 @@
           }),
           el("span", { text: model.name }),
         ])))
-        : el("p", { className: "settings-hint", text: t("settings.agents.noModels") });
+        : null;
       const args = el("input", { type: "text", value: formatArgs(harness.args), spellcheck: "false" });
       const command = harness.kind === "custom" ? el("input", { type: "text", value: harness.command, spellcheck: "false" }) : null;
       const env = el("textarea", { rows: 3, spellcheck: "false", placeholder: "API_KEY=...", value: formatEnv(harness.env) });
@@ -265,30 +331,44 @@
           }),
         ]),
         el("details", { className: "agent-harness-more" }, [
-          el("summary", { text: t("settings.agents.options") }),
-          el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.policy") }), policy]),
-          el("p", { className: "settings-hint", text: t(`agents.policies.${harness.policy}.hint`) }),
-          el("p", { className: "agent-warning", text: t("settings.agents.warning") }),
-          el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.defaultModel") }), defaultModel]),
-          el("fieldset", { className: "settings-fieldset" }, [el("legend", { text: t("settings.agents.preferredModels") }), preferred]),
-          command ? el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.command") }), command]) : null,
-          el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.args") }), args]),
-          el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.env") }), env]),
-          el("p", { className: "settings-hint", text: t("settings.agents.envHint") }),
-          el("button", {
-            type: "button",
-            className: "secondary-button compact",
-            text: t("settings.agents.saveLaunch"),
-            on: { click: () => {
-              const parsed = parseEnv(env.value);
-              if (parsed.problems.length) {
-                ui.messages.set(`save:${harness.id}`, t("settings.agents.envProblem", { lines: parsed.problems.join(", ") }));
-                draw();
-                return;
-              }
-              save(harness, { args: parseArgs(args.value), env: parsed.env, ...(command ? { command: command.value } : {}) });
-            } },
-          }),
+          el("summary", {}, [
+            el("span", { text: t("settings.agents.options") }),
+            el("span", { className: "agent-options-mark", "aria-hidden": "true", text: "⌄" }),
+          ]),
+          el("div", { className: "agent-options" }, [
+            el("section", { className: "agent-options-group" }, [
+              el("h6", { text: t("settings.agents.permissions") }),
+              el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.policy") }), policy]),
+              el("p", { className: "settings-hint", text: t(`agents.policies.${harness.policy}.hint`) }),
+              el("p", { className: "agent-warning", text: t("settings.agents.warning") }),
+            ]),
+            el("section", { className: "agent-options-group" }, [
+              el("h6", { text: t("settings.agents.model") }),
+              el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.defaultModel") }), defaultModel]),
+              preferred ? el("fieldset", { className: "settings-fieldset" }, [el("legend", { text: t("settings.agents.preferredModels") }), preferred]) : null,
+            ]),
+            el("section", { className: "agent-options-group" }, [
+              el("h6", { text: t("settings.agents.launch") }),
+              command ? el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.command") }), command]) : null,
+              el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.args") }), args]),
+              el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.env") }), env]),
+              el("p", { className: "settings-hint", text: t("settings.agents.envHint") }),
+              el("button", {
+                type: "button",
+                className: "secondary-button compact",
+                text: t("settings.agents.saveLaunch"),
+                on: { click: () => {
+                  const parsed = parseEnv(env.value);
+                  if (parsed.problems.length) {
+                    ui.messages.set(`save:${harness.id}`, t("settings.agents.envProblem", { lines: parsed.problems.join(", ") }));
+                    draw();
+                    return;
+                  }
+                  save(harness, { args: parseArgs(args.value), env: parsed.env, ...(command ? { command: command.value } : {}) });
+                } },
+              }),
+            ]),
+          ]),
         ]),
       ]);
     }
@@ -296,7 +376,7 @@
     function addFromRegistry(agent) {
       return run(`add:${agent.id}`, async () => {
         const first = !ui.overview.harnesses.length;
-        const body = await withConfirmation(t, (confirmed) => request(Api.urls.harnesses, { method: "POST", body: { registryId: agent.id, confirmed, preview: !confirmed } }), { first });
+        const body = await withConfirmation(t, (confirmed) => request(Api.urls.harnesses, { method: "POST", body: { registryId: agent.id, confirmed, preview: !confirmed } }), { first, confirmCommand: ask });
         if (!body) return;
         replaceHarness(body.harness);
         agent.added = true;
@@ -375,7 +455,7 @@
             on: { click: () => run("custom", async () => {
               const first = !ui.overview.harnesses.length;
               const custom = { command: command.value.trim(), args: parseArgs(args.value) };
-              const body = await withConfirmation(t, (confirmed) => request(Api.urls.harnesses, { method: "POST", body: { custom, name: name.value.trim(), confirmed, preview: !confirmed } }), { first });
+              const body = await withConfirmation(t, (confirmed) => request(Api.urls.harnesses, { method: "POST", body: { custom, name: name.value.trim(), confirmed, preview: !confirmed } }), { first, confirmCommand: ask });
               if (!body) return;
               replaceHarness(body.harness);
               say(t("settings.agents.added", { name: body.harness.name }));

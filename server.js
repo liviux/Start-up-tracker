@@ -621,6 +621,16 @@ async function handleApiRequest(req, res, url) {
     return;
   }
 
+  // The sidebar version opens the changelog dialog from this file.
+  if (pathname === "/api/changelog" && req.method === "GET") {
+    const changelog = await fs.promises.readFile(path.join(rootDir, "CHANGELOG.md"), "utf8");
+    sendBody(res, changelog, 200, {
+      "Content-Type": "text/markdown; charset=utf-8",
+      "Cache-Control": "no-store",
+    });
+    return;
+  }
+
   if (pathname === "/api/about" && req.method === "GET") {
     sendJson(res, { ok: true, ...aboutFacts() });
     return;

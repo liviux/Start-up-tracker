@@ -281,6 +281,52 @@ test("appendRecordHistory validates input array and read-only mode", () => {
   }
 });
 
+test("importRecordHistory keeps the source timeline, provenance and approximate flag", () => {
+  const store = new TrackerSqliteStore(":memory:");
+  try {
+    const result = store.importRecordHistory(SID, [
+      {
+        section: "items",
+        id: "a",
+        event: "updated",
+        revision: 7,
+        changedAt: "2026-01-02T03:04:05.000Z",
+        sessionStartedAt: "2026-01-02T03:00:00.000Z",
+        origin: "backfill",
+        actor: "Old tracker",
+        label: "Imported timeline",
+        approximate: true,
+        fieldsJson: JSON.stringify([{ path: "status", before: "todo", after: "done" }]),
+      },
+      {
+        section: "items",
+        id: "a",
+        event: "deleted",
+        revision: 8,
+        changedAt: "2026-01-03T03:04:05.000Z",
+        origin: "restore",
+        snapshot: { id: "a", status: "done" },
+      },
+    ]);
+    assert.deepEqual(result, { written: 2, total: 2 });
+    const history = store.readRecordHistory(SID, "items", "a");
+    assert.equal(history.total, 2);
+    const updated = history.entries.find((entry) => entry.event === "updated");
+    assert.deepEqual(updated.fields, [{ path: "status", before: "todo", after: "done" }]);
+    assert.equal(updated.origin, "backfill");
+    assert.equal(updated.actor, "Old tracker");
+    assert.equal(updated.approximate, true);
+    assert.equal(updated.changedAt, "2026-01-02T03:04:05.000Z");
+    const deleted = history.entries.find((entry) => entry.event === "deleted");
+    assert.equal(deleted.origin, "restore");
+    assert.deepEqual(deleted.snapshot, { id: "a", status: "done" });
+    assert.throws(() => store.importRecordHistory(SID, [{ section: "items", id: "b", event: "nope" }]), /Unknown history event/);
+    assert.throws(() => store.importRecordHistory(SID, [{ section: "items", id: "b", event: "updated", fieldsJson: "{" }]), /not valid/);
+  } finally {
+    store.close();
+  }
+});
+
 test("checkIntegrity reports ok on valid database and throws when closed", () => {
   const store = new TrackerSqliteStore(":memory:");
   try {

@@ -110,6 +110,7 @@ test("currency and company templates follow the country", () => {
   assert.deepEqual(groups.own.map((entry) => entry.id), ["de-gmbh"]);
   assert.deepEqual(groups.rest.map((entry) => entry.id), ["us-llc"]);
   assert.equal(groups.generic.id, "generic");
+  assert.deepEqual(groups.groups.map((group) => [group.country, group.templates.map((entry) => entry.id)]), [["DE", ["de-gmbh"]], ["US", ["us-llc"]]], "the picker groups templates by country, own country first");
 });
 
 test("every text the setup shows is in en.json", () => {

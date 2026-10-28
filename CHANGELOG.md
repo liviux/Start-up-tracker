@@ -2,14 +2,26 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.2.0] - 2026-10-28
+
+### Added
+- The version at the bottom of the sidebar opens a changelog window with the newest releases and a link to the full file on GitHub.
 
 ### Changed
+- The category library no longer repeats events, partnerships, awards, associations or media across Marketing and Programs. Events, awards and associations live in Programs; media and PR work lives in Marketing; webinars and meetups you run yourself sit under Marketing content and your own community. Store and registry listings stay separate from marketplace seller programs, and the grant, prize and tax labels now say whether they mean the program or the money received.
 - The demo startup now has a full set of linked marketing, program, funding and company records, two funding rounds and a UK Ltd company profile, and the README and documentation use ten screenshots of it.
+- The setup's company template picker groups templates by country, and the Links step opens one link row at a time with a Cancel button.
+- The setup's AI agents step uses a themed command dialog, clearer option groups and separators, and says that models appear after Check.
+- Automatic backups default to six hours apart, and the interval can be set to any whole number of hours in the setup and in Settings > Backups.
+- The calendar's startup switch sits beside the page title, its arrows are smaller and grouped, and the calendar filter explains its sections, date types and statuses.
+- Calendar day and month counts keep their numbers and section colours without the M, P, F and C letters.
+- The Programs tab reads "Programs &" over "Opportunities", so the section dot lines up with the other tabs.
 
 ### Fixed
+- The open search field no longer draws a second blue focus box inside it, and the sync status is smaller.
 - The update check says when GitHub's hourly limit for your network is used up, instead of "GitHub answered 403".
 - The Generic company template no longer says it was checked against its sources on "?".
+- AI agents installed as native commands (Codex, Claude Code, Grok, Antigravity, Command Code and OpenCode) are found during setup and in Settings, instead of only Copilot and OpenCode.
 
 ## [0.1.0] - 2026-10-21
 
@@ -41,5 +53,5 @@ The first public release.
 ### Security
 - The local server accepts changes only from the tracker page or with the API token, serves only the app's own files, keeps uploads inside the media folder and sends a strict content security policy. The old whole-state save route is gone.
 
-[Unreleased]: https://github.com/liviux/Start-up-tracker/compare/v0.1.0...HEAD
+[0.2.0]: https://github.com/liviux/Start-up-tracker/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/liviux/Start-up-tracker/releases/tag/v0.1.0

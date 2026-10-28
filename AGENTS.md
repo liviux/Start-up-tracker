@@ -74,6 +74,8 @@ Never delete uncommitted files or work you did not create.
 
 Clear messages, no data files ever. Commit with your GitHub noreply address. `node tools/install-git-hooks.js` installs a pre-commit hook that runs the leak check on staged files.
 
+Commit directly to `main`. Do not create a branch or a pull request unless the user explicitly asks for one.
+
 ## Human writing
 
 For the README, docs, release notes and UI copy, write plainly and specifically: no inflated claims, no filler, no generic conclusions. See the Humanizer guidance at https://github.com/blader/humanizer.

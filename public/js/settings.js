@@ -1009,6 +1009,7 @@
         startup.archived ? el("span", { className: "settings-badge is-muted", text: t("settings.startups.archived") }) : null,
       ]);
       const actions = el("td", { className: "settings-row-actions" });
+      const actionButtons = el("div", { className: "settings-startup-actions" });
       const detail = el("tr", { className: "settings-detail-row", hidden: true }, el("td", { colSpan: 5 }));
 
       const openDetail = (content) => {
@@ -1104,21 +1105,23 @@
           root.location.assign(openLink.href);
         });
       }
-      actions.append(...[openLink, renameButton, archiveButton, deleteButton].filter(Boolean));
+      actionButtons.append(...[openLink, renameButton, archiveButton, deleteButton].filter(Boolean));
+      actions.append(actionButtons);
+      actions.dataset.label = t("settings.startups.actions");
 
       return [
         el("tr", {}, [
           nameCell,
-          el("td", { text: formatDay(startup.createdAt) }),
-          el("td", { className: "is-number", text: Number.isFinite(startup.recordCount) ? I18n.formatNumber(startup.recordCount) : "" }),
-          el("td", { className: "is-number", text: Number.isFinite(startup.mediaBytes) ? formatBytes(startup.mediaBytes) : "" }),
+          el("td", { dataset: { label: t("settings.startups.created") }, text: formatDay(startup.createdAt) }),
+          el("td", { className: "is-number", dataset: { label: t("settings.startups.records") }, text: Number.isFinite(startup.recordCount) ? I18n.formatNumber(startup.recordCount) : "" }),
+          el("td", { className: "is-number", dataset: { label: t("settings.startups.media") }, text: Number.isFinite(startup.mediaBytes) ? formatBytes(startup.mediaBytes) : "" }),
           actions,
         ]),
         detail,
       ];
     });
 
-    const table = el("table", { className: "settings-table" }, [
+    const table = el("table", { className: "settings-table settings-startups-table" }, [
       el("caption", { className: "visually-hidden", text: t("settings.startups.tableCaption") }),
       el("thead", {}, el("tr", {}, [
         el("th", { scope: "col", text: t("settings.startups.name") }),
@@ -1510,7 +1513,7 @@
         }
         save(updateStatusEntry(config, key, entry.id, { label: value }));
       });
-      const descriptionInput = el("input", { type: "text", maxLength: 300, value: entry.description || "", placeholder: t("settings.statuses.descriptionPlaceholder"), "aria-label": t("settings.statuses.description", { status: entry.label }) });
+      const descriptionInput = el("textarea", { rows: 1, className: "settings-status-description", maxLength: 300, placeholder: t("settings.statuses.descriptionPlaceholder"), "aria-label": t("settings.statuses.description", { status: entry.label }) }, entry.description || "");
       descriptionInput.addEventListener("change", () => save(updateStatusEntry(config, key, entry.id, { description: descriptionInput.value.replace(/\s+/g, " ").trim() })));
       const move = (delta, direction) => el("button", {
         type: "button",
@@ -1744,7 +1747,7 @@
     };
     const header = el("div", { className: "settings-backup-header" });
     const renderHeader = () => {
-      header.replaceChildren(
+      header.replaceChildren(...[
         el("strong", { text: backupTitle(backup) }),
         el("span", { className: `settings-badge kind-${backup.kind}`, text: t(`settings.backups.kinds.${backup.kind}`) }),
         backup.complete === false ? el("span", { className: "settings-badge is-error", text: t("settings.backups.incomplete") }) : null,
@@ -1754,7 +1757,7 @@
           media: formatBytes(backup.mediaBytes),
           files: backup.mediaFiles || 0,
         }) }),
-      );
+      ].filter(Boolean));
     };
     renderHeader();
 
@@ -1854,8 +1857,10 @@
     // Back up now.
     const labelInput = el("input", { type: "text", maxLength: 60, autocomplete: "off", pattern: "[A-Za-z0-9 ._-]*" });
     const backupNow = el("button", { type: "submit", className: "primary-button" }, [icon("save"), el("span", { text: t("settings.backups.backUpNow") })]);
-    const createForm = el("form", { className: "settings-inline-form", novalidate: true }, [
-      field(t("settings.backups.label"), labelInput, t("settings.backups.labelHint")),
+    const createHint = el("p", { className: "settings-hint", id: uid("backup-label-hint"), text: t("settings.backups.labelHint") });
+    labelInput.setAttribute("aria-describedby", createHint.id);
+    const createForm = el("form", { className: "settings-inline-form settings-backup-create", novalidate: true }, [
+      field(t("settings.backups.label"), labelInput),
       backupNow,
     ]);
 
@@ -1911,6 +1916,19 @@
       });
       return field(t(`settings.backups.${key}`), input, t(`settings.backups.${key}Hint`));
     };
+    const intervalInput = () => {
+      const input = el("input", { type: "number", min: 1, max: 8760, step: 1, inputMode: "numeric", value: String(settings.backups.intervalHours) });
+      input.addEventListener("change", () => {
+        const value = Number(input.value);
+        if (!Number.isInteger(value) || value < 1 || value > 8760) {
+          showStatus(status, t("settings.backups.intervalInvalid"), "error");
+          input.value = String(Settings.get().backups.intervalHours);
+          return;
+        }
+        saveSettings({ backups: { intervalHours: value } }, status);
+      });
+      return field(t("settings.backups.intervalHours"), input, t("settings.backups.intervalHoursHint"));
+    };
 
     // Export: plain download links.
     const exportLink = (href, text) => el("a", { className: "secondary-button", href, download: "" }, [icon("download"), el("span", { text })]);
@@ -1937,7 +1955,7 @@
     ]);
 
     container.append(
-      el("div", { className: "settings-block" }, [el("h4", { text: t("settings.backups.nowTitle") }), createForm]),
+      el("div", { className: "settings-block" }, [el("h4", { text: t("settings.backups.nowTitle") }), createForm, createHint]),
       status,
       el("div", { className: "settings-block" }, [el("h4", { text: t("settings.backups.listTitle") }), listHolder]),
       el("div", { className: "settings-block" }, [
@@ -1946,7 +1964,7 @@
           el("input", { type: "checkbox", checked: settings.backups.automatic !== false, on: { change: (event) => saveSettings({ backups: { automatic: event.target.checked } }, status) } }),
           el("span", { text: t("settings.backups.automatic") }),
         ]),
-        el("div", { className: "settings-grid" }, [keepInput("keepAutomatic"), keepInput("keepSafety")]),
+        el("div", { className: "settings-grid" }, [intervalInput(), keepInput("keepAutomatic"), keepInput("keepSafety")]),
         el("p", { className: "settings-hint", text: t("settings.backups.pinnedHint") }),
       ]),
       exportGroup,

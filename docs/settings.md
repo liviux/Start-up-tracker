@@ -46,7 +46,7 @@ The agents you can run prompts with, their permission policy, models and environ
 
 ## Backups
 
-Automatic backups can be turned off here, and the number of automatic and safety backups to keep changed. See [backups.md](backups.md).
+Automatic backups can be turned off here, the hours between them changed (six by default), and the number of automatic and safety backups to keep changed. See [backups.md](backups.md).
 
 ## Recycle bin
 

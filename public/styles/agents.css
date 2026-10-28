@@ -166,8 +166,8 @@ html[data-run-window] .agents-toolbar { display: none; }
 html[data-run-window] .agents-layout { grid-template-columns: 1fr; }
 
 /* Settings > AI agents */
-.agent-harness-list { display: grid; gap: 10px; }
-.agent-harness { display: grid; gap: 6px; padding: 12px; border: 1px solid var(--border); border-radius: 12px; }
+.agent-harness-list { display: grid; gap: 12px; }
+.agent-harness { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
 .agent-harness[data-state="failed"] { border-color: var(--red); }
 .agent-harness-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
 .agent-harness-head h5 { margin: 0; font-size: 15px; }
@@ -180,14 +180,105 @@ html[data-run-window] .agents-layout { grid-template-columns: 1fr; }
 .agent-check-dot[data-state="failed"],
 .agent-check-dot[data-state="incompatible"],
 .agent-check-dot[data-state="not-installed"] { background: var(--red); }
-.agent-harness-more { display: grid; gap: 8px; }
-.agent-harness-more[open] { padding-top: 6px; }
-.agent-harness-more > :not(summary) { margin-top: 8px; }
-.agent-registry-list { max-height: 360px; overflow: auto; }
-.agent-registry-item { display: grid; grid-template-columns: 20px 1fr auto; align-items: start; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.agent-harness-more { display: grid; gap: 10px; }
+.agent-harness-more > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  color: var(--text-soft);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.agent-harness-more > summary::-webkit-details-marker { display: none; }
+.agent-harness-more[open] > summary { border-color: var(--accent); background: var(--accent-soft); color: var(--text); }
+.agent-options-mark { font-size: 15px; line-height: 1; transition: transform 150ms ease; }
+.agent-harness-more[open] .agent-options-mark { transform: rotate(180deg); }
+.agent-options { display: grid; gap: 12px; }
+.agent-options-group {
+  display: grid;
+  gap: 9px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--surface-strong) 55%, var(--surface));
+}
+.agent-options-group h6 { margin: 0; color: var(--muted-strong); font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.agent-model-empty { display: grid; gap: 6px; }
+.agent-model-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; }
+.agent-model-check {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 13px;
+  cursor: pointer;
+}
+.agent-model-check:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); font-weight: 650; }
+.agent-model-check input { flex: 0 0 auto; accent-color: var(--accent); }
+.agent-registry-list { max-height: 420px; overflow: auto; }
+.agent-registry-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.agent-registry-item:hover { border-color: var(--border-strong); background: var(--surface-strong); }
+.agent-registry-item > img { width: 24px; height: 24px; object-fit: contain; align-self: center; border-radius: 6px; }
+.agent-registry-item > div { display: grid; gap: 2px; min-width: 0; }
+.agent-registry-item strong { font-size: 14px; }
+.agent-registry-item .secondary-button { align-self: center; }
 .agent-registry-item p { margin: 2px 0 0; }
 .agent-found { margin-left: 6px; color: var(--green); font-size: 12px; font-weight: 700; }
 .agent-token-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; }
+
+/* The themed confirmation dialog (js/agents-settings.js), in place of the
+   browser's confirm box when an agent's command is shown. */
+.agent-dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--surface), var(--surface));
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+}
+.agent-dialog::backdrop { background: rgb(10 20 15 / 45%); }
+.agent-dialog-body { display: grid; gap: 12px; padding: 20px 22px 4px; }
+.agent-dialog-body h3 { margin: 0; font-size: 20px; letter-spacing: -0.3px; }
+.agent-dialog-intro { margin: 0; color: var(--text-soft); line-height: 1.5; }
+.agent-dialog-command {
+  max-height: 40vh;
+  margin: 0;
+  padding: 12px 14px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-strong);
+  color: var(--text);
+  font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.agent-dialog .agent-warning { margin: 0; }
+.agent-dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding: 14px 22px 20px; }
 
 @media (max-width: 860px) {
   .agents-layout { grid-template-columns: 1fr; }

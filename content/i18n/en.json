@@ -2,7 +2,7 @@
   "app": {
     "name": "Startup Tracker",
     "skipToContent": "Skip to content",
-    "version": "Version {version}",
+    "version": "v{version}",
     "programActivityTypes": {
       "verificationResearch": "Verification / research",
       "applicationSubmission": "Application / submission",
@@ -953,7 +953,9 @@
   "nav": {
     "views": "Tracker views",
     "main": "Main navigation",
-    "breadcrumb": "Breadcrumb"
+    "breadcrumb": "Breadcrumb",
+    "programsAnd": "Programs &",
+    "opportunities": "Opportunities"
   },
   "sections": {
     "mk": {
@@ -1113,6 +1115,12 @@
     "allFailed": "Could not load the other startups' dates. Only this startup's are shown.",
     "sectionsLabel": "Sections",
     "kindsLabel": "Show",
+    "filter": {
+      "sectionsHelp": "The part of the tracker a date belongs to.",
+      "kindsHelp": "The kind of date to show.",
+      "statusTitle": "Statuses",
+      "statusHelp": "Only these statuses appear and count."
+    },
     "kinds": {
       "next_action": "Next actions",
       "deadline": "Deadlines",
@@ -1140,6 +1148,16 @@
       "show": "Show {section} again",
       "hide": "Hide {section}"
     }
+  },
+  "changelog": {
+    "title": "Latest changes",
+    "intro": "Newest first. The full file is in the repository.",
+    "full": "Full changelog",
+    "more": "Read more",
+    "loading": "Loading the changelog…",
+    "failed": "Could not load the changelog. The full file is on GitHub.",
+    "close": "Close changelog",
+    "open": "Open the changelog"
   },
   "backups": {
     "unnamed": "Backup",
@@ -1266,6 +1284,8 @@
       "url": "Address",
       "pastePlaceholder": "Paste an address",
       "add": "Add link",
+      "addConfirm": "Add",
+      "cancel": "Cancel",
       "up": "Move up",
       "down": "Move down",
       "remove": "Remove link"
@@ -1295,13 +1315,16 @@
     },
     "agents": {
       "title": "AI agents",
-      "intro": "Optional. Agents found on this computer are listed here. Add one, check that it works and pick a default model, or skip and do it later in Settings > AI agents.",
+      "intro": "Optional. Agents found on this computer are listed here. Add one and run Check: it shows whether the agent works and fills in its models. You can skip this and do it later in Settings > AI agents.",
       "failed": "Could not read the agents: {error}"
     },
     "backups": {
       "title": "Backups",
       "intro": "The tracker copies its database before risky changes and on a schedule.",
+      "every": "Hours between automatic backups",
+      "everyHint": "Six hours by default. Change it to whatever suits you; backups are taken only while you make changes.",
       "keep": "Automatic backups to keep",
+      "keepHint": "Older automatic backups are deleted.",
       "folder": "Your data folder:",
       "hint": "Copy this folder to keep a backup elsewhere. Settings > Backups has the rest."
     },
@@ -1733,6 +1756,15 @@
       "envProblem": "These lines are not NAME=value: {lines}",
       "saveLaunch": "Save launch settings",
       "confirmCommand": "This agent will run:\n\n{command}\n\nAdd it?",
+      "confirmTitle": "Add this agent?",
+      "confirmIntro": "It will run this command on this computer:",
+      "confirmChangeTitle": "Use this command?",
+      "confirmChangeIntro": "The agent will start with this command:",
+      "cancel": "Cancel",
+      "permissions": "Permissions",
+      "model": "Model",
+      "launch": "Launch",
+      "modelsAfterCheck": "Models are filled in after you check this agent. Until then, type a model id if you know it.",
       "addTitle": "Add an agent",
       "sources": {
         "live": "From the ACP registry, fetched {date}.",
@@ -1860,10 +1892,13 @@
       "deleteFailed": "Could not delete the backup: {error}",
       "keepTitle": "How many to keep",
       "keepAutomatic": "Automatic backups",
-      "keepAutomaticHint": "Taken when the server starts and every six hours while you edit. Older ones are deleted.",
+      "keepAutomaticHint": "Taken when the server starts and at the interval below while you edit. Older ones are deleted.",
       "keepSafety": "Safety backups",
       "keepSafetyHint": "Taken before a restore, an import or deleting a startup. Counted separately.",
       "keepInvalid": "Enter a whole number from 1 to 1000.",
+      "intervalHours": "Hours between automatic backups",
+      "intervalHoursHint": "Six hours by default. Counted from the newest backup, and only while you make changes.",
+      "intervalInvalid": "Enter a whole number of hours from 1 to 8760.",
       "pinnedHint": "Pinned backups are never deleted automatically.",
       "exportTitle": "Export",
       "exportHint": "A zip holds JSON per section, the media files and a manifest. JSON leaves the media out.",
@@ -1873,7 +1908,7 @@
       "exportAllJson": "All startups (JSON)",
       "exportDatabase": "Whole database (.sqlite)",
       "includeSensitive": "Include sensitive company values (bank accounts, ID numbers). The database file always holds them.",
-      "automatic": "Take automatic backups (when the tracker starts, and every six hours while you make changes)"
+      "automatic": "Take automatic backups (when the tracker starts, and at the interval below while you make changes)"
     },
     "import": {
       "title": "Import",
@@ -2719,6 +2754,7 @@
       "types": "Types",
       "searchNamesNotesLinks": "Search names, notes, links...",
       "searchTargets": "Search targets",
+      "search": "Search",
       "savedView": "Saved view",
       "perPage": "Per page",
       "typeATagPressEnter": "Type a tag, press Enter",

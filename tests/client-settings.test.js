@@ -39,7 +39,7 @@ test("a cached settings copy is read safely and patches merge one level deep", (
   assert.equal(resolved.extra, undefined);
 
   const merged = Settings.merge(Settings.resolve(null), { backups: { keepSafety: 5 }, dateFormat: "yyyy-MM-dd" });
-  assert.deepEqual(merged.backups, { automatic: true, keepAutomatic: 20, keepSafety: 5 });
+  assert.deepEqual(merged.backups, { automatic: true, intervalHours: 6, keepAutomatic: 20, keepSafety: 5 });
   assert.equal(merged.dateFormat, "yyyy-MM-dd");
 });
 

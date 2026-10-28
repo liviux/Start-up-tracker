@@ -1,14 +1,14 @@
 {
   "section": "po",
-  "libraryVersion": 1,
+  "libraryVersion": 2,
   "nodes": [
     {
       "id": "po.grants",
       "level": "category",
       "parentId": null,
-      "name": "Grants and public funding programs",
+      "name": "Grant and funding programs",
       "shortName": "Grants",
-      "description": "Calls and schemes you apply to for non-dilutive money: grants, vouchers, tax incentives, prizes and public contracts. Track the program here and the money you receive in Funding, linked to it.",
+      "description": "Programs you can apply to for non-dilutive money: grants, vouchers, prizes, tax schemes and procurement. These are the programs; record the money you receive in Funding.",
       "order": 1,
       "recommended": true
     },
@@ -106,8 +106,8 @@
       "id": "po.grants.foundations",
       "level": "subcategory",
       "parentId": "po.grants",
-      "name": "Foundation and private grants",
-      "description": "Grants from foundations, companies and ecosystem funds rather than a government. For funds that only open-source projects can apply to, use Open-source foundations and support.",
+      "name": "Foundation and private grant programs",
+      "description": "Grant programs run by foundations, companies and technology ecosystems. Pick it for the program; record the money you receive in Funding.",
       "order": 2,
       "recommended": false
     },
@@ -223,8 +223,8 @@
       "id": "po.grants.tax",
       "level": "subcategory",
       "parentId": "po.grants",
-      "name": "Tax incentives and subsidies",
-      "description": "Public support given through the tax system or as a standing subsidy rather than a competitive grant. Pick it for credits, reliefs and allowances you can claim when you meet the rules.",
+      "name": "Tax incentive and subsidy programs",
+      "description": "Public tax credits, reliefs, rebates and subsidies you can claim. Pick it for the scheme; record the money you receive in Funding.",
       "order": 5,
       "recommended": true
     },
@@ -286,8 +286,8 @@
       "id": "po.grants.prizes",
       "level": "subcategory",
       "parentId": "po.grants",
-      "name": "Prizes and challenges",
-      "description": "Competitions where the main reward is money. Pick it when the cash prize is the reason to enter; when visibility matters more, use Visibility, events and recognition.",
+      "name": "Prize and challenge programs",
+      "description": "Competitions, challenges and awards that pay money or resources. Pick it for the program; record the prize money in Funding.",
       "order": 6,
       "recommended": true
     },
@@ -1000,8 +1000,8 @@
       "id": "po.market.marketplaces",
       "level": "subcategory",
       "parentId": "po.market",
-      "name": "Marketplaces and app ecosystems",
-      "description": "Programs inside online marketplaces and app stores that give selected sellers or apps more reach, lower fees or featured placement. A plain listing with no selection step belongs in Marketing.",
+      "name": "Marketplace and app ecosystem programs",
+      "description": "Seller, co-sell and app-ecosystem programs run by marketplaces, cloud providers and app stores. Pick it for the program; for a marketing listing, use Marketing > Launches > Store and registry listings.",
       "order": 2,
       "recommended": false
     },
@@ -1715,42 +1715,6 @@
       "parentId": "po.visibility.hackathons",
       "name": "Technical or skills contest",
       "description": "A contest that tests a product or skill against others, such as a robotics or benchmark competition, or a culinary or craft contest. Pick it when entries are judged on performance.",
-      "order": 3,
-      "recommended": false
-    },
-    {
-      "id": "po.visibility.media",
-      "level": "subcategory",
-      "parentId": "po.visibility",
-      "name": "Media and content programs",
-      "description": "Editorial programs that select startups for features, stories or expert contributions. Pick it when there is an application or selection step; paid placements and ordinary pitches to journalists belong in Marketing.",
-      "order": 6,
-      "recommended": true
-    },
-    {
-      "id": "po.visibility.media.editorial-feature",
-      "level": "type",
-      "parentId": "po.visibility.media",
-      "name": "Editorial feature",
-      "description": "A feature series by a publication or platform that selects startups or launches to present, such as a startup of the week. Pick it when you apply or are chosen to be featured.",
-      "order": 1,
-      "recommended": true
-    },
-    {
-      "id": "po.visibility.media.customer-story",
-      "level": "type",
-      "parentId": "po.visibility.media",
-      "name": "Customer or partner story",
-      "description": "A case study or story that a supplier, platform or partner publishes about how you use their product. Pick it when a partner's program features its customers.",
-      "order": 2,
-      "recommended": false
-    },
-    {
-      "id": "po.visibility.media.contributions",
-      "level": "type",
-      "parentId": "po.visibility.media",
-      "name": "Call for contributions",
-      "description": "An open call for guest articles, expert comments or report contributions for a publication or media program. Pick it when you would write or contribute content.",
       "order": 3,
       "recommended": false
     },

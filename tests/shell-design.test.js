@@ -228,12 +228,14 @@ test("the startup switcher is an accessible menu button and the shell names no w
   // Breadcrumb is startup / view; the footer carries the app name and version.
   assert.match(markup, /<nav class="shell-breadcrumb"[^>]*><span id="breadcrumbStartup"><\/span><span aria-hidden="true">\/<\/span><span id="breadcrumbView"/);
   // The app name is a setting (Settings > General), filled in by js/settings.js.
-  assert.match(markup, /<div class="sidebar-footer"><span data-app-name>Startup Tracker<\/span><span id="appVersionLabel"><\/span><\/div>/);
+  // The version opens the changelog and is not plain text.
+  assert.match(markup, /<div class="sidebar-footer"><span data-app-name>Startup Tracker<\/span><button\b[^>]*id="appVersionButton"[^>]*aria-haspopup="dialog"[^>]*><span id="appVersionLabel"><\/span><\/button><\/div>/);
+  assert.match(markup, /<dialog\b[^>]*id="changelogDialog"[^>]*aria-labelledby="changelogTitle"/);
   assert.match(markup, /<h1 data-app-name>Startup Tracker<\/h1>/);
   assert.doesNotMatch(markup + source, /workspace-(?:sidebar|breadcrumb|heading)/);
   assert.doesNotMatch(markup, />\s*Workspace\s*</);
   const stylesheet = fs.readFileSync(path.join(root, "styles.css"), "utf8");
-  for (const name of ["shell", "surfaces", "calendar-agenda", "startups"]) assert.match(stylesheet, new RegExp(`@import url\\("\\./styles/${name}\\.css"\\)`));
+  for (const name of ["shell", "surfaces", "calendar-agenda", "startups", "changelog"]) assert.match(stylesheet, new RegExp(`@import url\\("\\./styles/${name}\\.css"\\)`));
   assert.doesNotMatch(stylesheet, /workspace/);
 });
 

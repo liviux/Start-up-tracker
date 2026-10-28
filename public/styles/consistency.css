@@ -1,0 +1,2288 @@
+/* ==========================================================================
+   Consistency pass
+   --------------------------------------------------------------------------
+   Loaded last. It does three jobs the earlier files did not do together:
+
+   1. One control height, one set of type sizes and one rhythm for the whole
+      app, so things sitting on the same line share a baseline and a size.
+   2. A flat Studio surface: no page gradients, glass or resting shadows; the
+      section accent stays on actions and data.
+   3. Layout repairs for rows that broke: the tracker tables, the focus queue,
+      the calendar toolbar and the Extra navigation.
+
+   Keep this file about alignment and sizing. Component-specific behaviour
+   stays in its own stylesheet.
+   ========================================================================== */
+
+html:root {
+  --control-height: 36px;
+  --control-height-sm: 30px;
+  --pill-height: 22px;
+  --row-gap: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   1. Shell: one height for every action in the top bar
+   -------------------------------------------------------------------------- */
+
+html:root .topbar {
+  min-height: 72px;
+  padding-block: 16px;
+}
+
+html .topbar-actions {
+  align-items: center;
+  gap: 8px;
+}
+
+html .topbar :is(#settingsButton, #projectLinksToggle) {
+  height: var(--control-height);
+  min-height: var(--control-height);
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+html .topbar #projectLinksToggle {
+  padding: 0 12px;
+  font-size: 12.5px !important;
+}
+
+html:root .topbar .icon-button,
+html:root .topbar .global-search-toggle {
+  width: var(--control-height);
+  height: var(--control-height);
+  min-width: var(--control-height);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-soft);
+}
+
+html:root .topbar .icon-button:hover {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+html .save-state-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 3px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted-strong);
+  font-size: 10.5px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+html .topbar .save-state-text .status-spinner {
+  width: 10px;
+  height: 10px;
+  border-width: 1.5px;
+}
+
+html .topbar .save-state-text .status-sync-icon {
+  width: 11px;
+  height: 11px;
+}
+
+html .global-search-field {
+  height: var(--control-height);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+
+html .global-search:not(.expanded) .global-search-field {
+  display: none;
+}
+
+html .global-search.expanded .global-search-field {
+  height: var(--control-height);
+}
+
+html .global-search-field input {
+  height: 100%;
+  min-height: 0;
+}
+
+/* The field's wrapper already shows the focus ring; a second ring on the
+   input itself draws a blue box inside the open search. */
+html:root .topbar .global-search-field input:focus,
+html:root .topbar .global-search-field input:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+/* The active navigation item recedes: a quiet fill, a short accent rule and
+   white text. The section dots already carry the identity colours. */
+html:root[data-taste="studio"] #appTabs .app-tab-button.active {
+  background: rgba(255, 255, 255, 0.11) !important;
+  color: #ffffff !important;
+  box-shadow: inset 3px 0 0 var(--accent) !important;
+}
+
+html:root[data-taste="studio"] #appTabs .app-tab-button.active img {
+  opacity: 1;
+}
+
+html #appTabs .app-tab-button {
+  min-height: 46px;
+  gap: 10px;
+  padding-block: 10px;
+  white-space: nowrap;
+}
+
+@media (max-width: 1279px) {
+  html #appTabs .app-tab-button {
+    gap: 8px;
+    padding-inline: 10px;
+    font-size: 12px;
+  }
+}
+
+html .shell-heading {
+  margin-bottom: 24px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Flat Studio surfaces
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="studio"] body {
+  background-image: none;
+  background-color: var(--bg);
+}
+
+html:root[data-taste="studio"] :is(.panel, .manager-card, .config-panel, .company-card, .company-hero, .calendar-summary-card) {
+  border-radius: 12px;
+  background: var(--surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="studio"] .primary-button {
+  background: var(--accent) !important;
+  box-shadow: none !important;
+}
+
+html:root[data-taste="studio"] .primary-button:hover {
+  background: var(--accent-hover) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html:root[data-taste="studio"] :is(.secondary-button, .icon-button):active {
+  transform: none !important;
+}
+
+html:root[data-taste="studio"] .metric-card {
+  box-shadow: none !important;
+}
+
+html:root[data-taste="studio"] .metric-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. Controls: same height, type size and padding everywhere
+   -------------------------------------------------------------------------- */
+
+html:root :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+  min-height: var(--control-height);
+  height: var(--control-height);
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+html:root :is(.primary-button, .secondary-button, .ghost-button, .danger-button).compact {
+  min-height: 32px;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+html:root .icon-button {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 8px;
+}
+
+html:root .panel-toggle {
+  width: var(--control-height);
+  height: var(--control-height);
+}
+
+html:root :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select) {
+  min-height: var(--control-height);
+  height: var(--control-height);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+html:root textarea {
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+html:root :is(input, select, textarea):focus {
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+html:root .scope-switch {
+  padding: 2px;
+  border-radius: 8px;
+}
+
+html:root .scope-switch-button {
+  min-height: 28px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+html:root .tab-button {
+  min-height: 32px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+}
+
+html:root .tab-count {
+  min-width: 20px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 11px;
+  line-height: 18px;
+}
+
+html:root :is(.day-count, .section-chip, .startup-switcher-caption,
+  .ai-flow-column-head, .ai-flow-count, .ai-cost, .ai-kind-badge) {
+  font-size: 11.5px;
+}
+
+html:root .startup-switcher-caption {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root .startup-switcher-name {
+  font-size: 13px;
+}
+
+/* The status filter is dense on purpose; 11px is its floor. */
+html:root :is(.status-badge, .manager-focus-filter-btn, .manager-focus-filter-summary-state,
+  .manager-focus-filter-shell-state, .bulk-toggle-prefix, .bulk-toggle-option,
+  .bulk-toggle-separator, .filter-label, .manager-focus-filter-group summary,
+  .focus-date-mode-btn) {
+  font-size: 11.5px;
+}
+
+html:root .focus-date-mode {
+  height: var(--control-height);
+  padding: 2px;
+  border-radius: 8px;
+}
+
+html:root .focus-date-mode-btn {
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 6px;
+  font-size: 11.5px;
+}
+
+html:root :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn, .focus-date-input) {
+  height: var(--control-height);
+  min-height: var(--control-height);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+html:root .focus-nav-btn {
+  width: var(--control-height);
+  min-width: var(--control-height);
+  padding: 0;
+}
+
+html:root :is(.focus-today-btn, .focus-clear-btn) {
+  padding: 0 12px;
+}
+
+html:root .panel h2,
+html:root .tracker-topline h2 {
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+html:root .panel-heading {
+  padding-bottom: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Summary band
+   -------------------------------------------------------------------------- */
+
+html .summary-grid,
+html .manager-summary-grid,
+html .feedback-summary-grid {
+  margin-bottom: var(--row-gap) !important;
+  gap: 1px !important;
+  background: var(--border);
+  border-radius: 10px;
+}
+
+html .metric-card {
+  min-height: 82px !important;
+  padding: 14px 18px !important;
+  gap: 5px !important;
+  border: 0 !important;
+  background: var(--surface) !important;
+}
+
+@media (min-width: 768px) and (max-width: 1439px) {
+  html .summary-grid.section-metrics {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  /* Nine funding figures: six counts, then the three money totals at double
+     width, so no single money card has to carry a whole row. */
+  html .summary-grid.section-metrics:has(> .metric-card:nth-child(9)) > .metric-card:nth-child(n + 7) {
+    grid-column: span 2;
+  }
+
+  /* Seven program figures: the expected value closes the band. */
+  html .summary-grid.section-metrics:has(> .metric-card:nth-child(7)):not(:has(> .metric-card:nth-child(8))) > .metric-card:nth-child(7) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  html .summary-grid.section-metrics {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  html .summary-grid.section-metrics > .metric-card:last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+  }
+}
+
+html .metric-label {
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+
+html .metric-value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 24px !important;
+  letter-spacing: -0.6px !important;
+  white-space: nowrap;
+}
+
+html .metric-currency {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+html .metric-amount {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   5. Focus queue
+   -------------------------------------------------------------------------- */
+
+html:root .focus-list {
+  min-height: 0;
+  margin-top: 14px;
+  gap: 12px;
+  grid-auto-rows: minmax(136px, auto);
+  align-items: stretch;
+}
+
+html:root .focus-item {
+  min-height: 136px;
+  align-items: stretch;
+  padding: 16px 18px;
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root .focus-item:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+}
+
+html:root .focus-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+html:root .focus-item strong {
+  font-size: 14.5px;
+  line-height: 1.35;
+}
+
+html:root .focus-sub {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+html:root .focus-meta {
+  gap: 6px;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+html:root .focus-meta > span:not(.status-pill):not(.priority-pill) {
+  color: var(--muted-strong);
+}
+
+html:root .focus-next {
+  margin-top: auto;
+  padding-top: 4px;
+  overflow: hidden;
+  color: var(--muted-strong);
+  font-size: 12px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html:root .focus-link-open {
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+html:root .focus-date-bar {
+  gap: 10px;
+  margin: 2px 0 8px;
+}
+
+html:root .focus-date-controls {
+  gap: 4px;
+}
+
+html:root .focus-filter-bar {
+  margin-bottom: 2px;
+}
+
+html:root :is(.focus-filter-shell-summary, .manager-focus-filter-shell-summary) {
+  min-height: 36px;
+}
+
+html:root .status-pill,
+html:root .priority-pill,
+html:root .category-pill,
+html:root .tag-pill {
+  height: var(--pill-height);
+  min-height: var(--pill-height);
+  padding-block: 2px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   6. Tracker filters and table
+   -------------------------------------------------------------------------- */
+
+html:root .category-tabs {
+  height: auto;
+  margin: 16px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+
+html:root .category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  html:root .category-tabs {
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+  }
+}
+
+html:root .filters {
+  align-items: end;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+html:root .filters label {
+  display: grid;
+  gap: 5px;
+  align-content: end;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+html:root .filters label.search-field {
+  position: relative;
+  flex: 2 1 260px;
+}
+
+html:root .filters .filter-label {
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+html:root .search-field svg {
+  bottom: 10px;
+  left: 12px;
+}
+
+html:root .search-field input {
+  padding-left: 34px !important;
+}
+
+@media (max-width: 1023px) {
+  html #appTabs {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+  }
+}
+
+html:root .facet-filters {
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+html:root .facet-filters .facet-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+html:root .facet-filters .facet-label {
+  flex: 0 0 auto;
+}
+
+html:root .facet-filters input {
+  flex: 1 1 260px;
+  max-width: 420px;
+  height: var(--control-height);
+}
+
+html:root :is(.focus-pagination, .pagination):empty {
+  display: none;
+}
+
+html:root .section-status-filter {
+  margin-top: 4px;
+}
+
+html:root .section-table {
+  table-layout: fixed;
+  min-width: 900px;
+}
+
+html:root .section-table :is(th, td) {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+html:root .section-table th {
+  color: var(--muted-strong);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+/* Sentence case for every data table header. */
+html:root table th {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root .section-table th.sp-col-value {
+  text-align: right;
+}
+
+html:root .section-table .sp-col-priority { width: 7%; }
+html:root .section-table .sp-col-name { width: 18%; }
+html:root .section-table .sp-col-category { width: 19%; }
+html:root .section-table .sp-col-status { width: 11%; }
+html:root .section-table .sp-col-date { width: 16%; }
+html:root .section-table .sp-col-campaign { width: 8%; }
+html:root .section-table .sp-col-tags { width: 10%; }
+html:root .section-table .sp-col-value { width: 11%; }
+
+html:root .section-table tbody tr {
+  height: 58px;
+}
+
+html:root .section-table tbody tr:hover {
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root .section-table :is(td, th) {
+  border-color: var(--border);
+}
+
+html:root .sp-name-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  min-width: 0;
+}
+
+html:root .sp-open {
+  display: -webkit-box;
+  overflow: hidden;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+html:root .sp-external {
+  flex: 0 0 auto;
+  margin-left: 0;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+html:root .sp-organization {
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html:root .sp-category {
+  color: var(--muted-strong);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+html:root .sp-category > span:first-child {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+html:root .sp-status :is(.status-pill, [class*="status-"]),
+html:root .sp-status > * {
+  white-space: nowrap;
+}
+
+html:root .sp-date {
+  color: var(--text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+html:root .sp-date > span:first-child {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+html:root .sp-next {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+html:root .sp-campaign {
+  overflow: hidden;
+  color: var(--muted-strong);
+  font-size: 12px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+html:root :is(.sp-tags) {
+  white-space: normal;
+}
+
+html:root .sp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-content: flex-start;
+}
+
+html:root .sp-tags .tag-pill {
+  margin: 0;
+}
+
+html:root .sp-value {
+  text-align: right;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+html:root .table-wrap {
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+html:root .pagination {
+  gap: 8px;
+  padding-top: 12px;
+}
+
+html:root .page-summary {
+  font-size: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Tables become one card per target on small screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1199px) {
+  html:root .table-wrap:has(.section-table) {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  html:root .table-wrap .section-table,
+  html:root .table-wrap .section-table tbody,
+  html:root .table-wrap .section-table tr,
+  html:root .table-wrap .section-table td {
+    display: block;
+  }
+
+  html:root .table-wrap .section-table thead {
+    display: none;
+  }
+
+  html:root .section-table {
+    min-width: 0;
+  }
+
+  html:root .table-wrap .section-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+  }
+
+  html:root .table-wrap .section-table tr.sp-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "priority tags"
+      "name name"
+      "category category"
+      "status date"
+      "campaign value";
+    align-items: start;
+    height: auto;
+    min-height: 0;
+    gap: 7px 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    box-shadow: none;
+    transform: none;
+  }
+
+  html:root .table-wrap .section-table tr.sp-row:hover {
+    box-shadow: none;
+    transform: none;
+    border-color: var(--border-strong);
+  }
+
+  html:root .table-wrap .section-table td {
+    width: auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  /* The generic table rules pin the last cell to the card corner. In a
+     target card the last cell is Tags (or the amount), not row actions. */
+  html:root .table-wrap .section-table td:last-child {
+    position: static;
+    inset: auto;
+    width: auto !important;
+  }
+
+  html:root .section-table .sp-priority { grid-area: priority; }
+  html:root .section-table .sp-name { grid-area: name; }
+  html:root .section-table .sp-category { grid-area: category; }
+  html:root .section-table .sp-status { grid-area: status; }
+  html:root .section-table .sp-date { grid-area: date; text-align: right; }
+  html:root .section-table .sp-campaign { grid-area: campaign; }
+  html:root .section-table .sp-tags {
+    grid-area: tags;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  html:root .section-table .sp-value {
+    grid-area: value;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  html:root .section-table .sp-open { font-size: 15px; }
+  html:root .section-table .sp-category { font-size: 12.5px; }
+  html:root .section-table .sp-date { font-size: 12px; }
+  html:root .section-table .sp-next { text-align: right; }
+
+  html:root .section-table :is(.sp-campaign, .sp-value, .sp-tags):empty {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Calendar strip: one toolbar row on desktop, a deliberate stack below
+   -------------------------------------------------------------------------- */
+
+#calendarView .calendar-strip-top-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+
+#calendarView .calendar-nav-column {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+#calendarView .calendar-strip-side {
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+}
+
+#calendarView .calendar-strip-side-actions {
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+#calendarView .calendar-strip-top-row .calendar-nav-btn,
+#calendarView .calendar-strip-top-row .calendar-nav-btn-sub {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+}
+
+#calendarView .calendar-strip-top-row .calendar-nav-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+#calendarView #calendarTodayBtn {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 11.5px;
+}
+
+#calendarView .calendar-mode-toggle {
+  height: var(--control-height);
+}
+
+#calendarView .calendar-mode-toggle .focus-date-mode-btn {
+  height: 30px;
+}
+
+#calendarView .calendar-strip-viewport {
+  min-width: 0;
+  padding-top: 20px;
+  padding-bottom: 4px;
+}
+
+#calendarView .calendar-day-card.today::before {
+  top: -18px;
+  line-height: 16px;
+}
+
+/* In the dark theme a blue selected day takes white text, and its count chips
+   become translucent instead of keeping their light fills. */
+html[data-theme="dark"] #calendarView .calendar-day-card.selected {
+  background: #0b5aa8 !important;
+  border-color: #0b5aa8 !important;
+}
+
+html[data-theme="dark"] #calendarView .calendar-day-card.selected :is(.day-name, .day-number, .day-month) {
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] #calendarView .calendar-day-card.selected .summary-pill {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 1024px) {
+  #calendarView .calendar-strip-top-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "nav side"
+      "strip strip";
+    gap: 12px 16px;
+  }
+
+  #calendarView .calendar-nav-column {
+    grid-area: nav;
+    width: auto;
+    justify-content: flex-start;
+  }
+
+  #calendarView .calendar-strip-side {
+    grid-area: side;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  #calendarView .calendar-strip-viewport {
+    grid-area: strip;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  #calendarView .calendar-strip-top-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "nav side"
+      "strip strip";
+    gap: 10px 12px;
+  }
+
+  #calendarView .calendar-strip-side {
+    justify-content: flex-end;
+  }
+
+  #calendarView .calendar-strip-side-actions {
+    margin-left: 0;
+  }
+
+  #calendarView .calendar-nav-column {
+    justify-content: flex-start;
+  }
+}
+
+#calendarView .calendar-detail-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+#calendarView .calendar-detail-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 28px;
+}
+
+#calendarView .calendar-detail-section h4 {
+  font-size: 15px;
+}
+
+#calendarView .calendar-summary-table {
+  table-layout: fixed;
+}
+
+#calendarView .calendar-summary-table th:first-child,
+#calendarView .calendar-summary-table td:first-child {
+  width: 30%;
+}
+
+#calendarView .calendar-summary-table th:not(:first-child),
+#calendarView .calendar-summary-table td:not(:first-child) {
+  width: 10%;
+}
+
+@media (max-width: 768px) {
+  #calendarView .calendar-summary-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #calendarView .summary-metric-box:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+}
+
+/* A phone cannot show seven numeric columns without a scrollbar. Keep the
+   numbers that answer the section summary and leave the totals above to carry
+   the rest of the breakdown. */
+@media (max-width: 640px) {
+  #calendarView .calendar-summary-table {
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  #calendarView .calendar-summary-table :is(th, td) {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  #calendarView .calendar-summary-table :is(th, td):nth-child(3),
+  #calendarView .calendar-summary-table :is(th, td):nth-child(5),
+  #calendarView .calendar-summary-table :is(th, td):nth-child(7) {
+    display: none;
+  }
+
+  #calendarView .calendar-summary-table :is(th, td):first-child {
+    width: 46%;
+  }
+
+  #calendarView .calendar-summary-table :is(th, td):not(:first-child) {
+    width: 18%;
+  }
+
+  html:root .company-subnav {
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  html:root .company-subnav-btn {
+    flex: 0 0 auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Extra: one row of quiet tabs, and headers whose controls line up
+   -------------------------------------------------------------------------- */
+
+html:root .extra-subnav {
+  padding: 5px;
+  border-radius: 10px;
+}
+
+html:root .extra-subnav-links {
+  gap: 2px;
+}
+
+html:root .extra-subnav-btn {
+  min-height: 34px;
+  height: 34px;
+  padding: 0 11px;
+  gap: 6px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* The two-letter shortcuts repeated the label. The tab text is enough. */
+html:root .extra-subnav-btn[data-shortname]::after {
+  display: none;
+}
+
+html:root .extra-subnav-group {
+  margin: 0 2px 0 10px;
+  padding-left: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+@media (max-width: 1279px) {
+  html:root .extra-subnav-links {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent 100%);
+  }
+
+  html:root .extra-subnav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  html:root .extra-subnav-btn {
+    flex: 0 0 auto;
+  }
+}
+
+html:root .extra-page-header {
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+html:root .extra-page-title h3 {
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+html:root .extra-page-count,
+html:root .ai-flow-count {
+  font-size: 12px;
+}
+
+html:root .extra-page-filter {
+  flex: 0 1 300px;
+}
+
+html:root .extra-page-header .primary-button {
+  flex: 0 0 auto;
+  height: var(--control-height);
+}
+
+html:root .prompt-actions .compact {
+  height: var(--control-height);
+  min-height: var(--control-height);
+}
+
+html:root .ai-page {
+  gap: 16px;
+}
+
+html:root .media-details-content .section-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root :is(.media-used-result, .last-updated-badge, .global-search-result-type,
+  .global-search-result-status, .global-search-result-date, .global-search-result-updated,
+  .feedback-section-label, .block-title, .target-filter-pill, .item-picker-chip-kind,
+  .links-kind, .tag-pill-readonly, .record-history-badge, .taste-theme-badge) {
+  font-size: 11.5px;
+}
+
+html:root .media-used-result {
+  font-size: 11.5px !important;
+}
+
+html:root .taste-theme-badge {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root :is(.media-updated, .media-meta, .media-used-title) {
+  font-size: 11.5px;
+}
+
+html:root .ai-flow-heading {
+  min-height: 36px;
+}
+
+@media (max-width: 640px) {
+  html:root .extra-page-filter {
+    flex: 1 1 100%;
+  }
+
+  html:root .extra-page-header .primary-button {
+    align-self: flex-start;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. Settings, dialogs and forms
+   -------------------------------------------------------------------------- */
+
+html:root .settings-panel {
+  margin: auto;
+  inset: 0;
+  width: min(880px, calc(100vw - 40px));
+  height: min(820px, calc(100dvh - 40px));
+  background-image: none;
+  box-shadow: 0 24px 64px rgb(10 20 15 / 22%);
+}
+
+html:root .setup-wizard {
+  margin: auto;
+  background-image: none;
+}
+
+html:root .startup-dialog {
+  margin: auto;
+}
+
+html:root .setup-step-name {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root .setup-close {
+  width: 36px;
+  height: 36px;
+}
+
+html:root .settings-header {
+  min-height: 60px;
+  padding: 12px 18px;
+}
+
+html:root .settings-layout {
+  grid-template-columns: 208px minmax(0, 1fr);
+}
+
+html:root .settings-nav {
+  padding: 10px 8px;
+}
+
+html:root .settings-nav-item {
+  min-height: 36px;
+  padding: 7px 10px;
+}
+
+html:root .settings-content {
+  padding: 20px 24px 28px;
+}
+
+html:root .settings-section {
+  gap: 14px;
+}
+
+html:root .settings-field input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+html:root .settings-field select,
+html:root .settings-link-row input,
+html:root .settings-link-row select {
+  min-height: var(--control-height);
+  height: var(--control-height);
+}
+
+html:root .settings-field textarea {
+  min-height: 84px;
+}
+
+html:root .settings-field {
+  gap: 5px;
+}
+
+html:root .settings-field > label,
+html:root .settings-label,
+html:root .settings-fieldset legend {
+  font-size: 12.5px;
+}
+
+html:root .settings-link-row {
+  grid-template-columns: 24px minmax(120px, 180px) minmax(0, 1fr) var(--control-height);
+  gap: 8px;
+}
+
+html:root .settings-row-actions {
+  gap: 6px;
+}
+
+html:root :is(.modal-header, .record-window-header) {
+  min-height: 64px;
+}
+
+html:root :is(.modal-header, .record-window-header) :is(.secondary-button, .close-modal-btn, .icon-button) {
+  height: 34px;
+  min-height: 34px;
+}
+
+html:root .field-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+html:root .field-row {
+  gap: 5px;
+}
+
+html:root .field-label {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+html:root .taxonomy-picker {
+  width: 100%;
+}
+
+html:root .field-help {
+  font-size: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   11. Company
+   -------------------------------------------------------------------------- */
+
+html:root .company-page {
+  gap: 12px;
+}
+
+html:root .company-card {
+  padding: 16px 18px;
+}
+
+html:root .company-card h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+html:root .company-hero h3 {
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+html:root .company-subnav {
+  gap: 2px;
+}
+
+html:root .company-subnav-btn {
+  min-height: var(--control-height);
+  height: var(--control-height);
+  padding: 0 12px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+html:root .company-check {
+  min-height: var(--control-height);
+  align-items: center;
+}
+
+html:root .company-person,
+html:root .company-bank {
+  align-items: end;
+  gap: 10px;
+}
+
+html:root .company-person .field-row,
+html:root .company-bank .field-row {
+  align-self: end;
+}
+
+html:root :is(.company-person, .company-bank) .danger-button {
+  height: var(--control-height);
+  min-height: var(--control-height);
+}
+
+html:root .company-person :is(input, select),
+html:root .company-bank :is(input, select) {
+  min-height: var(--control-height);
+  height: var(--control-height);
+}
+
+html:root .company-card .field-row:has(textarea) {
+  grid-column: span 2;
+}
+
+html:root .company-budget,
+html:root .company-urgent-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+html:root .company-count,
+html:root .app-tab-badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 11px;
+  line-height: 18px;
+}
+
+html:root .company-table :is(th, td) {
+  padding: 8px 10px;
+}
+
+html:root .company-table th {
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   12. Phones
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  html:root .settings-nav {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent 100%);
+  }
+}
+
+@media (max-width: 767px) {
+  html:root .topbar {
+    min-height: 64px;
+    padding: 10px 16px;
+  }
+
+  html:root .record-window-header {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  html:root .record-window-heading {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  html:root .record-window-heading h2 {
+    overflow: visible;
+    font-size: 16px;
+    line-height: 1.3;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  html:root .record-window-header-actions {
+    margin-left: auto;
+  }
+
+  html:root .record-window-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    padding: 6px 8px 0;
+    overflow: visible;
+    scrollbar-width: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  html:root .record-window-tab {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 4px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  html:root .topbar .icon-button,
+  html:root .topbar .global-search-toggle {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  html .topbar :is(#settingsButton, #projectLinksToggle) {
+    height: 40px;
+    min-height: 40px !important;
+    padding: 0 10px;
+    font-size: 12px !important;
+  }
+
+  html .save-state-text {
+    height: 22px;
+    padding: 0 3px;
+    font-size: 10.5px;
+    max-width: 88px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  html:root .focus-date-bar {
+    align-items: center;
+  }
+
+  html:root .focus-date-controls {
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  html:root .focus-date-input {
+    flex: 1 1 90px;
+    min-width: 122px;
+  }
+
+  @media (max-width: 360px) {
+    html:root .focus-date-controls {
+      flex-wrap: wrap;
+    }
+  }
+
+  html:root .focus-date-mode {
+    width: auto;
+  }
+
+  html:root .focus-clear-btn {
+    width: var(--control-height);
+    min-width: var(--control-height);
+    padding: 0;
+    font-size: 0;
+  }
+
+  html:root .focus-clear-btn::before {
+    content: "×";
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  html:root .focus-item {
+    min-height: 0;
+  }
+
+  html:root .focus-next {
+    white-space: normal;
+  }
+
+  html:root .panel {
+    padding: 18px;
+  }
+
+  html:root .panel:has(.panel-body.collapsed) {
+    padding: 14px 18px;
+  }
+
+  html:root .pagination .secondary-button {
+    flex: 0 1 auto;
+    width: auto;
+  }
+
+  html:root .category-tabs {
+    margin-top: 12px;
+  }
+
+  html:root .company-card .field-row:has(textarea) {
+    grid-column: auto;
+  }
+
+  html:root .settings-panel {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+  }
+
+  html:root .settings-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  html:root .topbar-actions {
+    gap: 6px;
+  }
+
+  html:root .topbar :is(#settingsButton, #projectLinksToggle) {
+    width: 40px;
+    padding: 0;
+  }
+
+  html:root .topbar :is(#settingsButton, #projectLinksToggle) span,
+  html:root .topbar .project-links-chevron {
+    display: none;
+  }
+
+  html:root .topbar :is(#settingsButton, #projectLinksToggle) svg {
+    margin: 0;
+  }
+
+  html .metric-card {
+    min-height: 74px !important;
+    padding: 12px 14px !important;
+  }
+
+  html .metric-value {
+    font-size: 22px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  html .metric-card {
+    padding: 8px !important;
+  }
+
+  html .metric-label {
+    overflow: visible;
+    font-size: 11.5px !important;
+    line-height: 1.25 !important;
+    text-overflow: clip;
+    white-space: normal;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. Rows that a review found breaking at narrow or unusual widths
+   -------------------------------------------------------------------------- */
+
+/* Campaign target summaries: let the counts take their own line instead of
+   squeezing every label to one letter. */
+@media (max-width: 900px) {
+  html:root .campaign-targets-toggle {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    height: auto;
+    min-height: 40px;
+    padding: 6px 0;
+  }
+
+  html:root .campaign-targets-toggle .linked-target-section-title {
+    flex: 1 1 auto;
+    margin-right: 0;
+  }
+
+  html:root .campaign-targets-summary {
+    order: 5;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  html:root .campaign-targets-summary .summary-status,
+  html:root .campaign-targets-summary .status-label {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  html:root .campaign-target-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  html:root .campaign-target-filter-group {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+
+  html:root .campaign-target-filter-group .filter-label {
+    flex: 0 0 100%;
+    margin: 0;
+    font-size: 11.5px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  html:root .target-filter-pill {
+    flex: 0 0 auto;
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  html:root .target-filter-clear {
+    align-self: flex-start;
+    margin-left: 0;
+  }
+}
+
+/* Long link pills and card headings must wrap before they widen a card. */
+html:root :is(.manager-card, .read-only-card, .feedback-card) {
+  max-width: 100%;
+  min-width: 0;
+}
+
+html:root .manager-card-header > div {
+  min-width: 0;
+}
+
+html:root .card-meta {
+  min-width: 0;
+}
+
+html:root .link-pill {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* The three status groups inside campaign cards */
+html:root .card-actions :is(.action-btn-open, .text-btn) {
+  height: 32px;
+  min-height: 32px;
+}
+
+html:root .manager-form-v2 .checkbox-field {
+  align-self: flex-start;
+  justify-content: flex-start;
+}
+
+/* Record Details: the required asterisk belongs beside the label, not on a
+   row of its own, and Copy ID matches the input height. */
+html:root .field-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 3px;
+}
+
+html:root .field-required {
+  display: inline;
+}
+
+html:root .field-control-id .icon-button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+}
+
+/* Record History: keep every badge and digest in the card. */
+@media (max-width: 640px) {
+  html:root .record-history-entry-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "event time"
+      "badges badges"
+      "digest digest"
+      "compare compare";
+    align-items: center;
+    gap: 6px 8px;
+    overflow: visible;
+  }
+
+  html:root .record-history-entry-head::before {
+    display: none;
+  }
+
+  html:root .record-history-event {
+    grid-area: event;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  html:root .record-history-entry-head time {
+    grid-area: time;
+  }
+
+  html:root .record-history-badges {
+    grid-area: badges;
+    flex-wrap: wrap;
+    gap: 4px;
+    overflow: visible;
+  }
+
+  html:root .record-history-digest {
+    grid-area: digest;
+    flex-wrap: wrap;
+    margin-left: 0;
+    gap: 4px;
+    overflow: visible;
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  html:root .record-history-compare-btn {
+    grid-area: compare;
+    justify-self: start;
+  }
+
+  html:root .record-history-badge {
+    letter-spacing: 0;
+    text-transform: none;
+  }
+}
+
+/* Settings · Statuses: label and description are two lines, so the
+   description gets the width of the field column. */
+html:root .settings-status-fields {
+  grid-template-columns: minmax(90px, 150px) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 6px 10px;
+}
+
+html:root .settings-status-fields .status-badge {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+html:root .settings-status-fields input {
+  grid-column: 2;
+}
+
+html:root .settings-status-fields input:nth-of-type(1) {
+  grid-row: 1;
+}
+
+html:root .settings-status-fields input:nth-of-type(2) {
+  grid-row: 2;
+}
+
+html:root .settings-status-description {
+  grid-column: 2;
+  grid-row: 2;
+  width: 100%;
+  min-height: 36px;
+  max-height: 120px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.35;
+  field-sizing: content;
+  resize: vertical;
+}
+
+html:root .settings-status-fields:not(:has(.status-badge)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html:root .settings-status-fields:not(:has(.status-badge)) :is(input, textarea) {
+  grid-column: 1;
+}
+
+html:root .settings-status-fields:not(:has(.status-badge)) input:nth-of-type(1) {
+  grid-row: 1;
+}
+
+html:root .settings-status-fields:not(:has(.status-badge)) .settings-status-description {
+  grid-row: 2;
+}
+
+@media (max-width: 720px) {
+  html:root .settings-status-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  html:root .settings-status-fields {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+  }
+
+  html:root .settings-status-fields .status-badge {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+
+  html:root .settings-status-fields input {
+    grid-column: 1;
+  }
+
+  html:root .settings-status-fields input:nth-of-type(1) {
+    grid-row: 2;
+  }
+
+  html:root .settings-status-fields input:nth-of-type(2) {
+    grid-row: 3;
+  }
+
+  html:root .settings-status-fields .settings-status-description {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  html:root .settings-status-row .settings-row-actions {
+    justify-content: flex-start;
+  }
+}
+
+html:root .settings-status-row .settings-badge {
+  height: 32px;
+  min-height: 32px;
+  align-items: center;
+}
+
+/* Settings · Startups: dates stay on one line and the three actions share a
+   row on desktop; on a phone the table narrows instead of clipping. */
+html:root .settings-startups-table {
+  table-layout: fixed;
+}
+
+html:root .settings-startups-table :is(th, td):nth-child(1) { width: 34%; }
+html:root .settings-startups-table :is(th, td):nth-child(2) { width: 14%; white-space: nowrap; }
+html:root .settings-startups-table :is(th, td):nth-child(3) { width: 8%; }
+html:root .settings-startups-table :is(th, td):nth-child(4) { width: 8%; }
+html:root .settings-startups-table :is(th, td):nth-child(5) { width: 36%; }
+
+html:root .settings-startups-table td.settings-row-actions {
+  display: table-cell;
+  white-space: nowrap;
+  text-align: right;
+}
+
+html:root .settings-startups-table .settings-startup-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+html:root .settings-startups-table .settings-startup-name > span:nth-child(2) {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  html:root .settings-table-wrap:has(.settings-startups-table) {
+    overflow: visible;
+  }
+
+  html:root .settings-startups-table,
+  html:root .settings-startups-table tbody,
+  html:root .settings-startups-table tr,
+  html:root .settings-startups-table td {
+    display: block;
+    width: auto;
+  }
+
+  html:root .settings-startups-table {
+    table-layout: auto;
+  }
+
+  html:root .settings-startups-table thead {
+    display: none;
+  }
+
+  html:root .settings-startups-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  html:root .settings-startups-table tr {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  html:root .settings-startups-table tr.settings-detail-row {
+    padding: 0;
+    border: 0;
+  }
+
+  html:root .settings-startups-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100% !important;
+    padding: 3px 0;
+    border: 0;
+    font-size: 12.5px;
+  }
+
+  html:root .settings-startups-table td.settings-startup-name {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 0 0 8px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  html:root .settings-startups-table .settings-startup-name > span:nth-child(2) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  html:root .settings-startups-table td[data-label]::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    color: var(--muted-strong);
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  html:root .settings-startups-table td[data-label] {
+    white-space: nowrap;
+  }
+
+  html:root .settings-startups-table td.settings-row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 8px;
+    margin-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+
+  html:root .settings-startups-table .settings-startup-actions {
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  html:root .settings-startups-table .settings-startup-actions :is(.secondary-button, .danger-button) {
+    height: 32px;
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: 11.5px;
+  }
+
+  html:root .settings-startups-table .settings-detail-row td {
+    display: block;
+    padding: 6px 0;
+  }
+}
+
+/* Settings · profile link rows and links: icon buttons match the fields. */
+html:root .settings-link-row .icon-button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+}
+
+/* Backups: the create field and button sit on one row. */
+html:root .settings-backup-create {
+  flex-wrap: nowrap;
+  align-items: flex-end;
+}
+
+html:root .settings-backup-create .settings-field {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+html:root .settings-backup-create .primary-button {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 720px) {
+  html:root .settings-backup-create {
+    flex-wrap: wrap;
+  }
+}
+
+/* Extra · Fields: one field per line on narrow screens; wider columns on a
+   desktop so descriptions are not cut off in the input. */
+html:root .options-editor-row {
+  grid-template-columns: minmax(70px, 110px) minmax(120px, 220px) minmax(280px, 1.6fr) auto auto;
+}
+
+html:root .options-editor-row:not(:has(select)) {
+  grid-template-columns: minmax(70px, 110px) minmax(120px, 220px) minmax(280px, 1.6fr) auto;
+}
+
+@media (max-width: 720px) {
+  html:root .options-editor-row,
+  html:root .options-editor-row:not(:has(select)) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "id id"
+      "label label"
+      "description description"
+      "extra actions";
+  }
+
+  html:root .options-editor-id { grid-area: id; }
+  html:root .options-editor-row > input:nth-of-type(1) { grid-area: label; }
+  html:root .options-editor-row > input:nth-of-type(2) { grid-area: description; }
+  html:root .options-editor-row > select { grid-area: extra; }
+  html:root .options-editor-actions { grid-area: actions; justify-self: end; }
+}
+
+html:root .options-editor-actions .icon-button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+}
+
+/* Extra · Feedback: four summary figures become a 2 × 2 block on a phone. */
+@media (max-width: 767px) {
+  html:root .feedback-summary-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Extra · Categories: every action is the same size, and three section tabs
+   fit one phone row. */
+html:root .categories-buttons .secondary-button {
+  height: 32px;
+  min-height: 32px;
+  padding: 2px 10px;
+  font-size: 12px;
+}
+
+html:root .categories-icon-button {
+  width: 32px;
+  height: 32px;
+}
+
+@media (max-width: 480px) {
+  html:root .categories-tab {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Extra · Media: the native file picker and the URL box share the control
+   height of the fields beside them. */
+html:root input[type="file"]:not(.settings-file-input) {
+  height: var(--control-height);
+  min-height: var(--control-height);
+  padding: 2px 4px;
+  font-size: 12px;
+}
+
+html:root .media-source-path {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+}
+
+html:root .media-used-target {
+  min-height: 32px;
+}
+
+/* Setup: the category search takes the free width of its row. */
+html:root .setup-row:has(> input[type="search"]) {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+html:root .setup-icon-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  align-items: start;
+  gap: 12px;
+}
+
+html:root .setup-icon-row .setup-field {
+  order: 1;
+  min-width: 0;
+}
+
+html:root .setup-icon-row .setup-icon-preview {
+  order: 2;
+  margin-top: 22px;
+}
+
+html:root .setup-icon-row .setup-error {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  html:root .setup-row:has(> input[type="search"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html:root .back-to-top {
+    display: none !important;
+  }
+}
+
+/* The dark Studio accent is a blue; primary buttons need white text on it. */
+html:root[data-taste="studio"][data-theme="dark"] .primary-button {
+  color: #ffffff;
+}
+
+@media (pointer: coarse) {
+  html:root .back-to-top {
+    display: none !important;
+  }
+
+  html:root :is(.primary-button, .secondary-button, .ghost-button, .danger-button) {
+    min-height: 44px;
+    height: 44px;
+  }
+
+  html:root :is(.primary-button, .secondary-button, .ghost-button, .danger-button).compact {
+    min-height: 36px;
+    height: 36px;
+  }
+
+  html:root :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select) {
+    min-height: 44px;
+    height: 44px;
+  }
+
+  html:root :is(.icon-button, .panel-toggle, .focus-link-open) {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  html:root :is(.focus-nav-btn, .focus-today-btn, .focus-clear-btn, .focus-date-input) {
+    min-height: 44px;
+    height: 44px;
+  }
+
+  html:root .focus-nav-btn,
+  html:root .focus-clear-btn {
+    width: 44px;
+    min-width: 44px;
+  }
+
+  html:root :is(.extra-subnav-btn, .company-subnav-btn) {
+    min-height: 40px;
+    height: 40px;
+  }
+
+  html:root :is(.modal-header, .record-window-header) :is(.close-modal-btn, .icon-button) {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+}

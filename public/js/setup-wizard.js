@@ -157,13 +157,24 @@
     return byCountry[code] || "";
   }
 
-  // The templates to offer for a country: its own first, then the rest.
+  // The templates to offer for a country: its own country first, then every
+  // other country in name order, each group holding its legal forms. Generic
+  // stays a separate option at the end.
   function templatesFor(templates, country) {
     const list = Array.isArray(templates) ? templates.filter((template) => !template.draft) : [];
     const code = String(country || "").toUpperCase();
     const own = list.filter((template) => template.country === code);
     const rest = list.filter((template) => template.country !== code && template.id !== "generic");
-    return { own, rest, generic: list.find((template) => template.id === "generic") || null };
+    const groups = [];
+    const seen = new Set();
+    for (const template of [...own, ...rest]) {
+      const key = template.country || "";
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      const entries = list.filter((entry) => entry.country === key).sort((a, b) => String(a.nameEnglish).localeCompare(String(b.nameEnglish)));
+      groups.push({ country: key, countryName: entries[0]?.countryName || key, templates: entries });
+    }
+    return { own, rest, groups, generic: list.find((template) => template.id === "generic") || null };
   }
 
   const pure = { FULL_STEPS, ADD_STEPS, TRACK_SECTIONS, TRACK_PARTS, stepsFor, resumeStep, isTimeZone, progress, neighbour, canSkip, missing, recommendedSelection, sectionTree, setBranch, skipSection, countOn, badgeState, suggestCurrency, templatesFor };
@@ -369,13 +380,16 @@
 
         const fillTemplates = () => {
           const groups = templatesFor(listing.templates, country.value);
-          const option = (entry) => h("option", { value: entry.id, text: `${entry.entityType} · ${entry.nameEnglish}`, selected: company.templateId === entry.id });
+          const entityType = (entry) => {
+            if (!entry.entityType || typeof entry.entityType !== "object") return entry.entityType || "";
+            return entry.entityType[I18n.getLocale()] || entry.entityType.en || "";
+          };
+          const option = (entry) => h("option", { value: entry.id, text: `${entityType(entry)} · ${entry.nameEnglish}`, selected: company.templateId === entry.id });
           template.replaceChildren(
             h("option", { value: "", text: t("setup.startup.noTemplate") }),
             h("option", { value: "not-incorporated", text: t("setup.startup.notIncorporated"), selected: company.incorporated === false }),
-            groups.own.length ? h("optgroup", { label: t("setup.startup.forCountry") }, groups.own.map(option)) : null,
+            ...groups.groups.map((group) => h("optgroup", { label: group.countryName }, group.templates.map(option))),
             groups.generic ? h("option", { value: "generic", text: t("setup.startup.generic"), selected: company.templateId === "generic" }) : null,
-            groups.rest.length ? h("optgroup", { label: t("setup.startup.otherCountries") }, groups.rest.map(option)) : null,
           );
         };
         const fillSubdivisions = async () => {
@@ -489,10 +503,9 @@
           const url = newUrl.value.trim();
           if (!url) return;
           links.push({ id: LinkTypes.makeLinkId(), type: newType.value, url, label: "" });
-          newUrl.value = "";
-          newType.value = "other";
           draw();
-          newUrl.focus();
+          setAdding(false);
+          addToggle.focus();
         };
         newUrl.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
@@ -500,13 +513,37 @@
             add();
           }
         });
+        const addRow = h("div", { className: "setup-link-add", hidden: true }, [
+          newType,
+          newUrl,
+          h("button", { type: "button", className: "secondary-button compact", text: t("setup.links.addConfirm"), on: { click: add } }),
+          h("button", { type: "button", className: "text-button", text: t("setup.links.cancel"), on: { click: () => setAdding(false) } }),
+        ]);
+        const addToggle = h("button", {
+          type: "button",
+          className: "secondary-button compact",
+          text: t("setup.links.add"),
+          on: { click: () => setAdding(true) },
+        });
+        // The add form only appears when asked for, so it can be dismissed
+        // without adding anything.
+        const setAdding = (adding) => {
+          addToggle.hidden = adding;
+          addRow.hidden = !adding;
+          if (adding) {
+            newType.value = links.length ? "other" : "website";
+            newUrl.focus();
+          } else {
+            newUrl.value = "";
+          }
+        };
         draw();
         return {
           title: t("setup.links.title"),
           intro: t("setup.links.intro"),
-          body: [list, h("div", { className: "setup-link-add" }, [newType, newUrl, h("button", { type: "button", className: "secondary-button compact", text: t("setup.links.add"), on: { click: add } })])],
+          body: [list, addToggle, addRow],
           save: async () => {
-            if (newUrl.value.trim()) add();
+            if (!addRow.hidden && newUrl.value.trim()) add();
             const { state: fresh } = await readStartupState(ui.startupId);
             await writeSections(ui.startupId, { profile: { ...(fresh.profile || {}), links: LinkTypes.normalizeLinks(links) } });
           },
@@ -571,20 +608,26 @@
         const current = Settings.get().backups || {};
         const about = await cached("about", () => request(Api.urls.about).catch(() => ({})));
         const automatic = h("input", { type: "checkbox", checked: current.automatic !== false });
+        const hours = h("input", { type: "number", min: 1, max: 8760, step: 1, inputMode: "numeric", value: String(current.intervalHours || 6) });
         const keep = h("input", { type: "number", min: 1, max: 1000, step: 1, value: String(current.keepAutomatic || 20) });
         return {
           title: t("setup.backups.title"),
           intro: t("setup.backups.intro"),
           body: [
             h("label", { className: "setup-check" }, [automatic, h("span", { text: t("settings.backups.automatic") })]),
-            field(t("setup.backups.keep"), keep),
+            h("div", { className: "setup-row" }, [
+              field(t("setup.backups.every"), hours, t("setup.backups.everyHint")),
+              field(t("setup.backups.keep"), keep, t("setup.backups.keepHint")),
+            ]),
             about.dataFolder ? h("p", {}, [t("setup.backups.folder"), " ", h("code", { text: about.dataFolder })]) : null,
             h("p", { className: "setup-hint", text: t("setup.backups.hint") }),
           ],
           save: async () => {
             const value = Number(keep.value);
             if (!Number.isInteger(value) || value < 1 || value > 1000) throw new Error(t("settings.backups.keepInvalid"));
-            await Settings.save({ backups: { automatic: automatic.checked, keepAutomatic: value } });
+            const interval = Number(hours.value);
+            if (!Number.isInteger(interval) || interval < 1 || interval > 8760) throw new Error(t("settings.backups.intervalInvalid"));
+            await Settings.save({ backups: { automatic: automatic.checked, intervalHours: interval, keepAutomatic: value } });
           },
         };
       },

@@ -9,7 +9,7 @@ test("a new tracker reads the defaults", () => {
   const store = new TrackerSqliteStore(":memory:");
   const settings = readSettings(store);
   assert.equal(settings.appName, "Startup Tracker");
-  assert.deepEqual(settings.backups, { automatic: true, keepAutomatic: 20, keepSafety: 20 });
+  assert.deepEqual(settings.backups, { automatic: true, intervalHours: 6, keepAutomatic: 20, keepSafety: 20 });
   assert.equal(settings.recycleBin.retentionDays, 30);
   assert.equal(settings.defaultScope, "startup");
 });
@@ -18,11 +18,13 @@ test("a change merges one level deep and is stored in the global scope", () => {
   const store = new TrackerSqliteStore(":memory:");
   writeSettings(store, { backups: { keepSafety: 5 }, appName: "  Acme   Ops " });
   const settings = readSettings(store);
-  assert.deepEqual(settings.backups, { automatic: true, keepAutomatic: 20, keepSafety: 5 });
+  assert.deepEqual(settings.backups, { automatic: true, intervalHours: 6, keepAutomatic: 20, keepSafety: 5 });
   assert.equal(settings.appName, "Acme Ops");
   assert.equal(store.readSection(GLOBAL_STARTUP_ID, "settings").appName, "Acme Ops");
   writeSettings(store, { recycleBin: { retentionDays: null } });
   assert.equal(readSettings(store).recycleBin.retentionDays, null);
+  writeSettings(store, { backups: { intervalHours: 18 } });
+  assert.equal(readSettings(store).backups.intervalHours, 18);
 });
 
 test("bad values name their field and change nothing", () => {
@@ -36,6 +38,8 @@ test("bad values name their field and change nothing", () => {
     [{ appearance: { theme: "neon" } }, "appearance.theme"],
     [{ appearance: { colour: "red" } }, "appearance.colour"],
     [{ backups: { keepAutomatic: 0 } }, "backups.keepAutomatic"],
+    [{ backups: { intervalHours: 0 } }, "backups.intervalHours"],
+    [{ backups: { intervalHours: 1.5 } }, "backups.intervalHours"],
     [{ recycleBin: { retentionDays: 3 } }, "recycleBin.retentionDays"],
     [{ secret: 1 }, "secret"],
   ];

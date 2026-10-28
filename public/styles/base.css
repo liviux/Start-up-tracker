@@ -375,8 +375,10 @@ svg {
 body.modal-open,
 body:has(.modal-overlay.open),
 body:has(.settings-panel[open]),
+body:has(.changelog-dialog[open]),
 html:has(.modal-overlay.open),
-html:has(.settings-panel[open]) {
+html:has(.settings-panel[open]),
+html:has(.changelog-dialog[open]) {
   overflow: hidden !important;
   touch-action: none !important;
   overscroll-behavior: contain !important;

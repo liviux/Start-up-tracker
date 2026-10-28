@@ -124,6 +124,31 @@ test("library files with broken trees are refused", () => {
   assert.throws(() => validateLibraryFile({ section: "mk", libraryVersion: 1, nodes: [node("mk.a", "category", null, { description: "" })] }), { code: "required" });
 });
 
+test("each concept has one section: the approved duplicates are gone", () => {
+  const shipped = loadLibrary();
+  const ids = new Set(Object.values(shipped).flatMap((entry) => entry.nodes.map((node) => node.id)));
+  for (const removed of ["mk.events", "mk.partners", "mk.pr.awards", "mk.communities.associations", "po.visibility.media"]) {
+    assert.equal(ids.has(removed), false, `${removed} is removed`);
+  }
+  assert.ok(ids.has("po.visibility.awards"), "Programs owns awards");
+  assert.ok(ids.has("po.partners.associations"), "Programs owns associations");
+  assert.ok(ids.has("po.market.marketplaces"), "Programs owns marketplace programs");
+  assert.ok(ids.has("mk.launches.marketplaces"), "Marketing owns store and registry listings");
+  assert.ok(ids.has("mk.content.webinars"), "own webinars live in Marketing content");
+  assert.ok(ids.has("mk.communities.own-community.host-meetup"), "own meetups live in Marketing communities");
+  assert.equal(shipped.mk.nodes.find((node) => node.id === "mk.launches.marketplaces").name, "Store and registry listings");
+  assert.equal(shipped.po.nodes.find((node) => node.id === "po.market.marketplaces").name, "Marketplace and app ecosystem programs");
+});
+
+test("shipped presets only name nodes that exist in the library", () => {
+  const shipped = loadLibrary();
+  const ids = new Set(Object.values(shipped).flatMap((entry) => entry.nodes.map((node) => node.id)));
+  const presets = require("../content/prompts/presets.json").presets;
+  for (const preset of presets) {
+    for (const id of preset.scope?.taxonomy || []) assert.ok(ids.has(id), `${preset.id} names ${id}`);
+  }
+});
+
 test("the old-to-new category map points at library nodes of the right section", () => {
   const { MAPS, mapCategory } = require("../lib/migrations/taxonomy-map");
   const shipped = loadLibrary();

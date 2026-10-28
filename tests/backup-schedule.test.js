@@ -28,3 +28,9 @@ test("while editing, a backup is due every six hours", () => {
   assert.equal(automaticBackupDue({ newest: old, revision: 5, now, lastWriteAt: now }), "", "same revision, nothing due");
   assert.equal(DEFAULT_INTERVAL_MS, 6 * 60 * 60 * 1000);
 });
+
+test("the interval can be set to another number of hours", () => {
+  const newest = { databaseRevision: 5, createdAt: hoursAgo(8) };
+  assert.equal(automaticBackupDue({ newest, revision: 9, now, lastWriteAt: now - 1000, intervalMs: 12 * 60 * 60 * 1000 }), "", "not due after eight of twelve hours");
+  assert.equal(automaticBackupDue({ newest, revision: 9, now: now + 5 * 60 * 60 * 1000, lastWriteAt: now + 5 * 60 * 60 * 1000 - 1000, intervalMs: 12 * 60 * 60 * 1000 }), "interval");
+});

@@ -14,6 +14,7 @@ const { sessionChoices, selectValues } = require("../lib/agents/acp-client");
 const processes = require("../lib/agents/process");
 const registry = require("../lib/agents/registry");
 const { runCheck, needsDownloadConsent, terminalLogin } = require("../lib/agents/check");
+const harnesses = require("../lib/agents/harnesses");
 const { buildCatalog, slimRegistry, CATALOG } = require("../tools/update-acp-registry");
 
 const FIXTURE = path.join(__dirname, "fixtures", "fake-acp-agent.js");
@@ -171,21 +172,77 @@ test("registry: live, then the cache, then the snapshot, then the catalog; the n
   }
 });
 
-test("registry: agents found on this computer", () => {
+test("registry: agents found on this computer, including native CLIs an adapter needs", () => {
   const dir = tempDir("st-found-");
   try {
     fs.writeFileSync(path.join(dir, "bin-agent"), "", { mode: 0o755 });
     fs.writeFileSync(path.join(dir, "npx-agent-cli"), "", { mode: 0o755 });
-    const result = { agents: registry.parseRegistry(SAMPLE).agents, catalog: [{ id: "npx-agent", bin: "npx-agent-cli" }] };
+    fs.writeFileSync(path.join(dir, "codex"), "", { mode: 0o755 });
+    const result = {
+      agents: registry.parseRegistry(SAMPLE).agents,
+      catalog: [{ id: "npx-agent", bin: "npx-agent-cli" }, { id: "adapter-agent", bin: "adapter-agent-acp", requires: ["codex"] }],
+      local: { aliases: { "npx-agent": ["codex"] } },
+    };
     const described = registry.describeAgents(result, { env: { PATH: dir }, platform: "linux", arch: "x64" });
     const byId = Object.fromEntries(described.map((agent) => [agent.id, agent]));
     assert.equal(byId["bin-agent"].installed, true);
     assert.equal(byId["npx-agent"].installed, true, "the package's program is on PATH");
     assert.equal(byId["npx-agent"].bin, "npx-agent-cli");
+    assert.equal(byId["npx-agent"].installedBin, "npx-agent-cli", "a found package command can run without a download");
     assert.equal(byId["uvx-agent"].installed, false);
+    assert.equal(byId["adapter-agent"], undefined, "only agents the registry knows are described");
+    const adapter = registry.describeAgents({ agents: [{ id: "adapter-agent", name: "Adapter", distribution: { npx: { package: "adapter-agent" } } }], catalog: result.catalog })[0];
+    assert.equal(adapter.installed, true, "a needed native CLI marks the adapter found");
+    assert.equal(adapter.installedBin, "", "but the adapter itself still has to be downloaded");
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("the local agent list adds agents and native detection, and replaces a registry entry with the same id", async () => {
+  const dir = tempDir("st-local-");
+  try {
+    const localFile = path.join(dir, "local.json");
+    fs.writeFileSync(localFile, JSON.stringify({
+      aliases: { "npx-agent": ["codex"] },
+      agents: [
+        { id: "local-agent", name: "Local agent", bin: "local-agent", requires: ["native-cli"], distribution: { npx: { package: "local-agent@1.0.0", args: ["acp"] } } },
+        { id: "bin-agent", name: "Shared id", bin: "shared", distribution: { npx: { package: "shared@2.0.0" } } },
+      ],
+    }));
+    fs.writeFileSync(path.join(dir, "native-cli"), "", { mode: 0o755 });
+    const loaded = await registry.loadRegistry({ cacheDir: null, network: false, snapshotFile: path.join(dir, "missing.json"), catalogFile: path.join(dir, "missing-catalog.json"), localFile });
+    const byId = Object.fromEntries(loaded.agents.map((agent) => [agent.id, agent]));
+    assert.equal(byId["local-agent"].name, "Local agent");
+    assert.equal(byId["bin-agent"].name, "Shared id", "a local entry replaces the registry one");
+    assert.deepEqual(loaded.local.aliases, { "npx-agent": ["codex"] });
+    assert.equal(registry.describeAgents(loaded, { env: { PATH: dir } }).find((agent) => agent.id === "local-agent").installed, true);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("the shipped local agent list names a launch command and the program it needs", () => {
+  const local = registry.readLocal();
+  const byId = Object.fromEntries(local.agents.map((agent) => [agent.id, agent]));
+  assert.ok(byId["command-code"], "Command Code is listed even though the registry lacks it");
+  assert.equal(byId["antigravity-acp"].bin, "agy-acp");
+  assert.deepEqual(byId["antigravity-acp"].requires, ["agy"]);
+  assert.equal(local.aliases["codex-acp"][0], "codex");
+  assert.equal(local.aliases["claude-acp"][0], "claude");
+  for (const agent of local.agents) assert.ok(agent.distribution && Object.keys(agent.distribution).length, `${agent.id} can start`);
+});
+
+test("adding an agent runs its own command without a download, but not a native CLI the adapter only needs", () => {
+  let saved = null;
+  const store = { applyOperations: (startupId, operations) => { saved = operations[0].value; } };
+  const base = { id: "codex-acp", name: "Codex", version: "1.0.0", launch: { kind: "npx", package: "@agentclientprotocol/codex-acp", args: [] }, installed: true, installedPath: "/usr/local/bin/codex", bin: "codex-acp" };
+  const adapter = harnesses.addHarness(store, { agent: { ...base, installedBin: "" }, confirmed: true });
+  assert.equal(adapter.kind, "npx", "codex itself is not the adapter");
+  const own = harnesses.addHarness(store, { agent: { ...base, id: "command-code", bin: "command-code", installedBin: "command-code" }, confirmed: true });
+  assert.equal(own.kind, "binary");
+  assert.equal(own.command, "command-code");
+  assert.equal(saved.kind, "binary");
 });
 
 test("the shipped snapshot and catalog agree: every catalog launch command is the registry's", () => {

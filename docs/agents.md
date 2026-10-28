@@ -16,7 +16,7 @@ Agents can read and change files and run commands on this computer with your use
 
 Open **Settings > AI agents**.
 
-**Add an agent** lists the agents in the official ACP registry. The tracker fetches the registry at most once a day and keeps a copy in the data folder's `cache/` folder. With **Network** off in Settings > General it uses the copy that ships with the app instead, and if that cannot be read either, a built-in list of well-known agents. **Rescan now** fetches the registry again and looks for installed agents.
+**Add an agent** lists the agents in the official ACP registry, plus a few adapters from `content/acp-local.json` that are not in it. The tracker fetches the registry at most once a day and keeps a copy in the data folder's `cache/` folder. With **Network** off in Settings > General it uses the copy that ships with the app instead, and if that cannot be read either, a built-in list of well-known agents. **Rescan now** fetches the registry again and looks for installed agents.
 
 Each agent shows how it is installed:
 
@@ -25,6 +25,8 @@ Each agent shows how it is installed:
 - **binary**: a program you install yourself. The list links to the download; the program must be on your `PATH`.
 
 "found on this computer" means its program is already on your `PATH`. An npm agent found that way runs from there, without a download.
+
+The check also looks for the native program an adapter needs, not only the adapter itself. Codex, Claude Code, Grok, Antigravity (`agy`), Command Code and OpenCode are found this way. A found native program marks the agent as available; the tracker then uses the adapter only when it does not find the agent's own command. Codex and Claude use their npm adapters, Antigravity uses the `agy-acp` adapter, and Grok and Command Code run their installed command with their ACP mode.
 
 **Add** shows the exact command the tracker will run and asks you to confirm it. The first time, the same dialog repeats the warning above. To use an agent that is not in the registry, add **a custom command**: any program that speaks ACP on its standard input and output. It runs exactly as you type it, with no shell.
 
@@ -50,7 +52,7 @@ Under **Permissions, models and launch settings**:
   - **Allow everything** (the default): every permission request is approved at once.
   - **Research only**: reading, searching, fetching, thinking and the tracker tools are allowed; editing, deleting, moving files and running commands are refused.
   - **Ask me**: each request waits for your answer, and the run shows "Waiting for you".
-- **Default model** and **Preferred models**. Preferred models are listed first when you start a run. When the agent lists no models, type a model id.
+- **Default model** and **Preferred models**. The list is filled in after **Check** reads it from the agent; until then you can type a model id if you know it. Preferred models are listed first when you start a run.
 - **Arguments** and, for a custom agent, **Command**. A changed custom command is confirmed again.
 - **Environment variables**, one `NAME=value` per line, for API keys and the like. The values are kept in `secrets/agent-env.json` in the data folder, readable only by your account, and show as `***`; leave `***` to keep a value.
 

@@ -20,6 +20,9 @@
   const CALENDAR_SCOPE_STORAGE_KEY = STARTUP_ID ? Api.storageKey("calendar-scope") : "";
   // Section toggles, event types, status filter and summary range.
   const CALENDAR_FILTERS_STORAGE_KEY = STARTUP_ID ? Api.storageKey("calendar-filters") : "";
+  // Version 2 made "all time" the default summary range. Stored ranges from
+  // version 1 came from the old default, so they are not kept.
+  const CALENDAR_FILTERS_STORAGE_VERSION = 2;
   const GLOBAL_SEARCH_DELAY = 200;
   const GLOBAL_SEARCH_LIMIT = 18;
   const GLOBAL_SEARCH_MAX_VALUE_LENGTH = 20000;
@@ -660,7 +663,7 @@
     // Read from storage at boot (readCalendarFilters).
     calendarSections: new Set(["mk", "po", "fu", "comp"]),
     calendarKinds: new Set(["next_action", "deadline", "milestone", "payment", "company"]),
-    calendarSummaryRange: "range",
+    calendarSummaryRange: "all",
     // Funding filters/pages
     selectedFundingCategory: "all",
     selectedFundingType: "all",
@@ -2420,13 +2423,14 @@
     };
     state.calendarSections = pick(stored?.sections, Sections.IDS, new Set(Sections.IDS));
     state.calendarKinds = pick(stored?.kinds, Calendar.EVENT_KINDS.map((kind) => kind.id), Calendar.defaultKinds());
-    state.calendarSummaryRange = stored?.summaryRange === "all" ? "all" : "range";
+    state.calendarSummaryRange = stored?.version >= CALENDAR_FILTERS_STORAGE_VERSION && stored?.summaryRange === "range" ? "range" : "all";
     if (Array.isArray(stored?.statuses)) state.calendarStatusFilter = restoreStatusFilter(stored.statuses);
   }
 
   function storeCalendarFilters() {
     try {
       localStorage.setItem(CALENDAR_FILTERS_STORAGE_KEY, JSON.stringify({
+        version: CALENDAR_FILTERS_STORAGE_VERSION,
         sections: [...state.calendarSections],
         kinds: [...state.calendarKinds],
         statuses: Array.isArray(state.calendarStatusFilter) ? state.calendarStatusFilter : null,
@@ -2470,10 +2474,20 @@
     const kindButtons = Calendar.EVENT_KINDS.map((kind) => `
       <button type="button" class="calendar-toggle" data-calendar-kind="${kind.id}" aria-pressed="${state.calendarKinds.has(kind.id)}">${escapeHtml(t(`calendar.kinds.${kind.id}`))}</button>`).join("");
     holder.innerHTML = `
-      <div class="calendar-toggle-row" role="group" aria-label="${escapeAttribute(t("calendar.sectionsLabel"))}">${sectionButtons}</div>
-      <div class="calendar-toggle-row" role="group" aria-label="${escapeAttribute(t("calendar.kindsLabel"))}">
-        <span class="calendar-toggle-label">${escapeHtml(t("calendar.kindsLabel"))}</span>${kindButtons}
-      </div>`;
+      <section class="calendar-filter-group">
+        <div class="calendar-filter-group-head">
+          <span class="calendar-filter-group-title">${escapeHtml(t("calendar.sectionsLabel"))}</span>
+          <span class="calendar-filter-group-help">${escapeHtml(t("calendar.filter.sectionsHelp"))}</span>
+        </div>
+        <div class="calendar-toggle-row" role="group" aria-label="${escapeAttribute(t("calendar.sectionsLabel"))}">${sectionButtons}</div>
+      </section>
+      <section class="calendar-filter-group">
+        <div class="calendar-filter-group-head">
+          <span class="calendar-filter-group-title">${escapeHtml(t("calendar.kindsLabel"))}</span>
+          <span class="calendar-filter-group-help">${escapeHtml(t("calendar.filter.kindsHelp"))}</span>
+        </div>
+        <div class="calendar-toggle-row" role="group" aria-label="${escapeAttribute(t("calendar.kindsLabel"))}">${kindButtons}</div>
+      </section>`;
     holder.querySelectorAll("[data-calendar-section]").forEach((button) => {
       button.addEventListener("click", () => toggleCalendarSection(button.dataset.calendarSection));
     });
@@ -2494,6 +2508,20 @@
         renderCalendarTab();
       },
     });
+    // The section and event-type toggles are part of the filter, not another
+    // bar above it. The status groups below them get their own heading.
+    renderCalendarToggles();
+    const body = elements.calendarFilterBar.querySelector(".manager-focus-filter-shell-body");
+    if (body && elements.calendarToggles) body.prepend(elements.calendarToggles);
+    const statusGroups = body?.querySelector(".manager-focus-filter-groups");
+    if (statusGroups) {
+      const statusHead = document.createElement("div");
+      statusHead.className = "calendar-filter-group-head calendar-filter-status-head";
+      statusHead.innerHTML = `
+        <span class="calendar-filter-group-title">${escapeHtml(t("calendar.filter.statusTitle"))}</span>
+        <span class="calendar-filter-group-help">${escapeHtml(t("calendar.filter.statusHelp"))}</span>`;
+      statusGroups.before(statusHead);
+    }
   }
 
   // The events of one day ("on") or due on or before it ("by"), filtered.
@@ -2509,9 +2537,9 @@
 
   // ---- calendar day cards ----------------------------------------------------
 
-  // "M2 P4 F1 C1": one count per visible section, its code and number in the
-  // section colour, zeros left out. The tooltip splits each count by status
-  // group, and screen readers hear the section names.
+  // One count per visible section, in the section colour; the letters are
+  // left out, zeros too. The tooltip splits the count by status group, and
+  // screen readers hear the section names and counts.
   function calendarDayCountsHtml(groups) {
     const parts = Sections.SECTIONS.map((section) => {
       const events = groups[section.group] || [];
@@ -2522,7 +2550,7 @@
         .join(", ");
       const name = sectionName(section.id);
       return {
-        chip: `<span class="summary-pill day-count" data-section="${section.id}" title="${escapeAttribute(`${name}: ${events.length} (${split})`)}" aria-hidden="true">${escapeHtml(section.code)}${events.length}</span>`,
+        chip: `<span class="summary-pill day-count" data-section="${section.id}" title="${escapeAttribute(`${name}: ${events.length} (${split})`)}" aria-hidden="true">${events.length}</span>`,
         spoken: t("calendar.daySectionCount", { section: name, count: events.length }),
       };
     }).filter(Boolean);
@@ -2623,13 +2651,18 @@
 
     if (elements.calendarMonthTitle) {
       const counts = Calendar.countBySection(monthEvents);
-      const pills = Sections.SECTIONS
+      const visibleCounts = Sections.SECTIONS
         .filter((section) => state.calendarSections.has(section.id) && counts[section.id] > 0)
-        .map((section) => `<span class="cal-title-badge" data-section="${section.id}" title="${escapeAttribute(sectionName(section.id))}">${escapeHtml(section.code)}${counts[section.id]}</span>`);
+        .map((section) => ({ section, count: counts[section.id] }));
+      const badges = visibleCounts
+        .map(({ section, count }) => `<span class="cal-title-badge" data-section="${section.id}" title="${escapeAttribute(`${sectionName(section.id)}: ${count}`)}" aria-hidden="true">${count}</span>`);
+      const countsLabel = visibleCounts
+        .map(({ section, count }) => t("calendar.daySectionCount", { section: sectionName(section.id), count }))
+        .join(", ");
       const monthName = Dates.formatDate(grid.first, getLocale(), { month: "long", year: "numeric" });
       elements.calendarMonthTitle.innerHTML = `
         <span class="calendar-month-date-range">${escapeHtml(monthName)}</span>
-        ${pills.length ? `<span class="calendar-month-counts">${pills.join(" ")}</span>` : ""}
+        ${badges.length ? `<span class="calendar-month-counts" aria-label="${escapeAttribute(countsLabel)}">${badges.join(" ")}</span>` : ""}
       `.trim();
     }
   }
@@ -2639,7 +2672,6 @@
     if (!elements.calendarView) return;
     if (state.calendarScope === SCOPE_ALL && !state.isInitialLoading) ensureAllStartupsCalendar();
     renderCalendarScope();
-    renderCalendarToggles();
 
     if (state.isInitialLoading) {
       let stripHtml = "";
@@ -2874,8 +2906,8 @@
             <h3>${escapeHtml(t("calendar.summary.title"))}</h3>
           </div>
           <div class="scope-switch calendar-summary-range" role="group" aria-label="${escapeAttribute(t("calendar.summary.rangeLabel"))}">
-            <button type="button" class="scope-switch-button" data-summary-range="range" aria-pressed="${!allTime}">${escapeHtml(t("calendar.summary.range"))}</button>
             <button type="button" class="scope-switch-button" data-summary-range="all" aria-pressed="${allTime}">${escapeHtml(t("calendar.summary.allTime"))}</button>
+            <button type="button" class="scope-switch-button" data-summary-range="range" aria-pressed="${!allTime}">${escapeHtml(t("calendar.summary.range"))}</button>
           </div>
           <span class="calendar-summary-subtitle">${escapeHtml(rangeText)}</span>
         </div>
@@ -4256,6 +4288,8 @@
       if (!button) return;
       state.selectedAppTab = button.dataset.appTab || "calendar";
       render();
+      button.focus({ preventScroll: true });
+      requestAnimationFrame(() => alignTabStrip(elements.appTabs, button));
       window.scrollTo({ top: 0, left: 0 });
     });
 
@@ -6540,6 +6574,21 @@
     if (EXTRA_COUNTS[activeSubTab]) setExtraCount(activeSubTab, EXTRA_COUNTS[activeSubTab]());
     renderExtraOptionEditors(activeSubTab);
     setTimeout(() => autoResizeAllModalTextareas(), 0);
+  }
+
+  // On a phone the app tabs and Extra tabs are horizontal strips. Put the
+  // chosen tab at the reading edge instead of leaving the previous label
+  // half-visible on the left.
+  function alignTabStrip(strip, button) {
+    if (!strip || !button) return;
+    if (strip.scrollWidth <= strip.clientWidth + 1) return;
+    const stripRect = strip.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    const left = Math.max(0, strip.scrollLeft + buttonRect.left - stripRect.left - 12);
+    strip.scrollTo({
+      left,
+      behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
   }
 
   function renderAppTabs() {
@@ -9602,6 +9651,10 @@
 
   function ensureAiFlowSeparator() {
     if (!state.aiFlow) state.aiFlow = [];
+    // Never show the "occasional" divider above an empty list: the empty state
+    // takes its place until there is at least one real flow entry.
+    const hasEntry = state.aiFlow.some((entry) => entry && !entry.isSeparator);
+    if (!hasEntry) return;
     const hasSeparator = state.aiFlow.some((entry) => entry && entry.isSeparator);
     if (!hasSeparator) {
       state.aiFlow.push({
@@ -14760,6 +14813,8 @@
       if (!extraSubnavBtn) return;
       state.selectedExtraSubTab = extraSubnavBtn.dataset.extraTab;
       renderExtraTab();
+      extraSubnavBtn.focus({ preventScroll: true });
+      requestAnimationFrame(() => alignTabStrip(document.querySelector(".extra-subnav-links"), extraSubnavBtn));
       window.scrollTo({ top: 0, left: 0 });
     });
     window.addEventListener("resize", () => autoResizeAllModalTextareas());

@@ -1,0 +1,67 @@
+{
+  "checkedOn": "2026-10-21",
+  "note": "Agents that are not in the official ACP registry, and the local programs that prove a registered agent is installed. Launch commands come from npm packages published by their authors.",
+  "agents": [
+    {
+      "id": "command-code",
+      "name": "Command Code",
+      "version": "1.86.3",
+      "description": "Command Code, a coding agent that learns your taste of writing code.",
+      "website": "",
+      "repository": "",
+      "license": "UNLICENSED",
+      "icon": "",
+      "bin": "command-code",
+      "requires": ["command-code"],
+      "distribution": {
+        "npx": {
+          "package": "command-code@1.86.3",
+          "args": ["acp"]
+        }
+      }
+    },
+    {
+      "id": "grok-build",
+      "name": "Grok Build",
+      "version": "1.0.66",
+      "description": "xAI's coding agent and CLI.",
+      "website": "https://x.ai/cli",
+      "repository": "",
+      "license": "proprietary",
+      "icon": "",
+      "bin": "grok",
+      "requires": ["grok"],
+      "distribution": {
+        "npx": {
+          "package": "@xai-official/grok@1.0.66",
+          "args": ["agent", "stdio"]
+        }
+      }
+    },
+    {
+      "id": "antigravity-acp",
+      "name": "Google Antigravity",
+      "version": "0.5.2",
+      "description": "ACP adapter for the Google Antigravity CLI (agy).",
+      "website": "https://antigravity.google",
+      "repository": "https://github.com/shindgew/agy-acp",
+      "license": "Apache-2.0",
+      "icon": "",
+      "bin": "agy-acp",
+      "requires": ["agy"],
+      "distribution": {
+        "npx": {
+          "package": "agy-acp@0.5.2",
+          "args": []
+        }
+      }
+    }
+  ],
+  "aliases": {
+    "claude-acp": ["claude"],
+    "codex-acp": ["codex"],
+    "opencode": ["opencode"],
+    "opencode-v2": ["opencode"],
+    "github-copilot-cli": ["copilot"]
+  }
+}

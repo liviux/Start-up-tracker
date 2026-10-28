@@ -94,7 +94,7 @@ test("settings come back complete, merge one level deep and name the field they 
     assert.equal(first.defaults.appName, "Startup Tracker");
     assert.equal(first.defaults.pageSize, 25);
     assert.deepEqual(first.defaults.appearance, { mode: "system", theme: "studio" });
-    assert.deepEqual(first.defaults.backups, { automatic: true, keepAutomatic: 20, keepSafety: 20 });
+    assert.deepEqual(first.defaults.backups, { automatic: true, intervalHours: 6, keepAutomatic: 20, keepSafety: 20 });
     assert.deepEqual(first.defaults.recycleBin, { retentionDays: 30 });
     assert.equal(typeof first.revision, "number");
 
@@ -106,15 +106,15 @@ test("settings come back complete, merge one level deep and name the field they 
     // Only the keys sent change, and objects merge one level deep.
     const backups = await patch({ backups: { keepSafety: 5 } });
     assert.equal(backups.status, 200);
-    assert.deepEqual(backups.payload.settings, { ...first.defaults, backups: { automatic: true, keepAutomatic: 20, keepSafety: 5 } });
+    assert.deepEqual(backups.payload.settings, { ...first.defaults, backups: { automatic: true, intervalHours: 6, keepAutomatic: 20, keepSafety: 5 } });
     assert.ok(backups.payload.revision > first.revision);
     const appearance = await patch({ appearance: { mode: "dark" }, yourName: "  Sam   Doe " });
     assert.deepEqual(appearance.payload.settings.appearance, { mode: "dark", theme: "studio" });
     assert.equal(appearance.payload.settings.yourName, "Sam Doe");
-    assert.deepEqual(appearance.payload.settings.backups, { automatic: true, keepAutomatic: 20, keepSafety: 5 }, "an earlier change stays");
+    assert.deepEqual(appearance.payload.settings.backups, { automatic: true, intervalHours: 6, keepAutomatic: 20, keepSafety: 5 }, "an earlier change stays");
     assert.equal((await patch({ recycleBin: { retentionDays: null } })).payload.settings.recycleBin.retentionDays, null);
     const good = (await (await browserFetch(`${url}api/settings`)).json()).settings;
-    assert.deepEqual(good, { ...first.defaults, appearance: { mode: "dark", theme: "studio" }, yourName: "Sam Doe", backups: { automatic: true, keepAutomatic: 20, keepSafety: 5 }, recycleBin: { retentionDays: null } });
+    assert.deepEqual(good, { ...first.defaults, appearance: { mode: "dark", theme: "studio" }, yourName: "Sam Doe", backups: { automatic: true, intervalHours: 6, keepAutomatic: 20, keepSafety: 5 }, recycleBin: { retentionDays: null } });
 
     for (const [settings, field] of [
       [{ pageSize: 5 }, "pageSize"],

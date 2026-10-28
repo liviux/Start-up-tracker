@@ -85,11 +85,20 @@
 .setup-links { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .setup-link,
 .setup-link-add { display: grid; grid-template-columns: 22px minmax(140px, 200px) minmax(0, 1fr) auto auto auto; gap: 8px; align-items: center; }
-.setup-link-add { grid-template-columns: minmax(140px, 200px) minmax(0, 1fr) auto; padding-left: 30px; }
+.setup-link-add { grid-template-columns: minmax(140px, 200px) minmax(0, 1fr) auto auto; padding-left: 30px; }
+.setup-link-add[hidden],
+.setup-body > [hidden] { display: none; }
 .setup-link-icon { width: 18px; height: 18px; fill: currentColor; color: var(--accent); }
 
 .setup-tips { display: flex; flex-wrap: wrap; gap: 6px; }
 .setup-tips .text-button { border: 1px solid var(--border); }
+
+/* Step 9: each group below "Add an agent" is set off with a stronger rule,
+   so the extra settings are visible before scrolling into them. */
+.setup-agents { display: grid; gap: 10px; }
+.setup-agents > .settings-block { gap: 12px; margin-top: 4px; padding-top: 24px; border-top: 2px solid var(--border-strong); }
+.setup-agents > .settings-block:first-of-type { margin-top: 0; padding-top: 0; border-top: 0; }
+.setup-agents > .settings-block > h4 { font-size: 16px; letter-spacing: -0.2px; }
 
 .setup-notice { margin: 0; padding: 10px 12px; border-left: 4px solid var(--accent); border-radius: 6px; background: var(--accent-soft); line-height: 1.5; }
 .setup-counter { align-self: center; margin: 0; color: var(--text-soft); font-weight: 600; text-align: right; }
@@ -143,5 +152,6 @@
   .setup-link,
   .setup-link-add { grid-template-columns: 22px minmax(0, 1fr) auto auto auto; }
   .setup-link input { grid-column: 2 / -1; }
-  .setup-link-add { grid-template-columns: minmax(0, 1fr) auto; padding-left: 0; }
+  .setup-link-add { grid-template-columns: minmax(0, 1fr) auto auto; padding-left: 0; }
+  .setup-link-add input[type="url"] { grid-column: 1 / -1; }
 }
