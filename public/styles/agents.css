@@ -244,6 +244,8 @@ html[data-run-window] .agents-layout { grid-template-columns: 1fr; }
 .agent-registry-item p { margin: 2px 0 0; }
 .agent-registry-meta { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
 .agent-found { color: var(--green); font-size: 12px; font-weight: 700; }
+/* Mixed with the text colour, so it stays readable in light and dark mode. */
+.agent-adapter { padding: 0 6px; border: 1px solid currentColor; border-radius: 999px; color: color-mix(in srgb, var(--blue) 70%, var(--text)); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; cursor: help; }
 .agent-token-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; }
 
 /* The themed confirmation dialog (js/agents-settings.js), in place of the

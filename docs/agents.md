@@ -28,6 +28,8 @@ Each agent shows how it is installed:
 
 The check also looks for the native program an adapter needs, not only the adapter itself. Codex, Claude Code, Grok, Antigravity (`agy`), Command Code and OpenCode are found this way. A found native program marks the agent as available; the tracker then uses the adapter only when it does not find the agent's own command. Codex and Claude use their npm adapters, Antigravity uses the `agy-acp` adapter, and Grok and Command Code run their installed command with their ACP mode.
 
+Agents with no ACP mode of their own carry a blue **ADAPTER** badge, in the list and on their card. Claude Code, Codex and Antigravity are the common ones. The adapter is a separate program, usually downloaded with `npx` on first use, that speaks ACP for the agent and starts its own program, so that program still has to be installed and logged in. An agent counts as an adapter when it needs a native program other than its own, or when its registry entry calls it an ACP adapter or wrapper.
+
 **Add** shows the exact command the tracker will run and asks you to confirm it. The first time, the same dialog repeats the warning above. To use an agent that is not in the registry, add **a custom command**: any program that speaks ACP on its standard input and output. It runs exactly as you type it, with no shell.
 
 ### Check

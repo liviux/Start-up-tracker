@@ -1794,6 +1794,8 @@
       "rescanning": "Rescanning…",
       "rescanned": "The registry and the installed agents were read again.",
       "found": "found on this computer",
+      "adapter": "ADAPTER",
+      "adapterHint": "This agent has no ACP mode of its own. A separate adapter program speaks ACP for it and starts the agent's own program, which still has to be installed and logged in.",
       "unavailable": "not available for this computer",
       "installFirst": "Install {command} first and make sure it is on your PATH.",
       "download": "Download",

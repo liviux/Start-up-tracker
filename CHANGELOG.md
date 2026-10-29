@@ -11,6 +11,7 @@ All notable changes to this project are listed here. The format follows [Keep a 
 - The company template picker puts the country of the current template first, so the longer list opens near where you were.
 - Twelve layout themes replace the palette-only ones. Studio stays the default; ten more, two each from five design skills, change the layout and type as well as the colours, and Coda adds a right-hand rail, ivory paper and a serif voice. Settings and the setup show a Calendar screenshot of each theme.
 - "Try themes live" in Settings > Appearance opens a small bar at the top of the screen with a key per theme, so you can switch themes while you use the app.
+- Settings > AI agents marks agents that run through an ACP adapter (Claude Code, Codex, Antigravity and others with no ACP mode of their own) with a blue ADAPTER badge, in the list and on their card. Its tooltip says the agent's own program still has to be installed and logged in.
 
 ### Changed
 - The Company tab's coverage note and the README and docs now describe the full country list instead of the first 18 templates.

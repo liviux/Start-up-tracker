@@ -326,9 +326,11 @@
       env.value = formatEnv(harness.env);
       const message = ui.messages.get(`check:${harness.id}`) || ui.messages.get(`save:${harness.id}`);
       const version = harnessVersion(harness);
+      const adapter = Boolean(harness.registryId) && ui.overview?.registry?.agents?.some((agent) => agent.id === harness.registryId && agent.adapter);
       return el("article", { className: "agent-harness", dataset: { state: checkState(harness) } }, [
         el("header", { className: "agent-harness-head" }, [
           el("h5", { text: harness.name }),
+          adapter ? adapterBadge() : null,
           el("span", { className: "settings-hint", text: harness.registryId ? `${harness.kind} · ${harness.registryId}${version ? ` ${version}` : ""}` : t("settings.agents.custom") }),
         ]),
         el("p", {}, [el("code", { className: "agent-command", text: harness.commandLine })]),
@@ -438,6 +440,12 @@
       ]);
     }
 
+    // An ACP adapter is a separate program that speaks ACP for an agent that
+    // has no ACP mode of its own; the server sets `adapter` (lib/agents/registry.js).
+    function adapterBadge() {
+      return el("span", { className: "agent-adapter", title: t("settings.agents.adapterHint"), text: t("settings.agents.adapter") });
+    }
+
     // Agent icons live on the registry's servers, so they load only while the
     // network switch (Settings > General) allows going online.
     function registryList(agents) {
@@ -450,6 +458,7 @@
           el("div", {}, [
             el("strong", { text: agent.name }),
             el("span", { className: "agent-registry-meta" }, [
+              agent.adapter ? adapterBadge() : null,
               el("span", { className: "settings-hint", text: `${agent.kind || t("settings.agents.unavailable")}${version ? ` · ${version}` : ""}` }),
               agent.installed ? el("span", { className: "agent-found", text: t("settings.agents.found") }) : null,
             ]),

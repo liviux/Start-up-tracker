@@ -194,6 +194,11 @@ test("registry: agents found on this computer, including native CLIs an adapter 
     const adapter = registry.describeAgents({ agents: [{ id: "adapter-agent", name: "Adapter", distribution: { npx: { package: "adapter-agent" } } }], catalog: result.catalog }, { env: { PATH: dir }, platform: "linux", arch: "x64" })[0];
     assert.equal(adapter.installed, true, "a needed native CLI marks the adapter found");
     assert.equal(adapter.installedBin, "", "but the adapter itself still has to be downloaded");
+    assert.equal(adapter.adapter, true, "needing another program makes it an adapter");
+    assert.equal(byId["npx-agent"].adapter, true, "so does an alias for a native CLI");
+    assert.equal(byId["bin-agent"].adapter, false);
+    assert.equal(registry.isAdapter({ id: "native", description: "" }, { bin: "grok", requires: ["grok"] }), false, "its own program is not an adapter's target");
+    assert.equal(registry.isAdapter({ id: "x", description: "ACP wrapper for Amp" }, null), true, "the registry calls it a wrapper");
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
