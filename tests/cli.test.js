@@ -412,11 +412,14 @@ test("About asks for updates only through its own route, and never online in a t
 // ---- autostart, browser, uninstall ---------------------------------------------------------
 
 test("autostart writes a systemd unit, a LaunchAgent or a logon task that starts the tracker", () => {
-  const options = { nodePath: "/usr/bin/node", cliPath: "/home/a b/.startup-tracker/app/bin/startup-tracker.js", dataRoot: "/home/a b/.startup-tracker", homedir: "/home/a b" };
+  const options = { nodePath: "/usr/bin/node", cliPath: "/home/a b/.startup-tracker/app/bin/startup-tracker.js", dataRoot: "/home/a b/.startup-tracker", homedir: "/home/a b", pathEnv: "/home/a b/.local/bin:/opt/100%/bin:/usr/bin" };
   const linux = autostart.autostartPlan({ ...options, platform: "linux", systemd: true });
   assert.equal(linux.kind, "systemd");
   assert.equal(linux.file, "/home/a b/.config/systemd/user/startup-tracker.service");
   assert.match(linux.content, /^ExecStart="\/usr\/bin\/node" "\/home\/a b\/\.startup-tracker\/app\/bin\/startup-tracker\.js" "start" "--foreground" "--no-open" "--data-dir" "\/home\/a b\/\.startup-tracker"$/m);
+  // The service keeps your PATH, so agents in ~/.local/bin and the like are found.
+  assert.match(linux.content, /^Environment="PATH=\/home\/a b\/\.local\/bin:\/opt\/100%%\/bin:\/usr\/bin"$/m);
+  assert.doesNotMatch(autostart.autostartPlan({ ...options, pathEnv: "", platform: "linux", systemd: true }).content, /PATH=/);
   assert.match(linux.content, /Restart=on-failure/);
   assert.equal(autostart.autostartPlan({ ...options, platform: "linux", systemd: false, wsl: true }).kind, "unsupported");
   assert.match(autostart.autostartPlan({ ...options, platform: "linux", systemd: false, wsl: true }).note, /wsl\.conf/);
@@ -424,6 +427,7 @@ test("autostart writes a systemd unit, a LaunchAgent or a logon task that starts
   const mac = autostart.autostartPlan({ ...options, platform: "darwin", uid: 501 });
   assert.equal(mac.file, "/home/a b/Library/LaunchAgents/startup-tracker.plist");
   assert.match(mac.content, /<string>--foreground<\/string>/);
+  assert.match(mac.content, /<key>PATH<\/key>\n\s*<string>\/home\/a b\/\.local\/bin:\/opt\/100%\/bin:\/usr\/bin<\/string>/);
   assert.deepEqual(mac.on, [["launchctl", ["bootstrap", "gui/501", mac.file]]]);
 
   const windows = autostart.autostartPlan({ ...options, platform: "win32", nodePath: "C:\\Program Files\\nodejs\\node.exe", cliPath: "C:\\Users\\a\\.startup-tracker\\app\\bin\\startup-tracker.js", dataRoot: "C:\\Users\\a\\.startup-tracker" });

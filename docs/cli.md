@@ -51,7 +51,9 @@ The first start saves port 57322 in `config.json` in the data folder, and every 
 - macOS: a LaunchAgent, `~/Library/LaunchAgents/startup-tracker.plist`.
 - Windows: a Task Scheduler task named "Startup Tracker" that runs at logon.
 
-Each one runs the tracker with the Node.js that ran `autostart on`. If you install a different Node.js later, run `startup-tracker autostart on` again.
+Each one runs the tracker with the Node.js that ran `autostart on`. On Linux and macOS it also keeps that terminal's `PATH`, because services otherwise start with only the system folders and Settings > AI agents would not find agents installed in places like `~/.local/bin` or `/opt/homebrew/bin`. If you install a different Node.js, or an agent in a new folder, run `startup-tracker autostart on` again.
+
+If you run the tracker from a service you wrote yourself, give it your `PATH` (for systemd, an `Environment="PATH=…"` line).
 
 ## Exit codes
 
