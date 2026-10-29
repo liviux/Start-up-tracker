@@ -1,0 +1,436 @@
+{
+  "id": "er-sc",
+  "version": 1,
+  "country": "ER",
+  "countryName": "Eritrea",
+  "entityType": "SC",
+  "nameLocal": "Share Company",
+  "nameEnglish": "Public limited company",
+  "currency": "ERN",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": null,
+  "draft": true,
+  "sources": [
+    {
+      "id": "government",
+      "title": "Eritrea Ministry of Information",
+      "publisher": "Ministry of Information, Eritrea",
+      "url": "https://shabait.com/",
+      "verifiedOn": null,
+      "checkLocally": true
+    }
+  ],
+  "conditions": [
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages or salaries and runs a payroll."
+    },
+    {
+      "id": "vat-registered",
+      "label": "Registered for VAT",
+      "description": "Registered for value added tax or a similar turnover tax."
+    },
+    {
+      "id": "listed",
+      "label": "Listed on a stock exchange",
+      "description": "Its shares trade on a regulated market."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The registered name, including the SC legal form. A company whose capital is divided into shares.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "key": "registrationNumber",
+      "label": "Commercial registration number",
+      "description": "The number the company register gave the company.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "key": "taxId",
+      "label": "Tax identification number",
+      "description": "The company's tax number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": []
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The address on the company register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "Paid-up capital",
+      "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "government"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Sits on the board and runs the company."
+      },
+      {
+        "id": "officer",
+        "label": "Officer",
+        "description": "A senior officer named by the board."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Owns shares in the company."
+      },
+      {
+        "id": "auditor",
+        "label": "Auditor",
+        "description": "Audits the annual accounts."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name",
+      "title": "Choose and check the SC name",
+      "description": "Check the name is free in Ministry of Trade and Industry, Business Licensing and Registration Division and follows Eritrea's naming rules.",
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "documents",
+      "title": "Prepare the SC documents",
+      "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs. Eritrea has no online company register. Register with the Business Licensing and Registration Division of the Ministry of Trade and Industry in Asmara.",
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register the SC",
+      "description": "Submit the incorporation documents as Ministry of Trade and Industry, Business Licensing and Registration Division requires. The company exists once the register enters it.",
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "typicalCost": null,
+      "dependsOn": [
+        "documents"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "tax",
+      "title": "Register the SC for tax",
+      "description": "Register with Ministry of Trade and Industry, Business Licensing and Registration Division for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Register as an employer",
+      "description": "Before the first hire, register with Ministry of Trade and Industry, Business Licensing and Registration Division for payroll and social contributions.",
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "bank",
+      "title": "Open a business bank account",
+      "description": "Banks usually ask for the registration certificate and the tax number.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "licences",
+      "title": "Check licences for your activity",
+      "description": "Some activities need a permit or a licence from a sector regulator. Check before you start trading.",
+      "authority": "Sector regulator",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "annual-return",
+      "title": "Annual return or confirmation statement",
+      "description": "Check whether an annual return or confirmation statement is due with Ministry of Trade and Industry, Business Licensing and Registration Division, then file it and keep the company record current.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": "Annual financial statements",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Ministry of Trade and Industry, Business Licensing and Registration Division, the deadline and whether an audit is required.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "corporate-tax",
+      "title": "Corporate income tax return",
+      "description": "Check the company's income tax filing with Ministry of Trade and Industry, Business Licensing and Registration Division, then file the return and pay by the dates it sets.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "vat",
+      "title": "VAT returns",
+      "description": "File VAT returns with Ministry of Trade and Industry, Business Licensing and Registration Division and pay any VAT due. Check whether the company is registered and how often it files.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "vat-registered"
+      ],
+      "subdivisions": [],
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "payroll",
+      "title": "Payroll taxes and social contributions",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Ministry of Trade and Industry, Business Licensing and Registration Division. Check the rates and dates.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "beneficial-ownership",
+      "title": "Beneficial ownership information",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Ministry of Trade and Industry, Business Licensing and Registration Division.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "change-notification",
+      "title": "Report changes to the register",
+      "description": "Check what changes must be reported to Ministry of Trade and Industry, Business Licensing and Registration Division, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Ministry of Trade and Industry, Business Licensing and Registration Division",
+      "checkLocally": true,
+      "sourceIds": [
+        "government"
+      ]
+    },
+    {
+      "id": "licence-renewal",
+      "title": "Renew licences and permits",
+      "description": "Check which licences your activity needs and renew them before they expire.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Sector regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "annual-meeting",
+      "title": "Annual general meeting",
+      "description": "Hold the annual general meeting and record the resolutions.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Company",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "audit",
+      "title": "Audit the annual accounts",
+      "description": "Have the annual accounts audited if the company meets the audit threshold.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Auditor",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "market-disclosure",
+      "title": "Disclose market information",
+      "description": "Publish information that could affect the share price as the market rules require.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "listed"
+      ],
+      "subdivisions": [],
+      "authority": "Stock exchange regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Commercial registration number: {{registrationNumber}}\n- Tax identification number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Paid-up capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+}

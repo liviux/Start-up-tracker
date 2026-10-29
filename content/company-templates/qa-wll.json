@@ -1,0 +1,425 @@
+{
+  "id": "qa-wll",
+  "version": 1,
+  "country": "QA",
+  "countryName": "Qatar",
+  "entityType": "WLL",
+  "nameLocal": "شركة ذات مسؤولية محدودة",
+  "nameEnglish": "Limited liability company",
+  "currency": "QAR",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-29",
+  "sources": [
+    {
+      "id": "registry",
+      "title": "Ministry of Commerce and Industry",
+      "publisher": "Ministry of Commerce and Industry",
+      "url": "https://www.moci.gov.qa/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "tax",
+      "title": "General Tax Authority – Qatar",
+      "publisher": "State of Qatar",
+      "url": "https://www.gta.gov.qa/en",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "Daman – General Retirement and Social Insurance Authority",
+      "publisher": "State of Qatar",
+      "url": "https://www.daman.gov.qa/English/Pages/default.aspx",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "Hukoomi – Qatar Government Portal",
+      "publisher": "Government of Qatar",
+      "url": "https://hukoomi.gov.qa/",
+      "verifiedOn": null,
+      "checkLocally": true
+    }
+  ],
+  "conditions": [
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages or salaries and runs a payroll."
+    },
+    {
+      "id": "vat-registered",
+      "label": "Registered for VAT",
+      "description": "Registered for value added tax or a similar turnover tax."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The registered name, including the WLL legal form. The usual form for a small or medium business.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "registrationNumber",
+      "label": "رقم السجل التجاري",
+      "description": "The number the company register gave the company.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "taxId",
+      "label": "الرقم الضريبي",
+      "description": "The company's tax number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The address on the company register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "رأس المال",
+      "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Runs the company and represents it."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Owns shares or a stake in the company."
+      },
+      {
+        "id": "founder",
+        "label": "Founder",
+        "description": "Set up the company."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name",
+      "title": "Choose and check the WLL name",
+      "description": "Check the name is free in Commercial Registry and follows Qatar's naming rules.",
+      "authority": "Commercial Registry",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "documents",
+      "title": "Prepare the WLL documents",
+      "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
+      "authority": "Commercial Registry",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register the WLL",
+      "description": "Submit the incorporation documents as Commercial Registry requires. The company exists once the register enters it.",
+      "authority": "Commercial Registry",
+      "typicalCost": null,
+      "dependsOn": [
+        "documents"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "tax",
+      "title": "Register the WLL for tax",
+      "description": "Register with General Tax Authority for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "General Tax Authority",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Register as an employer",
+      "description": "Before the first hire, register with General Retirement and Social Insurance Authority for payroll and social contributions.",
+      "authority": "General Retirement and Social Insurance Authority",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "bank",
+      "title": "Open a business bank account",
+      "description": "Banks usually ask for the registration certificate and the tax number.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "licences",
+      "title": "Check licences for your activity",
+      "description": "Some activities need a permit or a licence from a sector regulator. Check before you start trading.",
+      "authority": "Sector regulator",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "annual-return",
+      "title": "Annual return or confirmation statement",
+      "description": "Check whether an annual return or confirmation statement is due with Commercial Registry, then file it and keep the company record current.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Commercial Registry",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": "Annual financial statements",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Commercial Registry, the deadline and whether an audit is required.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Commercial Registry",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "corporate-tax",
+      "title": "Corporate income tax return",
+      "description": "Check the company's income tax filing with General Tax Authority, then file the return and pay by the dates it sets.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "General Tax Authority",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "vat",
+      "title": "VAT returns",
+      "description": "File VAT returns with General Tax Authority and pay any VAT due. Check whether the company is registered and how often it files.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "vat-registered"
+      ],
+      "subdivisions": [],
+      "authority": "General Tax Authority",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "id": "payroll",
+      "title": "Payroll taxes and social contributions",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through General Retirement and Social Insurance Authority. Check the rates and dates.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "General Retirement and Social Insurance Authority",
+      "checkLocally": true,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "beneficial-ownership",
+      "title": "Beneficial ownership information",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Commercial Registry.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Commercial Registry",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "change-notification",
+      "title": "Report changes to the register",
+      "description": "Check what changes must be reported to Commercial Registry, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Commercial Registry",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "licence-renewal",
+      "title": "Renew licences and permits",
+      "description": "Check which licences your activity needs and renew them before they expire.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Sector regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- رقم السجل التجاري: {{registrationNumber}}\n- الرقم الضريبي: {{taxId}}\n- Registered office: {{registeredOffice}}\n- رأس المال: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+}

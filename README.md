@@ -35,7 +35,7 @@ npm start
 
 - **Marketing, Programs and Funding**: targets with statuses, categories from a shared library, dates, notes, links between records and a full history, plus a focus queue of what is due.
 - **Calendar** of every dated item across the sections, for one startup or all of them.
-- **Company**: setup steps, recurring obligations, deadlines and expenses from templates for 18 legal forms in 11 countries, each with its official sources, plus a generic template. Not legal advice.
+- **Company**: setup steps, recurring obligations, deadlines and expenses from templates for the major legal forms in 199 countries and territories, each with its official sources, plus a generic template. Not legal advice.
 - **Prompts** filled with your startup's details, to paste into a chat or run with an **AI agent** on your computer (Claude Code, Codex, Gemini CLI, OpenCode and others that speak the Agent Client Protocol). Agents save targets straight into the tracker, and each run can be undone.
 - **Backups**: automatic and pinned, restorable per record, per startup or whole, plus a recycle bin and export and import.
 

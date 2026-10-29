@@ -1,0 +1,404 @@
+{
+  "id": "na-cc",
+  "version": 1,
+  "country": "NA",
+  "countryName": "Namibia",
+  "entityType": "CC",
+  "nameLocal": "Close Corporation",
+  "nameEnglish": "Close corporation",
+  "currency": "NAD",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-29",
+  "sources": [
+    {
+      "id": "registry",
+      "title": "BIPA – The Home of Business and IP Registrations, Administration and Regulation in Namibia",
+      "publisher": "Business and Intellectual Property Authority",
+      "url": "https://www.bipa.na/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "tax",
+      "title": "Welcome to the Namibia Revenue Agency",
+      "publisher": "Namibia Revenue Agency",
+      "url": "https://www.namra.org.na/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "Social Security Commission",
+      "publisher": "Social Security Commission",
+      "url": "https://www.ssc.org.na/",
+      "verifiedOn": "2026-10-29"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages or salaries and runs a payroll."
+    },
+    {
+      "id": "vat-registered",
+      "label": "Registered for VAT",
+      "description": "Registered for value added tax or a similar turnover tax."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The registered name, including the CC legal form. A close corporation owned by a small number of members.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "key": "registrationNumber",
+      "label": "Company registration number",
+      "description": "The number the company register gave the company.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "key": "taxId",
+      "label": "Taxpayer Identification Number (TIN)",
+      "description": "The company's tax number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The address on the company register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "Share capital",
+      "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Runs the company and represents it."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Owns shares or a stake in the company."
+      },
+      {
+        "id": "founder",
+        "label": "Founder",
+        "description": "Set up the company."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name",
+      "title": "Choose and check the CC name",
+      "description": "Check the name is free in Business and Intellectual Property Authority and follows Namibia's naming rules.",
+      "authority": "Business and Intellectual Property Authority",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "id": "documents",
+      "title": "Prepare the CC documents",
+      "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
+      "authority": "Business and Intellectual Property Authority",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register the CC",
+      "description": "Submit the incorporation documents as Business and Intellectual Property Authority requires. The company exists once the register enters it.",
+      "authority": "Business and Intellectual Property Authority",
+      "typicalCost": null,
+      "dependsOn": [
+        "documents"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "id": "tax",
+      "title": "Register the CC for tax",
+      "description": "Register with Namibia Revenue Agency for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Namibia Revenue Agency",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Register as an employer",
+      "description": "Before the first hire, register with Social Security Commission for payroll and social contributions.",
+      "authority": "Social Security Commission",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "bank",
+      "title": "Open a business bank account",
+      "description": "Banks usually ask for the registration certificate and the tax number.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "licences",
+      "title": "Check licences for your activity",
+      "description": "Some activities need a permit or a licence from a sector regulator. Check before you start trading.",
+      "authority": "Sector regulator",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "annual-return",
+      "title": "Annual return or confirmation statement",
+      "description": "Check whether an annual return or confirmation statement is due with Business and Intellectual Property Authority, then file it and keep the company record current.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Business and Intellectual Property Authority",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": "Annual financial statements",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Business and Intellectual Property Authority, the deadline and whether an audit is required.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Business and Intellectual Property Authority",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "id": "corporate-tax",
+      "title": "Corporate income tax return",
+      "description": "Check the company's income tax filing with Namibia Revenue Agency, then file the return and pay by the dates it sets.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Namibia Revenue Agency",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "id": "vat",
+      "title": "VAT returns",
+      "description": "File VAT returns with Namibia Revenue Agency and pay any VAT due. Check whether the company is registered and how often it files.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "vat-registered"
+      ],
+      "subdivisions": [],
+      "authority": "Namibia Revenue Agency",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "id": "payroll",
+      "title": "Payroll taxes and social contributions",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Social Security Commission. Check the rates and dates.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "Social Security Commission",
+      "checkLocally": true,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "beneficial-ownership",
+      "title": "Beneficial ownership information",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Business and Intellectual Property Authority.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Business and Intellectual Property Authority",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "id": "change-notification",
+      "title": "Report changes to the register",
+      "description": "Check what changes must be reported to Business and Intellectual Property Authority, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Business and Intellectual Property Authority",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry"
+      ]
+    },
+    {
+      "id": "licence-renewal",
+      "title": "Renew licences and permits",
+      "description": "Check which licences your activity needs and renew them before they expire.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Sector regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Company registration number: {{registrationNumber}}\n- Taxpayer Identification Number (TIN): {{taxId}}\n- Registered office: {{registeredOffice}}\n- Share capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+}

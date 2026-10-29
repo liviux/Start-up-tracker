@@ -1,0 +1,478 @@
+{
+  "id": "se-publ-ab",
+  "version": 1,
+  "country": "SE",
+  "countryName": "Sweden",
+  "entityType": "AB (publ)",
+  "nameLocal": "Publikt aktiebolag",
+  "nameEnglish": "Public limited company",
+  "currency": "SEK",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-29",
+  "sources": [
+    {
+      "id": "registry",
+      "title": "Bolagsverket",
+      "publisher": "Bolagsverket",
+      "url": "https://bolagsverket.se/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "tax",
+      "title": "Skatteverket",
+      "publisher": "Skatteverket",
+      "url": "https://www.skatteverket.se/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "Försäkringskassan",
+      "publisher": "Försäkringskassan",
+      "url": "https://www.forsakringskassan.se/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "Verksamt.se",
+      "publisher": "Myndigheterna bakom verksamt.se",
+      "url": "https://verksamt.se/",
+      "verifiedOn": "2026-10-29"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages or salaries and runs a payroll."
+    },
+    {
+      "id": "vat-registered",
+      "label": "Registered for VAT",
+      "description": "Registered for value added tax or a similar turnover tax."
+    },
+    {
+      "id": "listed",
+      "label": "Listed on a stock exchange",
+      "description": "Its shares trade on a regulated market."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The registered name, including the AB (publ) legal form. A public limited company that may offer its shares to the public.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "registrationNumber",
+      "label": "Organisationsnummer",
+      "description": "The number the company register gave the company.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "taxId",
+      "label": "Tax number",
+      "description": "The company's tax number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The address on the company register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "Aktiekapital",
+      "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Sits on the board and runs the company."
+      },
+      {
+        "id": "officer",
+        "label": "Officer",
+        "description": "A senior officer named by the board."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Owns shares in the company."
+      },
+      {
+        "id": "auditor",
+        "label": "Auditor",
+        "description": "Audits the annual accounts."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name",
+      "title": "Choose and check the AB (publ) name",
+      "description": "Check the name is free in Bolagsverket and follows Sweden's naming rules.",
+      "authority": "Bolagsverket",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "documents",
+      "title": "Prepare the AB (publ) documents",
+      "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
+      "authority": "Bolagsverket",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register the AB (publ)",
+      "description": "Submit the incorporation documents as Bolagsverket requires. The company exists once the register enters it.",
+      "authority": "Bolagsverket",
+      "typicalCost": null,
+      "dependsOn": [
+        "documents"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "tax",
+      "title": "Register the AB (publ) for tax",
+      "description": "Register with Skatteverket for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Skatteverket",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Register as an employer",
+      "description": "Before the first hire, register with Försäkringskassan for payroll and social contributions.",
+      "authority": "Försäkringskassan",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "bank",
+      "title": "Open a business bank account",
+      "description": "Banks usually ask for the registration certificate and the tax number.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "licences",
+      "title": "Check licences for your activity",
+      "description": "Some activities need a permit or a licence from a sector regulator. Check before you start trading.",
+      "authority": "Sector regulator",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "annual-return",
+      "title": "Annual return or confirmation statement",
+      "description": "Check whether an annual return or confirmation statement is due with Bolagsverket, then file it and keep the company record current.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Bolagsverket",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": "Annual financial statements",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Bolagsverket, the deadline and whether an audit is required.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Bolagsverket",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "corporate-tax",
+      "title": "Corporate income tax return",
+      "description": "Check the company's income tax filing with Skatteverket, then file the return and pay by the dates it sets.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Skatteverket",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "vat",
+      "title": "VAT returns",
+      "description": "File VAT returns with Skatteverket and pay any VAT due. Check whether the company is registered and how often it files.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "vat-registered"
+      ],
+      "subdivisions": [],
+      "authority": "Skatteverket",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "id": "payroll",
+      "title": "Payroll taxes and social contributions",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Försäkringskassan. Check the rates and dates.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "Försäkringskassan",
+      "checkLocally": true,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "beneficial-ownership",
+      "title": "Beneficial ownership information",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Bolagsverket.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Bolagsverket",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "change-notification",
+      "title": "Report changes to the register",
+      "description": "Check what changes must be reported to Bolagsverket, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Bolagsverket",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "licence-renewal",
+      "title": "Renew licences and permits",
+      "description": "Check which licences your activity needs and renew them before they expire.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Sector regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "annual-meeting",
+      "title": "Annual general meeting",
+      "description": "Hold the annual general meeting and record the resolutions.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Company",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "audit",
+      "title": "Audit the annual accounts",
+      "description": "Have the annual accounts audited if the company meets the audit threshold.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Auditor",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "market-disclosure",
+      "title": "Disclose market information",
+      "description": "Publish information that could affect the share price as the market rules require.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "listed"
+      ],
+      "subdivisions": [],
+      "authority": "Stock exchange regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Organisationsnummer: {{registrationNumber}}\n- Tax number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Aktiekapital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+}

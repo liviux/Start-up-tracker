@@ -1,0 +1,419 @@
+{
+  "id": "no-ans",
+  "version": 1,
+  "country": "NO",
+  "countryName": "Norway",
+  "entityType": "ANS",
+  "nameLocal": "Ansvarlig selskap",
+  "nameEnglish": "General partnership",
+  "currency": "NOK",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-29",
+  "sources": [
+    {
+      "id": "registry",
+      "title": "Brønnøysundregistrene",
+      "publisher": "Brønnøysundregistrene",
+      "url": "https://www.brreg.no/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "tax",
+      "title": "Skatteetaten",
+      "publisher": "Skatteetaten",
+      "url": "https://www.skatteetaten.no/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "Arbeids- og velferdsetaten",
+      "publisher": "NAV",
+      "url": "https://www.nav.no/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "Altinn",
+      "publisher": "Digitaliseringsdirektoratet",
+      "url": "https://www.altinn.no/",
+      "verifiedOn": "2026-10-29"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages or salaries and runs a payroll."
+    },
+    {
+      "id": "vat-registered",
+      "label": "Registered for VAT",
+      "description": "Registered for value added tax or a similar turnover tax."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The registered name, including the ANS legal form. A general partnership whose owners are personally liable for the company's debts.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "registrationNumber",
+      "label": "Organisasjonsnummer",
+      "description": "The number the company register gave the company.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "taxId",
+      "label": "Tax number",
+      "description": "The company's tax number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The address on the company register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "Aksjekapital",
+      "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "managing-partner",
+        "label": "Managing partner",
+        "description": "Runs the partnership."
+      },
+      {
+        "id": "partner",
+        "label": "Partner",
+        "description": "Owns a share of the partnership."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name",
+      "title": "Choose and check the ANS name",
+      "description": "Check the name is free in Brønnøysundregistrene and follows Norway's naming rules.",
+      "authority": "Brønnøysundregistrene",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "documents",
+      "title": "Prepare the ANS documents",
+      "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
+      "authority": "Brønnøysundregistrene",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register the ANS",
+      "description": "Submit the incorporation documents as Brønnøysundregistrene requires. The company exists once the register enters it.",
+      "authority": "Brønnøysundregistrene",
+      "typicalCost": null,
+      "dependsOn": [
+        "documents"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "tax",
+      "title": "Register the ANS for tax",
+      "description": "Register with Skatteetaten for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Skatteetaten",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Register as an employer",
+      "description": "Before the first hire, register with NAV for payroll and social contributions.",
+      "authority": "NAV",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "bank",
+      "title": "Open a business bank account",
+      "description": "Banks usually ask for the registration certificate and the tax number.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "licences",
+      "title": "Check licences for your activity",
+      "description": "Some activities need a permit or a licence from a sector regulator. Check before you start trading.",
+      "authority": "Sector regulator",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "annual-return",
+      "title": "Annual return or confirmation statement",
+      "description": "Check whether an annual return or confirmation statement is due with Brønnøysundregistrene, then file it and keep the company record current.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Brønnøysundregistrene",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": "Annual financial statements",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Brønnøysundregistrene, the deadline and whether an audit is required.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Brønnøysundregistrene",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "partnership-return",
+      "title": "Partnership tax return",
+      "description": "File the partnership's information return with Skatteetaten. The partners report their share on their own returns.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Skatteetaten",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "vat",
+      "title": "VAT returns",
+      "description": "File VAT returns with Skatteetaten and pay any VAT due. Check whether the company is registered and how often it files.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "vat-registered"
+      ],
+      "subdivisions": [],
+      "authority": "Skatteetaten",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "id": "payroll",
+      "title": "Payroll taxes and social contributions",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through NAV. Check the rates and dates.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "NAV",
+      "checkLocally": true,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "beneficial-ownership",
+      "title": "Beneficial ownership information",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Brønnøysundregistrene.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Brønnøysundregistrene",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "change-notification",
+      "title": "Report changes to the register",
+      "description": "Check what changes must be reported to Brønnøysundregistrene, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Brønnøysundregistrene",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "licence-renewal",
+      "title": "Renew licences and permits",
+      "description": "Check which licences your activity needs and renew them before they expire.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Sector regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Organisasjonsnummer: {{registrationNumber}}\n- Tax number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Aksjekapital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+}

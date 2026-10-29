@@ -1,0 +1,420 @@
+{
+  "id": "fm-partnership",
+  "version": 1,
+  "country": "FM",
+  "countryName": "Micronesia",
+  "entityType": "Partnership",
+  "nameLocal": "Partnership",
+  "nameEnglish": "Partnership",
+  "currency": "USD",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-29",
+  "sources": [
+    {
+      "id": "registry",
+      "title": "FSM Government",
+      "publisher": "Government of the Federated States of Micronesia",
+      "url": "https://gov.fm/",
+      "verifiedOn": null,
+      "checkLocally": true
+    },
+    {
+      "id": "tax",
+      "title": "Home - FSM DoFA",
+      "publisher": "FSM Department of Finance and Administration",
+      "url": "https://dofa.gov.fm/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "FSM Social Security Administration",
+      "publisher": "FSM Social Security Administration",
+      "url": "https://fsmssa.fm/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "FSM Government",
+      "publisher": "Government of the Federated States of Micronesia",
+      "url": "https://www.fsmgov.org/",
+      "verifiedOn": "2026-10-29"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages or salaries and runs a payroll."
+    },
+    {
+      "id": "vat-registered",
+      "label": "Registered for VAT",
+      "description": "Registered for value added tax or a similar turnover tax."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The registered name, including the Partnership legal form. A general partnership of two or more persons.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "registrationNumber",
+      "label": "Registration number",
+      "description": "The number the company register gave the company.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "taxId",
+      "label": "TIN",
+      "description": "The company's tax number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The address on the company register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "Share capital",
+      "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "managing-partner",
+        "label": "Managing partner",
+        "description": "Runs the partnership."
+      },
+      {
+        "id": "partner",
+        "label": "Partner",
+        "description": "Owns a share of the partnership."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name",
+      "title": "Choose and check the Partnership name",
+      "description": "Check the name is free in FSM Registrar of Corporations and follows Micronesia's naming rules.",
+      "authority": "FSM Registrar of Corporations",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "documents",
+      "title": "Prepare the Partnership documents",
+      "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs. The Registrar of Corporations website at roc.doj.gov.fm returned HTTP 503 when checked, so the national government portal is listed as the registry source.",
+      "authority": "FSM Registrar of Corporations",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register the Partnership",
+      "description": "Submit the incorporation documents as FSM Registrar of Corporations requires. The company exists once the register enters it.",
+      "authority": "FSM Registrar of Corporations",
+      "typicalCost": null,
+      "dependsOn": [
+        "documents"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "tax",
+      "title": "Register the Partnership for tax",
+      "description": "Register with Department of Finance and Administration for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Department of Finance and Administration",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Register as an employer",
+      "description": "Before the first hire, register with FSM Social Security Administration for payroll and social contributions.",
+      "authority": "FSM Social Security Administration",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "bank",
+      "title": "Open a business bank account",
+      "description": "Banks usually ask for the registration certificate and the tax number.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "licences",
+      "title": "Check licences for your activity",
+      "description": "Some activities need a permit or a licence from a sector regulator. Check before you start trading.",
+      "authority": "Sector regulator",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "annual-return",
+      "title": "Annual return or confirmation statement",
+      "description": "Check whether an annual return or confirmation statement is due with FSM Registrar of Corporations, then file it and keep the company record current.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "FSM Registrar of Corporations",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": "Annual financial statements",
+      "description": "Prepare the annual accounts. Check whether they must be filed with FSM Registrar of Corporations, the deadline and whether an audit is required.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "FSM Registrar of Corporations",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "partnership-return",
+      "title": "Partnership tax return",
+      "description": "File the partnership's information return with Department of Finance and Administration. The partners report their share on their own returns.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Department of Finance and Administration",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "vat",
+      "title": "VAT returns",
+      "description": "File VAT returns with Department of Finance and Administration and pay any VAT due. Check whether the company is registered and how often it files.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "vat-registered"
+      ],
+      "subdivisions": [],
+      "authority": "Department of Finance and Administration",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "id": "payroll",
+      "title": "Payroll taxes and social contributions",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through FSM Social Security Administration. Check the rates and dates.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "FSM Social Security Administration",
+      "checkLocally": true,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "beneficial-ownership",
+      "title": "Beneficial ownership information",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with FSM Registrar of Corporations.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "FSM Registrar of Corporations",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "change-notification",
+      "title": "Report changes to the register",
+      "description": "Check what changes must be reported to FSM Registrar of Corporations, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "FSM Registrar of Corporations",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "licence-renewal",
+      "title": "Renew licences and permits",
+      "description": "Check which licences your activity needs and renew them before they expire.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Sector regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Registration number: {{registrationNumber}}\n- TIN: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Share capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+}

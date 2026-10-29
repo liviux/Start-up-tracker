@@ -1,0 +1,424 @@
+{
+  "id": "ec-cia-ltda",
+  "version": 1,
+  "country": "EC",
+  "countryName": "Ecuador",
+  "entityType": "Cía. Ltda.",
+  "nameLocal": "Compañía Limitada",
+  "nameEnglish": "Private limited liability company",
+  "currency": "USD",
+  "bilingual": null,
+  "subdivision": null,
+  "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
+  "verifiedOn": "2026-10-29",
+  "sources": [
+    {
+      "id": "registry",
+      "title": "Superintendencia de Compañías, Valores y Seguros",
+      "publisher": "Superintendencia de Compañías, Valores y Seguros",
+      "url": "https://www.supercias.gob.ec/portalscvs/index.htm",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "tax",
+      "title": "Servicio de Rentas Internas",
+      "publisher": "Servicio de Rentas Internas",
+      "url": "https://www.sri.gob.ec/en/web/intersri/home",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "Instituto Ecuatoriano de Seguridad Social",
+      "publisher": "Instituto Ecuatoriano de Seguridad Social",
+      "url": "https://www.iess.gob.ec/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "Ministerio de Producción, Comercio Exterior e Inversiones",
+      "publisher": "Ministerio de Producción, Comercio Exterior e Inversiones",
+      "url": "https://www.produccion.gob.ec/",
+      "verifiedOn": "2026-10-29"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "has-employees",
+      "label": "Has employees",
+      "description": "Pays wages or salaries and runs a payroll."
+    },
+    {
+      "id": "vat-registered",
+      "label": "Registered for VAT",
+      "description": "Registered for value added tax or a similar turnover tax."
+    }
+  ],
+  "profileFields": [
+    {
+      "key": "legalName",
+      "label": "Company name",
+      "description": "The registered name, including the Cía. Ltda. legal form. A limited liability company whose owners hold quotas.",
+      "example": "",
+      "type": "text",
+      "group": "identity",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "registrationNumber",
+      "label": "Número de compañía",
+      "description": "The number the company register gave the company.",
+      "example": "",
+      "type": "text",
+      "group": "registration",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "taxId",
+      "label": "RUC",
+      "description": "The company's tax number.",
+      "example": "",
+      "type": "text",
+      "group": "tax",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "key": "registeredOffice",
+      "label": "Registered office address",
+      "description": "The address on the company register.",
+      "example": "",
+      "type": "textarea",
+      "group": "address",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "key": "shareCapital",
+      "label": "Capital social",
+      "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
+      "example": "",
+      "type": "money",
+      "group": "capital",
+      "sensitive": false,
+      "includeInDocument": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    }
+  ],
+  "people": {
+    "roles": [
+      {
+        "id": "director",
+        "label": "Director",
+        "description": "Runs the company and represents it."
+      },
+      {
+        "id": "shareholder",
+        "label": "Shareholder",
+        "description": "Owns shares or a stake in the company."
+      },
+      {
+        "id": "founder",
+        "label": "Founder",
+        "description": "Set up the company."
+      }
+    ],
+    "fields": [
+      "name",
+      "role",
+      "ownershipPercent",
+      "appointedOn"
+    ]
+  },
+  "setupSteps": [
+    {
+      "id": "name",
+      "title": "Choose and check the Cía. Ltda. name",
+      "description": "Check the name is free in Superintendencia de Compañías and follows Ecuador's naming rules.",
+      "authority": "Superintendencia de Compañías",
+      "typicalCost": null,
+      "dependsOn": [],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "documents",
+      "title": "Prepare the Cía. Ltda. documents",
+      "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
+      "authority": "Superintendencia de Compañías",
+      "typicalCost": null,
+      "dependsOn": [
+        "name"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "register",
+      "title": "Register the Cía. Ltda.",
+      "description": "Submit the incorporation documents as Superintendencia de Compañías requires. The company exists once the register enters it.",
+      "authority": "Superintendencia de Compañías",
+      "typicalCost": null,
+      "dependsOn": [
+        "documents"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "tax",
+      "title": "Register the Cía. Ltda. for tax",
+      "description": "Register with SRI for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "SRI",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Register as an employer",
+      "description": "Before the first hire, register with IESS for payroll and social contributions.",
+      "authority": "IESS",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": false,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "bank",
+      "title": "Open a business bank account",
+      "description": "Banks usually ask for the registration certificate and the tax number.",
+      "authority": "Bank",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "licences",
+      "title": "Check licences for your activity",
+      "description": "Some activities need a permit or a licence from a sector regulator. Check before you start trading.",
+      "authority": "Sector regulator",
+      "typicalCost": null,
+      "dependsOn": [
+        "register"
+      ],
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "obligations": [
+    {
+      "id": "annual-return",
+      "title": "Annual return or confirmation statement",
+      "description": "Check whether an annual return or confirmation statement is due with Superintendencia de Compañías, then file it and keep the company record current.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Superintendencia de Compañías",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "annual-accounts",
+      "title": "Annual financial statements",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Superintendencia de Compañías, the deadline and whether an audit is required.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Superintendencia de Compañías",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "corporate-tax",
+      "title": "Corporate income tax return",
+      "description": "Check the company's income tax filing with SRI, then file the return and pay by the dates it sets.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "SRI",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax",
+        "government"
+      ]
+    },
+    {
+      "id": "vat",
+      "title": "VAT returns",
+      "description": "File VAT returns with SRI and pay any VAT due. Check whether the company is registered and how often it files.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "vat-registered"
+      ],
+      "subdivisions": [],
+      "authority": "SRI",
+      "checkLocally": true,
+      "sourceIds": [
+        "tax"
+      ]
+    },
+    {
+      "id": "payroll",
+      "title": "Payroll taxes and social contributions",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through IESS. Check the rates and dates.",
+      "frequency": "monthly",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "has-employees"
+      ],
+      "subdivisions": [],
+      "authority": "IESS",
+      "checkLocally": true,
+      "sourceIds": [
+        "social",
+        "tax"
+      ]
+    },
+    {
+      "id": "beneficial-ownership",
+      "title": "Beneficial ownership information",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Superintendencia de Compañías.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Superintendencia de Compañías",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "change-notification",
+      "title": "Report changes to the register",
+      "description": "Check what changes must be reported to Superintendencia de Compañías, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Superintendencia de Compañías",
+      "checkLocally": true,
+      "sourceIds": [
+        "registry",
+        "government"
+      ]
+    },
+    {
+      "id": "licence-renewal",
+      "title": "Renew licences and permits",
+      "description": "Check which licences your activity needs and renew them before they expire.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Sector regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "accounting",
+      "label": "Accounting"
+    },
+    {
+      "id": "banking",
+      "label": "Banking"
+    },
+    {
+      "id": "government-fees",
+      "label": "Government fees"
+    },
+    {
+      "id": "legal",
+      "label": "Legal"
+    },
+    {
+      "id": "office",
+      "label": "Office and registered address"
+    },
+    {
+      "id": "software",
+      "label": "Software and services"
+    },
+    {
+      "id": "insurance",
+      "label": "Insurance"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "documentTemplate": "# {{legalName}}\n\n- Número de compañía: {{registrationNumber}}\n- RUC: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+}

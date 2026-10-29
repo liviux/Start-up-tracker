@@ -16,11 +16,11 @@ const { startServer } = require("./helpers/server");
 const { browserFetch, sendJson, createStartup, saveOperations } = require("./helpers/api");
 
 const DIR = path.join(__dirname, "..", "content", "company-templates");
-const SHIPPED = ["us-llc", "us-c-corp", "cn-llc", "de-gmbh", "de-ug", "jp-kk", "jp-gk", "in-pvt-ltd", "in-llp", "uk-ltd", "fr-sas", "fr-sarl", "it-srl", "it-srls", "ca-corp", "br-ltda", "br-sa", "ro-srl"];
+const SHIPPED = fs.readdirSync(DIR).filter((name) => name.endsWith(".json") && name !== "index.json" && name !== "generic.json").map((name) => name.slice(0, -5)).sort();
 const read = (id) => JSON.parse(fs.readFileSync(path.join(DIR, `${id}.json`), "utf8"));
 const isDone = (status) => ["completed", "not_pursuing"].includes(status);
 
-test("the 18 templates and Generic ship, pass the schema and are listed", () => {
+test("every shipped template passes the schema and is listed", () => {
   templates.resetCache();
   const listed = templates.listTemplates();
   assert.deepEqual(listed.templates.map((t) => t.id).sort(), [...SHIPPED, "generic"].sort());
@@ -33,6 +33,34 @@ test("the 18 templates and Generic ship, pass the schema and are listed", () => 
   }
   assert.equal(templates.getTemplate("../secrets"), null, "ids are slugs only");
   assert.equal(templates.getTemplate("xx-none"), null);
+});
+
+test("the country index covers every country and every country has at least two major forms", () => {
+  const index = read("index");
+  const byCountry = new Map();
+  for (const id of SHIPPED) {
+    const template = read(id);
+    if (!template.country) continue;
+    if (!byCountry.has(template.country)) byCountry.set(template.country, []);
+    byCountry.get(template.country).push(template);
+  }
+  for (const code of index.ranking.countries) {
+    const forms = byCountry.get(code) || [];
+    assert.ok(forms.length >= 2, `${code} has ${forms.length} template(s)`);
+    for (const form of forms) assert.equal(form.country, code);
+  }
+  assert.ok(byCountry.size >= 195, `only ${byCountry.size} countries have templates`);
+});
+
+test("every country template has steps, obligations and a document", () => {
+  for (const id of SHIPPED) {
+    const template = read(id);
+    assert.ok(template.setupSteps.length >= 6, `${id}: ${template.setupSteps.length} setup steps`);
+    assert.ok(template.obligations.length >= 6, `${id}: ${template.obligations.length} obligations`);
+    assert.ok(template.sources.length >= 1, `${id}: no source`);
+    const doc = typeof template.documentTemplate === "string" ? template.documentTemplate : template.documentTemplate.en;
+    assert.match(doc, /\{\{people\}\}/, `${id}: document has no people`);
+  }
 });
 
 test("every step and obligation cites an official source or says to check locally", () => {
@@ -138,7 +166,10 @@ test("dates you add for event-driven obligations show with their status", () => 
 test("the page's helpers: template groups, due rules in words, your own due rules", () => {
   const grouped = CompanyPage.groupTemplates(templates.listTemplates().templates);
   assert.equal(grouped.generic.id, "generic");
-  assert.deepEqual(grouped.countries.find((group) => group.countryName === "Germany").templates.map((t) => t.id).sort(), ["de-gmbh", "de-ug"]);
+  assert.ok(grouped.countries.find((group) => group.countryName === "Germany").templates.some((t) => t.id === "de-gmbh"));
+  assert.ok(grouped.countries.find((group) => group.countryName === "Germany").templates.some((t) => t.id === "de-ug"));
+  const preferred = CompanyPage.groupTemplates(templates.listTemplates().templates, "US");
+  assert.equal(preferred.countries[0].templates[0].country, "US", "the current template's country comes first");
   const t = (key, params = {}) => `${key}${Object.keys(params).length ? JSON.stringify(params) : ""}`;
   assert.match(CompanyPage.dueText({ frequency: "monthly", due: { rule: "fixed-date", day: 22 } }, t), /everyMonth/);
   assert.match(CompanyPage.dueText({ frequency: "annual", due: { rule: "manual" } }, t), /company\.due\.manual/);

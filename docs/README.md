@@ -4,7 +4,7 @@ Startup Tracker keeps track of a startup's marketing (MK), programs and opportun
 
 - **Targets** in each section with statuses, categories, dates, notes, links between records and a full history.
 - A **calendar** and a daily **focus queue** across all sections.
-- **Company** templates for 18 legal forms in 11 countries, plus a generic one, with setup steps and recurring obligations from official sources.
+- **Company** templates for the major legal forms in 199 countries and territories, plus a generic one, with setup steps and recurring obligations from official sources.
 - **Prompts** filled with your startup's details, and **AI agents** on your computer (Claude Code, Codex, Gemini CLI and others) that save what they find straight into the tracker, with undo.
 - Automatic **backups**, a recycle bin, and export and import.
 

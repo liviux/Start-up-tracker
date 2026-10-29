@@ -8,25 +8,19 @@ The Company tab (COMP on badges) tracks the legal entity behind the startup: how
 
 ## Templates
 
-Pick the country and legal form in **Profile**. Each template brings setup steps, recurring obligations with their due dates, the fields a company of that form has, the roles of its people and the expense categories.
+Pick the country and legal form in **Profile**. The picker covers 199 countries and territories, from Afghanistan to Zimbabwe, including Hong Kong, Macau, Kosovo, Palestine and Taiwan. For each country it offers the major forms a founder is likely to use:
 
-| Country | Templates |
-|---|---|
-| United States | LLC (with the formation state), C corporation in Delaware |
-| China | Limited liability company (including foreign-owned) |
-| Germany | GmbH, UG (haftungsbeschränkt) |
-| Japan | Kabushiki Kaisha, Godo Kaisha |
-| India | Private Limited company, LLP |
-| United Kingdom | Private company limited by shares |
-| France | SAS (including SASU), SARL (including EURL) |
-| Italy | S.r.l., S.r.l.s. |
-| Canada | Corporation, federal or provincial |
-| Brazil | Ltda (including the single-member SLU), S.A. |
-| Romania | SRL |
+- the private limited liability company, the usual startup vehicle;
+- the public limited or joint-stock company;
+- a partnership or LLP where that is a common choice.
 
-The countries are the ten largest economies by nominal GDP in 2025 in the IMF World Economic Outlook (October 2026), without Russia, plus Romania. The picker says so and links to the IMF data.
+The first templates, for the United States, China, Germany, Japan, India, the United Kingdom, France, Italy, Canada, Brazil and Romania, keep their detailed steps, conditions and due rules. The newer country templates have the same shape: setup steps, recurring obligations, profile fields, people roles, expense categories and a document template. Where the official pages do not settle a fee or a date, they say **check locally** instead of guessing.
 
-**Generic** covers every other country or form. You name the legal form and the country, and add your own steps and obligations.
+The picker groups forms by country; the country of the template you already picked comes first, and Generic stays last. Each template brings setup steps, recurring obligations, the fields a company of that form has, the roles of its people and the expense categories.
+
+The countries are the ISO 3166-1 entries in the country picker, with Kosovo, Palestine and Taiwan added, plus Hong Kong and Macau, whose company law differs from mainland China. The picker's note links to the IMF data for the ten largest economies by nominal GDP in 2025.
+
+**Generic** covers any other country or form. You name the legal form and the country, and add your own steps and obligations.
 
 ### Sources
 

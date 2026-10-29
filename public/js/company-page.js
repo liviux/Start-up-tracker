@@ -61,7 +61,9 @@
   }
 
   // The template picker's groups: by country name, Generic on its own last.
-  function groupTemplates(templates) {
+  // The country of the current template goes first, so a long list opens near
+  // the place you were.
+  function groupTemplates(templates, preferredCountry = "") {
     const groups = new Map();
     let generic = null;
     for (const template of templates || []) {
@@ -73,8 +75,13 @@
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(template);
     }
+    const preferred = preferredCountry ? String(preferredCountry).toUpperCase() : "";
     return {
-      countries: [...groups].sort(([a], [b]) => a.localeCompare(b)).map(([countryName, list]) => ({ countryName, templates: list })),
+      countries: [...groups].sort(([a], [b]) => {
+        const ownA = preferred && groups.get(a)[0]?.country === preferred ? 0 : 1;
+        const ownB = preferred && groups.get(b)[0]?.country === preferred ? 0 : 1;
+        return ownA - ownB || a.localeCompare(b);
+      }).map(([countryName, list]) => ({ countryName, templates: list })),
       generic,
     };
   }
@@ -342,7 +349,7 @@
     // ---- Profile ----
 
     function profilePane(p) {
-      const grouped = groupTemplates(ui.templates);
+      const grouped = groupTemplates(ui.templates, ui.template?.country || "");
       const isGeneric = p.templateId === "generic";
       const options = [
         `<option value="">${escapeHtml(t("company.pickTemplate"))}</option>`,
@@ -355,7 +362,7 @@
         <section class="company-card">
           <h3>${escapeHtml(t("company.profile.entity"))}</h3>
           <div class="field-grid">
-            ${row(t("company.profile.template"), `<select id="companyTemplate" data-company-profile="templateId">${options}</select>`, ranking + (template ? `<p class="field-help">${escapeHtml(template.verifiedOn ? t("company.templateVerified", { date: template.verifiedOn }) : t("company.templateGeneric"))}</p>` : ""))}
+            ${row(t("company.profile.template"), `<select id="companyTemplate" data-company-profile="templateId">${options}</select>`, ranking + (template ? `<p class="field-help">${escapeHtml(template.verifiedOn ? t("company.templateVerified", { date: template.verifiedOn }) : template.id === "generic" ? t("company.templateGeneric") : t("company.templateUnverified"))}</p>` : ""))}
             ${isGeneric ? row(t("company.profile.legalForm"), `<input type="text" data-company-profile="legalForm" value="${escapeHtml(p.legalForm)}" maxlength="120">`, `<p class="field-help">${escapeHtml(t("company.profile.legalFormHelp"))}</p>`) : ""}
             ${isGeneric ? row(t("company.profile.countryName"), `<input type="text" data-company-profile="countryName" value="${escapeHtml(p.countryName)}" maxlength="120">`) : ""}
             ${template?.subdivision ? row(text(template.subdivision.label), `<select data-company-profile="subdivision"><option value="">${escapeHtml(t("company.profile.pickSubdivision"))}</option>${template.subdivision.options.map((option) => `<option value="${escapeHtml(option.code)}"${option.code === p.subdivision ? " selected" : ""}>${escapeHtml(text(option.name))}</option>`).join("")}</select>`, template.subdivision.required && !p.subdivision ? `<p class="field-help is-warning">${escapeHtml(t("company.profile.subdivisionNeeded"))}</p>` : "") : ""}

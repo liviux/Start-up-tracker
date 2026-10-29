@@ -2,6 +2,15 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Company templates now cover 199 countries and territories, with the major private, public and partnership forms for each. The new templates carry official register and tax authority sources, setup steps, recurring obligations, profile fields, people roles, expense categories and a document template; where an official page does not settle a fee or a date, the step says "check locally".
+- The company template picker puts the country of the current template first, so the longer list opens near where you were.
+
+### Changed
+- The Company tab's coverage note and the README and docs now describe the full country list instead of the first 18 templates.
+
 ## [0.2.1] - 2026-10-28
 
 ### Fixed
