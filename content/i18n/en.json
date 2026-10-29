@@ -1595,6 +1595,12 @@
       },
       "theme": "Theme style",
       "themeHint": "Each style changes the layout, type and colours, not only the palette. The preview shows the Calendar view; light and dark mode still apply.",
+      "tryLiveTitle": "Try themes live",
+      "tryLiveHint": "A small switcher floats at the top of the screen while you move around the app. Close it with ×.",
+      "tryLiveTheme": "Try the {name} theme",
+      "tryLiveClose": "Close the theme switcher",
+      "tryLiveOpen": "Open",
+      "tryLiveOpenState": "Open now",
       "default": "Default",
       "sectionColors": "Section colours",
       "sectionColorsHint": "Marketing, Programs, Funding and Company each have a colour, used for chips, counts and dots across the app. The section code is always shown next to it, so colour is never the only signal.",
@@ -1649,6 +1655,10 @@
         "signal": {
           "name": "Signal",
           "description": "A hard-edged switchboard: a top strip, square tabs and safety orange."
+        },
+        "coda": {
+          "name": "Coda",
+          "description": "A closing programme: a backstage rail on the right, ivory paper, a serif voice and one chartreuse light."
         }
       },
       "themeCredit": "Built with {skill}"

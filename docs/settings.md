@@ -18,9 +18,11 @@ Every startup with its icon, creation date, number of records and media size. Ad
 
 ## Appearance
 
-Shared. Light, dark or follow the system, and one of eleven themes. Each card shows a screenshot of the Calendar in that theme; the theme changes the layout and type as well as the colours, and light or dark still applies on top. The choice is also kept in the browser so the page opens in it without a flash.
+Shared. Light, dark or follow the system, and one of twelve themes. Each card shows a screenshot of the Calendar in that theme; the theme changes the layout and type as well as the colours, and light or dark still applies on top. The choice is also kept in the browser so the page opens in it without a flash.
 
-The default is **Studio**. The other ten were built with five design skills, two themes each:
+**Try themes live** is the first button under Theme style. It closes Settings and opens a small switcher at the top centre of the screen, with a three-letter key for each theme. Hover a key to see its name, or press it to apply the theme and save it; the bar stays open while you move around the app and until you close it with ×.
+
+The default is **Studio**. Ten more were built with five design skills, two themes each, and **Coda** closes the collection:
 
 | Skill | Themes |
 | --- | --- |
@@ -29,6 +31,8 @@ The default is **Studio**. The other ten were built with five design skills, two
 | impeccable | Lacquer, Shinjuku |
 | emilkowalski/skills | Quiet, Tactile |
 | hallmark | Broadsheet, Signal |
+
+**Coda** is the closing theme: a backstage rail on the right, warm ivory paper, a serif voice and one chartreuse cue.
 
 An older saved theme id opens the new theme that carries its idea, so nobody drops back to Studio after an update.
 

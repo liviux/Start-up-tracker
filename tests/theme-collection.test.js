@@ -1,6 +1,7 @@
 // The theme collection: one default, ten layout themes built from five design
-// skills, each with a screenshot in the picker. These checks keep the server
-// list, the browser list, the stylesheets and the assets in step.
+// skills and the closing Coda theme, each with a screenshot in the picker.
+// These checks keep the server list, the browser list, the stylesheets and the
+// assets in step.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -12,7 +13,8 @@ const { THEMES } = Settings;
 const { previewJobs } = require("../tools/theme-previews.js");
 
 const ROOT = path.resolve(__dirname, "..");
-const NEW_THEMES = ["ledger", "nightshift", "fieldnotes", "meridian", "lacquer", "shinjuku", "quiet", "tactile", "broadsheet", "signal"];
+const SKILL_THEMES = ["ledger", "nightshift", "fieldnotes", "meridian", "lacquer", "shinjuku", "quiet", "tactile", "broadsheet", "signal"];
+const NEW_THEMES = [...SKILL_THEMES, "coda"];
 const SKILLS = ["UI UX Pro Max", "taste-skill", "Impeccable", "Emil Kowalski's skills", "Hallmark"];
 
 function read(file) {
@@ -45,21 +47,22 @@ function selectorsIn(css) {
   return found;
 }
 
-test("there are eleven themes, the default first, and the server and browser agree", () => {
-  assert.equal(THEMES.length, 11);
-  assert.equal(new Set(THEMES).size, 11);
+test("there are twelve themes, the default first, and the server and browser agree", () => {
+  assert.equal(THEMES.length, 12);
+  assert.equal(new Set(THEMES).size, 12);
   assert.equal(THEMES[0], "studio");
   assert.deepEqual([...Appearance.THEMES], [...THEMES]);
   assert.deepEqual([...NEW_THEMES], THEMES.slice(1));
 });
 
-test("each theme came from a design skill, two themes per skill", () => {
-  const credits = NEW_THEMES.map((id) => Appearance.THEME_CREDITS[id]);
+test("the ten skill themes credit their skill, two themes per skill", () => {
+  const credits = SKILL_THEMES.map((id) => Appearance.THEME_CREDITS[id]);
   assert.deepEqual(new Set(credits), new Set(SKILLS));
   for (const skill of SKILLS) {
     assert.equal(credits.filter((entry) => entry === skill).length, 2, skill);
   }
   assert.equal(Appearance.THEME_CREDITS.studio, "");
+  assert.equal(Appearance.THEME_CREDITS.coda, "", "the closing theme is its own design");
 });
 
 test("every theme has a real stylesheet with light and dark tokens", () => {
@@ -106,6 +109,15 @@ test("every theme has a screenshot for the picker", () => {
   for (const id of NEW_THEMES) {
     assert.ok(fs.statSync(path.join(ROOT, "public", "assets", "theme-previews", `${id}.jpg`)).size < 500 * 1024, `${id}.jpg stays light`);
   }
+});
+
+test("the picker keeps each hidden radio inside its card", () => {
+  // The radio is visually hidden with position: absolute. Without a positioned
+  // card it belongs to the dialog, escapes the scrolling settings content and
+  // makes focusing it scroll the whole panel out of place.
+  const css = read("public/styles/taste-variants.css");
+  const rule = css.match(/\.taste-theme-card\s*\{([\s\S]*?)\}/)?.[1] || "";
+  assert.match(rule, /position:\s*relative/, "the card is the radio's containing block");
 });
 
 test("the picker names and describes every theme in English", () => {

@@ -1,8 +1,8 @@
 /* ==========================================================================
    STARTUP TRACKER - DEFAULT THEME AND THEME PICKER
-   Studio (Apple-inspired fluid depth) is the default. The ten layout themes
-   built from the five design skills live in styles/themes/, one file each,
-   and load after this file so they can rearrange the shell.
+   Studio (Apple-inspired fluid depth) is the default. The eleven layout themes
+   (ten built from five design skills, plus Coda) live in styles/themes/, one
+   file each, and load after this file so they can rearrange the shell.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -23,6 +23,10 @@
 }
 
 .taste-theme-card {
+  /* The visually hidden radio is absolutely positioned. Keep its containing
+     block on the card: relative to the dialog it would escape the settings
+     content's scroll area, and focusing it would scroll the whole panel. */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0;

@@ -36,3 +36,9 @@
 @import url("./styles/themes/tactile.css");
 @import url("./styles/themes/broadsheet.css");
 @import url("./styles/themes/signal.css");
+@import url("./styles/themes/coda.css");
+/* The live theme switcher loads after every theme so its reserved top strip
+   and floating bar sit above whatever a theme does to the shell. */
+@import url("./styles/live-themes.css");
+/* Keep this file's last line changing when the theme files above do, so a
+   browser holding an old cached copy of this sheet fetches the new imports. */

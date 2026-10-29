@@ -1,0 +1,2293 @@
+/* Coda · theme: coda (the closing theme) · genre: stage editorial · shape: app screen
+ * material: warm ivory stock, an aubergine backstage rail, brick-red cue cards and one
+ * chartreuse light · nav: a right-hand playbill with numbered keys · signature: the page
+ * title lit like a stage marker and the calendar cut into a programme and its figures
+ * direction: the work stays on paper while the navigation lives backstage. The shell
+ * reads like the last page of a programme: quiet rules, a serif voice, one bright cue. */
+
+/* --------------------------------------------------------------------------
+   Tokens: light — ivory paper, brick ink, acid cue
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"],
+html:root[data-taste="coda"][data-active-app-tab] {
+  color-scheme: light;
+
+  --bg: #f4ede1;
+  --surface: #fcf7ee;
+  --surface-soft: #efe5d7;
+  --surface-strong: #e5d8c6;
+  --text: #1d1418;
+  --text-soft: #46353d;
+  --muted: #74626b;
+  --muted-strong: #57464f;
+  --border: #d9cbb9;
+  --border-strong: #a8927c;
+  --accent: #9b3c2d;
+  --accent-hover: #7d2e22;
+  --accent-deep: #9b3c2d;
+  --accent-contrast: #fff8ec;
+  --accent-soft: #efdcd1;
+  --accent-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --cue: #d8ec59;
+  --cue-soft: #edf6b1;
+  --cue-ink: #17130d;
+  --plum-bg: #21131b;
+
+  --page-accent-rgb: 155, 60, 45;
+  --page-support-rgb: 169, 146, 124;
+  --page-contrast-rgb: 29, 20, 24;
+  --page-title-gradient-end: var(--accent);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-soft);
+  --page-panel-strong-bg: var(--accent-soft);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: 0 12px 28px -18px rgb(52 28 22 / 45%);
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: 0 1px 0 rgb(52 28 22 / 8%), 0 16px 36px -28px rgb(52 28 22 / 38%);
+  --shadow-soft: 0 1px 0 rgb(52 28 22 / 7%);
+  --shadow-lg: 0 34px 80px -28px rgb(33 19 27 / 42%);
+
+  --radius: 10px;
+  --radius-sm: 3px;
+  --radius-lg: 18px;
+  --radius-pill: 2px;
+
+  --sidebar-width: 0px;
+  --sidebar-bg: #21131b;
+  --sidebar-text: #f7ecdd;
+  --sidebar-muted: #bda7ae;
+
+  --control-height: 36px;
+  --control-height-sm: 30px;
+  --pill-height: 22px;
+  --row-gap: 22px;
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", "P052", "Liberation Serif", Georgia, serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-body);
+  --font-mono: "DejaVu Sans Mono", "Noto Sans Mono", "Liberation Mono", monospace;
+  --font-label: var(--font-mono);
+
+  --section-mk: #9b3c2d;
+  --section-mk-bg: #f2ddd3;
+  --section-mk-fg: #7d2e22;
+  --section-mk-border: #d8b4a6;
+  --section-mk-rgb: 155, 60, 45;
+  --section-po: #5b4a96;
+  --section-po-bg: #e9e3f4;
+  --section-po-fg: #493a80;
+  --section-po-border: #c9bde3;
+  --section-po-rgb: 91, 74, 150;
+  --section-fu: #8a6a1d;
+  --section-fu-bg: #f5ebcb;
+  --section-fu-fg: #6f5514;
+  --section-fu-border: #dccb92;
+  --section-fu-rgb: 138, 106, 29;
+  --section-comp: #2e6d60;
+  --section-comp-bg: #dcece5;
+  --section-comp-fg: #245649;
+  --section-comp-border: #b2d2c7;
+  --section-comp-rgb: 46, 109, 96;
+
+  --status-slate-bg: transparent;
+  --status-slate-color: var(--text-soft);
+  --status-slate-border: var(--border-strong);
+  --status-slate-solid-bg: var(--text);
+  --status-slate-solid-text: var(--bg);
+  --status-amber-bg: #f5ebcb;
+  --status-amber-color: #6f5514;
+  --status-amber-border: #dccb92;
+  --status-amber-solid-bg: #8a6a1d;
+  --status-amber-solid-text: #fff8ec;
+  --status-indigo-bg: #e9e3f4;
+  --status-indigo-color: #493a80;
+  --status-indigo-border: #c9bde3;
+  --status-indigo-solid-bg: #5b4a96;
+  --status-indigo-solid-text: #fff8ec;
+  --status-green-bg: #dcece5;
+  --status-green-color: #245649;
+  --status-green-border: #b2d2c7;
+  --status-green-solid-bg: #2e6d60;
+  --status-green-solid-text: #fff8ec;
+  --status-red-bg: #f2ddd3;
+  --status-red-color: #7d2e22;
+  --status-red-border: #d8b4a6;
+  --status-red-solid-bg: #9b3c2d;
+  --status-red-solid-text: #fff8ec;
+}
+
+/* --------------------------------------------------------------------------
+   Tokens: dark — the house after the last cue
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"][data-theme="dark"],
+html:root[data-taste="coda"][data-theme="dark"][data-active-app-tab] {
+  color-scheme: dark;
+
+  --bg: #150f12;
+  --surface: #1e161a;
+  --surface-soft: #261c21;
+  --surface-strong: #31242a;
+  --text: #f3e9dc;
+  --text-soft: #d2c2b6;
+  --muted: #a68f96;
+  --muted-strong: #c0aab1;
+  --border: #3b2b32;
+  --border-strong: #5c434d;
+  --accent: #e8967c;
+  --accent-hover: #f4ad95;
+  --accent-deep: #a84933;
+  --accent-contrast: #1d100b;
+  --accent-soft: #3d2721;
+  --accent-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --cue: #d8ec59;
+  --cue-soft: #38411c;
+  --cue-ink: #17130d;
+  --plum-bg: #0f090d;
+
+  --page-accent-rgb: 232, 150, 124;
+  --page-support-rgb: 92, 67, 77;
+  --page-contrast-rgb: 243, 233, 220;
+  --page-title-gradient-end: var(--accent);
+  --page-shell-bg: var(--surface);
+  --page-shell-border: var(--border);
+  --page-panel-bg: var(--surface);
+  --page-panel-soft-bg: var(--surface-soft);
+  --page-panel-muted-bg: var(--surface-soft);
+  --page-panel-strong-bg: var(--accent-soft);
+  --page-elevated-bg: var(--surface);
+  --page-elevated-soft-bg: var(--surface-soft);
+  --page-focus-border: var(--accent);
+  --page-hover-shadow: 0 18px 34px -24px rgb(0 0 0 / 70%);
+  --page-bg-glow-1: transparent;
+  --page-bg-glow-2: transparent;
+  --page-bg-glow-3: transparent;
+
+  --shadow: 0 1px 0 rgb(0 0 0 / 30%), 0 18px 40px -30px rgb(0 0 0 / 70%);
+  --shadow-soft: 0 1px 0 rgb(0 0 0 / 26%);
+  --shadow-lg: 0 38px 90px -30px rgb(0 0 0 / 80%);
+
+  --sidebar-bg: #0f090d;
+  --sidebar-text: #f6ecdf;
+  --sidebar-muted: #a7909a;
+
+  --section-mk: #eda189;
+  --section-mk-bg: #3e2621;
+  --section-mk-fg: #f6c2ae;
+  --section-mk-border: #6e453a;
+  --section-mk-rgb: 237, 161, 137;
+  --section-po: #b4a6e8;
+  --section-po-bg: #2d2741;
+  --section-po-fg: #d3caf7;
+  --section-po-border: #4e4470;
+  --section-po-rgb: 180, 166, 232;
+  --section-fu: #e0c06b;
+  --section-fu-bg: #3b321e;
+  --section-fu-fg: #f1d88d;
+  --section-fu-border: #67582f;
+  --section-fu-rgb: 224, 192, 107;
+  --section-comp: #8dd1bd;
+  --section-comp-bg: #1d3731;
+  --section-comp-fg: #b3e6d7;
+  --section-comp-border: #37675c;
+  --section-comp-rgb: 141, 209, 189;
+
+  --status-slate-bg: transparent;
+  --status-slate-color: var(--text-soft);
+  --status-slate-border: var(--border-strong);
+  --status-slate-solid-bg: var(--text);
+  --status-slate-solid-text: var(--bg);
+  --status-amber-bg: #3b321e;
+  --status-amber-color: #f1d88d;
+  --status-amber-border: #67582f;
+  --status-amber-solid-bg: #e0c06b;
+  --status-amber-solid-text: #1d100b;
+  --status-indigo-bg: #2d2741;
+  --status-indigo-color: #d3caf7;
+  --status-indigo-border: #4e4470;
+  --status-indigo-solid-bg: #b4a6e8;
+  --status-indigo-solid-text: #1d100b;
+  --status-green-bg: #1d3731;
+  --status-green-color: #b3e6d7;
+  --status-green-border: #37675c;
+  --status-green-solid-bg: #8dd1bd;
+  --status-green-solid-text: #10221d;
+  --status-red-bg: #3e2621;
+  --status-red-color: #f6c2ae;
+  --status-red-border: #6e453a;
+  --status-red-solid-bg: #e8967c;
+  --status-red-solid-text: #1d100b;
+}
+
+/* --------------------------------------------------------------------------
+   Ground, ink and the stage light
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"] body {
+  min-height: 100dvh;
+  overflow-x: clip;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 55% 34% at 22% -4%, rgb(216 236 89 / 9%), transparent 68%),
+    linear-gradient(90deg, rgb(82 48 37 / 2%) 0 1px, transparent 1px 100%);
+  background-size: auto, 82px 100%;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html:root[data-taste="coda"][data-theme="dark"] body {
+  background-image:
+    radial-gradient(ellipse 52% 32% at 18% -6%, rgb(216 236 89 / 6%), transparent 66%),
+    linear-gradient(90deg, rgb(243 233 220 / 2.5%) 0 1px, transparent 1px 100%);
+}
+
+html:root[data-taste="coda"] ::selection {
+  background: var(--cue);
+  color: var(--cue-ink);
+}
+
+html:root[data-taste="coda"] :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+html:root[data-taste="coda"] :is(h1, h2, h3, h4) {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+html:root[data-taste="coda"] :is(button, input, select, textarea) {
+  font-family: var(--font-body);
+}
+
+html:root[data-taste="coda"] .app-shell {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 268px 0 0;
+}
+
+html:root[data-taste="coda"] .app-shell > main {
+  width: 100%;
+  max-width: 1420px;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 44px 48px 92px;
+}
+
+/* The page sits on paper while the rail is the dark stage wing. */
+html:root[data-taste="coda"] .shell-sidebar {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  width: 268px;
+  height: auto;
+  padding: 30px 22px 26px;
+  overflow-y: auto;
+  border-left: 1px solid #3c2531;
+  background-color: var(--plum-bg, #21131b);
+  background-image:
+    radial-gradient(ellipse 90% 38% at 50% 0%, rgb(216 236 89 / 10%), transparent 72%),
+    linear-gradient(180deg, #24151e 0%, #1b1016 72%, #150c11 100%);
+  color: var(--sidebar-text);
+  box-shadow: -18px 0 50px -32px rgb(20 8 14 / 55%);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .identity {
+  padding: 0 0 26px;
+  border-bottom: 1px solid rgb(247 236 221 / 14%);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .title-row {
+  gap: 11px;
+  align-items: center;
+  white-space: normal;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .topbar-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  filter: grayscale(1) brightness(1.75);
+  box-shadow: 0 0 0 1px rgb(247 236 221 / 18%);
+}
+
+html:root[data-taste="coda"] .shell-sidebar h1 {
+  margin: 0;
+  color: var(--sidebar-text);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+/* The startup is the playbill's top line, not a menu button. */
+html:root[data-taste="coda"] .shell-sidebar .startup-switcher {
+  width: 100%;
+  margin: 20px 0 0;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-switcher-button {
+  gap: 9px;
+  width: 100%;
+  min-height: 46px;
+  padding: 7px 9px;
+  border: 1px solid rgb(247 236 221 / 17%);
+  border-radius: 2px;
+  background: rgb(247 236 221 / 5%);
+  color: var(--sidebar-text);
+  text-align: left;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-switcher-button:hover {
+  border-color: rgb(216 236 89 / 62%);
+  background: rgb(247 236 221 / 8%);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-switcher.open .startup-switcher-button {
+  border-color: var(--cue);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-icon {
+  flex-basis: 27px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: var(--cue);
+  color: var(--cue-ink);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-switcher-caption {
+  color: var(--sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-switcher-name {
+  color: var(--sidebar-text);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-switcher-chevron {
+  flex-basis: 14px;
+  width: 14px;
+  height: 14px;
+  color: var(--sidebar-muted);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-switcher-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: auto;
+  z-index: 30;
+  width: 292px;
+  max-width: calc(100vw - 32px);
+  margin: 0;
+  padding: 6px;
+  border: 1px solid #4a303b;
+  border-radius: 2px;
+  background: #1b1016;
+  color: var(--sidebar-text);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-menu-item {
+  min-height: 38px;
+  padding: 7px 9px;
+  border-radius: 2px;
+  color: var(--sidebar-muted);
+  font-size: 12.5px;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-menu-item:hover,
+html:root[data-taste="coda"] .shell-sidebar .startup-menu-item:focus-visible {
+  background: rgb(247 236 221 / 8%);
+  color: var(--sidebar-text);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-menu-item[aria-current="page"] {
+  background: rgb(216 236 89 / 12%);
+  color: var(--cue);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .startup-menu-separator {
+  background: rgb(247 236 221 / 14%);
+}
+
+/* The navigation is a numbered playbill. */
+html:root[data-taste="coda"] #appTabs {
+  counter-reset: coda-key;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  margin: 24px 0 0;
+  padding: 0;
+  overflow: visible !important;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button {
+  counter-increment: coda-key;
+  position: relative;
+  display: grid;
+  grid-template-columns: 31px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 47px;
+  padding: 10px 10px;
+  border: 0;
+  border-top: 1px solid rgb(247 236 221 / 11%);
+  border-radius: 0;
+  background: transparent;
+  color: var(--sidebar-muted);
+  box-shadow: none;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  white-space: normal;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button::before {
+  content: counter(coda-key, decimal-leading-zero);
+  color: var(--sidebar-muted);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  transition: color 140ms ease;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button img {
+  display: none;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button::after {
+  content: none;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-label {
+  display: inline;
+  flex-direction: row;
+  align-items: baseline;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-label span {
+  display: inline;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button:hover {
+  border-color: rgb(247 236 221 / 11%) !important;
+  background: rgb(247 236 221 / 6%) !important;
+  color: var(--sidebar-text) !important;
+  transform: none;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button:hover::before {
+  color: var(--cue);
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button.active {
+  border-top-color: transparent !important;
+  border-bottom: 1px solid transparent;
+  background: var(--cue) !important;
+  color: var(--cue-ink) !important;
+  box-shadow: none !important;
+  font-weight: 700;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button.active::before {
+  color: var(--cue-ink);
+  font-style: italic;
+  font-weight: 500;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+
+html:root[data-taste="coda"] #appTabs .app-tab-button.active .app-tab-badge {
+  background: var(--cue-ink);
+  color: var(--cue);
+}
+
+html:root[data-taste="coda"] .shell-sidebar .sidebar-footer {
+  display: grid;
+  gap: 4px;
+  margin-top: auto;
+  padding: 24px 0 0;
+  border-top: 1px solid rgb(247 236 221 / 14%);
+  color: var(--sidebar-muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .sidebar-footer > span:first-child {
+  color: var(--sidebar-text);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .sidebar-version {
+  color: var(--sidebar-muted);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+html:root[data-taste="coda"] .shell-sidebar .sidebar-version:hover {
+  color: var(--cue);
+}
+
+html:root[data-taste="coda"] .shell-sidebar :is(button, a):focus-visible {
+  outline-color: var(--cue);
+}
+
+html:root[data-taste="coda"] .setup-badge {
+  position: fixed;
+  bottom: 22px;
+  left: 22px;
+  z-index: 75;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  min-height: 34px;
+  margin: 0;
+  padding: 7px 12px;
+  border: 1px solid var(--cue-ink);
+  border-radius: 2px;
+  background: var(--cue);
+  color: var(--cue-ink);
+  box-shadow: 4px 4px 0 var(--cue-ink);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .setup-badge:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--cue-ink);
+}
+
+html:root[data-taste="coda"] .setup-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Top bar: the utility shelf, quiet against the paper
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"] .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  display: flex;
+  min-height: 64px;
+  margin: 0;
+  padding: 13px 48px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  box-shadow: none;
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+}
+
+html:root[data-taste="coda"] .topbar .shell-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .topbar .shell-breadcrumb span:last-child {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+html:root[data-taste="coda"] .topbar-actions {
+  flex-wrap: nowrap;
+  gap: 5px;
+  margin-left: auto;
+}
+
+html:root[data-taste="coda"] .topbar .icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="coda"] .topbar .icon-button:hover {
+  border-color: var(--border);
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+html:root[data-taste="coda"] .topbar .global-search.expanded .global-search-field {
+  width: 226px;
+  max-width: 226px;
+  height: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 rgb(52 28 22 / 5%);
+}
+
+html:root[data-taste="coda"] .topbar .global-search-field input {
+  font-size: 12px;
+}
+
+html:root[data-taste="coda"] .topbar #settingsButton,
+html:root[data-taste="coda"] .topbar #projectLinksToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 34px;
+  min-height: 34px !important;
+  padding: 0 11px !important;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: 9px !important;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .topbar #settingsButton:hover,
+html:root[data-taste="coda"] .topbar #projectLinksToggle:hover {
+  border-color: var(--text);
+  background: var(--surface);
+  color: var(--text);
+}
+
+html:root[data-taste="coda"] .topbar #settingsButton svg,
+html:root[data-taste="coda"] .topbar #projectLinksToggle svg {
+  width: 14px;
+  height: 14px;
+}
+
+html:root[data-taste="coda"] .topbar .save-state-text {
+  position: relative;
+  max-width: 122px;
+  height: 24px;
+  margin: 0 6px 0 2px;
+  padding: 0 9px 0 21px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 22px;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] .topbar .save-state-text::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  border-radius: 50%;
+  background: var(--cue);
+  box-shadow: 0 0 0 2px rgb(216 236 89 / 22%);
+}
+
+html:root[data-taste="coda"] .topbar .save-state-text:is(.saved, .synced) {
+  color: var(--text-soft);
+  background: var(--surface);
+}
+
+html:root[data-taste="coda"] .topbar .save-state-text.saving {
+  color: var(--accent);
+}
+
+html:root[data-taste="coda"] .topbar .save-state-text.conflict {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+html:root[data-taste="coda"] .global-search-results,
+html:root[data-taste="coda"] .project-links-menu {
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* --------------------------------------------------------------------------
+   Page headings: the title lit by a stage marker
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"] .shell-heading,
+html:root[data-taste="coda"] .app-view[data-section] > .shell-heading {
+  position: relative;
+  margin: 0 0 32px;
+  padding: 0 0 0 19px;
+  border-left: 5px solid var(--cue);
+}
+
+html:root[data-taste="coda"] .app-view[data-section] > .shell-heading::before {
+  content: none;
+  display: none;
+}
+
+html:root[data-taste="coda"] .shell-heading h2,
+html:root[data-taste="coda"] #calendarView > .shell-heading h2 {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.2vw, 62px);
+  font-weight: 500;
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+}
+
+html:root[data-taste="coda"] .shell-heading p,
+html:root[data-taste="coda"] #calendarView > .shell-heading p {
+  max-width: 68ch;
+  margin: 13px 0 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.035em;
+  line-height: 1.65;
+}
+
+html:root[data-taste="coda"] #calendarView > .shell-heading {
+  margin-bottom: 28px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-scope {
+  align-self: flex-start;
+  margin: 4px 0 0;
+}
+
+html:root[data-taste="coda"] .scope-switch {
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="coda"] .scope-switch-button {
+  min-height: 27px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .scope-switch-button[aria-pressed="true"] {
+  background: transparent;
+  color: var(--text);
+  box-shadow: inset 0 -2px 0 var(--accent);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   Controls: flat cue cards, not glossy pills
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"] :is(.primary-button, .secondary-button, .danger-button, .icon-button) {
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] .primary-button {
+  min-height: var(--control-height);
+  padding: 0 15px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .primary-button:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  color: var(--accent-contrast);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root[data-taste="coda"] .secondary-button {
+  min-height: var(--control-height);
+  padding: 0 13px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .secondary-button:hover {
+  border-color: var(--text);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: none;
+  transform: none;
+}
+
+html:root[data-taste="coda"] .icon-button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+html:root[data-taste="coda"] .icon-button:hover {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+html:root[data-taste="coda"] :is(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"]), select, textarea) {
+  border-color: var(--border-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+html:root[data-taste="coda"] :is(input, select, textarea):focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgb(155 60 45 / 14%);
+}
+
+html:root[data-taste="coda"] :is(.status-pill, .priority-pill, .category-pill, .section-chip, .cal-badge) {
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .section-chip {
+  min-width: 24px;
+  padding: 1px 5px;
+  border: 1px solid var(--section-border);
+  background: var(--section-bg);
+  color: var(--section-fg);
+}
+
+/* --------------------------------------------------------------------------
+   Summary strip: figures on a programme
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"] :is(.summary-grid, .manager-summary-grid, .feedback-summary-grid) {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+  gap: 0 !important;
+  width: 100% !important;
+  margin: 0 0 30px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-top: 3px solid var(--text);
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: transparent;
+}
+
+html:root[data-taste="coda"] .metric-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  width: auto !important;
+  min-height: 104px !important;
+  height: auto !important;
+  max-height: none !important;
+  padding: 16px 18px !important;
+  border: 0 !important;
+  border-right: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+  transform: none !important;
+}
+
+html:root[data-taste="coda"] .metric-card:last-child {
+  border-right: 0 !important;
+}
+
+html:root[data-taste="coda"] .metric-card:hover {
+  border-color: var(--border) !important;
+  background: rgb(216 236 89 / 9%) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html:root[data-taste="coda"] .metric-label {
+  order: 1 !important;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.45 !important;
+  text-transform: uppercase !important;
+}
+
+html:root[data-taste="coda"] .metric-value {
+  order: 2 !important;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 36px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.04em !important;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="coda"] .metric-card[data-metric="done"] .metric-value,
+html:root[data-taste="coda"] .metric-card[data-metric="received"] .metric-value {
+  color: var(--accent);
+}
+
+html:root[data-taste="coda"] .metric-currency {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   Calendar: a programme above, its figures beside the detail
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"] #calendarView .calendar-layout-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(292px, 0.72fr);
+  grid-template-areas:
+    "strip strip"
+    "toggles toggles"
+    "filter filter"
+    "detail summary";
+  align-items: start;
+  gap: 18px 24px;
+  margin-top: 0;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-strip-container {
+  grid-area: strip;
+  position: relative;
+  gap: 16px;
+  padding: 22px 22px 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--text);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-strip-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 22px;
+  width: 72px;
+  height: 4px;
+  background: var(--cue);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-strip-top-row {
+  gap: 14px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-nav-column,
+html:root[data-taste="coda"] #calendarView .calendar-strip-side,
+html:root[data-taste="coda"] #calendarView .calendar-strip-side-actions {
+  gap: 6px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-nav-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-soft);
+  box-shadow: none;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-nav-btn-sub {
+  width: 30px;
+  height: 34px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-nav-btn:hover {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+  transform: none;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-nav-btn:active {
+  transform: none;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-month-toggle.active {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--cue);
+  transform: rotate(180deg);
+}
+
+html:root[data-taste="coda"] #calendarView #calendarTodayBtn {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--cue-ink);
+  border-radius: 2px;
+  background: var(--cue);
+  color: var(--cue-ink);
+  box-shadow: 3px 3px 0 var(--cue-ink);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] #calendarView #calendarTodayBtn:hover {
+  background: var(--cue-soft);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--cue-ink);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-strip-viewport {
+  min-height: 136px;
+  padding: 13px 0 6px;
+  border-radius: 0;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-days-strip {
+  grid-template-columns: repeat(9, minmax(72px, 1fr));
+  gap: 7px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card {
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 124px;
+  padding: 10px 9px 8px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  text-align: left;
+  box-shadow: none;
+  transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card:active {
+  transform: none;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card.today {
+  border-color: var(--accent);
+  background: var(--surface-soft);
+  box-shadow: inset 0 3px 0 var(--accent);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card.today::before {
+  content: "Today";
+  top: -10px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 17px;
+  text-transform: uppercase;
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card.selected {
+  border-color: var(--cue-ink) !important;
+  background: var(--cue) !important;
+  color: var(--cue-ink) !important;
+  box-shadow: 4px 4px 0 var(--cue-ink) !important;
+  transform: translate(-1px, -1px);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card.selected .day-name,
+html:root[data-taste="coda"] #calendarView .calendar-day-card.selected .day-number,
+html:root[data-taste="coda"] #calendarView .calendar-day-card.selected .day-month {
+  color: var(--cue-ink) !important;
+  opacity: 1;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card.selected.today::before {
+  background: var(--cue-ink);
+  color: var(--cue);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card .day-name {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card .day-number {
+  margin: 3px 0 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card .day-month {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card .day-summary {
+  gap: 3px;
+  margin-top: auto;
+  padding-top: 8px;
+  justify-content: flex-start;
+}
+
+html:root[data-taste="coda"] #calendarView .summary-pill,
+html:root[data-taste="coda"] #calendarView .cal-title-badge,
+html:root[data-taste="coda"] #calendarView .day-count {
+  min-width: 16px;
+  padding: 0 3px;
+  border: 1px solid var(--section-border, var(--border-strong));
+  border-radius: 2px;
+  background: var(--section-bg, transparent);
+  color: var(--section-fg, var(--text-soft));
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-day-card.selected .summary-pill {
+  border-color: rgb(23 19 13 / 26%) !important;
+  background: rgb(23 19 13 / 8%) !important;
+  color: var(--cue-ink) !important;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-toggles {
+  grid-area: toggles;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-filter-bar {
+  grid-area: filter;
+  margin: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="coda"] #calendarView .focus-filter-shell-summary,
+html:root[data-taste="coda"] #calendarView .manager-focus-filter-shell-summary {
+  min-height: 38px;
+  padding: 8px 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] #calendarView .focus-filter-shell-title,
+html:root[data-taste="coda"] #calendarView .manager-focus-filter-shell-title {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] :is(.focus-filter-shell-state, .manager-focus-filter-shell-state) {
+  min-height: 20px;
+  padding: 0 7px;
+  border-radius: 2px;
+  background: var(--cue-soft);
+  color: var(--cue-ink);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+}
+
+html:root[data-taste="coda"][data-theme="dark"] :is(.focus-filter-shell-state, .manager-focus-filter-shell-state) {
+  color: var(--cue);
+}
+
+/* The detail is the programme page; the summary is its margin of figures. */
+html:root[data-taste="coda"] #calendarView .calendar-detail-container {
+  grid-area: detail;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-detail-top {
+  align-items: flex-start;
+  gap: 14px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-detail-title {
+  margin: 0 0 18px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.4vw, 34px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+html:root[data-taste="coda"] #calendarView .focus-date-mode {
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: transparent;
+}
+
+html:root[data-taste="coda"] #calendarView .focus-date-mode-btn {
+  min-height: 30px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] #calendarView .focus-date-mode-btn + .focus-date-mode-btn {
+  border-left: 1px solid var(--border-strong);
+}
+
+html:root[data-taste="coda"] #calendarView .focus-date-mode-btn.active {
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 600;
+}
+
+html:root[data-taste="coda"] #calendarView .focus-date-mode-btn .tab-count {
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 2px;
+  background: rgb(116 98 107 / 12%);
+  color: currentColor;
+  font-family: var(--font-mono);
+  font-size: 8px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-detail-sections {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-detail-section {
+  gap: 8px;
+  padding: 12px 13px 11px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--section);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--section-bg) 40%, var(--surface));
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-detail-section h4 {
+  align-items: baseline;
+  gap: 7px;
+  min-height: 0;
+  margin: 0;
+  padding: 0 0 7px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-detail-heading {
+  gap: 6px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-detail-section h4 .section-count {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  text-align: right;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-items-list {
+  gap: 0;
+  max-height: 330px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-item-card {
+  width: 100%;
+  gap: 3px;
+  padding: 9px 0 10px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  white-space: normal;
+  box-shadow: none;
+  transition: background-color 140ms ease;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-item-card:first-child {
+  border-top: 0;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-item-card:hover {
+  border-color: var(--border);
+  background: rgb(216 236 89 / 10%);
+  transform: none;
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-item-title {
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-item-detail {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  line-height: 1.5;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-item-badges {
+  gap: 4px;
+  margin-top: 3px;
+}
+
+html:root[data-taste="coda"] #calendarView .cal-badge {
+  padding: 0 4px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 8.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-empty-text {
+  padding: 12px 0;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.5;
+  text-align: left;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-container {
+  grid-area: summary;
+  margin-top: 0;
+  min-width: 0;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-card {
+  gap: 16px;
+  padding: 20px 18px;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cue);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-header-title h3 {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-icon {
+  color: var(--accent);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-subtitle {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-metrics-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+html:root[data-taste="coda"] #calendarView .summary-metric-box {
+  gap: 4px;
+  padding: 10px 11px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="coda"] #calendarView .summary-metric-box:hover {
+  border-color: var(--border-strong);
+  transform: none;
+}
+
+html:root[data-taste="coda"] #calendarView .summary-metric-box.metric-total {
+  border-left: 3px solid var(--cue);
+  background: var(--cue-soft);
+}
+
+html:root[data-taste="coda"] #calendarView .summary-metric-box .metric-box-label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] #calendarView .summary-metric-box .metric-box-value {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="coda"] #calendarView .summary-metric-box.metric-total .metric-box-value {
+  color: var(--cue-ink);
+}
+
+html:root[data-taste="coda"][data-theme="dark"] #calendarView .summary-metric-box.metric-total .metric-box-value {
+  color: var(--cue);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-table-wrapper {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-table {
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-table th,
+html:root[data-taste="coda"] #calendarView .calendar-summary-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  font-size: 10px;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-table th {
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-table td {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-table tbody tr:hover {
+  background: rgb(216 236 89 / 10%);
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-table tfoot tr.grand-total-row td,
+html:root[data-taste="coda"] #calendarView .calendar-summary-table tfoot tr.grand-total-row th {
+  border-top: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-summary-table .cat-pill {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Shared surfaces: paper panels, thin edges, one cue rule
+   -------------------------------------------------------------------------- */
+
+html:root[data-taste="coda"] :is(.panel, .manager-card, .manager-group, .config-panel, .company-card, .company-hero, .list-panel, .tracker-panel) {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html:root[data-taste="coda"] .panel {
+  padding: 24px 22px;
+}
+
+html:root[data-taste="coda"] .panel + .panel {
+  margin-top: 16px;
+}
+
+html:root[data-taste="coda"] .panel-heading {
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="coda"] .panel h2,
+html:root[data-taste="coda"] .tracker-topline h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+html:root[data-taste="coda"] .eyebrow {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .panel-toggle {
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+}
+
+html:root[data-taste="coda"] .panel-toggle:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+html:root[data-taste="coda"] :is(.filters, .facet-filters, .focus-filter-shell-summary, .manager-focus-filter-shell-summary) {
+  border-color: var(--border);
+  border-radius: 2px;
+  background: transparent;
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] .focus-filter-shell:hover .focus-filter-shell-summary,
+html:root[data-taste="coda"] .focus-filter-shell[open] .focus-filter-shell-summary,
+html:root[data-taste="coda"] .manager-focus-filter-shell:hover .manager-focus-filter-shell-summary,
+html:root[data-taste="coda"] .manager-focus-filter-shell[open] .manager-focus-filter-shell-summary {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) thead th {
+  border-bottom: 1px solid var(--text);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] :is(.tracker-table, .data-table, .calendar-summary-table, .company-table, .agent-runs-table, .prompt-import-table) td {
+  border-bottom: 1px solid var(--border);
+}
+
+html:root[data-taste="coda"] :is(.tracker-table, .data-table, .company-table, .agent-runs-table, .prompt-import-table) tbody tr:hover {
+  background: rgb(216 236 89 / 9%);
+}
+
+html:root[data-taste="coda"] .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+html:root[data-taste="coda"] .company-hero {
+  border-top: 4px solid var(--cue);
+}
+
+html:root[data-taste="coda"] .company-card {
+  box-shadow: none;
+}
+
+/* The record window inherits the programme-paper language. */
+html:root[data-taste="coda"] :is(.modal-card, .record-window-card) {
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="coda"] :is(.modal-header, .record-window-header) {
+  border-bottom: 1px solid var(--border-strong);
+}
+
+html:root[data-taste="coda"] :is(.modal-footer, .record-window-footer) {
+  border-top: 1px solid var(--border);
+}
+
+html:root[data-taste="coda"] .record-window-tab.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+html:root[data-taste="coda"] .modal-overlay {
+  background: rgb(21 15 18 / 72%);
+}
+
+html:root[data-taste="coda"] .settings-panel {
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  background: var(--bg);
+  background-image: linear-gradient(var(--surface), var(--surface));
+  box-shadow: var(--shadow-lg);
+}
+
+html:root[data-taste="coda"] .settings-panel::backdrop {
+  background: rgb(21 15 18 / 68%);
+}
+
+html:root[data-taste="coda"] .settings-header {
+  border-bottom: 2px solid var(--text);
+  background: var(--plum-bg, #21131b);
+  background-image: linear-gradient(90deg, #21131b, #2b1721);
+  color: #f7ecdd;
+}
+
+html:root[data-taste="coda"] .settings-header h2 {
+  color: #f7ecdd;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+html:root[data-taste="coda"] .settings-close {
+  border: 1px solid rgb(247 236 221 / 22%);
+  border-radius: 50%;
+  background: transparent;
+  color: #f7ecdd;
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] .settings-close:hover {
+  background: rgb(247 236 221 / 12%);
+  color: var(--cue);
+}
+
+html:root[data-taste="coda"] .settings-nav {
+  border-right: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+html:root[data-taste="coda"] .settings-nav-item {
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  color: var(--text-soft);
+  font-size: 12.5px;
+}
+
+html:root[data-taste="coda"] .settings-nav-item[aria-current="page"] {
+  border-left-color: var(--accent);
+  background: var(--cue);
+  color: var(--cue-ink);
+}
+
+html:root[data-taste="coda"] .settings-section-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+html:root[data-taste="coda"] .settings-intro {
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+  line-height: 1.65;
+}
+
+html:root[data-taste="coda"] .settings-fieldset {
+  border-color: var(--border);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+}
+
+html:root[data-taste="coda"] .settings-fieldset legend {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:root[data-taste="coda"] .taste-theme-card {
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+html:root[data-taste="coda"] .taste-theme-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+html:root[data-taste="coda"] .settings-live-themes {
+  border-radius: 2px;
+}
+
+/* The setup keeps the same stage light. */
+html:root[data-taste="coda"] .setup-shell {
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   Tablet: the playbill folds into a top banner
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  html:root[data-taste="coda"] .app-shell {
+    padding-right: 0;
+  }
+
+  html:root[data-taste="coda"] .app-shell > main {
+    padding: 28px 30px 72px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar {
+    position: relative;
+    inset: auto;
+    top: auto;
+    z-index: 90;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "identity switcher"
+      "keys keys"
+      "footer footer";
+    align-items: center;
+    gap: 0 18px;
+    width: 100%;
+    height: auto;
+    padding: 12px 20px 0;
+    overflow: visible;
+    border-left: 0;
+    border-bottom: 1px solid #3c2531;
+    background-image: linear-gradient(100deg, #24151e, #1b1016 70%);
+    box-shadow: none;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .identity {
+    grid-area: identity;
+    padding: 4px 0;
+    border: 0;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar h1 {
+    font-size: 18px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .startup-switcher {
+    grid-area: switcher;
+    width: auto;
+    max-width: 270px;
+    margin: 0;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .startup-switcher-button {
+    min-height: 36px;
+    width: auto;
+    padding: 4px 8px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .startup-switcher-menu {
+    top: calc(100% + 5px);
+  }
+
+  html:root[data-taste="coda"] #appTabs {
+    grid-area: keys;
+    flex-direction: row;
+    margin: 8px -20px 0;
+    padding: 0 8px;
+    overflow-x: auto !important;
+    border-top: 1px solid rgb(247 236 221 / 13%);
+    scrollbar-width: none;
+  }
+
+  html:root[data-taste="coda"] #appTabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  html:root[data-taste="coda"] #appTabs .app-tab-button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    width: auto;
+    min-height: 42px;
+    padding: 7px 10px;
+    border-top: 0;
+    border-right: 1px solid rgb(247 236 221 / 10%);
+    white-space: nowrap;
+    font-size: 10.5px;
+  }
+
+  html:root[data-taste="coda"] #appTabs .app-tab-button::before {
+    font-size: 12px;
+  }
+
+  html:root[data-taste="coda"] #appTabs .app-tab-button.active {
+    background: transparent !important;
+    color: var(--cue) !important;
+    box-shadow: inset 0 -3px 0 var(--cue) !important;
+  }
+
+  html:root[data-taste="coda"] #appTabs .app-tab-button.active::before {
+    color: var(--cue);
+  }
+
+  html:root[data-taste="coda"] #appTabs .app-tab-badge {
+    position: static;
+    margin-left: 4px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .sidebar-footer {
+    grid-area: footer;
+    display: none;
+  }
+
+  html:root[data-taste="coda"] .setup-badge {
+    bottom: 16px;
+    left: 16px;
+  }
+
+  html:root[data-taste="coda"] .topbar {
+    top: 0;
+    padding: 11px 30px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-layout-container {
+    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Phone: one column, the rail becomes a compact masthead
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 820px) {
+  html:root[data-taste="coda"] .app-shell > main {
+    padding: 22px 18px 64px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar {
+    padding: 10px 14px 0;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .topbar-logo {
+    width: 27px;
+    height: 27px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar h1 {
+    font-size: 16px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .startup-switcher {
+    max-width: 190px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .startup-switcher-caption {
+    display: none;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .startup-switcher-name {
+    max-width: 122px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  html:root[data-taste="coda"] #appTabs {
+    margin-inline: -14px;
+    padding-inline: 5px;
+  }
+
+  html:root[data-taste="coda"] #appTabs .app-tab-button {
+    padding-inline: 8px;
+    font-size: 10px;
+  }
+
+  html:root[data-taste="coda"] #appTabs .app-tab-button::before {
+    display: none;
+  }
+
+  html:root[data-taste="coda"] .topbar {
+    padding: 9px 18px;
+  }
+
+  html:root[data-taste="coda"] .topbar .shell-breadcrumb {
+    display: none;
+  }
+
+  html:root[data-taste="coda"] .topbar .save-state-text {
+    max-width: 102px;
+    margin-right: auto;
+    font-size: 8px;
+  }
+
+  html:root[data-taste="coda"] .topbar #settingsButton,
+  html:root[data-taste="coda"] .topbar #projectLinksToggle {
+    width: 36px;
+    min-width: 36px;
+    padding: 0 !important;
+    font-size: 0 !important;
+  }
+
+  html:root[data-taste="coda"] .topbar #settingsButton span,
+  html:root[data-taste="coda"] .topbar #projectLinksToggle span,
+  html:root[data-taste="coda"] .topbar #projectLinksToggle .project-links-chevron {
+    display: none;
+  }
+
+  html:root[data-taste="coda"] .shell-heading {
+    margin-bottom: 24px;
+    padding-left: 13px;
+    border-left-width: 4px;
+  }
+
+  html:root[data-taste="coda"] .shell-heading h2,
+  html:root[data-taste="coda"] #calendarView > .shell-heading h2 {
+    font-size: 36px;
+  }
+
+  html:root[data-taste="coda"] .shell-heading p,
+  html:root[data-taste="coda"] #calendarView > .shell-heading p {
+    font-size: 9.5px;
+  }
+
+  html:root[data-taste="coda"] :is(.summary-grid, .manager-summary-grid, .feedback-summary-grid) {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    overflow-x: auto !important;
+  }
+
+  html:root[data-taste="coda"] .metric-card {
+    flex: 0 0 132px !important;
+    min-height: 88px !important;
+    padding: 12px 14px !important;
+  }
+
+  html:root[data-taste="coda"] .metric-value {
+    font-size: 30px !important;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-layout-container {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "strip"
+      "toggles"
+      "filter"
+      "detail"
+      "summary";
+    gap: 14px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-strip-container {
+    padding: 16px 12px 13px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-strip-container::after {
+    right: 12px;
+    width: 52px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-strip-top-row {
+    gap: 8px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-strip-side {
+    order: 1;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-strip-viewport {
+    order: 2;
+    min-height: 108px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-nav-column {
+    order: 3;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-days-strip {
+    grid-template-columns: repeat(9, minmax(65px, 1fr));
+    gap: 5px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-day-card {
+    min-height: 100px;
+    padding: 8px 6px 6px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-day-card .day-number {
+    font-size: 29px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-detail-container {
+    padding: 15px 13px 16px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-detail-title {
+    font-size: 25px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-detail-sections {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-summary-card {
+    padding: 16px 13px;
+  }
+
+  html:root[data-taste="coda"] #calendarView .calendar-summary-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  html:root[data-taste="coda"] .app-shell > main {
+    padding-inline: 13px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .identity .title-row {
+    gap: 8px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar h1 {
+    max-width: 120px;
+    font-size: 14px;
+    line-height: 1.1;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .startup-switcher {
+    max-width: 168px;
+  }
+
+  html:root[data-taste="coda"] .shell-sidebar .startup-switcher-name {
+    max-width: 96px;
+  }
+
+  html:root[data-taste="coda"] .topbar .save-state-text {
+    display: none;
+  }
+
+  html:root[data-taste="coda"] .shell-heading h2,
+  html:root[data-taste="coda"] #calendarView > .shell-heading h2 {
+    font-size: 32px;
+  }
+}

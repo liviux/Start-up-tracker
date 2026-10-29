@@ -1265,9 +1265,44 @@
     const themeName = uid("appearance-theme");
     const themeThemes = Appearance?.THEMES || ["studio"];
     const themeLabel = (theme) => t(`settings.appearance.themes.${theme}.name`);
+    // The live switcher is the first control in Theme style: it floats above
+    // the page and stays open while the reader compares the layouts in place.
+    const liveThemes = root.StartupTrackerLiveThemes;
+    const liveState = el("span", { className: "settings-live-themes-state" });
+    const liveButton = el("button", {
+      type: "button",
+      className: "settings-live-themes",
+      "aria-expanded": "false",
+      "aria-controls": "liveThemeBar",
+    }, [
+      el("span", { className: "settings-live-themes-icon" }, icon("image")),
+      el("span", { className: "settings-live-themes-copy" }, [
+        el("span", { className: "settings-live-themes-title", text: t("settings.appearance.tryLiveTitle") }),
+        el("span", { className: "settings-live-themes-hint", text: t("settings.appearance.tryLiveHint") }),
+      ]),
+      liveState,
+    ]);
+    const syncLiveButton = (open) => {
+      liveButton.setAttribute("aria-expanded", String(open));
+      liveState.textContent = open ? t("settings.appearance.tryLiveOpenState") : t("settings.appearance.tryLiveOpen");
+    };
+    liveButton.addEventListener("click", () => {
+      if (!liveThemes) return;
+      if (liveThemes.isOpen()) {
+        liveThemes.close();
+        syncLiveButton(false);
+        return;
+      }
+      // The bar belongs above the page, not behind a modal dialog.
+      close();
+      liveThemes.open();
+      syncLiveButton(true);
+    });
+    syncLiveButton(Boolean(liveThemes?.isOpen?.()));
     const themes = el("fieldset", { className: "settings-fieldset" }, [
       el("legend", { text: t("settings.appearance.theme") }),
       el("p", { className: "settings-hint", text: t("settings.appearance.themeHint") }),
+      liveButton,
       el("div", { className: "taste-theme-grid settings-theme-grid" }, themeThemes.map((theme) => {
         const radio = el("input", { type: "radio", name: themeName, value: theme, id: uid("theme"), checked: current.theme === theme, className: "visually-hidden" });
         radio.addEventListener("change", () => {

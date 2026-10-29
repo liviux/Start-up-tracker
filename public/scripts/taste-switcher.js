@@ -19,7 +19,7 @@
   const DEFAULT_TASTE = "studio";
   const MODES = Object.freeze(["system", "light", "dark"]);
 
-  // The eleven theme styles, in the order Settings lists them. Keep in step
+  // The twelve theme styles, in the order Settings lists them. Keep in step
   // with THEMES in lib/settings.js and the selectors in styles/themes/.
   const THEMES = Object.freeze([
     "studio",
@@ -33,7 +33,25 @@
     "tactile",
     "broadsheet",
     "signal",
+    "coda",
   ]);
+
+  // Three-letter keys for the floating live switcher. They are the shortest
+  // names that stay distinct in a row of twelve.
+  const THEME_CODES = Object.freeze({
+    studio: "STU",
+    ledger: "LED",
+    nightshift: "NGT",
+    fieldnotes: "FLD",
+    meridian: "MER",
+    lacquer: "LAC",
+    shinjuku: "SHI",
+    quiet: "QUI",
+    tactile: "TAC",
+    broadsheet: "BRO",
+    signal: "SIG",
+    coda: "COD",
+  });
 
   // The first three variants were called a, b and c. The earlier palette-only
   // themes keep opening the new theme that carries their idea, so a saved
@@ -67,6 +85,7 @@
     tactile: "Emil Kowalski's skills",
     broadsheet: "Hallmark",
     signal: "Hallmark",
+    coda: "",
   });
 
   // The screenshot that shows each theme in the picker. Dark-first themes are
@@ -83,6 +102,7 @@
     tactile: "light",
     broadsheet: "light",
     signal: "dark",
+    coda: "light",
   });
 
   function previewPath(value) {
@@ -228,6 +248,7 @@
     DEFAULT_TASTE,
     MODES,
     THEMES,
+    THEME_CODES,
     LEGACY_TASTES,
     THEME_PREVIEW_MODES,
     THEME_CREDITS,

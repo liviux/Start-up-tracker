@@ -73,7 +73,7 @@ test("browser dependencies remain local and load before the application", () => 
   assert.ok(appIndex >= 0);
   for (const dependency of [
     "/assets/marked.min.js", "/js/dates.js", "/js/i18n.js", "/js/api.js", "/js/settings-store.js", "/scripts/taste-switcher.js",
-    "/js/startup-icon.js", "/js/link-types.js", "/js/recycle.js", "/js/startups.js", "/scripts/defaults.js",
+    "/scripts/live-themes.js", "/js/startup-icon.js", "/js/link-types.js", "/js/recycle.js", "/js/startups.js", "/scripts/defaults.js",
     "/scripts/record-conflict-merge.js", "/scripts/record-history-diff.js", "/scripts/record-history-timeline.js",
   ]) {
     assert.ok(sources.indexOf(dependency) >= 0 && sources.indexOf(dependency) < appIndex, `${dependency} must load before app.js`);

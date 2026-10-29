@@ -1,0 +1,406 @@
+/* Live theme switcher
+   --------------------------------------------------------------------------
+   Opened from Settings → Appearance → Theme style. While it is open, a strip at
+   the top of the viewport is kept free, the bar floats above every layer, and
+   the same theme choice is applied and saved as the picker. The bar draws with
+   the current theme's tokens: dark ink on paper in light mode, the reverse in
+   dark mode. It is deliberately theme-independent so it can compare all of
+   them without changing its own behaviour. */
+
+html:root.live-themes-on {
+  --live-bar-space: 60px;
+}
+
+html:root.live-themes-on body {
+  padding-top: var(--live-bar-space);
+}
+
+/* Fixed and sticky parts of the shell start below the bar instead of sliding
+   under it. Relative headers are already moved by the body padding above. */
+html.live-themes-on[data-taste="studio"] .shell-sidebar,
+html.live-themes-on[data-taste="lacquer"] .shell-sidebar,
+html.live-themes-on[data-taste="meridian"] .shell-sidebar,
+html.live-themes-on[data-taste="nightshift"] .shell-sidebar,
+html.live-themes-on[data-taste="quiet"] .shell-sidebar,
+html.live-themes-on[data-taste="shinjuku"] .shell-sidebar,
+html.live-themes-on[data-taste="coda"] .shell-sidebar,
+html.live-themes-on[data-taste="ledger"] .shell-sidebar {
+  top: var(--live-bar-space);
+}
+
+html.live-themes-on[data-taste="quiet"] .shell-sidebar {
+  top: calc(var(--live-bar-space) + 14px);
+}
+
+html.live-themes-on[data-taste="studio"] .topbar,
+html.live-themes-on[data-taste="lacquer"] .topbar,
+html.live-themes-on[data-taste="meridian"] .topbar,
+html.live-themes-on[data-taste="nightshift"] .topbar,
+html.live-themes-on[data-taste="quiet"] .topbar,
+html.live-themes-on[data-taste="shinjuku"] .topbar,
+html.live-themes-on[data-taste="tactile"] .topbar,
+html.live-themes-on[data-taste="ledger"] .topbar,
+html.live-themes-on[data-taste="broadsheet"] .topbar,
+html.live-themes-on[data-taste="fieldnotes"] .topbar,
+html.live-themes-on[data-taste="signal"] .topbar,
+html.live-themes-on[data-taste="coda"] .topbar {
+  top: var(--live-bar-space);
+}
+
+html.live-themes-on[data-taste="nightshift"] .topbar {
+  top: calc(var(--live-bar-space) + var(--navstrip-h, 0px));
+}
+
+/* Tactile keeps the brand and the startup plate as separate fixed pieces. */
+html.live-themes-on[data-taste="tactile"] .shell-sidebar .identity {
+  top: calc(var(--live-bar-space) + 18px);
+}
+
+html.live-themes-on[data-taste="tactile"] .shell-sidebar .startup-switcher {
+  top: calc(var(--live-bar-space) + 14px);
+}
+
+html.live-themes-on .settings-panel {
+  max-height: calc(100vh - 32px - var(--live-bar-space));
+}
+
+/* Coda's header is in normal flow on small screens; the body padding already
+   moves it below the bar, so its top must stay automatic there. */
+@media (max-width: 1100px) {
+  html.live-themes-on[data-taste="coda"] .shell-sidebar {
+    top: auto;
+  }
+}
+
+/* ---- The floating bar ---------------------------------------------------- */
+
+.live-theme-bar {
+  position: fixed;
+  top: max(8px, env(safe-area-inset-top));
+  left: 50%;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: max-content;
+  max-width: calc(100vw - 20px);
+  padding: 5px 6px;
+  transform: translateX(-50%);
+  border: 1px solid color-mix(in srgb, var(--bg) 32%, transparent);
+  border-radius: 3px;
+  background: var(--text);
+  color: var(--bg);
+  box-shadow:
+    0 20px 54px -16px rgb(0 0 0 / 62%),
+    0 0 0 1px rgb(0 0 0 / 10%);
+}
+
+.live-theme-bar-mark {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  margin: 0 3px 0 1px;
+  border: 1px solid color-mix(in srgb, var(--bg) 44%, transparent);
+  border-radius: 50%;
+  background: conic-gradient(var(--accent) 0 50%, var(--cue, var(--bg)) 50% 100%);
+}
+
+.live-theme-bar-list {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.live-theme-bar-list::-webkit-scrollbar {
+  display: none;
+}
+
+.live-theme-bar button {
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  min-width: 42px;
+  height: 32px;
+  padding: 0 7px;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.live-theme-bar button:hover {
+  background: color-mix(in srgb, var(--bg) 18%, transparent);
+}
+
+.live-theme-bar button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-contrast, var(--bg));
+}
+
+.live-theme-bar button:focus-visible {
+  outline: 2px solid var(--bg);
+  outline-offset: -2px;
+}
+
+/* The full name appears under the key on hover, keyboard focus, or for a
+   moment after a tap on a touch screen. */
+.live-theme-bar button::after {
+  content: attr(data-name);
+  position: absolute;
+  top: calc(100% + 9px);
+  left: 50%;
+  z-index: 1;
+  padding: 5px 9px;
+  transform: translate(-50%, -4px);
+  border: 1px solid color-mix(in srgb, var(--bg) 22%, transparent);
+  border-radius: 2px;
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: 0 10px 26px -10px rgb(0 0 0 / 55%);
+  font-family: var(--font-body, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.live-theme-bar button:is(:hover, :focus-visible, .show-name)::after {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.live-theme-bar .live-theme-bar-close {
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--bg) 14%, transparent);
+  font-family: var(--font-body, sans-serif);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.live-theme-bar .live-theme-bar-close::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: -6px;
+  width: 1px;
+  background: color-mix(in srgb, var(--bg) 30%, transparent);
+}
+
+.live-theme-bar .live-theme-bar-close:hover {
+  background: color-mix(in srgb, var(--bg) 26%, transparent);
+}
+
+/* ---- The first button in Settings → Appearance → Theme style ------------ */
+
+.settings-live-themes {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  min-height: 76px;
+  padding: 13px 15px;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius, 10px);
+  background:
+    linear-gradient(120deg, var(--accent-soft), transparent 58%),
+    var(--surface);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 120ms ease;
+}
+
+.settings-live-themes::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 54px;
+  height: 5px;
+  background: var(--cue, var(--accent));
+}
+
+.settings-live-themes:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.settings-live-themes:active {
+  transform: none;
+}
+
+.settings-live-themes[aria-expanded="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.settings-live-themes-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.settings-live-themes-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.settings-live-themes-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.settings-live-themes-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.settings-live-themes-hint {
+  color: var(--muted-strong);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.settings-live-themes-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted-strong);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.settings-live-themes-state::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.settings-live-themes[aria-expanded="true"] .settings-live-themes-state {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.settings-live-themes[aria-expanded="true"] .settings-live-themes-state::before {
+  background: var(--accent);
+}
+
+@media (max-width: 640px) {
+  html:root.live-themes-on {
+    --live-bar-space: 56px;
+  }
+
+  .live-theme-bar {
+    gap: 2px;
+    padding: 4px 5px;
+  }
+
+  .live-theme-bar-mark {
+    display: none;
+  }
+
+  .live-theme-bar button {
+    min-width: 26px;
+    height: 30px;
+    padding: 0 2px;
+    font-size: 0;
+    letter-spacing: 0.04em;
+  }
+
+  .live-theme-bar button::before {
+    content: attr(data-short);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .live-theme-bar .live-theme-bar-close {
+    min-width: 28px;
+    width: 28px;
+    height: 28px;
+    font-size: 17px;
+  }
+
+  .settings-live-themes {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .settings-live-themes-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .settings-live-themes-state {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .live-theme-bar {
+    gap: 1px;
+    padding-inline: 4px;
+  }
+
+  .live-theme-bar button {
+    min-width: 23px;
+    padding: 0 1px;
+  }
+
+  .live-theme-bar .live-theme-bar-close {
+    min-width: 26px;
+    width: 26px;
+    margin-left: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-theme-bar button,
+  .live-theme-bar button::after,
+  .settings-live-themes {
+    transition: none;
+  }
+}
