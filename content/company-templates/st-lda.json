@@ -3,23 +3,21 @@
   "version": 1,
   "country": "ST",
   "countryName": "São Tomé and Príncipe",
-  "entityType": "Lda",
+  "entityType": "Lda.",
   "nameLocal": "Sociedade por Quotas",
   "nameEnglish": "Private limited company",
   "currency": "STN",
   "bilingual": null,
   "subdivision": null,
   "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
-  "verifiedOn": null,
-  "draft": true,
+  "verifiedOn": "2026-10-29",
   "sources": [
     {
       "id": "registry",
-      "title": "Guichet Unique pour l'Entrepreneur",
-      "publisher": "Government of São Tomé and Príncipe",
-      "url": "https://www.gue-stp.net/",
-      "verifiedOn": null,
-      "checkLocally": true
+      "title": "Portal do Cidadão - São Tomé e Príncipe",
+      "publisher": "Governo de São Tomé e Príncipe",
+      "url": "https://www.gov.st/",
+      "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
@@ -28,6 +26,13 @@
       "url": "https://www.financas.gov.st/",
       "verifiedOn": null,
       "checkLocally": true
+    },
+    {
+      "id": "government",
+      "title": "Portal do Cidadão - São Tomé e Príncipe",
+      "publisher": "Governo de São Tomé e Príncipe",
+      "url": "https://www.gov.st/",
+      "verifiedOn": "2026-10-29"
     }
   ],
   "conditions": [
@@ -46,19 +51,20 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the Lda legal form.",
+      "description": "The registered name, including the Lda. legal form. A private company whose capital is divided into quotas.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "registrationNumber",
-      "label": "Número de registo comercial",
+      "label": "Número de Registo Comercial",
       "description": "The number the company register gave the company.",
       "example": "",
       "type": "text",
@@ -66,12 +72,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "taxId",
-      "label": "NIF",
+      "label": "Número de Contribuinte",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
@@ -92,7 +99,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -105,7 +113,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -137,63 +146,67 @@
   "setupSteps": [
     {
       "id": "name",
-      "title": "Choose and check the Lda name",
-      "description": "Check the name is free in Guichet Unique pour l'Entrepreneur and follows São Tomé and Príncipe's naming rules.",
-      "authority": "Guichet Unique pour l'Entrepreneur",
+      "title": "Choose and check the Lda. name",
+      "description": "Check the name is free in Conservatória do Registo Comercial and follows São Tomé and Príncipe's naming rules.",
+      "authority": "Conservatória do Registo Comercial",
       "typicalCost": null,
       "dependsOn": [],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "documents",
-      "title": "Prepare the Lda documents",
+      "title": "Prepare the Lda. documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Guichet Unique pour l'Entrepreneur",
+      "authority": "Conservatória do Registo Comercial",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "register",
-      "title": "Register the Lda",
-      "description": "Submit the incorporation documents as Guichet Unique pour l'Entrepreneur requires. The company exists once the register enters it.",
-      "authority": "Guichet Unique pour l'Entrepreneur",
+      "title": "Register the Lda.",
+      "description": "Submit the incorporation documents as Conservatória do Registo Comercial requires. The company exists once the register enters it.",
+      "authority": "Conservatória do Registo Comercial",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "tax",
-      "title": "Register the Lda for tax",
-      "description": "Register with Direção Geral das Finanças for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Direção Geral das Finanças",
+      "title": "Register the Lda. for tax",
+      "description": "Register with Direção Geral das Finanças (DGF) for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Direção Geral das Finanças (DGF)",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Direção Geral das Finanças for payroll and social contributions.",
-      "authority": "Direção Geral das Finanças",
+      "description": "Before the first hire, register with Direção Geral das Finanças (DGF) for payroll and social contributions.",
+      "authority": "Direção Geral das Finanças (DGF)",
       "typicalCost": null,
       "dependsOn": [
         "register"
@@ -232,55 +245,58 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Guichet Unique pour l'Entrepreneur, then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with Conservatória do Registo Comercial, then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet Unique pour l'Entrepreneur",
+      "authority": "Conservatória do Registo Comercial",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Guichet Unique pour l'Entrepreneur, the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Conservatória do Registo Comercial, the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet Unique pour l'Entrepreneur",
+      "authority": "Conservatória do Registo Comercial",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Direção Geral das Finanças, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Direção Geral das Finanças (DGF), then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Direção Geral das Finanças",
+      "authority": "Direção Geral das Finanças (DGF)",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Direção Geral das Finanças and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Direção Geral das Finanças (DGF) and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -289,7 +305,7 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Direção Geral das Finanças",
+      "authority": "Direção Geral das Finanças (DGF)",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -298,7 +314,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Direção Geral das Finanças. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Direção Geral das Finanças (DGF). Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -307,7 +323,7 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Direção Geral das Finanças",
+      "authority": "Direção Geral das Finanças (DGF)",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -316,33 +332,35 @@
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Guichet Unique pour l'Entrepreneur.",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Conservatória do Registo Comercial.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet Unique pour l'Entrepreneur",
+      "authority": "Conservatória do Registo Comercial",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Guichet Unique pour l'Entrepreneur, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to Conservatória do Registo Comercial, then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet Unique pour l'Entrepreneur",
+      "authority": "Conservatória do Registo Comercial",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -394,5 +412,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Número de registo comercial: {{registrationNumber}}\n- NIF: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- Número de Registo Comercial: {{registrationNumber}}\n- Número de Contribuinte: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }

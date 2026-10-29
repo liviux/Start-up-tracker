@@ -1,12 +1,12 @@
 {
-  "id": "sd-jsc",
+  "id": "gq-srl",
   "version": 1,
-  "country": "SD",
-  "countryName": "Sudan",
-  "entityType": "JSC",
-  "nameLocal": "Joint-stock company",
-  "nameEnglish": "Joint-stock company",
-  "currency": "SDG",
+  "country": "GQ",
+  "countryName": "Equatorial Guinea",
+  "entityType": "S.R.L.",
+  "nameLocal": "Sociedad de Responsabilidad Limitada",
+  "nameEnglish": "Private limited company",
+  "currency": "XAF",
   "bilingual": null,
   "subdivision": null,
   "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
@@ -14,16 +14,16 @@
   "sources": [
     {
       "id": "registry",
-      "title": "Ministry of Justice",
-      "publisher": "Government of Sudan",
-      "url": "https://www.moj.gov.sd/",
+      "title": "République de GUINEE EQUATORIALE",
+      "publisher": "Organisation pour l'harmonisation en Afrique du droit des affaires (OHADA)",
+      "url": "https://rccm.ohada.org/staticPage/index?alias=gq",
       "verifiedOn": "2026-10-29"
     },
     {
-      "id": "tax",
-      "title": "Taxation Chamber",
-      "publisher": "Ministry of Finance",
-      "url": "https://www.tax.gov.sd/",
+      "id": "government",
+      "title": "Página Oficial del Gobierno de la República de Guinea Ecuatorial",
+      "publisher": "Gobierno de la República de Guinea Ecuatorial",
+      "url": "https://www.gob.gq/",
       "verifiedOn": "2026-10-29"
     }
   ],
@@ -37,30 +37,26 @@
       "id": "vat-registered",
       "label": "Registered for VAT",
       "description": "Registered for value added tax or a similar turnover tax."
-    },
-    {
-      "id": "listed",
-      "label": "Listed on a stock exchange",
-      "description": "Its shares trade on a regulated market."
     }
   ],
   "profileFields": [
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the JSC legal form.",
+      "description": "The registered name, including the S.R.L. legal form. A private company whose capital is divided into participations.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "registrationNumber",
-      "label": "Commercial registration number",
+      "label": "Número RCCM",
       "description": "The number the company register gave the company.",
       "example": "",
       "type": "text",
@@ -68,21 +64,20 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "taxId",
-      "label": "Tax number",
+      "label": "Número de Identificación Fiscal (NIF)",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
       "group": "tax",
       "sensitive": false,
       "includeInDocument": true,
-      "sourceIds": [
-        "tax"
-      ]
+      "sourceIds": []
     },
     {
       "key": "registeredOffice",
@@ -94,12 +89,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "shareCapital",
-      "label": "Capital",
+      "label": "Capital social",
       "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
       "example": "",
       "type": "money",
@@ -107,7 +103,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -116,22 +113,17 @@
       {
         "id": "director",
         "label": "Director",
-        "description": "Sits on the board and runs the company."
-      },
-      {
-        "id": "officer",
-        "label": "Officer",
-        "description": "A senior officer named by the board."
+        "description": "Runs the company and represents it."
       },
       {
         "id": "shareholder",
         "label": "Shareholder",
-        "description": "Owns shares in the company."
+        "description": "Owns shares or a stake in the company."
       },
       {
-        "id": "auditor",
-        "label": "Auditor",
-        "description": "Audits the annual accounts."
+        "id": "founder",
+        "label": "Founder",
+        "description": "Set up the company."
       }
     ],
     "fields": [
@@ -144,71 +136,72 @@
   "setupSteps": [
     {
       "id": "name",
-      "title": "Choose and check the JSC name",
-      "description": "Check the name is free in Ministry of Justice and follows Sudan's naming rules.",
-      "authority": "Ministry of Justice",
+      "title": "Choose and check the S.R.L. name",
+      "description": "Check the name is free in Registro de Comercio y Crédito Mobiliario (RCCM) and follows Equatorial Guinea's naming rules.",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "typicalCost": null,
       "dependsOn": [],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "documents",
-      "title": "Prepare the JSC documents",
+      "title": "Prepare the S.R.L. documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Ministry of Justice",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "register",
-      "title": "Register the JSC",
-      "description": "Submit the incorporation documents as Ministry of Justice requires. The company exists once the register enters it.",
-      "authority": "Ministry of Justice",
+      "title": "Register the S.R.L.",
+      "description": "Submit the incorporation documents as Registro de Comercio y Crédito Mobiliario (RCCM) requires. The company exists once the register enters it.",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "tax",
-      "title": "Register the JSC for tax",
-      "description": "Register with Taxation Chamber for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Taxation Chamber",
+      "title": "Register the S.R.L. for tax",
+      "description": "Register with Página Oficial del Gobierno for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Página Oficial del Gobierno",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Taxation Chamber for payroll and social contributions.",
-      "authority": "Taxation Chamber",
+      "description": "Before the first hire, register with Página Oficial del Gobierno for payroll and social contributions.",
+      "authority": "Página Oficial del Gobierno",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
-      "checkLocally": false,
-      "sourceIds": [
-        "tax"
-      ]
+      "checkLocally": true,
+      "sourceIds": []
     },
     {
       "id": "bank",
@@ -239,55 +232,57 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Ministry of Justice, then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with Registro de Comercio y Crédito Mobiliario (RCCM), then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministry of Justice",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Ministry of Justice, the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Registro de Comercio y Crédito Mobiliario (RCCM), the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministry of Justice",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Taxation Chamber, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Página Oficial del Gobierno, then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Taxation Chamber",
+      "authority": "Página Oficial del Gobierno",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "government"
       ]
     },
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Taxation Chamber and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Página Oficial del Gobierno and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -296,16 +291,14 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Taxation Chamber",
+      "authority": "Página Oficial del Gobierno",
       "checkLocally": true,
-      "sourceIds": [
-        "tax"
-      ]
+      "sourceIds": []
     },
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Taxation Chamber. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Página Oficial del Gobierno. Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -314,42 +307,42 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Taxation Chamber",
+      "authority": "Página Oficial del Gobierno",
       "checkLocally": true,
-      "sourceIds": [
-        "tax"
-      ]
+      "sourceIds": []
     },
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Ministry of Justice.",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Registro de Comercio y Crédito Mobiliario (RCCM).",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministry of Justice",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Ministry of Justice, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to Registro de Comercio y Crédito Mobiliario (RCCM), then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministry of Justice",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -363,50 +356,6 @@
       "conditions": [],
       "subdivisions": [],
       "authority": "Sector regulator",
-      "checkLocally": true,
-      "sourceIds": []
-    },
-    {
-      "id": "annual-meeting",
-      "title": "Annual general meeting",
-      "description": "Hold the annual general meeting and record the resolutions.",
-      "frequency": "annual",
-      "due": {
-        "rule": "manual"
-      },
-      "conditions": [],
-      "subdivisions": [],
-      "authority": "Company",
-      "checkLocally": true,
-      "sourceIds": []
-    },
-    {
-      "id": "audit",
-      "title": "Audit the annual accounts",
-      "description": "Have the annual accounts audited if the company meets the audit threshold.",
-      "frequency": "annual",
-      "due": {
-        "rule": "manual"
-      },
-      "conditions": [],
-      "subdivisions": [],
-      "authority": "Auditor",
-      "checkLocally": true,
-      "sourceIds": []
-    },
-    {
-      "id": "market-disclosure",
-      "title": "Disclose market information",
-      "description": "Publish information that could affect the share price as the market rules require.",
-      "frequency": "on-event",
-      "due": {
-        "rule": "manual"
-      },
-      "conditions": [
-        "listed"
-      ],
-      "subdivisions": [],
-      "authority": "Stock exchange regulator",
       "checkLocally": true,
       "sourceIds": []
     }
@@ -445,5 +394,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Commercial registration number: {{registrationNumber}}\n- Tax number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- Número RCCM: {{registrationNumber}}\n- Número de Identificación Fiscal (NIF): {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }

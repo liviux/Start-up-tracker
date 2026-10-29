@@ -10,13 +10,12 @@
   "bilingual": null,
   "subdivision": null,
   "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
-  "verifiedOn": null,
-  "draft": true,
+  "verifiedOn": "2026-10-29",
   "sources": [
     {
       "id": "registry",
-      "title": "Accueil",
-      "publisher": "Centre National du Registre du Commerce",
+      "title": "Portail du registre du commerce électronique",
+      "publisher": "Centre National du Registre du Commerce (CNRC)",
       "url": "https://sidjilcom.cnrc.dz/web/cnrc/accueil",
       "verifiedOn": null,
       "checkLocally": true
@@ -28,6 +27,21 @@
       "url": "https://www.mfdgi.gov.dz/",
       "verifiedOn": null,
       "checkLocally": true
+    },
+    {
+      "id": "social",
+      "title": "Caisse Nationale des Assurances Sociales",
+      "publisher": "Caisse Nationale des Assurances Sociales",
+      "url": "https://www.cnas.dz/",
+      "verifiedOn": null,
+      "checkLocally": true
+    },
+    {
+      "id": "government",
+      "title": "Chambre Algérienne de Commerce et d'Industrie",
+      "publisher": "Chambre Algérienne de Commerce et d'Industrie",
+      "url": "https://www.caci.dz/",
+      "verifiedOn": "2026-10-29"
     }
   ],
   "conditions": [
@@ -46,14 +60,15 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the SARL legal form.",
+      "description": "The registered name, including the SARL legal form. A private company with limited liability, commonly used by small and medium-sized businesses.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -66,7 +81,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -92,7 +108,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -105,7 +122,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -138,41 +156,44 @@
     {
       "id": "name",
       "title": "Choose and check the SARL name",
-      "description": "Check the name is free in Centre National du Registre du Commerce (CNRC) and follows Algeria's naming rules.",
-      "authority": "Centre National du Registre du Commerce (CNRC)",
+      "description": "Check the name is free in SIDJILCOM, Registre du Commerce Électronique and follows Algeria's naming rules.",
+      "authority": "SIDJILCOM, Registre du Commerce Électronique",
       "typicalCost": null,
       "dependsOn": [],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "documents",
       "title": "Prepare the SARL documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Centre National du Registre du Commerce (CNRC)",
+      "authority": "SIDJILCOM, Registre du Commerce Électronique",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "register",
       "title": "Register the SARL",
-      "description": "Submit the incorporation documents as Centre National du Registre du Commerce (CNRC) requires. The company exists once the register enters it.",
-      "authority": "Centre National du Registre du Commerce (CNRC)",
+      "description": "Submit the incorporation documents as SIDJILCOM, Registre du Commerce Électronique requires. The company exists once the register enters it.",
+      "authority": "SIDJILCOM, Registre du Commerce Électronique",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -184,22 +205,24 @@
       "dependsOn": [
         "register"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Direction Générale des Impôts (DGI) for payroll and social contributions.",
-      "authority": "Direction Générale des Impôts (DGI)",
+      "description": "Before the first hire, register with Caisse Nationale des Assurances Sociales des Travailleurs Salariés (CNAS) for payroll and social contributions.",
+      "authority": "Caisse Nationale des Assurances Sociales des Travailleurs Salariés (CNAS)",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": true,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
@@ -232,33 +255,35 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Centre National du Registre du Commerce (CNRC), then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with SIDJILCOM, Registre du Commerce Électronique, then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Centre National du Registre du Commerce (CNRC)",
+      "authority": "SIDJILCOM, Registre du Commerce Électronique",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Centre National du Registre du Commerce (CNRC), the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with SIDJILCOM, Registre du Commerce Électronique, the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Centre National du Registre du Commerce (CNRC)",
+      "authority": "SIDJILCOM, Registre du Commerce Électronique",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -274,7 +299,8 @@
       "authority": "Direction Générale des Impôts (DGI)",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
@@ -298,7 +324,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Direction Générale des Impôts (DGI). Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Caisse Nationale des Assurances Sociales des Travailleurs Salariés (CNAS). Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -307,42 +333,45 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Direction Générale des Impôts (DGI)",
+      "authority": "Caisse Nationale des Assurances Sociales des Travailleurs Salariés (CNAS)",
       "checkLocally": true,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Centre National du Registre du Commerce (CNRC).",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with SIDJILCOM, Registre du Commerce Électronique.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Centre National du Registre du Commerce (CNRC)",
+      "authority": "SIDJILCOM, Registre du Commerce Électronique",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Centre National du Registre du Commerce (CNRC), then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to SIDJILCOM, Registre du Commerce Électronique, then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Centre National du Registre du Commerce (CNRC)",
+      "authority": "SIDJILCOM, Registre du Commerce Électronique",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {

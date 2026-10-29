@@ -10,24 +10,21 @@
   "bilingual": null,
   "subdivision": null,
   "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
-  "verifiedOn": null,
-  "draft": true,
+  "verifiedOn": "2026-10-29",
   "sources": [
     {
       "id": "registry",
-      "title": "Guinea Ecuatorial Press",
-      "publisher": "Government of Equatorial Guinea",
-      "url": "https://www.guineaecuatorialpress.com/",
-      "verifiedOn": null,
-      "checkLocally": true
+      "title": "République de GUINEE EQUATORIALE",
+      "publisher": "Organisation pour l'harmonisation en Afrique du droit des affaires (OHADA)",
+      "url": "https://rccm.ohada.org/staticPage/index?alias=gq",
+      "verifiedOn": "2026-10-29"
     },
     {
-      "id": "tax",
-      "title": "Ministerio de Hacienda",
-      "publisher": "Ministerio de Hacienda",
-      "url": "https://www.finanzas.gob.gq/",
-      "verifiedOn": null,
-      "checkLocally": true
+      "id": "government",
+      "title": "Página Oficial del Gobierno de la República de Guinea Ecuatorial",
+      "publisher": "Gobierno de la República de Guinea Ecuatorial",
+      "url": "https://www.gob.gq/",
+      "verifiedOn": "2026-10-29"
     }
   ],
   "conditions": [
@@ -51,19 +48,20 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the S.A. legal form.",
+      "description": "The registered name, including the S.A. legal form. A joint-stock company that can issue shares to investors.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "registrationNumber",
-      "label": "Número de registro mercantil",
+      "label": "Número RCCM",
       "description": "The number the company register gave the company.",
       "example": "",
       "type": "text",
@@ -71,21 +69,20 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "taxId",
-      "label": "NIF",
+      "label": "Número de Identificación Fiscal (NIF)",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
       "group": "tax",
       "sensitive": false,
       "includeInDocument": true,
-      "sourceIds": [
-        "tax"
-      ]
+      "sourceIds": []
     },
     {
       "key": "registeredOffice",
@@ -97,7 +94,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -110,7 +108,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -148,70 +147,71 @@
     {
       "id": "name",
       "title": "Choose and check the S.A. name",
-      "description": "Check the name is free in Registro Mercantil and follows Equatorial Guinea's naming rules.",
-      "authority": "Registro Mercantil",
+      "description": "Check the name is free in Registro de Comercio y Crédito Mobiliario (RCCM) and follows Equatorial Guinea's naming rules.",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "typicalCost": null,
       "dependsOn": [],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "documents",
       "title": "Prepare the S.A. documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Registro Mercantil",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "register",
       "title": "Register the S.A.",
-      "description": "Submit the incorporation documents as Registro Mercantil requires. The company exists once the register enters it.",
-      "authority": "Registro Mercantil",
+      "description": "Submit the incorporation documents as Registro de Comercio y Crédito Mobiliario (RCCM) requires. The company exists once the register enters it.",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "tax",
       "title": "Register the S.A. for tax",
-      "description": "Register with Ministerio de Hacienda for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Ministerio de Hacienda",
+      "description": "Register with Página Oficial del Gobierno for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Página Oficial del Gobierno",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Ministerio de Hacienda for payroll and social contributions.",
-      "authority": "Ministerio de Hacienda",
+      "description": "Before the first hire, register with Página Oficial del Gobierno for payroll and social contributions.",
+      "authority": "Página Oficial del Gobierno",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": true,
-      "sourceIds": [
-        "tax"
-      ]
+      "sourceIds": []
     },
     {
       "id": "bank",
@@ -242,55 +242,57 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Registro Mercantil, then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with Registro de Comercio y Crédito Mobiliario (RCCM), then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Registro Mercantil",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Registro Mercantil, the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Registro de Comercio y Crédito Mobiliario (RCCM), the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Registro Mercantil",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Ministerio de Hacienda, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Página Oficial del Gobierno, then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministerio de Hacienda",
+      "authority": "Página Oficial del Gobierno",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "government"
       ]
     },
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Ministerio de Hacienda and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Página Oficial del Gobierno and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -299,16 +301,14 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Ministerio de Hacienda",
+      "authority": "Página Oficial del Gobierno",
       "checkLocally": true,
-      "sourceIds": [
-        "tax"
-      ]
+      "sourceIds": []
     },
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Ministerio de Hacienda. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Página Oficial del Gobierno. Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -317,42 +317,42 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Ministerio de Hacienda",
+      "authority": "Página Oficial del Gobierno",
       "checkLocally": true,
-      "sourceIds": [
-        "tax"
-      ]
+      "sourceIds": []
     },
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Registro Mercantil.",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Registro de Comercio y Crédito Mobiliario (RCCM).",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Registro Mercantil",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Registro Mercantil, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to Registro de Comercio y Crédito Mobiliario (RCCM), then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Registro Mercantil",
+      "authority": "Registro de Comercio y Crédito Mobiliario (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -448,5 +448,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Número de registro mercantil: {{registrationNumber}}\n- NIF: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- Número RCCM: {{registrationNumber}}\n- Número de Identificación Fiscal (NIF): {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }

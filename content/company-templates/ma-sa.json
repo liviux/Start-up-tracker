@@ -14,16 +14,24 @@
   "sources": [
     {
       "id": "registry",
-      "title": "OMPIC",
-      "publisher": "OMPIC",
-      "url": "https://www.ompic.ma/",
+      "title": "Création et vie de l'entreprise",
+      "publisher": "Office Marocain de la Propriété Industrielle et Commerciale",
+      "url": "https://www.ompic.ma/fr/creation-et-vie-de-lentreprise",
       "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
-      "title": "Portail de la Direction Générale des Impôts",
+      "title": "Direction Générale des Impôts",
       "publisher": "Ministère de l'Économie et des Finances",
       "url": "https://www.tax.gov.ma/",
+      "verifiedOn": null,
+      "checkLocally": true
+    },
+    {
+      "id": "government",
+      "title": "Ministère de l'Économie et des Finances",
+      "publisher": "Royaume du Maroc",
+      "url": "https://www.finances.gov.ma/",
       "verifiedOn": "2026-10-29"
     }
   ],
@@ -48,19 +56,20 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the SA legal form.",
+      "description": "The registered name, including the SA legal form. A joint-stock company that can issue shares to investors.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "registrationNumber",
-      "label": "Numéro RC",
+      "label": "Numéro du registre de commerce",
       "description": "The number the company register gave the company.",
       "example": "",
       "type": "text",
@@ -68,12 +77,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "taxId",
-      "label": "Identifiant fiscal",
+      "label": "Numéro d'identification fiscale (NIF)",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
@@ -94,7 +104,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -107,7 +118,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -151,7 +163,8 @@
       "dependsOn": [],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -165,7 +178,8 @@
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -179,7 +193,8 @@
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -193,7 +208,8 @@
       ],
       "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
@@ -205,7 +221,7 @@
       "dependsOn": [
         "register"
       ],
-      "checkLocally": false,
+      "checkLocally": true,
       "sourceIds": [
         "tax"
       ]
@@ -249,7 +265,8 @@
       "authority": "Office Marocain de la Propriété Industrielle et Commerciale (OMPIC)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -265,7 +282,8 @@
       "authority": "Office Marocain de la Propriété Industrielle et Commerciale (OMPIC)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -281,7 +299,8 @@
       "authority": "Direction Générale des Impôts (DGI)",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
@@ -333,7 +352,8 @@
       "authority": "Office Marocain de la Propriété Industrielle et Commerciale (OMPIC)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -349,7 +369,8 @@
       "authority": "Office Marocain de la Propriété Industrielle et Commerciale (OMPIC)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -445,5 +466,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Numéro RC: {{registrationNumber}}\n- Identifiant fiscal: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- Numéro du registre de commerce: {{registrationNumber}}\n- Numéro d'identification fiscale (NIF): {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }

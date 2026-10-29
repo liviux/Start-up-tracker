@@ -14,18 +14,31 @@
   "sources": [
     {
       "id": "registry",
-      "title": "Créer une entreprise ou société en ligne",
-      "publisher": "ANPI Gabon",
-      "url": "https://www.gni-anpigabon.com/",
+      "title": "République Gabonaise",
+      "publisher": "Organisation pour l'harmonisation en Afrique du droit des affaires (OHADA)",
+      "url": "https://rccm.ohada.org/staticPage/index?alias=ga",
       "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
-      "title": "Ministère des Finances",
-      "publisher": "Ministère des Finances",
-      "url": "https://www.finances.gouv.ga/",
-      "verifiedOn": null,
-      "checkLocally": true
+      "title": "DGI – Direction Générale des Impôts",
+      "publisher": "Direction Générale des Impôts",
+      "url": "https://www.dgi.ga/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "Caisse Nationale de Sécurité Sociale",
+      "publisher": "Caisse Nationale de Sécurité Sociale",
+      "url": "https://www.cnss.ga/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "Présidence de la République Gabonaise",
+      "publisher": "Présidence de la République Gabonaise",
+      "url": "https://www.presidence.ga/",
+      "verifiedOn": "2026-10-29"
     }
   ],
   "conditions": [
@@ -44,14 +57,15 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the SARL legal form.",
+      "description": "The registered name, including the SARL legal form. A private company with limited liability, commonly used by small and medium-sized businesses.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -64,7 +78,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -90,7 +105,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -103,7 +119,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -136,68 +153,73 @@
     {
       "id": "name",
       "title": "Choose and check the SARL name",
-      "description": "Check the name is free in Guichet National d'Immatriculation (GNI) and follows Gabon's naming rules.",
-      "authority": "Guichet National d'Immatriculation (GNI)",
+      "description": "Check the name is free in Registre du Commerce et du Crédit Mobilier (RCCM) and follows Gabon's naming rules.",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "typicalCost": null,
       "dependsOn": [],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "documents",
       "title": "Prepare the SARL documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Guichet National d'Immatriculation (GNI)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "register",
       "title": "Register the SARL",
-      "description": "Submit the incorporation documents as Guichet National d'Immatriculation (GNI) requires. The company exists once the register enters it.",
-      "authority": "Guichet National d'Immatriculation (GNI)",
+      "description": "Submit the incorporation documents as Registre du Commerce et du Crédit Mobilier (RCCM) requires. The company exists once the register enters it.",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "tax",
       "title": "Register the SARL for tax",
-      "description": "Register with Direction Générale des Impôts for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Direction Générale des Impôts",
+      "description": "Register with Direction Générale des Impôts (DGI) for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Direction Générale des Impôts (DGI)",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Direction Générale des Impôts for payroll and social contributions.",
-      "authority": "Direction Générale des Impôts",
+      "description": "Before the first hire, register with Caisse Nationale de Sécurité Sociale (CNSS) for payroll and social contributions.",
+      "authority": "Caisse Nationale de Sécurité Sociale (CNSS)",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
@@ -230,55 +252,58 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Guichet National d'Immatriculation (GNI), then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with Registre du Commerce et du Crédit Mobilier (RCCM), then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet National d'Immatriculation (GNI)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Guichet National d'Immatriculation (GNI), the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Registre du Commerce et du Crédit Mobilier (RCCM), the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet National d'Immatriculation (GNI)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Direction Générale des Impôts, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Direction Générale des Impôts (DGI), then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Direction Générale des Impôts",
+      "authority": "Direction Générale des Impôts (DGI)",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Direction Générale des Impôts and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Direction Générale des Impôts (DGI) and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -287,7 +312,7 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Direction Générale des Impôts",
+      "authority": "Direction Générale des Impôts (DGI)",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -296,7 +321,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Direction Générale des Impôts. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Caisse Nationale de Sécurité Sociale (CNSS). Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -305,42 +330,45 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Direction Générale des Impôts",
+      "authority": "Caisse Nationale de Sécurité Sociale (CNSS)",
       "checkLocally": true,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Guichet National d'Immatriculation (GNI).",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Registre du Commerce et du Crédit Mobilier (RCCM).",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet National d'Immatriculation (GNI)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Guichet National d'Immatriculation (GNI), then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to Registre du Commerce et du Crédit Mobilier (RCCM), then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet National d'Immatriculation (GNI)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {

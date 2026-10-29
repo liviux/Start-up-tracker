@@ -4,7 +4,7 @@
   "country": "LY",
   "countryName": "Libya",
   "entityType": "JSC",
-  "nameLocal": "شركة مساهمة (Joint-stock company)",
+  "nameLocal": "شركة مساهمة (Sharikat musahama)",
   "nameEnglish": "Joint-stock company",
   "currency": "LYD",
   "bilingual": null,
@@ -14,17 +14,23 @@
   "sources": [
     {
       "id": "registry",
-      "title": "Commercial Registry",
+      "title": "وزارة الاقتصاد والتجارة",
       "publisher": "Ministry of Economy and Trade",
-      "url": "https://cr.eidc.gov.ly/",
-      "verifiedOn": null,
-      "checkLocally": true
+      "url": "https://www.economy.gov.ly/",
+      "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
-      "title": "Tax Authority",
-      "publisher": "Ministry of Finance",
+      "title": "مصلحة الضرائب ليبيا",
+      "publisher": "Libyan Tax Authority",
       "url": "https://www.tax.gov.ly/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "صندوق الضمان الاجتماعي – ليبيا",
+      "publisher": "Social Security Fund",
+      "url": "https://www.ssf.gov.ly/",
       "verifiedOn": "2026-10-29"
     }
   ],
@@ -49,7 +55,7 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the JSC legal form.",
+      "description": "The registered name, including the JSC legal form. A company owned through shares that can raise equity from investors.",
       "example": "",
       "type": "text",
       "group": "identity",
@@ -61,7 +67,7 @@
     },
     {
       "key": "registrationNumber",
-      "label": "Commercial registration number",
+      "label": "رقم السجل التجاري (Commercial Registry Number)",
       "description": "The number the company register gave the company.",
       "example": "",
       "type": "text",
@@ -74,7 +80,7 @@
     },
     {
       "key": "taxId",
-      "label": "Tax number",
+      "label": "الرقم الضريبي (Tax Number)",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
@@ -100,7 +106,7 @@
     },
     {
       "key": "shareCapital",
-      "label": "Capital",
+      "label": "رأس المال (Share capital)",
       "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
       "example": "",
       "type": "money",
@@ -146,11 +152,11 @@
     {
       "id": "name",
       "title": "Choose and check the JSC name",
-      "description": "Check the name is free in Commercial Registry and follows Libya's naming rules.",
-      "authority": "Commercial Registry",
+      "description": "Check the name is free in Commercial Registry Department and follows Libya's naming rules.",
+      "authority": "Commercial Registry Department",
       "typicalCost": null,
       "dependsOn": [],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
         "registry"
       ]
@@ -159,12 +165,12 @@
       "id": "documents",
       "title": "Prepare the JSC documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Commercial Registry",
+      "authority": "Commercial Registry Department",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
         "registry"
       ]
@@ -172,13 +178,13 @@
     {
       "id": "register",
       "title": "Register the JSC",
-      "description": "Submit the incorporation documents as Commercial Registry requires. The company exists once the register enters it.",
-      "authority": "Commercial Registry",
+      "description": "Submit the incorporation documents as Commercial Registry Department requires. The company exists once the register enters it.",
+      "authority": "Commercial Registry Department",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
         "registry"
       ]
@@ -186,8 +192,8 @@
     {
       "id": "tax",
       "title": "Register the JSC for tax",
-      "description": "Register with Tax Authority for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Tax Authority",
+      "description": "Register with Libyan Tax Authority for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Libyan Tax Authority",
       "typicalCost": null,
       "dependsOn": [
         "register"
@@ -200,14 +206,15 @@
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Tax Authority for payroll and social contributions.",
-      "authority": "Tax Authority",
+      "description": "Before the first hire, register with Social Security Fund for payroll and social contributions.",
+      "authority": "Social Security Fund",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": false,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
@@ -240,14 +247,14 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Commercial Registry, then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with Commercial Registry Department, then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Commercial Registry",
+      "authority": "Commercial Registry Department",
       "checkLocally": true,
       "sourceIds": [
         "registry"
@@ -256,14 +263,14 @@
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Commercial Registry, the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Commercial Registry Department, the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Commercial Registry",
+      "authority": "Commercial Registry Department",
       "checkLocally": true,
       "sourceIds": [
         "registry"
@@ -272,14 +279,14 @@
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Tax Authority, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Libyan Tax Authority, then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Tax Authority",
+      "authority": "Libyan Tax Authority",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -288,7 +295,7 @@
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Tax Authority and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Libyan Tax Authority and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -297,7 +304,7 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Tax Authority",
+      "authority": "Libyan Tax Authority",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -306,7 +313,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Tax Authority. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Social Security Fund. Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -315,23 +322,24 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Tax Authority",
+      "authority": "Social Security Fund",
       "checkLocally": true,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Commercial Registry.",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Commercial Registry Department.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Commercial Registry",
+      "authority": "Commercial Registry Department",
       "checkLocally": true,
       "sourceIds": [
         "registry"
@@ -340,14 +348,14 @@
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Commercial Registry, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to Commercial Registry Department, then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Commercial Registry",
+      "authority": "Commercial Registry Department",
       "checkLocally": true,
       "sourceIds": [
         "registry"
@@ -446,5 +454,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Commercial registration number: {{registrationNumber}}\n- Tax number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- رقم السجل التجاري (Commercial Registry Number): {{registrationNumber}}\n- الرقم الضريبي (Tax Number): {{taxId}}\n- Registered office: {{registeredOffice}}\n- رأس المال (Share capital): {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }

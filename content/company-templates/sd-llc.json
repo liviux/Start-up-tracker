@@ -4,8 +4,8 @@
   "country": "SD",
   "countryName": "Sudan",
   "entityType": "LLC",
-  "nameLocal": "Limited liability company",
-  "nameEnglish": "Limited liability company",
+  "nameLocal": "شركة ذات مسؤولية محدودة (Sharikat dhat mas'uliyya mahduda)",
+  "nameEnglish": "Private limited company",
   "currency": "SDG",
   "bilingual": null,
   "subdivision": null,
@@ -14,16 +14,23 @@
   "sources": [
     {
       "id": "registry",
-      "title": "Ministry of Justice",
-      "publisher": "Government of Sudan",
+      "title": "Ministry of Justice, Company Registration",
+      "publisher": "Ministry of Justice, Republic of Sudan",
       "url": "https://www.moj.gov.sd/",
       "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
-      "title": "Taxation Chamber",
-      "publisher": "Ministry of Finance",
+      "title": "الرئيسية - SudanTax",
+      "publisher": "Sudan Tax Authority",
       "url": "https://www.tax.gov.sd/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "جمهورية السودان",
+      "publisher": "Government of Sudan",
+      "url": "https://www.sudan.gov.sd/",
       "verifiedOn": "2026-10-29"
     }
   ],
@@ -43,19 +50,20 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the LLC legal form.",
+      "description": "The registered name, including the LLC legal form. A private company whose owners' liability is limited to their contributions.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "registrationNumber",
-      "label": "Commercial registration number",
+      "label": "Commercial Registration Number",
       "description": "The number the company register gave the company.",
       "example": "",
       "type": "text",
@@ -63,12 +71,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "taxId",
-      "label": "Tax number",
+      "label": "Tax Identification Number",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
@@ -89,12 +98,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "shareCapital",
-      "label": "Capital",
+      "label": "Share capital",
       "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
       "example": "",
       "type": "money",
@@ -102,7 +112,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -135,62 +146,66 @@
     {
       "id": "name",
       "title": "Choose and check the LLC name",
-      "description": "Check the name is free in Ministry of Justice and follows Sudan's naming rules.",
-      "authority": "Ministry of Justice",
+      "description": "Check the name is free in Commercial Registrations Department and follows Sudan's naming rules.",
+      "authority": "Commercial Registrations Department",
       "typicalCost": null,
       "dependsOn": [],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "documents",
       "title": "Prepare the LLC documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Ministry of Justice",
+      "authority": "Commercial Registrations Department",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "register",
       "title": "Register the LLC",
-      "description": "Submit the incorporation documents as Ministry of Justice requires. The company exists once the register enters it.",
-      "authority": "Ministry of Justice",
+      "description": "Submit the incorporation documents as Commercial Registrations Department requires. The company exists once the register enters it.",
+      "authority": "Commercial Registrations Department",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "tax",
       "title": "Register the LLC for tax",
-      "description": "Register with Taxation Chamber for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Taxation Chamber",
+      "description": "Register with Sudan Tax Authority for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Sudan Tax Authority",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Taxation Chamber for payroll and social contributions.",
-      "authority": "Taxation Chamber",
+      "description": "Before the first hire, register with Sudan Tax Authority for payroll and social contributions.",
+      "authority": "Sudan Tax Authority",
       "typicalCost": null,
       "dependsOn": [
         "register"
@@ -229,55 +244,58 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Ministry of Justice, then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with Commercial Registrations Department, then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministry of Justice",
+      "authority": "Commercial Registrations Department",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Ministry of Justice, the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Commercial Registrations Department, the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministry of Justice",
+      "authority": "Commercial Registrations Department",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Taxation Chamber, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Sudan Tax Authority, then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Taxation Chamber",
+      "authority": "Sudan Tax Authority",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Taxation Chamber and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Sudan Tax Authority and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -286,7 +304,7 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Taxation Chamber",
+      "authority": "Sudan Tax Authority",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -295,7 +313,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Taxation Chamber. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Sudan Tax Authority. Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -304,7 +322,7 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Taxation Chamber",
+      "authority": "Sudan Tax Authority",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -313,33 +331,35 @@
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Ministry of Justice.",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Commercial Registrations Department.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministry of Justice",
+      "authority": "Commercial Registrations Department",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Ministry of Justice, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to Commercial Registrations Department, then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministry of Justice",
+      "authority": "Commercial Registrations Department",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -391,5 +411,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Commercial registration number: {{registrationNumber}}\n- Tax number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- Commercial Registration Number: {{registrationNumber}}\n- Tax Identification Number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Share capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }

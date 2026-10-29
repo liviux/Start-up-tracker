@@ -14,17 +14,30 @@
   "sources": [
     {
       "id": "registry",
-      "title": "Guichet Unique de Création d'Entreprise",
-      "publisher": "GUCE",
-      "url": "https://www.guce.cd/",
-      "verifiedOn": null,
-      "checkLocally": true
+      "title": "Registre du Commerce et du Crédit Mobilier",
+      "publisher": "Ministère de la Justice",
+      "url": "https://www.rccm.cd/",
+      "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
-      "title": "Direction Générale des Impôts",
-      "publisher": "DGI",
+      "title": "DGI | Direction générale des impôts",
+      "publisher": "Ministère des Finances",
       "url": "https://www.dgi.gouv.cd/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "Accueil - Caisse Nationale de Sécurité Sociale",
+      "publisher": "Caisse Nationale de Sécurité Sociale",
+      "url": "https://www.cnss.cd/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "Home - Site de la Primature",
+      "publisher": "Primature de la République Démocratique du Congo",
+      "url": "https://www.primature.cd/",
       "verifiedOn": "2026-10-29"
     }
   ],
@@ -44,14 +57,15 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the SARL legal form.",
+      "description": "The registered name, including the SARL legal form. A private company with limited liability, commonly used by small and medium-sized businesses.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -64,12 +78,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "taxId",
-      "label": "Numéro impôt",
+      "label": "Numéro d'identification fiscale (NIF)",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
@@ -90,7 +105,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -103,7 +119,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -136,41 +153,44 @@
     {
       "id": "name",
       "title": "Choose and check the SARL name",
-      "description": "Check the name is free in Guichet Unique de Création d'Entreprise (GUCE) and follows DR Congo's naming rules.",
-      "authority": "Guichet Unique de Création d'Entreprise (GUCE)",
+      "description": "Check the name is free in Registre du Commerce et du Crédit Mobilier (RCCM) and follows DR Congo's naming rules.",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "typicalCost": null,
       "dependsOn": [],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "documents",
       "title": "Prepare the SARL documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Guichet Unique de Création d'Entreprise (GUCE)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "register",
       "title": "Register the SARL",
-      "description": "Submit the incorporation documents as Guichet Unique de Création d'Entreprise (GUCE) requires. The company exists once the register enters it.",
-      "authority": "Guichet Unique de Création d'Entreprise (GUCE)",
+      "description": "Submit the incorporation documents as Registre du Commerce et du Crédit Mobilier (RCCM) requires. The company exists once the register enters it.",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -184,20 +204,22 @@
       ],
       "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Direction Générale des Impôts (DGI) for payroll and social contributions.",
-      "authority": "Direction Générale des Impôts (DGI)",
+      "description": "Before the first hire, register with Caisse Nationale de Sécurité Sociale (CNSS) for payroll and social contributions.",
+      "authority": "Caisse Nationale de Sécurité Sociale (CNSS)",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": false,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
@@ -230,33 +252,35 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Guichet Unique de Création d'Entreprise (GUCE), then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with Registre du Commerce et du Crédit Mobilier (RCCM), then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet Unique de Création d'Entreprise (GUCE)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Guichet Unique de Création d'Entreprise (GUCE), the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Registre du Commerce et du Crédit Mobilier (RCCM), the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet Unique de Création d'Entreprise (GUCE)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -272,7 +296,8 @@
       "authority": "Direction Générale des Impôts (DGI)",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
@@ -296,7 +321,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Direction Générale des Impôts (DGI). Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Caisse Nationale de Sécurité Sociale (CNSS). Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -305,42 +330,45 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Direction Générale des Impôts (DGI)",
+      "authority": "Caisse Nationale de Sécurité Sociale (CNSS)",
       "checkLocally": true,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Guichet Unique de Création d'Entreprise (GUCE).",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Registre du Commerce et du Crédit Mobilier (RCCM).",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet Unique de Création d'Entreprise (GUCE)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Guichet Unique de Création d'Entreprise (GUCE), then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to Registre du Commerce et du Crédit Mobilier (RCCM), then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Guichet Unique de Création d'Entreprise (GUCE)",
+      "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -392,5 +420,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Numéro RCCM: {{registrationNumber}}\n- Numéro impôt: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- Numéro RCCM: {{registrationNumber}}\n- Numéro d'identification fiscale (NIF): {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }

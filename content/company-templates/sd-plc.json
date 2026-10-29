@@ -1,33 +1,37 @@
 {
-  "id": "gq-sl",
+  "id": "sd-plc",
   "version": 1,
-  "country": "GQ",
-  "countryName": "Equatorial Guinea",
-  "entityType": "S.L.",
-  "nameLocal": "Sociedad Limitada",
-  "nameEnglish": "Private limited company",
-  "currency": "XAF",
+  "country": "SD",
+  "countryName": "Sudan",
+  "entityType": "PLC",
+  "nameLocal": "شركة مساهمة عامة (Sharikat musahama amma)",
+  "nameEnglish": "Public limited company",
+  "currency": "SDG",
   "bilingual": null,
   "subdivision": null,
   "disclaimer": "Not legal or tax advice. Check with an accountant or lawyer.",
-  "verifiedOn": null,
-  "draft": true,
+  "verifiedOn": "2026-10-29",
   "sources": [
     {
       "id": "registry",
-      "title": "Guinea Ecuatorial Press",
-      "publisher": "Government of Equatorial Guinea",
-      "url": "https://www.guineaecuatorialpress.com/",
-      "verifiedOn": null,
-      "checkLocally": true
+      "title": "Ministry of Justice, Company Registration",
+      "publisher": "Ministry of Justice, Republic of Sudan",
+      "url": "https://www.moj.gov.sd/",
+      "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
-      "title": "Ministerio de Hacienda",
-      "publisher": "Ministerio de Hacienda",
-      "url": "https://www.finanzas.gob.gq/",
-      "verifiedOn": null,
-      "checkLocally": true
+      "title": "الرئيسية - SudanTax",
+      "publisher": "Sudan Tax Authority",
+      "url": "https://www.tax.gov.sd/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "جمهورية السودان",
+      "publisher": "Government of Sudan",
+      "url": "https://www.sudan.gov.sd/",
+      "verifiedOn": "2026-10-29"
     }
   ],
   "conditions": [
@@ -40,25 +44,31 @@
       "id": "vat-registered",
       "label": "Registered for VAT",
       "description": "Registered for value added tax or a similar turnover tax."
+    },
+    {
+      "id": "listed",
+      "label": "Listed on a stock exchange",
+      "description": "Its shares trade on a regulated market."
     }
   ],
   "profileFields": [
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the S.L. legal form.",
+      "description": "The registered name, including the PLC legal form. A public company that can offer shares to investors.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "registrationNumber",
-      "label": "Número de registro mercantil",
+      "label": "Commercial Registration Number",
       "description": "The number the company register gave the company.",
       "example": "",
       "type": "text",
@@ -66,12 +76,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "taxId",
-      "label": "NIF",
+      "label": "Tax Identification Number",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
@@ -92,12 +103,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "shareCapital",
-      "label": "Capital social",
+      "label": "Share capital",
       "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
       "example": "",
       "type": "money",
@@ -105,7 +117,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -114,17 +127,22 @@
       {
         "id": "director",
         "label": "Director",
-        "description": "Runs the company and represents it."
+        "description": "Sits on the board and runs the company."
+      },
+      {
+        "id": "officer",
+        "label": "Officer",
+        "description": "A senior officer named by the board."
       },
       {
         "id": "shareholder",
         "label": "Shareholder",
-        "description": "Owns shares or a stake in the company."
+        "description": "Owns shares in the company."
       },
       {
-        "id": "founder",
-        "label": "Founder",
-        "description": "Set up the company."
+        "id": "auditor",
+        "label": "Auditor",
+        "description": "Audits the annual accounts."
       }
     ],
     "fields": [
@@ -137,68 +155,72 @@
   "setupSteps": [
     {
       "id": "name",
-      "title": "Choose and check the S.L. name",
-      "description": "Check the name is free in Registro Mercantil and follows Equatorial Guinea's naming rules.",
-      "authority": "Registro Mercantil",
+      "title": "Choose and check the PLC name",
+      "description": "Check the name is free in Commercial Registrations Department and follows Sudan's naming rules.",
+      "authority": "Commercial Registrations Department",
       "typicalCost": null,
       "dependsOn": [],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "documents",
-      "title": "Prepare the S.L. documents",
+      "title": "Prepare the PLC documents",
       "description": "Prepare the articles or statutes, the founders' details and the registered office. The registration process sets out what it needs.",
-      "authority": "Registro Mercantil",
+      "authority": "Commercial Registrations Department",
       "typicalCost": null,
       "dependsOn": [
         "name"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "register",
-      "title": "Register the S.L.",
-      "description": "Submit the incorporation documents as Registro Mercantil requires. The company exists once the register enters it.",
-      "authority": "Registro Mercantil",
+      "title": "Register the PLC",
+      "description": "Submit the incorporation documents as Commercial Registrations Department requires. The company exists once the register enters it.",
+      "authority": "Commercial Registrations Department",
       "typicalCost": null,
       "dependsOn": [
         "documents"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "tax",
-      "title": "Register the S.L. for tax",
-      "description": "Register with Ministerio de Hacienda for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Ministerio de Hacienda",
+      "title": "Register the PLC for tax",
+      "description": "Register with Sudan Tax Authority for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Sudan Tax Authority",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Ministerio de Hacienda for payroll and social contributions.",
-      "authority": "Ministerio de Hacienda",
+      "description": "Before the first hire, register with Sudan Tax Authority for payroll and social contributions.",
+      "authority": "Sudan Tax Authority",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
-      "checkLocally": true,
+      "checkLocally": false,
       "sourceIds": [
         "tax"
       ]
@@ -232,55 +254,58 @@
     {
       "id": "annual-return",
       "title": "Annual return or confirmation statement",
-      "description": "Check whether an annual return or confirmation statement is due with Registro Mercantil, then file it and keep the company record current.",
+      "description": "Check whether an annual return or confirmation statement is due with Commercial Registrations Department, then file it and keep the company record current.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Registro Mercantil",
+      "authority": "Commercial Registrations Department",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "annual-accounts",
       "title": "Annual financial statements",
-      "description": "Prepare the annual accounts. Check whether they must be filed with Registro Mercantil, the deadline and whether an audit is required.",
+      "description": "Prepare the annual accounts. Check whether they must be filed with Commercial Registrations Department, the deadline and whether an audit is required.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Registro Mercantil",
+      "authority": "Commercial Registrations Department",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Ministerio de Hacienda, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Sudan Tax Authority, then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Ministerio de Hacienda",
+      "authority": "Sudan Tax Authority",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Ministerio de Hacienda and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Sudan Tax Authority and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -289,7 +314,7 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Ministerio de Hacienda",
+      "authority": "Sudan Tax Authority",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -298,7 +323,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Ministerio de Hacienda. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Sudan Tax Authority. Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -307,7 +332,7 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Ministerio de Hacienda",
+      "authority": "Sudan Tax Authority",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -316,33 +341,35 @@
     {
       "id": "beneficial-ownership",
       "title": "Beneficial ownership information",
-      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Registro Mercantil.",
+      "description": "Check whether the country requires a beneficial ownership filing. If it does, keep the record up to date and file it with Commercial Registrations Department.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Registro Mercantil",
+      "authority": "Commercial Registrations Department",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "change-notification",
       "title": "Report changes to the register",
-      "description": "Check what changes must be reported to Registro Mercantil, then tell it about changes to the name, address, directors or share capital within its deadline.",
+      "description": "Check what changes must be reported to Commercial Registrations Department, then tell it about changes to the name, address, directors or share capital within its deadline.",
       "frequency": "on-event",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Registro Mercantil",
+      "authority": "Commercial Registrations Department",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -356,6 +383,50 @@
       "conditions": [],
       "subdivisions": [],
       "authority": "Sector regulator",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "annual-meeting",
+      "title": "Annual general meeting",
+      "description": "Hold the annual general meeting and record the resolutions.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Company",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "audit",
+      "title": "Audit the annual accounts",
+      "description": "Have the annual accounts audited if the company meets the audit threshold.",
+      "frequency": "annual",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [],
+      "subdivisions": [],
+      "authority": "Auditor",
+      "checkLocally": true,
+      "sourceIds": []
+    },
+    {
+      "id": "market-disclosure",
+      "title": "Disclose market information",
+      "description": "Publish information that could affect the share price as the market rules require.",
+      "frequency": "on-event",
+      "due": {
+        "rule": "manual"
+      },
+      "conditions": [
+        "listed"
+      ],
+      "subdivisions": [],
+      "authority": "Stock exchange regulator",
       "checkLocally": true,
       "sourceIds": []
     }
@@ -394,5 +465,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Número de registro mercantil: {{registrationNumber}}\n- NIF: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Capital social: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- Commercial Registration Number: {{registrationNumber}}\n- Tax Identification Number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Share capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }

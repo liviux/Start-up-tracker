@@ -14,16 +14,23 @@
   "sources": [
     {
       "id": "registry",
-      "title": "RCCM OHADA",
-      "publisher": "OHADA",
-      "url": "https://rccm.ohada.org/",
+      "title": "Inscription au RCCM",
+      "publisher": "Ministère de la Justice, de la Promotion des Droits Humains et de la Bonne Gouvernance",
+      "url": "https://www.justice.gouv.cf/services/10/inscription-au-rccm",
       "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
-      "title": "Ministère des Finances et du Budget",
+      "title": "La fiscalité en RCA",
       "publisher": "Ministère des Finances et du Budget",
-      "url": "https://www.finances.gouv.cf/",
+      "url": "https://www.finances.gouv.cf/finances/la-fiscalite-en-rca",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "Portail du Gouvernement",
+      "publisher": "Gouvernement de la République Centrafricaine",
+      "url": "https://www.gouvernement.cf/",
       "verifiedOn": "2026-10-29"
     }
   ],
@@ -48,14 +55,15 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the SA legal form.",
+      "description": "The registered name, including the SA legal form. A joint-stock company that can issue shares to investors.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -68,7 +76,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -94,7 +103,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -107,7 +117,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -151,7 +162,8 @@
       "dependsOn": [],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -165,7 +177,8 @@
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -179,28 +192,30 @@
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "tax",
       "title": "Register the SA for tax",
-      "description": "Register with Direction Générale des Impôts for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Direction Générale des Impôts",
+      "description": "Register with Direction Générale des Impôts et des Domaines (DGID) for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Direction Générale des Impôts et des Domaines (DGID)",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Direction Générale des Impôts for payroll and social contributions.",
-      "authority": "Direction Générale des Impôts",
+      "description": "Before the first hire, register with Direction Générale des Impôts et des Domaines (DGID) for payroll and social contributions.",
+      "authority": "Direction Générale des Impôts et des Domaines (DGID)",
       "typicalCost": null,
       "dependsOn": [
         "register"
@@ -249,7 +264,8 @@
       "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -265,29 +281,31 @@
       "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Direction Générale des Impôts, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Direction Générale des Impôts et des Domaines (DGID), then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Direction Générale des Impôts",
+      "authority": "Direction Générale des Impôts et des Domaines (DGID)",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Direction Générale des Impôts and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Direction Générale des Impôts et des Domaines (DGID) and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -296,7 +314,7 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Direction Générale des Impôts",
+      "authority": "Direction Générale des Impôts et des Domaines (DGID)",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -305,7 +323,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Direction Générale des Impôts. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through Direction Générale des Impôts et des Domaines (DGID). Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -314,7 +332,7 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Direction Générale des Impôts",
+      "authority": "Direction Générale des Impôts et des Domaines (DGID)",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -333,7 +351,8 @@
       "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -349,7 +368,8 @@
       "authority": "Registre du Commerce et du Crédit Mobilier (RCCM)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {

@@ -4,7 +4,7 @@
   "country": "EG",
   "countryName": "Egypt",
   "entityType": "LLC",
-  "nameLocal": "شركة ذات مسؤولية محدودة (Limited liability company)",
+  "nameLocal": "شركة ذات مسؤولية محدودة (Sharikat dhat mas'uliyya mahduda)",
   "nameEnglish": "Limited liability company",
   "currency": "EGP",
   "bilingual": null,
@@ -14,16 +14,30 @@
   "sources": [
     {
       "id": "registry",
-      "title": "General Authority for Investment and Free Zones",
-      "publisher": "GAFI",
+      "title": "General Authority for Investment and Free Zones - Egypt",
+      "publisher": "General Authority for Investment and Free Zones",
       "url": "https://www.gafi.gov.eg/",
       "verifiedOn": "2026-10-29"
     },
     {
       "id": "tax",
-      "title": "Egyptian Tax Authority",
-      "publisher": "Ministry of Finance",
+      "title": "مصلحة الضرائب المصرية",
+      "publisher": "Egyptian Tax Authority",
       "url": "https://www.eta.gov.eg/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "social",
+      "title": "الهيئة القومية للتأمين الاجتماعي",
+      "publisher": "National Organization for Social Insurance",
+      "url": "https://www.nosi.gov.eg/",
+      "verifiedOn": "2026-10-29"
+    },
+    {
+      "id": "government",
+      "title": "Ministry of Finance, Arab Republic of Egypt",
+      "publisher": "Ministry of Finance",
+      "url": "https://www.mof.gov.eg/",
       "verifiedOn": "2026-10-29"
     }
   ],
@@ -43,19 +57,20 @@
     {
       "key": "legalName",
       "label": "Company name",
-      "description": "The registered name, including the LLC legal form.",
+      "description": "The registered name, including the LLC legal form. A private company whose owners' liability is limited to their contributions.",
       "example": "",
       "type": "text",
       "group": "identity",
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "registrationNumber",
-      "label": "Commercial registration number",
+      "label": "رقم السجل التجاري (Commercial Registry Number)",
       "description": "The number the company register gave the company.",
       "example": "",
       "type": "text",
@@ -63,12 +78,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "taxId",
-      "label": "Tax registration number",
+      "label": "رقم التسجيل الضريبي (Tax Registration Number)",
       "description": "The company's tax number.",
       "example": "",
       "type": "text",
@@ -89,12 +105,13 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "key": "shareCapital",
-      "label": "Issued capital",
+      "label": "رأس المال (Share capital)",
       "description": "The capital the company was registered with. Leave it empty if the form has no share capital.",
       "example": "",
       "type": "money",
@@ -102,7 +119,8 @@
       "sensitive": false,
       "includeInDocument": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     }
   ],
@@ -141,7 +159,8 @@
       "dependsOn": [],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -155,7 +174,8 @@
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -169,34 +189,37 @@
       ],
       "checkLocally": false,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "tax",
       "title": "Register the LLC for tax",
-      "description": "Register with Egyptian Tax Authority for the company's tax number and any VAT or payroll accounts it needs.",
-      "authority": "Egyptian Tax Authority",
+      "description": "Register with Egyptian Tax Authority (ETA) for the company's tax number and any VAT or payroll accounts it needs.",
+      "authority": "Egyptian Tax Authority (ETA)",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": false,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "social",
       "title": "Register as an employer",
-      "description": "Before the first hire, register with Egyptian Tax Authority for payroll and social contributions.",
-      "authority": "Egyptian Tax Authority",
+      "description": "Before the first hire, register with National Organization for Social Insurance (NOSI) for payroll and social contributions.",
+      "authority": "National Organization for Social Insurance (NOSI)",
       "typicalCost": null,
       "dependsOn": [
         "register"
       ],
       "checkLocally": false,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
@@ -239,7 +262,8 @@
       "authority": "General Authority for Investment and Free Zones (GAFI)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -255,29 +279,31 @@
       "authority": "General Authority for Investment and Free Zones (GAFI)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
       "id": "corporate-tax",
       "title": "Corporate income tax return",
-      "description": "Check the company's income tax filing with Egyptian Tax Authority, then file the return and pay by the dates it sets.",
+      "description": "Check the company's income tax filing with Egyptian Tax Authority (ETA), then file the return and pay by the dates it sets.",
       "frequency": "annual",
       "due": {
         "rule": "manual"
       },
       "conditions": [],
       "subdivisions": [],
-      "authority": "Egyptian Tax Authority",
+      "authority": "Egyptian Tax Authority (ETA)",
       "checkLocally": true,
       "sourceIds": [
-        "tax"
+        "tax",
+        "government"
       ]
     },
     {
       "id": "vat",
       "title": "VAT returns",
-      "description": "File VAT returns with Egyptian Tax Authority and pay any VAT due. Check whether the company is registered and how often it files.",
+      "description": "File VAT returns with Egyptian Tax Authority (ETA) and pay any VAT due. Check whether the company is registered and how often it files.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -286,7 +312,7 @@
         "vat-registered"
       ],
       "subdivisions": [],
-      "authority": "Egyptian Tax Authority",
+      "authority": "Egyptian Tax Authority (ETA)",
       "checkLocally": true,
       "sourceIds": [
         "tax"
@@ -295,7 +321,7 @@
     {
       "id": "payroll",
       "title": "Payroll taxes and social contributions",
-      "description": "Withhold and remit payroll taxes and social contributions for employees through Egyptian Tax Authority. Check the rates and dates.",
+      "description": "Withhold and remit payroll taxes and social contributions for employees through National Organization for Social Insurance (NOSI). Check the rates and dates.",
       "frequency": "monthly",
       "due": {
         "rule": "manual"
@@ -304,9 +330,10 @@
         "has-employees"
       ],
       "subdivisions": [],
-      "authority": "Egyptian Tax Authority",
+      "authority": "National Organization for Social Insurance (NOSI)",
       "checkLocally": true,
       "sourceIds": [
+        "social",
         "tax"
       ]
     },
@@ -323,7 +350,8 @@
       "authority": "General Authority for Investment and Free Zones (GAFI)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -339,7 +367,8 @@
       "authority": "General Authority for Investment and Free Zones (GAFI)",
       "checkLocally": true,
       "sourceIds": [
-        "registry"
+        "registry",
+        "government"
       ]
     },
     {
@@ -391,5 +420,5 @@
       "label": "Other"
     }
   ],
-  "documentTemplate": "# {{legalName}}\n\n- Commercial registration number: {{registrationNumber}}\n- Tax registration number: {{taxId}}\n- Registered office: {{registeredOffice}}\n- Issued capital: {{shareCapital}}\n\n## People\n\n{{people}}\n"
+  "documentTemplate": "# {{legalName}}\n\n- رقم السجل التجاري (Commercial Registry Number): {{registrationNumber}}\n- رقم التسجيل الضريبي (Tax Registration Number): {{taxId}}\n- Registered office: {{registeredOffice}}\n- رأس المال (Share capital): {{shareCapital}}\n\n## People\n\n{{people}}\n"
 }
