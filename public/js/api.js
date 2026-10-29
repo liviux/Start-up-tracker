@@ -17,7 +17,7 @@
   "use strict";
 
   // Kept in step with package.json by tests/client-api.test.js.
-  const APP_VERSION = "0.2.1";
+  const APP_VERSION = "0.3.0";
   // Same rule as the server's ids: a slug plus a random suffix.
   const STARTUP_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,62}$/;
   const STORAGE_PREFIX = "startup-tracker";

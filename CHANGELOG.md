@@ -4,12 +4,23 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-29
+
 ### Added
 - Company templates now cover 199 countries and territories, with the major private, public and partnership forms for each. The new templates carry official register and tax authority sources, setup steps, recurring obligations, profile fields, people roles, expense categories and a document template; where an official page does not settle a fee or a date, the step says "check locally".
 - The company template picker puts the country of the current template first, so the longer list opens near where you were.
+- Twelve layout themes replace the palette-only ones. Studio stays the default; ten more, two each from five design skills, change the layout and type as well as the colours, and Coda adds a right-hand rail, ivory paper and a serif voice. Settings and the setup show a Calendar screenshot of each theme.
+- "Try themes live" in Settings > Appearance opens a small bar at the top of the screen with a key per theme, so you can switch themes while you use the app.
 
 ### Changed
 - The Company tab's coverage note and the README and docs now describe the full country list instead of the first 18 templates.
+- Algeria, Central African Republic, Chad, Congo, DR Congo, Egypt, Equatorial Guinea, Gabon, Libya, Morocco, Sao Tome and Principe, South Sudan and Sudan use their final official register, tax and social security sources.
+- A theme saved under an older palette id opens the layout theme that carries its idea, instead of falling back to Studio.
+- Settings > AI agents shows the version an agent reported in its last check. Before a check, an npm or uv agent shows the registry version and a native program shows none, because the registry may not match what is installed.
+
+### Fixed
+- `startup-tracker autostart on` keeps your `PATH` in the systemd unit or LaunchAgent. Services otherwise start with only the system folders on `PATH`, so Settings > AI agents missed agents installed in `~/.local/bin`, `~/.bun/bin`, `/opt/homebrew/bin` or through nvm (Claude Code, Codex, Grok, Antigravity), and their adapters could not start them. Run `startup-tracker autostart on` again to update an existing service.
+- When the tracker stops, it waits for agents of finished runs to stop too, instead of leaving them running for a few seconds.
 
 ## [0.2.1] - 2026-10-28
 
