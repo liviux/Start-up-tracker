@@ -425,6 +425,10 @@ test("a run with no update for the idle time is flagged idle, and the timeout st
     assert.ok(runs.events(run.id).some((event) => event.type === "idle"));
     await waitStatus(run.id, "cancelled");
     assert.match(runs.get(run.id).error, /longer than 50 minutes/);
+    // The stopped agent is still shutting down; shutdown() waits for it, or
+    // Windows refuses to delete the run folder it holds.
+    await runs.shutdown();
+    assert.equal(runs.stopping.size, 0);
   } finally {
     await cleanup();
   }

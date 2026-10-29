@@ -191,7 +191,7 @@ test("registry: agents found on this computer, including native CLIs an adapter 
     assert.equal(byId["npx-agent"].installedBin, "npx-agent-cli", "a found package command can run without a download");
     assert.equal(byId["uvx-agent"].installed, false);
     assert.equal(byId["adapter-agent"], undefined, "only agents the registry knows are described");
-    const adapter = registry.describeAgents({ agents: [{ id: "adapter-agent", name: "Adapter", distribution: { npx: { package: "adapter-agent" } } }], catalog: result.catalog })[0];
+    const adapter = registry.describeAgents({ agents: [{ id: "adapter-agent", name: "Adapter", distribution: { npx: { package: "adapter-agent" } } }], catalog: result.catalog }, { env: { PATH: dir }, platform: "linux", arch: "x64" })[0];
     assert.equal(adapter.installed, true, "a needed native CLI marks the adapter found");
     assert.equal(adapter.installedBin, "", "but the adapter itself still has to be downloaded");
   } finally {
