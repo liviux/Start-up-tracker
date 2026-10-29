@@ -86,6 +86,29 @@ test("Settings helpers: arguments, environment lines, check states, registry sea
   assert.deepEqual(SettingsUi.filterAgents(agents, "code").map((agent) => agent.id), ["z", "b"]);
 });
 
+test("an agent card prefers the version its check reported to the catalog's", () => {
+  const binary = { kind: "binary", registryVersion: "1.86.3", lastCheck: { state: "ready", agentInfo: { version: "1.88.1" } } };
+  assert.equal(SettingsUi.harnessVersion(binary), "1.88.1");
+  assert.equal(SettingsUi.harnessVersion({ ...binary, lastCheck: { state: "failed", agentInfo: { version: "1.88.1" } } }), "1.88.1", "a failed test prompt still read the installed version");
+  assert.equal(SettingsUi.harnessVersion({ kind: "binary", registryVersion: "1.86.3", lastCheck: null }), "", "the catalog version is not the installed one");
+  assert.equal(SettingsUi.harnessVersion({ kind: "npx", registryVersion: "1.2.3", lastCheck: null }), "1.2.3", "the registry pins the package version");
+  assert.equal(SettingsUi.harnessVersion({ kind: "npx", registryVersion: "1.2.3", lastCheck: { agentInfo: { version: "1.2.4" } } }), "1.2.4");
+  assert.equal(SettingsUi.harnessVersion({ kind: "custom", registryVersion: "" }), "");
+  assert.equal(SettingsUi.harnessVersion({}), "");
+});
+
+test("the add list shows an installed agent's version, not the registry's", () => {
+  const commandCode = { kind: "binary", version: "1.86.3", installed: true, installedBin: "command-code" };
+  assert.equal(SettingsUi.registryAgentVersion(commandCode, { kind: "binary", registryVersion: "1.86.3", lastCheck: { agentInfo: { version: "1.88.1" } } }), "1.88.1");
+  assert.equal(SettingsUi.registryAgentVersion(commandCode, null), "", "an installed binary has no known version before a check");
+  assert.equal(SettingsUi.registryAgentVersion({ ...commandCode, installed: false }, null), "1.86.3", "the registry version is what would be installed");
+  assert.equal(SettingsUi.registryAgentVersion({ kind: "npx", version: "1.2.3", installed: true, installedBin: "agent" }, null), "", "an installed package has no known version before a check");
+  assert.equal(SettingsUi.registryAgentVersion({ kind: "npx", version: "1.2.3", installed: true, installedBin: "" }, null), "1.2.3", "a native CLI found for an adapter still runs the registry package");
+  assert.equal(SettingsUi.registryAgentVersion({ kind: "npx", version: "1.2.3", installed: false }, { kind: "npx", registryVersion: "1.2.3", lastCheck: null }), "1.2.3");
+  assert.equal(SettingsUi.registryAgentVersion({ kind: "npx", version: "1.2.3", installed: false }, { kind: "npx", registryVersion: "1.2.3", lastCheck: { agentInfo: { version: "1.2.4" } } }), "1.2.4");
+  assert.equal(SettingsUi.registryAgentVersion({}, null), "");
+});
+
 test("the run window's address", () => {
   assert.equal(Api.parseStartupId("/s/acme-0001/agents/run-abc123def"), "acme-0001");
   assert.equal(Api.parseRunId("/s/acme-0001/agents/run-abc123def"), "run-abc123def");

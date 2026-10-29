@@ -59,6 +59,26 @@
     return CHECK_STATES.includes(state) ? state : "unchecked";
   }
 
+  // The version next to an agent: what its last check reported, which is the
+  // installed program. Before a check, an npx or uvx package's version is
+  // known from the registry; a binary's registry version is only the catalog
+  // snapshot and may not match what is installed.
+  function harnessVersion(harness) {
+    const reported = harness?.lastCheck?.agentInfo?.version;
+    if (reported) return String(reported);
+    return harness?.kind === "binary" ? "" : String(harness?.registryVersion || "");
+  }
+
+  // The version to show in the add list. An agent you already added uses its
+  // card's version. Otherwise, an agent whose installed program would run has
+  // no known version until it is checked; the registry's version is only what
+  // it offers, so it is shown only when that program is not installed.
+  function registryAgentVersion(agent, harness) {
+    if (harness) return harnessVersion(harness);
+    const installedProgram = agent?.installed && (agent.kind === "binary" || agent.installedBin);
+    return installedProgram ? "" : String(agent?.version || "");
+  }
+
   // Registry agents filtered by a search text, installed ones first.
   function filterAgents(agents, query) {
     const words = String(query || "").toLowerCase().split(/\s+/).filter(Boolean);
@@ -67,7 +87,7 @@
       .sort((a, b) => Number(b.installed) - Number(a.installed) || a.name.localeCompare(b.name));
   }
 
-  const pure = { CHECK_STATES, POLICIES, SETTING_KEYS, parseArgs, formatArgs, parseEnv, formatEnv, checkState, filterAgents };
+  const pure = { CHECK_STATES, POLICIES, SETTING_KEYS, parseArgs, formatArgs, parseEnv, formatEnv, checkState, harnessVersion, registryAgentVersion, filterAgents };
 
   if (!root.document) return Object.freeze(pure);
 
@@ -305,10 +325,11 @@
       const env = el("textarea", { rows: 3, spellcheck: "false", placeholder: "API_KEY=...", value: formatEnv(harness.env) });
       env.value = formatEnv(harness.env);
       const message = ui.messages.get(`check:${harness.id}`) || ui.messages.get(`save:${harness.id}`);
+      const version = harnessVersion(harness);
       return el("article", { className: "agent-harness", dataset: { state: checkState(harness) } }, [
         el("header", { className: "agent-harness-head" }, [
           el("h5", { text: harness.name }),
-          el("span", { className: "settings-hint", text: harness.registryId ? `${harness.kind} · ${harness.registryId}${harness.registryVersion ? ` ${harness.registryVersion}` : ""}` : t("settings.agents.custom") }),
+          el("span", { className: "settings-hint", text: harness.registryId ? `${harness.kind} · ${harness.registryId}${version ? ` ${version}` : ""}` : t("settings.agents.custom") }),
         ]),
         el("p", {}, [el("code", { className: "agent-command", text: harness.commandLine })]),
         ...checkBlock(harness),
@@ -421,20 +442,26 @@
     // network switch (Settings > General) allows going online.
     function registryList(agents) {
       const remoteIcons = ui.overview?.registry?.network !== false;
-      return el("ul", { className: "agent-registry-list" }, agents.map((agent) => el("li", { className: "agent-registry-item" }, [
-        agent.icon && remoteIcons ? el("img", { src: agent.icon, alt: "", width: 20, height: 20, loading: "lazy", referrerpolicy: "no-referrer" }) : el("span", { "aria-hidden": "true" }),
-        el("div", {}, [
-          el("strong", { text: agent.name }),
-          el("span", { className: "settings-hint", text: ` ${agent.kind || t("settings.agents.unavailable")}${agent.version ? ` · ${agent.version}` : ""}` }),
-          agent.installed ? el("span", { className: "agent-found", text: t("settings.agents.found") }) : null,
-          el("p", { className: "settings-hint", text: agent.description }),
-          agent.kind === "binary" && !agent.installed && agent.launch?.archive ? el("p", { className: "settings-hint" }, [t("settings.agents.installFirst", { command: agent.launch.command }), " ", el("a", { href: agent.launch.archive, target: "_blank", rel: "noopener", text: t("settings.agents.download") })]) : null,
-          ui.messages.get(`add:${agent.id}`) ? el("p", { className: "settings-error", text: ui.messages.get(`add:${agent.id}`) }) : null,
-        ]),
-        agent.added
-          ? el("span", { className: "settings-hint", text: t("settings.agents.alreadyAdded") })
-          : el("button", { type: "button", className: "secondary-button compact", disabled: !agent.available || ui.busy.has(`add:${agent.id}`), text: t("settings.agents.add"), on: { click: () => addFromRegistry(agent) } }),
-      ])));
+      const harnessById = new Map((ui.overview?.harnesses || []).filter((harness) => harness.registryId).map((harness) => [harness.registryId, harness]));
+      return el("ul", { className: "agent-registry-list" }, agents.map((agent) => {
+        const version = registryAgentVersion(agent, harnessById.get(agent.id));
+        return el("li", { className: "agent-registry-item" }, [
+          agent.icon && remoteIcons ? el("img", { src: agent.icon, alt: "", width: 20, height: 20, loading: "lazy", referrerpolicy: "no-referrer" }) : el("span", { "aria-hidden": "true" }),
+          el("div", {}, [
+            el("strong", { text: agent.name }),
+            el("span", { className: "agent-registry-meta" }, [
+              el("span", { className: "settings-hint", text: `${agent.kind || t("settings.agents.unavailable")}${version ? ` · ${version}` : ""}` }),
+              agent.installed ? el("span", { className: "agent-found", text: t("settings.agents.found") }) : null,
+            ]),
+            el("p", { className: "settings-hint", text: agent.description }),
+            agent.kind === "binary" && !agent.installed && agent.launch?.archive ? el("p", { className: "settings-hint" }, [t("settings.agents.installFirst", { command: agent.launch.command }), " ", el("a", { href: agent.launch.archive, target: "_blank", rel: "noopener", text: t("settings.agents.download") })]) : null,
+            ui.messages.get(`add:${agent.id}`) ? el("p", { className: "settings-error", text: ui.messages.get(`add:${agent.id}`) }) : null,
+          ]),
+          agent.added
+            ? el("span", { className: "settings-hint", text: t("settings.agents.alreadyAdded") })
+            : el("button", { type: "button", className: "secondary-button compact", disabled: !agent.available || ui.busy.has(`add:${agent.id}`), text: t("settings.agents.add"), on: { click: () => addFromRegistry(agent) } }),
+        ]);
+      }));
     }
 
     function customBlock() {
