@@ -77,7 +77,7 @@ Interface text lives in `content/i18n/`, one file per language, named with the l
 
 - One topic per pull request. Describe what changed and why, and how you tested it.
 - Write clear commit messages in plain English: a short summary line, then details if they help.
-- Update `CHANGELOG.md` under "Unreleased" for changes people will notice.
+- Describe changes people will notice; the maintainer adds them to `CHANGELOG.md` with the next version.
 - Update the docs in `docs/` when behaviour or commands change. Write plainly and specifically: no inflated claims, no filler.
 - No file over 40 MB, and no data files, ever.
 - Screenshots come from the demo data only.

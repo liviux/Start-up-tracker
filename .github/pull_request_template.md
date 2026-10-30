@@ -11,7 +11,7 @@
 - [ ] `npm test` passes (or the tests that cover this change).
 - [ ] `npm run check` passes.
 - [ ] Tests added or updated for changed behaviour.
-- [ ] `CHANGELOG.md` updated under "Unreleased" if people will notice the change.
+- [ ] Changes people will notice are described above, for the changelog.
 - [ ] Docs in `docs/` updated if behaviour or commands changed.
 - [ ] No personal data, tracker data, secrets or files over 40 MB.
 - [ ] Facts (categories, company templates) cite official sources with a "verified on" date.

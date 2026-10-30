@@ -76,12 +76,12 @@ Clear messages, no data files ever. Commit with your GitHub noreply address. `no
 
 Commit directly to `main`. Do not create a branch or a pull request unless the user explicitly asks for one.
 
-Every push to `main` gets a new version, following semantic versioning: MAJOR for a breaking change (data that older code can't read, a removed feature, a different way to install or run), MINOR for a new feature, PATCH for a fix, a copy or style tweak, or docs. Pick the bump from the largest change in the push. In the same push:
+"Push to main" means all of this, without asking. Every push is a release, following semantic versioning: MAJOR for a breaking change (data that older code can't read, a removed feature, a different way to install or run), MINOR for a new feature, PATCH for a fix, a copy or style tweak, or docs. Pick the bump from the largest change in the push.
 
 1. Set the version with `npm version <major|minor|patch> --no-git-tag-version` (`package.json` and `package-lock.json`) and in `APP_VERSION` in `public/js/api.js`.
-2. Add a `## [x.y.z] - <date>` section at the top of `CHANGELOG.md`, under `## [Unreleased]`, with only the headings needed (`Added`, `Changed`, `Fixed`, `Removed`). Say what changed for the user, in short lines.
-
-Don't create tags or GitHub releases; the user does that.
+2. Add a `## [x.y.z] - <date>` section at the top of `CHANGELOG.md`, with only the headings needed (`Added`, `Changed`, `Fixed`, `Removed`). Say what changed for the user, in short lines.
+3. Run `npm run check` and `npm test`, commit everything together and push to `main`.
+4. Release it: `git tag vx.y.z && git push origin vx.y.z`. The Release workflow tests, builds the download the installers and `startup-tracker update` use, and publishes the release with that changelog section. Watch it with `gh run watch`; if it fails, fix it and release a new patch version.
 
 ## Human writing
 
