@@ -4,6 +4,26 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+### Added
+- Settings > AI agents sets an effort per model, next to the default model and in each preferred model's chip. Check reads the levels each of those models offers; the run dialog starts from the saved effort and can change it for one run. Cline gets the effort as `--thinking` when it starts.
+- OpenCode lists `:nitro`, `:floor` and `:exacto` after each `openrouter/` model in the model search, and a routing box next to a chosen one. The tracker registers the picked variants in `OPENCODE_CONFIG_CONTENT` when it starts OpenCode, so OpenCode accepts them; your own OpenCode config is not changed.
+- Date formats "Jan 5, 2026", "05/01/2026", "01/05/2026" and "05.01.2026", and Saturday as the first day of the week.
+
+### Changed
+- The model boxes in Settings > AI agents search as you type, work with the arrow keys and Enter, and show preferred models as chips with a remove button.
+- Installed agents are listed first in Add an agent, with a green border; agents already added are listed last.
+- Check and Test prompt run separately. Test prompt with no default model opens the options and asks for one.
+- Settings > Backups folds the backup list behind a line with the count and the last backup's date.
+- Settings > Statuses drops the priorities block and separates the status groups with lines.
+- The setup's company template list puts "Generic (any country)" after "Decide later" and "Not incorporated".
+
+### Fixed
+- A run stopped while its agent was still starting no longer gets the prompt or stays "running".
+- Tooltips show inside open dialogs, and a tooltip no longer stays on screen after the pointer leaves.
+- Dialogs are centred on the screen again.
+- The check line no longer shows the agent's version twice.
+- `startup-tracker status | head -1` no longer ends with a broken pipe error.
+
 ## [0.3.0] - 2026-10-29
 
 ### Added
