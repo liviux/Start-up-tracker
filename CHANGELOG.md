@@ -4,6 +4,8 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-30
+
 ### Added
 - Settings > AI agents sets an effort per model, next to the default model and in each preferred model's chip. Check reads the levels each of those models offers; the run dialog starts from the saved effort and can change it for one run. Cline gets the effort as `--thinking` when it starts.
 - OpenCode lists `:nitro`, `:floor` and `:exacto` after each `openrouter/` model in the model search, and a routing box next to a chosen one. The tracker registers the picked variants in `OPENCODE_CONFIG_CONTENT` when it starts OpenCode, so OpenCode accepts them; your own OpenCode config is not changed.

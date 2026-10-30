@@ -76,6 +76,13 @@ Clear messages, no data files ever. Commit with your GitHub noreply address. `no
 
 Commit directly to `main`. Do not create a branch or a pull request unless the user explicitly asks for one.
 
+Every push to `main` gets a new version, following semantic versioning: MAJOR for a breaking change (data that older code can't read, a removed feature, a different way to install or run), MINOR for a new feature, PATCH for a fix, a copy or style tweak, or docs. Pick the bump from the largest change in the push. In the same push:
+
+1. Set the version with `npm version <major|minor|patch> --no-git-tag-version` (`package.json` and `package-lock.json`) and in `APP_VERSION` in `public/js/api.js`.
+2. Add a `## [x.y.z] - <date>` section at the top of `CHANGELOG.md`, under `## [Unreleased]`, with only the headings needed (`Added`, `Changed`, `Fixed`, `Removed`). Say what changed for the user, in short lines.
+
+Don't create tags or GitHub releases; the user does that.
+
 ## Human writing
 
 For the README, docs, release notes and UI copy, write plainly and specifically: no inflated claims, no filler, no generic conclusions. See the Humanizer guidance at https://github.com/blader/humanizer.
