@@ -431,6 +431,13 @@ async function main(argv, deps = {}) {
 }
 
 if (require.main === module) {
+  // A reader that stops early (`status | head -1`) closes the pipe: the rest
+  // of the output has nowhere to go, which is not an error.
+  for (const stream of [process.stdout, process.stderr]) {
+    stream.on("error", (error) => {
+      if (error.code !== "EPIPE") throw error;
+    });
+  }
   main(process.argv.slice(2)).then((code) => {
     // null: the server runs in this process (start --foreground) and keeps it alive.
     if (code !== null) process.exitCode = code;

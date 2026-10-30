@@ -179,6 +179,12 @@
   padding: 0;
 }
 
+/* The reset above takes the browser's centring from every dialog; this gives
+   it back without outranking a dialog's own class. */
+:where(dialog) {
+  margin: auto;
+}
+
 html {
   min-width: 320px;
   background: var(--bg);

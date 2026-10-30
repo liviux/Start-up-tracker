@@ -5,6 +5,7 @@ const test = require("node:test");
 
 const projectRoot = path.join(__dirname, "..");
 const I18n = require("../public/js/i18n.js");
+const Dates = require("../public/js/dates.js");
 const en = require("../content/i18n/en.json");
 
 const FIXTURE = {
@@ -194,12 +195,12 @@ test("en.json parses and holds every key the page and app.js use", () => {
     ...["startup", "database", "records"].flatMap((scope) => [`settings.backups.scopes.${scope}`, `settings.backups.scopeHints.${scope}`]),
     ...["new", "replace", "database"].map((mode) => `settings.import.modes.${mode}`),
     ...["replace", "database"].map((mode) => `settings.import.confirm.${mode}`),
-    ...["system", "short", "iso"].map((format) => `settings.general.dateFormats.${format}`),
+    ...Object.values(Dates.DATE_FORMAT_KEYS).map((format) => `settings.general.dateFormats.${format}`),
     ...["moveUp", "moveDown"].map((direction) => `settings.statuses.${direction}`),
     ...["standard", "colorblind"].map((palette) => `settings.appearance.palettes.${palette}`),
     ...["mk", "po", "fu", "comp"].map((section) => `sections.${section}.name`),
     ...["next_action", "deadline", "milestone", "payment", "company", "campaign"].map((kind) => `calendar.kinds.${kind}`),
-    ...["monday", "sunday"].map((day) => `settings.general.weekStarts.${day}`),
+    ...Dates.WEEK_STARTS.map((day) => `settings.general.weekStarts.${day}`),
     ...["keepAutomatic", "keepSafety"].flatMap((key) => [`settings.backups.${key}`, `settings.backups.${key}Hint`]),
     ...["version", "dataFolder", "databasePath", "mediaDir", "backupDir", "port", "schemaVersion", "databaseBytes", "integrity"].map((fact) => `settings.about.${fact}`),
     // AI agents (js/agents-page.js, js/agents-settings.js).

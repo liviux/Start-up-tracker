@@ -254,9 +254,20 @@
 
   // ---- the user's date format and week start (Settings > General) ----
 
-  // "system" follows the interface locale; the other two are fixed patterns.
-  const DATE_FORMATS = Object.freeze(["system", "d MMM yyyy", "yyyy-MM-dd"]);
-  const WEEK_STARTS = Object.freeze(["monday", "sunday"]);
+  // "system" follows the interface locale; the others are fixed patterns.
+  const DATE_FORMATS = Object.freeze(["system", "d MMM yyyy", "MMM d, yyyy", "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "dd.MM.yyyy"]);
+  // The settings.general.dateFormats.* key that names each format.
+  const DATE_FORMAT_KEYS = Object.freeze({
+    system: "system",
+    "d MMM yyyy": "short",
+    "MMM d, yyyy": "monthFirst",
+    "yyyy-MM-dd": "iso",
+    "dd/MM/yyyy": "daySlash",
+    "MM/dd/yyyy": "monthSlash",
+    "dd.MM.yyyy": "dayDot",
+  });
+  const WEEK_STARTS = Object.freeze(["monday", "sunday", "saturday"]);
+  const WEEKDAY_INDEX = Object.freeze({ sunday: 0, monday: 1, saturday: 6 });
   const SYSTEM_DATE_OPTIONS = Object.freeze({ year: "numeric", month: "short", day: "2-digit" });
 
   function normalizeDateFormat(format) {
@@ -264,19 +275,24 @@
   }
 
   function normalizeWeekStart(weekStart) {
-    return weekStart === "sunday" ? "sunday" : "monday";
+    return WEEK_STARTS.includes(weekStart) ? weekStart : "monday";
   }
 
-  // A calendar date in one of DATE_FORMATS: "15 Oct 2026", "2026-10-15" or
-  // the locale's own short form.
+  // A calendar date in one of DATE_FORMATS: "15 Oct 2026", "Oct 15, 2026",
+  // "2026-10-15", "15/10/2026", "10/15/2026", "15.10.2026" or the locale's
+  // own short form.
   function formatDateAs(value, locale, format) {
     const parts = parseParts(value);
     if (!parts) return "";
     const pattern = normalizeDateFormat(format);
-    if (pattern === "yyyy-MM-dd") return `${pad(parts.year, 4)}-${pad(parts.month)}-${pad(parts.day)}`;
-    if (pattern === "d MMM yyyy") {
-      const month = formatDate(value, locale, { month: "short" }).replace(/\.$/, "");
-      return `${parts.day} ${month} ${parts.year}`;
+    const [year, month, day] = [pad(parts.year, 4), pad(parts.month), pad(parts.day)];
+    if (pattern === "yyyy-MM-dd") return `${year}-${month}-${day}`;
+    if (pattern === "dd/MM/yyyy") return `${day}/${month}/${year}`;
+    if (pattern === "MM/dd/yyyy") return `${month}/${day}/${year}`;
+    if (pattern === "dd.MM.yyyy") return `${day}.${month}.${year}`;
+    if (pattern === "d MMM yyyy" || pattern === "MMM d, yyyy") {
+      const name = formatDate(value, locale, { month: "short" }).replace(/\.$/, "");
+      return pattern === "d MMM yyyy" ? `${parts.day} ${name} ${parts.year}` : `${name} ${parts.day}, ${parts.year}`;
     }
     return formatDate(value, locale, SYSTEM_DATE_OPTIONS);
   }
@@ -305,11 +321,11 @@
     return `${formatDateAs(parts.date, locale, pattern)} ${time}`;
   }
 
-  // The first day of the week holding value: its Monday, or its Sunday.
+  // The first day of the week holding value: its Monday, Sunday or Saturday.
   function startOfWeek(value, weekStart = "monday") {
     const day = dayOfWeek(value);
     if (day < 0) return "";
-    const offset = normalizeWeekStart(weekStart) === "sunday" ? day : (day + 6) % 7;
+    const offset = (day - WEEKDAY_INDEX[normalizeWeekStart(weekStart)] + 7) % 7;
     return addDays(value, -offset);
   }
 
@@ -356,6 +372,7 @@
     formatInstant,
     parseBackupStamp,
     DATE_FORMATS,
+    DATE_FORMAT_KEYS,
     WEEK_STARTS,
     normalizeDateFormat,
     normalizeWeekStart,

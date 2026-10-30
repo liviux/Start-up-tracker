@@ -300,7 +300,7 @@
         const today = Dates.todayIn(current.timeZone || detected);
         const dateFormat = h("select", {}, Dates.DATE_FORMATS.map((format) => h("option", {
           value: format,
-          text: t(`settings.general.dateFormats.${format === "system" ? "system" : format === "yyyy-MM-dd" ? "iso" : "short"}`, { example: Dates.formatDateAs(today, I18n.getLocale(), format) }),
+          text: t(`settings.general.dateFormats.${Dates.DATE_FORMAT_KEYS[format]}`, { example: Dates.formatDateAs(today, I18n.getLocale(), format) }),
           selected: current.dateFormat === format,
         })));
         let selectedTheme = Appearance.normalizeTaste(current.appearance?.theme);
@@ -422,8 +422,10 @@
           template.replaceChildren(
             h("option", { value: "", text: t("setup.startup.noTemplate") }),
             h("option", { value: "not-incorporated", text: t("setup.startup.notIncorporated"), selected: company.incorporated === false }),
-            ...groups.groups.map((group) => h("optgroup", { label: group.countryName }, group.templates.map(option))),
             groups.generic ? h("option", { value: "generic", text: t("setup.startup.generic"), selected: company.templateId === "generic" }) : null,
+            // A line between the choices for any country and the country lists.
+            groups.groups.length ? h("hr") : null,
+            ...groups.groups.map((group) => h("optgroup", { label: group.countryName }, group.templates.map(option))),
           );
         };
         const fillSubdivisions = async () => {

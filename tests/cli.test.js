@@ -105,6 +105,16 @@ test("help and version need no data folder; a bad command exits with 2", async (
   assert.match(bad.err, /Unknown command/);
 });
 
+test("output into a pipe that closed early ends quietly, not with EPIPE", () => {
+  // `version | head -c 0`: the reader is gone before the CLI writes.
+  const result = spawnSync("bash", ["-c", `"${process.execPath}" "${cli.CLI_PATH}" version | head -c 0; exit "\${PIPESTATUS[0]}"`], {
+    env: { PATH: process.env.PATH, STARTUP_TRACKER_OFFLINE: "1" },
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.doesNotMatch(result.stderr, /EPIPE/);
+});
+
 test("a test run never reaches the default data folder through the command", async () => {
   const result = await run(["status"], { env: { STARTUP_TRACKER_TEST_RUN: "1" } });
   assert.equal(result.code, 2);

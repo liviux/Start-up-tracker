@@ -79,15 +79,88 @@
     return installedProgram ? "" : String(agent?.version || "");
   }
 
-  // Registry agents filtered by a search text, installed ones first.
+  // Registry agents filtered by a search text: installed ones first, the
+  // ones you already added last.
   function filterAgents(agents, query) {
     const words = String(query || "").toLowerCase().split(/\s+/).filter(Boolean);
     return (Array.isArray(agents) ? agents : [])
       .filter((agent) => words.every((word) => `${agent.name} ${agent.id} ${agent.description}`.toLowerCase().includes(word)))
-      .sort((a, b) => Number(b.installed) - Number(a.installed) || a.name.localeCompare(b.name));
+      .sort((a, b) => Number(Boolean(a.added)) - Number(Boolean(b.added)) || Number(Boolean(b.installed)) - Number(Boolean(a.installed)) || a.name.localeCompare(b.name));
   }
 
-  const pure = { CHECK_STATES, POLICIES, SETTING_KEYS, parseArgs, formatArgs, parseEnv, formatEnv, checkState, harnessVersion, registryAgentVersion, filterAgents };
+  // An OpenRouter model id and its routing suffix (":nitro"), when the
+  // agent takes one (harness.routingVariants, OpenCode only).
+  function splitRouting(value, variants = []) {
+    const text = String(value || "");
+    const routing = text.startsWith("openrouter/") ? (variants || []).find((suffix) => text.endsWith(suffix) && text.length > suffix.length) : "";
+    return routing ? { base: text.slice(0, -routing.length), routing } : { base: text, routing: "" };
+  }
+
+  // The models a picker shows for a search text: every word in the name or
+  // id, in any case, at most `limit` of them; `more` counts the rest.
+  const MODEL_LIST_LIMIT = 50;
+  function matchModels(models, query, limit = MODEL_LIST_LIMIT) {
+    const words = String(query || "").toLowerCase().split(/\s+/).filter(Boolean);
+    const found = (Array.isArray(models) ? models : []).filter((model) => {
+      const text = `${model.name || ""} ${model.value || ""}`.toLowerCase();
+      return words.every((word) => text.includes(word));
+    });
+    return { shown: found.slice(0, limit), more: Math.max(0, found.length - limit) };
+  }
+
+  // The effort levels to offer for a model: the ones the last check read
+  // for it or, when it has not read them yet, the common ones (the run then
+  // tells you when the agent does not take the level). [] when the check
+  // found the model offers none. A saved level stays on the list.
+  const COMMON_EFFORTS = Object.freeze(["none", "minimal", "low", "medium", "high", "xhigh", "max"]);
+  function effortChoices(harness, model) {
+    const read = harness?.modelEfforts?.[model || ""];
+    const levels = Array.isArray(read) ? read : COMMON_EFFORTS.map((value) => ({ value, name: value.charAt(0).toUpperCase() + value.slice(1) }));
+    const picked = harness?.effortByModel?.[model || ""];
+    return picked && !levels.some((level) => level.value === picked) ? [...levels, { value: picked, name: picked }] : levels;
+  }
+
+  // The models with OpenRouter routing variants added (OpenCode): each
+  // openrouter/ model is followed by one entry per variant ("…:nitro"), so a
+  // search finds them. A model that already carries a suffix (":free") gets
+  // none. label(suffix) names a variant.
+  function withRoutingVariants(models, variants = [], label = (suffix) => suffix) {
+    const list = Array.isArray(models) ? models : [];
+    if (!variants?.length) return list;
+    return list.flatMap((model) => {
+      const value = String(model.value || "");
+      if (!value.startsWith("openrouter/") || value.slice(value.lastIndexOf("/") + 1).includes(":")) return [model];
+      return [model, ...variants.map((suffix) => ({ value: `${value}${suffix}`, name: `${model.name || value} · ${label(suffix)}` }))];
+    });
+  }
+
+  // True when a model's name only spells out its id ("Claude Sonnet 5.5" and
+  // "claude-sonnet-5-5"), so the list shows it once.
+  function sameModelText(name, id) {
+    const plain = (text) => String(text || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    return plain(name) === plain(id);
+  }
+
+  // What was typed in a model picker -> the model's id: its id or its name,
+  // in any case, with a routing suffix the agent takes. "" for an empty box,
+  // null for a model the agent does not list.
+  function findModel(models, text, variants = []) {
+    const typed = String(text || "").trim();
+    if (!typed) return "";
+    const list = Array.isArray(models) ? models : [];
+    const find = (wanted) => {
+      const lower = wanted.toLowerCase();
+      return list.find((model) => model.value === wanted)
+        || list.find((model) => model.value.toLowerCase() === lower || String(model.name || "").toLowerCase() === lower);
+    };
+    const match = find(typed);
+    if (match) return match.value;
+    const { base, routing } = splitRouting(typed, variants);
+    const baseMatch = routing ? find(base) : null;
+    return baseMatch ? `${baseMatch.value}${routing}` : null;
+  }
+
+  const pure = { CHECK_STATES, POLICIES, SETTING_KEYS, parseArgs, formatArgs, parseEnv, formatEnv, checkState, harnessVersion, registryAgentVersion, filterAgents, COMMON_EFFORTS, effortChoices, withRoutingVariants, matchModels, sameModelText, splitRouting, findModel };
 
   if (!root.document) return Object.freeze(pure);
 
@@ -142,7 +215,9 @@
   // formatInstant(iso), errorText(error) }.
   async function render(container, section, ctx) {
     const { el, t, Api } = ctx;
-    const ui = { overview: null, tokens: [], query: "", busy: new Set(), messages: new Map(), status: "" };
+    // open: the agents whose options are unfolded; focus: a [data-focus] to
+    // focus again after the next draw.
+    const ui = { overview: null, tokens: [], query: "", busy: new Set(), messages: new Map(), status: "", open: new Set(), focus: "" };
     const status = el("p", { className: "settings-status", role: "status" });
 
     // A themed replacement for window.confirm: the command sits in a code
@@ -212,6 +287,7 @@
       } finally {
         ui.busy.delete(key);
         if (ctx.isCurrent()) draw();
+        ui.focus = "";
       }
     }
 
@@ -230,7 +306,6 @@
           el("span", { className: "agent-check-dot", dataset: { state }, "aria-hidden": "true" }),
           el("strong", { text: t(`settings.agents.states.${state}`) }),
           check?.at ? el("span", { className: "settings-hint", text: ` · ${ctx.formatInstant(check.at)}` }) : null,
-          check?.agentInfo ? el("span", { className: "settings-hint", text: ` · ${check.agentInfo.title || check.agentInfo.name || ""} ${check.agentInfo.version || ""}` }) : null,
         ]),
       ];
       if (check?.message) nodes.push(el("p", { className: state === "ready" ? "settings-hint" : "settings-error", text: check.message }));
@@ -274,9 +349,20 @@
       });
     }
 
+    // A check and a test prompt are separate buttons with their own busy
+    // state; the server runs one at a time per agent.
     function check(harness, { testPrompt = false, consent = false } = {}) {
-      return run(`check:${harness.id}`, async () => {
-        say(t("settings.agents.checking"));
+      const key = `${testPrompt ? "test" : "check"}:${harness.id}`;
+      if (testPrompt && !harness.defaultModel) {
+        ui.messages.set(key, t("settings.agents.testNeedsModel"));
+        ui.open.add(harness.id);
+        ui.focus = `default-model:${harness.id}`;
+        draw();
+        ui.focus = "";
+        return Promise.resolve();
+      }
+      return run(key, async () => {
+        say(t(testPrompt ? "settings.agents.testing" : "settings.agents.checking"));
         const body = await request(Api.urls.harnessCheck(harness.id), { method: "POST", body: { testPrompt, consent } });
         replaceHarness(body.harness);
         if (body.check.state === "consent-needed") {
@@ -291,40 +377,229 @@
       });
     }
 
+    // A search box with the tracker's own list of the agent's models (a
+    // combobox): type any part of a name or id, then click a model or use the
+    // arrow keys and Enter. onPick gets the model id, or "" for the agent's
+    // default (offered first when defaultLabel is given). The list is drawn
+    // here rather than with <datalist>, whose picks reach the page
+    // differently in each browser.
+    let pickerSequence = 0;
+    function modelPicker(harness, models, { value = "", placeholder, label, focusKey, defaultLabel = "", onPick }) {
+      pickerSequence += 1;
+      const listId = `agent-model-list-${pickerSequence}`;
+      const shown = value ? modelName(models, value, harness.routingVariants) : placeholder;
+      const input = el("input", {
+        type: "text",
+        value,
+        placeholder,
+        role: "combobox",
+        "aria-label": label,
+        "aria-autocomplete": "list",
+        "aria-expanded": "false",
+        "aria-controls": listId,
+        autocomplete: "off",
+        spellcheck: "false",
+        dataset: { focus: focusKey },
+      });
+      const list = el("ul", { className: "agent-model-list", id: listId, role: "listbox", "aria-label": label, hidden: true });
+      const listed = withRoutingVariants(models, harness.routingVariants, (suffix) => t(`settings.agents.routing.${suffix.slice(1)}`));
+      const entries = defaultLabel ? [{ value: "", name: defaultLabel }, ...listed] : listed;
+      let matches = [];
+      let active = -1;
+      let done = false;
+
+      const take = (picked) => {
+        if (done) return;
+        done = true;
+        close();
+        if (picked !== value) onPick(picked);
+        else {
+          // The same model again: nothing to save, the box shows it again.
+          done = false;
+          input.blur();
+        }
+      };
+      const setActive = (index) => {
+        active = index;
+        [...list.querySelectorAll("[role=option]")].forEach((item, position) => item.setAttribute("aria-selected", String(position === index)));
+        const item = list.querySelector(`#${listId}-${index}`);
+        if (item) {
+          input.setAttribute("aria-activedescendant", item.id);
+          item.scrollIntoView({ block: "nearest" });
+        } else input.removeAttribute("aria-activedescendant");
+      };
+      // The list follows what you type; an empty box shows none.
+      const open = () => {
+        if (!input.value.trim()) return close();
+        const found = matchModels(entries, input.value, MODEL_LIST_LIMIT);
+        matches = found.shown;
+        list.replaceChildren(...[
+          ...matches.map((model, index) => el("li", {
+            id: `${listId}-${index}`,
+            role: "option",
+            "aria-selected": "false",
+            className: model.value === value ? "is-current" : "",
+            // mousedown keeps the focus in the box, so blur does not close the list first.
+            on: { mousedown: (event) => event.preventDefault(), click: () => take(model.value) },
+          }, [
+            el("span", { text: model.name }),
+            model.value && !sameModelText(model.name, model.value) ? el("span", { className: "agent-model-id", text: ` · ${model.value}` }) : null,
+          ])),
+          matches.length ? null : el("li", { className: "agent-model-more", text: t("settings.agents.noModelMatch") }),
+          found.more ? el("li", { className: "agent-model-more", text: t("settings.agents.moreModels", { count: found.more }) }) : null,
+        ].filter(Boolean));
+        list.hidden = false;
+        input.setAttribute("aria-expanded", "true");
+        setActive(matches.length ? 0 : -1);
+      };
+      function close() {
+        list.hidden = true;
+        input.setAttribute("aria-expanded", "false");
+        input.removeAttribute("aria-activedescendant");
+      }
+
+      input.addEventListener("focus", () => {
+        done = false;
+        // Empty while picking, so what you type searches from scratch; the
+        // current model stays as the placeholder and comes back if nothing
+        // is picked.
+        input.placeholder = shown;
+        input.value = "";
+      });
+      input.addEventListener("blur", () => {
+        close();
+        input.placeholder = placeholder;
+        if (!done) input.value = value;
+      });
+      input.addEventListener("input", open);
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          if (!list.hidden && matches.length) setActive((active + (event.key === "ArrowDown" ? 1 : -1) + matches.length) % matches.length);
+        } else if (event.key === "Enter") {
+          event.preventDefault();
+          if (!list.hidden && matches[active]) return take(matches[active].value);
+          // A typed id the list does not show, such as an OpenRouter routing variant.
+          const text = input.value.trim();
+          if (!text) return;
+          const picked = findModel(models, text, harness.routingVariants);
+          if (picked !== null) return take(picked);
+          ui.messages.set(`save:${harness.id}`, t("settings.agents.unknownModel", { model: text }));
+          done = true;
+          draw();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          event.stopPropagation();
+          input.blur();
+        }
+      });
+      return el("span", { className: "agent-model-picker" }, [input, list]);
+    }
+
+    // A routing variant ("openrouter/x:nitro") is named after its model; the
+    // routing box next to it shows the variant.
+    function modelName(models, value, variants = []) {
+      const named = (id) => models.find((model) => model.value === id)?.name;
+      return named(value) || named(splitRouting(value, variants).base) || value;
+    }
+
     function harnessCard(harness) {
       const checking = ui.busy.has(`check:${harness.id}`);
+      const testing = ui.busy.has(`test:${harness.id}`);
       const models = Array.isArray(harness.models) ? harness.models : [];
+      // The effort levels a model offers, read by the last check: undefined
+      // for a model picked since, [] for one that offers none.
+      const effortSelect = (model, className = "") => {
+        const levels = effortChoices(harness, model);
+        if (!levels.length) return null;
+        const picked = harness.effortByModel?.[model || ""] || "";
+        const name = model ? modelName(models, model, harness.routingVariants) : t("settings.agents.agentDefault");
+        return el("select", {
+          className,
+          "aria-label": t("settings.agents.effortFor", { model: name }),
+          "data-tooltip": t("settings.agents.effortFor", { model: name }),
+          on: { change: (event) => {
+            const next = { ...(harness.effortByModel || {}), [model || ""]: event.target.value };
+            if (!event.target.value) delete next[model || ""];
+            save(harness, { effortByModel: next });
+          } },
+        }, [
+          el("option", { value: "", text: t("settings.agents.effortDefault"), selected: !picked }),
+          ...levels.map((level) => el("option", { value: level.value, text: level.name, selected: picked === level.value })),
+        ]);
+      };
+      // OpenRouter routing for an openrouter/ model (OpenCode): the suffix
+      // becomes part of the model id; onChange gets the new id.
+      const variants = harness.routingVariants || [];
+      const routingSelect = (value, onChange, className = "") => {
+        const { base, routing } = splitRouting(value, variants);
+        if (!variants.length || !base.startsWith("openrouter/")) return null;
+        const name = modelName(models, base, variants);
+        return el("select", {
+          className,
+          "aria-label": t("settings.agents.routingFor", { model: name }),
+          "data-tooltip": t("settings.agents.routingFor", { model: name }),
+          on: { change: (event) => onChange(`${base}${event.target.value}`) },
+        }, [
+          el("option", { value: "", text: t("settings.agents.routing.default"), selected: !routing }),
+          ...variants.map((suffix) => el("option", { value: suffix, text: t(`settings.agents.routing.${suffix.slice(1)}`), selected: routing === suffix })),
+        ]);
+      };
       const policy = el("select", { on: { change: (event) => save(harness, { policy: event.target.value }) } },
         POLICIES.map((id) => el("option", { value: id, selected: harness.policy === id, text: t(`agents.policies.${id}.name`) })));
+      const defaultFocus = `default-model:${harness.id}`;
       const defaultModel = models.length
-        ? el("select", { on: { change: (event) => save(harness, { defaultModel: event.target.value }) } }, [
-          el("option", { value: "", text: t("settings.agents.agentDefault"), selected: !harness.defaultModel }),
-          ...models.map((model) => el("option", { value: model.value, text: model.name, selected: harness.defaultModel === model.value })),
-        ])
+        ? modelPicker(harness, models, {
+          value: splitRouting(harness.defaultModel, variants).base,
+          placeholder: t("settings.agents.agentDefault"),
+          label: t("settings.agents.defaultModel"),
+          defaultLabel: t("settings.agents.agentDefault"),
+          focusKey: defaultFocus,
+          onPick: (model) => save(harness, { defaultModel: model }),
+        })
         : el("div", { className: "agent-model-empty" }, [
           el("p", { className: "settings-hint", text: t("settings.agents.modelsAfterCheck") }),
-          el("input", { type: "text", value: harness.defaultModel || "", placeholder: t("agents.dialog.modelPlaceholder"), on: { change: (event) => save(harness, { defaultModel: event.target.value.trim() }) } }),
+          el("input", { type: "text", value: harness.defaultModel || "", placeholder: t("agents.dialog.modelPlaceholder"), "aria-label": t("settings.agents.defaultModel"), dataset: { focus: defaultFocus }, on: { change: (event) => save(harness, { defaultModel: event.target.value.trim() }) } }),
         ]);
+      // Preferred models: chips in the order you picked them, and a picker
+      // over the models not picked yet.
+      const preferredValues = harness.preferredModels || [];
+      const preferredFocus = `preferred-model:${harness.id}`;
+      const keepFocus = (patch) => {
+        ui.focus = preferredFocus;
+        return save(harness, patch);
+      };
       const preferred = models.length
-        ? el("div", { className: "agent-model-grid" }, models.map((model) => el("label", { className: "agent-model-check" }, [
-          el("input", {
-            type: "checkbox",
-            checked: (harness.preferredModels || []).includes(model.value),
-            on: { change: (event) => {
-              const set = new Set(harness.preferredModels || []);
-              if (event.target.checked) set.add(model.value);
-              else set.delete(model.value);
-              save(harness, { preferredModels: models.map((entry) => entry.value).filter((value) => set.has(value)) });
-            } },
-          }),
-          el("span", { text: model.name }),
-        ])))
+        ? el("div", { className: "agent-model-preferred" }, [
+          preferredValues.length
+            ? el("ul", { className: "agent-model-chips" }, preferredValues.map((value) => el("li", { className: "agent-model-chip" }, [
+              el("span", { text: modelName(models, value, variants) }),
+              routingSelect(value, (model) => keepFocus({ preferredModels: [...new Set(preferredValues.map((entry) => (entry === value ? model : entry)))] }), "agent-model-effort"),
+              effortSelect(value, "agent-model-effort"),
+              el("button", {
+                type: "button",
+                className: "agent-model-chip-remove",
+                "aria-label": t("settings.agents.removePreferred", { model: modelName(models, value, variants) }),
+                "data-tooltip": t("settings.agents.removePreferred", { model: modelName(models, value, variants) }),
+                text: "×",
+                on: { click: () => keepFocus({ preferredModels: preferredValues.filter((entry) => entry !== value) }) },
+              }),
+            ])))
+            : el("p", { className: "settings-hint", text: t("settings.agents.noPreferred") }),
+          preferredValues.length < 20 ? modelPicker(harness, models.filter((model) => !preferredValues.includes(model.value)), {
+            placeholder: t("settings.agents.addPreferred"),
+            label: t("settings.agents.addPreferred"),
+            focusKey: preferredFocus,
+            onPick: (model) => { if (model) keepFocus({ preferredModels: [...preferredValues, model] }); },
+          }) : null,
+        ])
         : null;
+      const unread = models.length && ["", harness.defaultModel, ...preferredValues].some((model) => !Array.isArray(harness.modelEfforts?.[model || ""]));
       const args = el("input", { type: "text", value: formatArgs(harness.args), spellcheck: "false" });
       const command = harness.kind === "custom" ? el("input", { type: "text", value: harness.command, spellcheck: "false" }) : null;
       const env = el("textarea", { rows: 3, spellcheck: "false", placeholder: "API_KEY=...", value: formatEnv(harness.env) });
       env.value = formatEnv(harness.env);
-      const message = ui.messages.get(`check:${harness.id}`) || ui.messages.get(`save:${harness.id}`);
+      const message = ui.messages.get(`check:${harness.id}`) || ui.messages.get(`test:${harness.id}`) || ui.messages.get(`save:${harness.id}`);
       const version = harnessVersion(harness);
       const adapter = Boolean(harness.registryId) && ui.overview?.registry?.agents?.some((agent) => agent.id === harness.registryId && agent.adapter);
       return el("article", { className: "agent-harness", dataset: { state: checkState(harness) } }, [
@@ -337,8 +612,8 @@
         ...checkBlock(harness),
         message ? el("p", { className: "settings-error", role: "alert", text: message }) : null,
         el("div", { className: "settings-row-actions" }, [
-          el("button", { type: "button", className: "primary-button compact", disabled: checking, text: checking ? t("settings.agents.checking") : t("settings.agents.check"), on: { click: () => check(harness) } }),
-          el("button", { type: "button", className: "secondary-button compact", disabled: checking, text: t("settings.agents.testPrompt"), title: t("settings.agents.testPromptHint"), on: { click: () => check(harness, { testPrompt: true }) } }),
+          el("button", { type: "button", className: "primary-button compact", disabled: checking || testing, text: checking ? t("settings.agents.checking") : t("settings.agents.check"), on: { click: () => check(harness) } }),
+          el("button", { type: "button", className: "secondary-button compact", disabled: checking || testing, text: testing ? t("settings.agents.testing") : t("settings.agents.testPrompt"), "data-tooltip": t("settings.agents.testPromptHint"), on: { click: () => check(harness, { testPrompt: true }) } }),
           el("button", {
             type: "button",
             className: "text-button danger-text",
@@ -353,7 +628,11 @@
             } },
           }),
         ]),
-        el("details", { className: "agent-harness-more" }, [
+        el("details", {
+          className: "agent-harness-more",
+          open: ui.open.has(harness.id),
+          on: { toggle: (event) => { if (event.target.open) ui.open.add(harness.id); else ui.open.delete(harness.id); } },
+        }, [
           el("summary", {}, [
             el("span", { text: t("settings.agents.options") }),
             el("span", { className: "agent-options-mark", "aria-hidden": "true", text: "⌄" }),
@@ -367,8 +646,16 @@
             ]),
             el("section", { className: "agent-options-group" }, [
               el("h6", { text: t("settings.agents.model") }),
-              el("label", { className: "settings-field" }, [el("span", { text: t("settings.agents.defaultModel") }), defaultModel]),
+              el("div", { className: "settings-field" }, [
+                el("span", { text: t("settings.agents.defaultModel") }),
+                el("div", { className: "agent-model-row" }, [
+                  defaultModel,
+                  routingSelect(harness.defaultModel, (model) => save(harness, { defaultModel: model })),
+                  effortSelect(harness.defaultModel),
+                ]),
+              ]),
               preferred ? el("fieldset", { className: "settings-fieldset" }, [el("legend", { text: t("settings.agents.preferredModels") }), preferred]) : null,
+              unread ? el("p", { className: "settings-hint", text: t("settings.agents.effortAfterCheck") }) : null,
             ]),
             el("section", { className: "agent-options-group" }, [
               el("h6", { text: t("settings.agents.launch") }),
@@ -453,7 +740,7 @@
       const harnessById = new Map((ui.overview?.harnesses || []).filter((harness) => harness.registryId).map((harness) => [harness.registryId, harness]));
       return el("ul", { className: "agent-registry-list" }, agents.map((agent) => {
         const version = registryAgentVersion(agent, harnessById.get(agent.id));
-        return el("li", { className: "agent-registry-item" }, [
+        return el("li", { className: `agent-registry-item${agent.installed && !agent.added ? " is-found" : ""}${agent.added ? " is-added" : ""}` }, [
           agent.icon && remoteIcons ? el("img", { src: agent.icon, alt: "", width: 20, height: 20, loading: "lazy", referrerpolicy: "no-referrer" }) : el("span", { "aria-hidden": "true" }),
           el("div", {}, [
             el("strong", { text: agent.name }),
@@ -468,7 +755,14 @@
           ]),
           agent.added
             ? el("span", { className: "settings-hint", text: t("settings.agents.alreadyAdded") })
-            : el("button", { type: "button", className: "secondary-button compact", disabled: !agent.available || ui.busy.has(`add:${agent.id}`), text: t("settings.agents.add"), on: { click: () => addFromRegistry(agent) } }),
+            : el("button", {
+              type: "button",
+              // An agent found on this computer can be added and run at once.
+              className: `${agent.installed ? "primary-button" : "secondary-button"} compact`,
+              disabled: !agent.available || ui.busy.has(`add:${agent.id}`),
+              text: t("settings.agents.add"),
+              on: { click: () => addFromRegistry(agent) },
+            }),
         ]);
       }));
     }
@@ -563,6 +857,7 @@
         tokensBlock(),
         status,
       );
+      if (ui.focus) container.querySelector(`[data-focus="${ui.focus}"]`)?.focus();
     }
 
     container.replaceChildren(...ctx.heading(section), el("p", { className: "settings-hint", text: t("settings.loading") }));

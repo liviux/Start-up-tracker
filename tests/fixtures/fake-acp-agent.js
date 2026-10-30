@@ -20,6 +20,9 @@ const { JsonRpcPeer } = require(path.join(__dirname, "..", "..", "lib", "agents"
 const mode = process.env.FAKE_ACP_MODE || "";
 let loggedIn = false;
 let model = "fake-small";
+// "cline" mode is like Cline: the effort comes only from --thinking at launch.
+const thinkingArg = process.argv.indexOf("--thinking");
+let effort = thinkingArg > 0 ? process.argv[thinkingArg + 1] : "low";
 let cancelled = null;
 const sessions = new Map();
 
@@ -36,6 +39,17 @@ if (process.env.FAKE_SECRET) process.stderr.write(`using secret ${process.env.FA
 
 const update = (sessionId, body) => peer.notify("session/update", { sessionId, update: body });
 const say = (sessionId, text) => update(sessionId, { sessionUpdate: "agent_message_chunk", content: { type: "text", text } });
+
+// Like real agents, the effort levels depend on the model: only the large
+// one offers "max".
+function configOptions() {
+  const levels = [{ value: "low", name: "Low" }, { value: "high", name: "High" }];
+  if (model === "fake-large") levels.push({ value: "max", name: "Max" });
+  return [
+    { id: "model", name: "Model", category: "model", type: "select", currentValue: model, options: [{ value: "fake-small", name: "Fake small" }, { value: "fake-large", name: "Fake large" }] },
+    ...(mode === "cline" ? [] : [{ id: "effort", name: "Thinking", category: "thought_level", type: "select", currentValue: effort, options: levels }]),
+  ];
+}
 
 async function handle(method, params) {
   switch (method) {
@@ -54,17 +68,24 @@ async function handle(method, params) {
       const sessionId = `sess-${sessions.size + 1}`;
       sessions.set(sessionId, { cwd: params.cwd, mcpServers: params.mcpServers || [] });
       if (mode === "legacy") return { sessionId, models: { currentModelId: model, availableModels: [{ modelId: "fake-small", name: "Fake small" }, { modelId: "fake-large", name: "Fake large" }] } };
-      return {
-        sessionId,
-        configOptions: [
-          { id: "model", name: "Model", category: "model", type: "select", currentValue: model, options: [{ value: "fake-small", name: "Fake small" }, { value: "fake-large", name: "Fake large" }] },
-          { id: "effort", name: "Thinking", category: "thought_level", type: "select", currentValue: "low", options: [{ value: "low", name: "Low" }, { value: "high", name: "High" }] },
-        ],
-      };
+      return { sessionId, configOptions: configOptions() };
     }
-    case "session/set_config_option":
+    case "session/set_config_option": {
+      const option = configOptions().find((entry) => entry.id === params.configId);
+      if (!option || !option.options.some((entry) => entry.value === params.value)) {
+        throw Object.assign(new Error(`Invalid params: not found: ${params.value}`), { code: -32602 });
+      }
       if (params.configId === "model") model = params.value;
-      return { configOptions: [] };
+      if (params.configId === "effort") effort = params.value;
+      // The reply lists every option again, as the protocol asks. In "notify"
+      // mode the options come as a config_option_update notification instead,
+      // as pi, goose and Mistral Vibe send them.
+      if (mode === "notify") {
+        update(params.sessionId, { sessionUpdate: "config_option_update", configOptions: configOptions() });
+        return { configOptions: [] };
+      }
+      return { configOptions: configOptions() };
+    }
     case "session/set_model":
       model = params.modelId;
       return {};
@@ -85,7 +106,7 @@ async function prompt({ sessionId, prompt: blocks }) {
   const text = (blocks || []).map((block) => block.text || "").join("\n");
   update(sessionId, { sessionUpdate: "agent_thought_chunk", content: { type: "text", text: "Thinking about it." } });
   update(sessionId, { sessionUpdate: "plan", entries: [{ content: "Find targets", priority: "high", status: "in_progress" }] });
-  say(sessionId, `Working with ${model}.`);
+  say(sessionId, `Working with ${model} at ${effort}.`);
   if (text.includes("FS")) {
     try {
       await peer.request("fs/read_text_file", { sessionId, path: "/etc/hostname" }, { timeoutMs: 5000 });

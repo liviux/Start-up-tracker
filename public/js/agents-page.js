@@ -137,15 +137,42 @@
     return `${Math.floor(minutes / 60)} h${minutes % 60 ? ` ${minutes % 60} min` : ""}`;
   }
 
+  // An OpenRouter model id and its routing suffix (":nitro"), when the
+  // agent takes one (harness.routingVariants, OpenCode only).
+  function routingParts(value, variants = []) {
+    const text = String(value || "");
+    const routing = text.startsWith("openrouter/") ? (variants || []).find((suffix) => text.endsWith(suffix) && text.length > suffix.length) : "";
+    return routing ? { base: text.slice(0, -routing.length), routing } : { base: text, routing: "" };
+  }
+
+  // The effort levels to offer for a model, as in Settings > AI agents
+  // (js/agents-settings.js effortChoices): the ones the last check read, or
+  // the common ones until it has. tests/agents-page.test.js keeps the two
+  // the same.
+  const COMMON_EFFORTS = Object.freeze(["none", "minimal", "low", "medium", "high", "xhigh", "max"]);
+  function effortChoices(harness, model) {
+    const read = harness?.modelEfforts?.[model || ""];
+    const levels = Array.isArray(read) ? read : COMMON_EFFORTS.map((value) => ({ value, name: value.charAt(0).toUpperCase() + value.slice(1) }));
+    const picked = harness?.effortByModel?.[model || ""];
+    return picked && !levels.some((level) => level.value === picked) ? [...levels, { value: picked, name: picked }] : levels;
+  }
+
   // The models to offer for a harness: your preferred ones first, then the
-  // rest the last check found. Empty when the agent lists none (the dialog
-  // then takes a typed model id).
-  function modelChoices(harness) {
+  // rest the last check found, and `current` when it is neither (a routing
+  // variant just picked). Empty when the agent lists none (the dialog then
+  // takes a typed model id).
+  function modelChoices(harness, current = "") {
     const found = Array.isArray(harness?.models) ? harness.models : [];
     const names = new Map(found.map((model) => [model.value, model.name || model.value]));
     const preferred = (harness?.preferredModels || []).filter(Boolean);
     const ordered = [...new Set([...preferred, ...found.map((model) => model.value)])];
-    return ordered.map((value) => ({ value, name: names.get(value) || value, preferred: preferred.includes(value) }));
+    if (current && found.length && !ordered.includes(current)) ordered.push(current);
+    const name = (value) => {
+      if (names.has(value)) return names.get(value);
+      const { base, routing } = routingParts(value, harness?.routingVariants);
+      return routing && names.has(base) ? `${names.get(base)} ${routing}` : value;
+    };
+    return ordered.map((value) => ({ value, name: name(value), preferred: preferred.includes(value) }));
   }
 
   // What the run dialog says before Start: unfilled variables block the run,
@@ -173,7 +200,7 @@
     }
   }
 
-  const pure = { ACTIVE, STATUSES, TABS, EVENT_TYPES, escapeHtml, isActive, emptyConversation, applyEvent, conversation, duration, modelChoices, dialogChecks, logLine };
+  const pure = { ACTIVE, STATUSES, TABS, EVENT_TYPES, escapeHtml, isActive, emptyConversation, applyEvent, conversation, duration, routingParts, effortChoices, modelChoices, dialogChecks, logLine };
 
   if (!root.document) return Object.freeze(pure);
 
@@ -253,6 +280,7 @@
             <dt>${escapeHtml(t("agents.run.harness"))}</dt><dd>${escapeHtml(run.harness?.name || "")}</dd>
             <dt>${escapeHtml(t("agents.run.command"))}</dt><dd><code>${escapeHtml(run.harness?.commandLine || "")}</code></dd>
             <dt>${escapeHtml(t("agents.run.model"))}</dt><dd>${escapeHtml(run.model || t("agents.run.defaultModel"))}</dd>
+            <dt>${escapeHtml(t("agents.run.effort"))}</dt><dd>${escapeHtml(run.effort || t("agents.run.defaultEffort"))}</dd>
             <dt>${escapeHtml(t("agents.run.policy"))}</dt><dd>${escapeHtml(t(`agents.policies.${run.harness?.policy || "allow"}.name`))}</dd>
           </dl>
           <pre class="agent-prompt-text">${escapeHtml(run.prompt)}</pre>`;
@@ -621,7 +649,7 @@
       const dialog = root.document.createElement("dialog");
       dialog.className = "agent-run-dialog";
       dialog.setAttribute("aria-labelledby", "agentRunDialogTitle");
-      const state = { harnessId: (usable.find((harness) => !harness.blocked) || usable[0] || {}).id || "", model: "", error: "", busy: false };
+      const state = { harnessId: (usable.find((harness) => !harness.blocked) || usable[0] || {}).id || "", model: "", effort: null, error: "", busy: false };
 
       function harness() {
         return usable.find((entry) => entry.id === state.harnessId) || null;
@@ -629,8 +657,16 @@
 
       function draw() {
         const current = harness();
-        const models = modelChoices(current);
-        if (current && !state.model) state.model = current.defaultModel || models[0]?.value || "";
+        if (current && !state.model) state.model = current.defaultModel || modelChoices(current)[0]?.value || "";
+        const models = modelChoices(current, state.model);
+        // OpenRouter routing (OpenCode): a suffix on the model id.
+        const variants = current?.routingVariants || [];
+        const route = routingParts(state.model, variants);
+        const routable = variants.length > 0 && route.base.startsWith("openrouter/");
+        // The effort levels the last check read for this model, and the one
+        // picked for it in Settings; null until that default is filled in.
+        const efforts = current ? effortChoices(current, state.model) : [];
+        if (current && state.effort === null) state.effort = current.effortByModel?.[state.model || ""] || "";
         const checks = dialogChecks({ unresolved: spec.unresolved, placeholderLeft: spec.placeholderLeft, constraints: spec.constraints, harness: current });
         dialog.innerHTML = `
           <form class="agent-run-form" method="dialog">
@@ -645,6 +681,20 @@
     ? `<select name="model">${models.map((model) => `<option value="${escapeHtml(model.value)}" ${model.value === state.model ? "selected" : ""}>${escapeHtml(model.name)}${model.preferred ? " ★" : ""}</option>`).join("")}</select>`
     : `<input type="text" name="model" value="${escapeHtml(state.model)}" placeholder="${escapeHtml(t("agents.dialog.modelPlaceholder"))}">`}
               </label>
+              ${routable ? `
+              <label class="settings-field">${escapeHtml(t("agents.dialog.routing"))}
+                <select name="routing">
+                  <option value="" ${route.routing ? "" : "selected"}>${escapeHtml(t("settings.agents.routing.default"))}</option>
+                  ${variants.map((suffix) => `<option value="${escapeHtml(suffix)}" ${suffix === route.routing ? "selected" : ""}>${escapeHtml(t(`settings.agents.routing.${suffix.slice(1)}`))}</option>`).join("")}
+                </select>
+              </label>` : ""}
+              ${efforts.length ? `
+              <label class="settings-field">${escapeHtml(t("agents.dialog.effort"))}
+                <select name="effort">
+                  <option value="" ${state.effort ? "" : "selected"}>${escapeHtml(t("agents.dialog.effortDefault"))}</option>
+                  ${efforts.map((level) => `<option value="${escapeHtml(level.value)}" ${level.value === state.effort ? "selected" : ""}>${escapeHtml(level.name)}</option>`).join("")}
+                </select>
+              </label>` : ""}
               ${current ? `<p class="settings-hint">${escapeHtml(t(`agents.policies.${current.policy}.name`))}: ${escapeHtml(t(`agents.policies.${current.policy}.hint`))}</p>` : ""}` : `<p class="settings-hint">${escapeHtml(t("agents.dialog.noAgents"))}</p>`}
             ${spec.constraints ? `<div class="agent-constraints"><strong>${escapeHtml(t("agents.dialog.constraints"))}</strong><p>${escapeHtml(spec.constraints)}</p></div>` : ""}
             ${[...checks.blocking, ...checks.warnings].map((entry) => `<p class="${checks.blocking.includes(entry) ? "settings-error" : "agent-warning"}">${escapeHtml(t(entry.key, entry.params))}</p>`).join("")}
@@ -663,8 +713,17 @@
         if (event.target.name === "harness") {
           state.harnessId = event.target.value;
           state.model = "";
+          state.effort = null;
           draw();
-        } else if (event.target.name === "model") state.model = event.target.value;
+        } else if (event.target.name === "model") {
+          state.model = event.target.value;
+          state.effort = null;
+          draw();
+        } else if (event.target.name === "routing") {
+          state.model = `${routingParts(state.model, harness()?.routingVariants).base}${event.target.value}`;
+          state.effort = null;
+          draw();
+        } else if (event.target.name === "effort") state.effort = event.target.value;
       });
       dialog.addEventListener("input", (event) => {
         if (event.target.name === "model") state.model = event.target.value;
@@ -685,7 +744,7 @@
         try {
           const body = await request(hooks.Api.startupApiUrl(hooks.startupId, "agent-runs"), {
             method: "POST",
-            body: { harnessId: state.harnessId, model: state.model, template: spec.template, values: spec.values, title: spec.title, presetId: spec.presetId },
+            body: { harnessId: state.harnessId, model: state.model, effort: state.effort || "", template: spec.template, values: spec.values, title: spec.title, presetId: spec.presetId },
           });
           dialog.result = body.run;
           dialog.close();

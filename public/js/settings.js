@@ -1450,7 +1450,7 @@
 
     const dateFormat = el("select", {}, Dates.DATE_FORMATS.map((format) => el("option", {
       value: format,
-      text: t(`settings.general.dateFormats.${format === "system" ? "system" : format === "yyyy-MM-dd" ? "iso" : "short"}`, { example: Dates.formatDateAs(today, I18n.getLocale(), format) }),
+      text: t(`settings.general.dateFormats.${Dates.DATE_FORMAT_KEYS[format]}`, { example: Dates.formatDateAs(today, I18n.getLocale(), format) }),
     })));
     dateFormat.value = settings.dateFormat;
     dateFormat.addEventListener("change", () => save({ dateFormat: dateFormat.value }));
@@ -1521,7 +1521,6 @@
     const payload = await readJson(await root.fetch(Api.urls.statuses, { cache: "no-store" }));
     if (!isCurrent()) return;
     let config = payload.statuses;
-    const priorities = payload.priorities?.priorities || [];
     const status = statusLine();
     const body = el("div", { className: "settings-statuses" });
     // Which entry has its delete form open, as "key:id".
@@ -1657,12 +1656,7 @@
         el("ul", { className: "settings-status-list" }, config.campaignStatuses.map((entry, index) => entryRow("campaignStatuses", entry, index, config.campaignStatuses))),
         addForm("campaignStatuses", "", ""),
       ]);
-      const priorityList = el("section", { className: "settings-block" }, [
-        el("h4", { text: t("settings.statuses.prioritiesTitle") }),
-        el("p", { className: "settings-hint", text: t("settings.statuses.prioritiesHint") }),
-        el("ol", { className: "settings-priority-list" }, priorities.map((priority) => el("li", { text: priority.label }))),
-      ]);
-      body.replaceChildren(...groups, campaigns, priorityList);
+      body.replaceChildren(...groups, campaigns);
     }
 
     draw();
@@ -1938,10 +1932,17 @@
     ]);
 
     const listHolder = el("ul", { className: "settings-backup-list", "aria-busy": "true" }, el("li", { className: "settings-hint", text: t("settings.loading") }));
+    // The list stays folded; its summary says how many and when the last was taken.
+    const listSummary = el("summary", { text: t("settings.loading") });
+    const listDetails = el("details", { className: "settings-backup-fold" }, [listSummary, listHolder]);
     const reload = async (message) => {
       listHolder.setAttribute("aria-busy", "true");
       try {
         const backups = await actions.list();
+        const latest = backups.map((backup) => backup.createdAt).filter(Boolean).sort().pop();
+        listSummary.textContent = backups.length
+          ? t("settings.backups.listSummary", { count: backups.length, date: formatInstant(latest) })
+          : t("settings.backups.none");
         listHolder.replaceChildren(...(backups.length
           ? backups.map((backup) => renderBackupItem(backup, actions, status, reload))
           : [el("li", { className: "settings-hint", text: t("settings.backups.none") })]));
@@ -2030,7 +2031,7 @@
     container.append(
       el("div", { className: "settings-block" }, [el("h4", { text: t("settings.backups.nowTitle") }), createForm, createHint]),
       status,
-      el("div", { className: "settings-block" }, [el("h4", { text: t("settings.backups.listTitle") }), listHolder]),
+      el("div", { className: "settings-block" }, [el("h4", { text: t("settings.backups.listTitle") }), listDetails]),
       el("div", { className: "settings-block" }, [
         el("h4", { text: t("settings.backups.keepTitle") }),
         el("label", { className: "settings-check" }, [

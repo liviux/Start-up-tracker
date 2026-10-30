@@ -74,6 +74,18 @@ test("ACP: models from configOptions (grouped or not) or from the older models f
   assert.equal(legacy.modelVia, "legacy");
   assert.equal(legacy.currentModel, "x");
   assert.deepEqual(selectValues([{ value: "only" }]), [{ value: "only", name: "only" }]);
+  // Effort the way each agent names it: the spec's category, Mistral Vibe's
+  // "thinking" category, goose and Droid ids, Cursor's ids under a custom
+  // category, Kimi's on/off switch. A mode or model option is never effort.
+  const effortOf = (option) => sessionChoices({ configOptions: [{ type: "select", options: [{ value: "low", name: "Low" }], ...option }] });
+  assert.equal(effortOf({ id: "x", category: "thought_level" }).thoughtConfigId, "x");
+  assert.equal(effortOf({ id: "thinking", category: "thinking" }).thoughtConfigId, "thinking");
+  assert.equal(effortOf({ id: "thinking_effort", name: "Thinking effort" }).thoughtConfigId, "thinking_effort");
+  assert.equal(effortOf({ id: "reasoning_effort", category: "_cursor" }).thoughtConfigId, "reasoning_effort");
+  assert.equal(effortOf({ id: "effort", category: "mode" }).thoughtConfigId, "");
+  assert.equal(effortOf({ id: "amp-mode", category: "model" }).thoughtConfigId, "");
+  const onOff = sessionChoices({ configOptions: [{ id: "thinking", type: "boolean", currentValue: true }] });
+  assert.deepEqual([onOff.thoughtConfigId, onOff.thoughtType, onOff.thoughtLevels.map((level) => level.value)], ["thinking", "boolean", ["on", "off"]]);
   assert.equal(sessionChoices({ sessionId: "s" }).modelVia, "");
 });
 
@@ -285,6 +297,23 @@ test("Check: ready with models, needs login, incompatible, not installed, failed
     assert.deepEqual(ready.models.map((model) => model.value), ["fake-small", "fake-large"]);
     assert.equal(ready.agentInfo.name, "fake-agent");
     assert.match(ready.testReply, /Working with/);
+    assert.deepEqual(ready.thoughtLevels.map((level) => level.value), ["low", "high"]);
+    assert.deepEqual(Object.keys(ready.modelEfforts), ["", "fake-small"], "the session's own model");
+    const effort = await runCheck(fakeHarness({ defaultModel: "fake-large", preferredModels: ["fake-small", "gone"], effortByModel: { "fake-large": "max" } }), { secretsDir, testPrompt: true });
+    assert.deepEqual(effort.modelEfforts["fake-large"].map((level) => level.value), ["low", "high", "max"], "levels are read per model");
+    assert.deepEqual(effort.modelEfforts["fake-small"].map((level) => level.value), ["low", "high"]);
+    assert.equal(effort.modelEfforts.gone, undefined, "a model the agent does not offer has no levels");
+    assert.match(effort.testReply, /Working with fake-large at max/, "the test prompt uses the default model and its effort");
+
+    env("notify");
+    const notified = await runCheck(fakeHarness({ defaultModel: "fake-large", effortByModel: { "fake-large": "max" } }), { secretsDir, testPrompt: true });
+    assert.deepEqual(notified.modelEfforts["fake-large"].map((level) => level.value), ["low", "high", "max"], "levels from a config_option_update notification");
+    assert.match(notified.testReply, /at max/);
+
+    env("cline");
+    const cline = await runCheck(fakeHarness({ registryId: "cline", defaultModel: "fake-large", effortByModel: { "fake-large": "xhigh" } }), { secretsDir, testPrompt: true });
+    assert.deepEqual(cline.modelEfforts["fake-large"].map((level) => level.value), ["none", "low", "medium", "high", "xhigh"], "Cline's levels come from its launch flag");
+    assert.match(cline.testReply, /at xhigh/, "started with --thinking xhigh");
 
     env("legacy");
     const legacy = await runCheck(fakeHarness(), { secretsDir });

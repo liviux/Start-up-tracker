@@ -1681,12 +1681,17 @@
       "dateFormats": {
         "system": "Language default ({example})",
         "short": "Day month year ({example})",
-        "iso": "Year-month-day ({example})"
+        "monthFirst": "Month day, year ({example})",
+        "iso": "Year-month-day ({example})",
+        "daySlash": "Day/month/year ({example})",
+        "monthSlash": "Month/day/year ({example})",
+        "dayDot": "Day.month.year ({example})"
       },
       "weekStart": "Week starts on",
       "weekStarts": {
         "monday": "Monday",
-        "sunday": "Sunday"
+        "sunday": "Sunday",
+        "saturday": "Saturday"
       },
       "pageSize": "Rows per page",
       "pageSizeHint": "For the target tables in Marketing, Programs and Funding. From 10 to 200.",
@@ -1727,9 +1732,7 @@
       "addCampaign": "Add a campaign status",
       "add": "Add",
       "campaignsTitle": "Campaign statuses",
-      "campaignsHint": "A separate, simpler list for campaigns. It has no groups, and any entry can be deleted once its campaigns have moved.",
-      "prioritiesTitle": "Priorities",
-      "prioritiesHint": "The priorities are fixed, from highest to lowest."
+      "campaignsHint": "A separate, simpler list for campaigns. It has no groups, and any entry can be deleted once its campaigns have moved."
     },
     "agents": {
       "intro": "The AI agents you can run prompts with, for every startup. The tracker talks to them over the Agent Client Protocol (ACP).",
@@ -1749,7 +1752,9 @@
       "check": "Check",
       "checking": "Checking… the first start of an npx agent can take a few minutes",
       "testPrompt": "Test prompt",
-      "testPromptHint": "Asks the agent to reply \"OK\". Costs a few tokens.",
+      "testPromptHint": "Asks the agent to reply \"OK\" with its default model. Costs a few tokens.",
+      "testing": "Sending the test prompt…",
+      "testNeedsModel": "Pick a default model first: the test prompt runs with it. It is under Permissions, models and launch settings.",
       "testReply": "Test reply: {reply}",
       "loginTerminal": "{name}: run this in a terminal, then check again:",
       "authenticate": "Log in: {name}",
@@ -1764,6 +1769,25 @@
       "defaultModel": "Default model",
       "agentDefault": "The agent's default",
       "preferredModels": "Preferred models (shown first when you start a run)",
+      "addPreferred": "Add a model: type to search",
+      "noPreferred": "None yet.",
+      "noModelMatch": "No model matches. Try part of its name or id.",
+      "moreModels": {
+        "one": "{count} more. Type to narrow down.",
+        "other": "{count} more. Type to narrow down."
+      },
+      "removePreferred": "Remove {model} from preferred models",
+      "unknownModel": "This agent lists no model \"{model}\". Pick one from the suggestions.",
+      "effortFor": "Effort for {model}",
+      "routingFor": "OpenRouter routing for {model}",
+      "routing": {
+        "default": "Default routing",
+        "nitro": "Nitro: fastest providers",
+        "floor": "Floor: cheapest providers",
+        "exacto": "Exacto: best at tool calls"
+      },
+      "effortDefault": "Default effort",
+      "effortAfterCheck": "Some of these models show the common effort levels: run Check to see the ones each model offers.",
       "noModels": "The agent listed no models. Check it, or type a model id as the default.",
       "command": "Command",
       "args": "Arguments",
@@ -1834,6 +1858,10 @@
       "skipped": "Nothing changed since the newest backup, so no new one was taken.",
       "createFailed": "Could not take a backup: {error}",
       "listTitle": "Backups",
+      "listSummary": {
+        "one": "{count} backup · last taken {date}",
+        "other": "{count} backups · last taken {date}"
+      },
       "none": "No backups yet.",
       "loadFailed": "Could not load the backups: {error}",
       "kinds": {
@@ -2670,6 +2698,8 @@
       "command": "Command",
       "model": "Model",
       "defaultModel": "The agent's default",
+      "effort": "Effort",
+      "defaultEffort": "The agent's default",
       "policy": "Permissions",
       "noChanges": "This run has not changed anything in the tracker.",
       "undo": "Undo this run",
@@ -2707,6 +2737,9 @@
       "startup": "Startup: {name}",
       "agent": "Agent",
       "model": "Model",
+      "effort": "Effort",
+      "effortDefault": "The model's default",
+      "routing": "OpenRouter routing",
       "modelPlaceholder": "Model id, or empty for the agent's default",
       "blockedShort": "blocked",
       "constraints": "Constraints sent with this prompt",

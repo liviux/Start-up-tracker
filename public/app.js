@@ -95,7 +95,7 @@
     return Dates.normalizeDateFormat(Settings.get().dateFormat);
   }
 
-  // "monday" or "sunday" (Settings > General).
+  // "monday", "sunday" or "saturday" (Settings > General).
   function getWeekStart() {
     return Dates.normalizeWeekStart(Settings.get().weekStart);
   }
@@ -2563,11 +2563,13 @@
     return Dates.startOfMonth(Dates.isDateString(iso) ? iso : todayDate());
   }
 
-  // The ISO week number of a calendar row. A row that starts on Sunday is
-  // numbered by its Monday, so the number matches the days most of it holds.
+  // The ISO week number of a calendar row. A row that starts on Sunday or
+  // Saturday is numbered by its Monday, so the number matches the days most
+  // of it holds.
   function getISOWeekNumber(iso) {
     if (!Dates.isDateString(iso)) return "";
-    return Dates.isoWeekNumber(getWeekStart() === "sunday" && Dates.dayOfWeek(iso) === 0 ? Dates.addDays(iso, 1) : iso);
+    const start = Dates.startOfWeek(iso, getWeekStart());
+    return Dates.isoWeekNumber(Dates.addDays(start, (8 - Dates.dayOfWeek(start)) % 7));
   }
 
   // Short weekday and month names of a calendar date, in the app's locale.
@@ -12022,7 +12024,11 @@
 
   function handleTooltipMouseOver(event) {
     const target = event.target.closest("[data-tooltip], [data-tooltip-type], [data-modal-extra-param]");
-    if (!target) return;
+    // A target removed while hovered (a redraw) never sends mouseout.
+    if (!target) {
+      hideTooltip();
+      return;
+    }
 
     let html = "";
     let isWide = false;
@@ -12082,8 +12088,11 @@
       tooltip = document.createElement("div");
       tooltip.id = "customTooltip";
       tooltip.className = "custom-tooltip";
-      document.body.appendChild(tooltip);
     }
+    // A modal dialog sits in the top layer, above anything in the body, so
+    // the tooltip moves into the dialog that holds its target.
+    const host = target.closest("dialog[open]") || document.body;
+    if (tooltip.parentNode !== host) host.appendChild(tooltip);
 
     tooltip.innerHTML = htmlContent;
     tooltip.classList.toggle("wide-tooltip", isWide);

@@ -211,20 +211,71 @@ html[data-run-window] .agents-layout { grid-template-columns: 1fr; }
 }
 .agent-options-group h6 { margin: 0; color: var(--muted-strong); font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
 .agent-model-empty { display: grid; gap: 6px; }
-.agent-model-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; }
-.agent-model-check {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 9px;
+.agent-model-picker { position: relative; display: block; flex: 1 1 220px; min-width: 0; }
+.agent-model-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+/* The effort next to a model: as wide as its words, not a full-width field.
+   The selectors outrank the field rules in consistency.css. */
+html:root .settings-field .agent-model-row > select { flex: 0 0 auto; width: auto; }
+html:root .agent-options .agent-model-chips .agent-model-chip > select.agent-model-effort {
+  width: auto;
+  height: 24px;
+  min-height: 0;
+  padding: 0 4px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 999px;
   background: var(--surface);
+  color: inherit;
+  font-size: 12px;
+}
+.agent-model-picker input { width: 100%; }
+.agent-model-list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  max-height: 280px;
+  margin: 0;
+  padding: 4px;
+  overflow: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--surface), var(--surface));
+  box-shadow: var(--shadow-lg);
+  list-style: none;
+}
+.agent-model-list [role="option"] { display: block; padding: 6px 8px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+.agent-model-list [role="option"]:hover,
+.agent-model-list [role="option"][aria-selected="true"] { background: var(--accent-soft); }
+.agent-model-list .is-current { font-weight: 700; }
+.agent-model-id { color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
+.agent-model-more { padding: 6px 8px; color: var(--muted); font-size: 12px; }
+.agent-model-preferred { display: grid; gap: 8px; }
+.agent-model-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.agent-model-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 4px 3px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent-soft);
   font-size: 13px;
+  font-weight: 650;
+}
+.agent-model-chip-remove {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font-size: 15px;
+  line-height: 1;
   cursor: pointer;
 }
-.agent-model-check:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); font-weight: 650; }
-.agent-model-check input { flex: 0 0 auto; accent-color: var(--accent); }
+.agent-model-chip-remove:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
 .agent-registry-list { max-height: 420px; overflow: auto; }
 .agent-registry-item {
   display: grid;
@@ -240,7 +291,11 @@ html[data-run-window] .agents-layout { grid-template-columns: 1fr; }
 .agent-registry-item > img { width: 24px; height: 24px; object-fit: contain; align-self: center; border-radius: 6px; }
 .agent-registry-item > div { display: grid; gap: 2px; min-width: 0; }
 .agent-registry-item strong { font-size: 14px; }
-.agent-registry-item .secondary-button { align-self: center; }
+.agent-registry-item :is(.primary-button, .secondary-button) { align-self: center; }
+/* Found on this computer: a green edge, so it stands apart from the rest. */
+.agent-registry-item.is-found { border-color: color-mix(in srgb, var(--green) 45%, var(--border)); }
+/* Already added: last in the list, and quieter. */
+.agent-registry-item.is-added { opacity: 0.7; }
 .agent-registry-item p { margin: 2px 0 0; }
 .agent-registry-meta { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
 .agent-found { color: var(--green); font-size: 12px; font-weight: 700; }

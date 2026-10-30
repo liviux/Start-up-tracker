@@ -122,22 +122,24 @@ test("a run uses the tracker tools; history names it; undo puts things back; the
     const checked = await json(await sendJson(`${url}api/agents/harnesses/${harness.id}/check`, "POST", {}));
     assert.equal(checked.check.state, "ready", checked.check.message);
     assert.deepEqual(checked.harness.models.map((model) => model.value), ["fake-small", "fake-large"]);
+    assert.deepEqual(checked.harness.modelEfforts[""], [{ value: "low", name: "Low" }, { value: "high", name: "High" }], "the check keeps the effort levels");
 
     const unresolved = await json(await sendJson(`${url}api/s/${startup.id}/agent-runs`, "POST", { harnessId: harness.id, template: "Look at {{SECTOR}}", values: {} }));
     assert.equal(unresolved.status, 400);
     assert.equal(unresolved.code, "unresolved");
 
-    const runId = await startRun(url, startup.id, harness.id, "Find a grant. USE_TOOLS FS\n\n{{TRACKER_ACCESS}}", { model: "fake-large" });
+    const runId = await startRun(url, startup.id, harness.id, "Find a grant. USE_TOOLS FS\n\n{{TRACKER_ACCESS}}", { model: "fake-large", effort: "high" });
     const done = await waitFor(url, runId, finishedTurn);
     assert.equal(done.run.status, "done", done.run.error);
     assert.equal(done.run.stopReason, "end_turn");
     assert.equal(done.run.model, "fake-large");
+    assert.equal(done.run.effort, "high");
     assert.match(done.run.prompt, /tracker tools of the "tracker" MCP server/, "the server filled {{TRACKER_ACCESS}} for a run");
     assert.deepEqual(done.run.usage, { used: 1234, size: 200000, cost: { amount: 0.01, currency: "USD" } });
     assert.equal(done.run.changes.length, 1);
     assert.equal(done.canMessage, true, "the agent stays for a follow-up");
     const text = agentText(await eventsOf(url, runId));
-    assert.match(text, /Working with fake-large/, "the model was set before the prompt");
+    assert.match(text, /Working with fake-large at high/, "the model and effort were set before the prompt");
     assert.match(text, /fs-error:-32601/, "the tracker offers no file system");
     assert.match(text, /versions:2026-07-28,2025-11-25,2025-06-18 tools:11 created:agent-/);
 
@@ -228,6 +230,30 @@ test("Research only refuses edits; Ask me waits for you; a cancel answers cancel
     assert.equal(cancelled.run.status, "cancelled");
     assert.equal(cancelled.run.permissions.find((entry) => entry.id === read.id).decision, "cancelled");
     assert.match(agentText(await eventsOf(url, askRun)), /permission-edit:always permission-read:cancelled/);
+  } finally {
+    await server.stop();
+  }
+});
+
+test("a run without an effort takes the one picked for its model in Settings", async () => {
+  const server = await startServer();
+  try {
+    const url = server.url;
+    const startup = await createStartup(url, "Acme");
+    const harness = await addFakeAgent(url);
+    const patched = await json(await sendJson(`${url}api/agents/harnesses/${harness.id}`, "PATCH", { effortByModel: { "fake-large": "max", "fake-small": "", odd: 5 } }));
+    assert.deepEqual(patched.harness.effortByModel, { "fake-large": "max" }, "empty and non-text levels are dropped");
+    const created = await json(await sendJson(`${url}api/s/${startup.id}/agent-runs`, "POST", { harnessId: harness.id, model: "fake-large", template: "WAIT", values: {}, title: "Effort" }));
+    assert.equal(created.status, 201, created.error);
+    assert.equal(created.run.effort, "max");
+    const chosen = await json(await sendJson(`${url}api/s/${startup.id}/agent-runs`, "POST", { harnessId: harness.id, model: "fake-large", effort: "", template: "WAIT", values: {}, title: "Own effort" }));
+    assert.equal(chosen.run.effort, "", "an empty effort sent from the dialog keeps the model's own");
+    // Stopped at once, while still starting: each ends cancelled, never
+    // left "running" by a late step of its start.
+    for (const run of [created.run, chosen.run]) {
+      await sendJson(`${url}api/agent-runs/${run.id}/cancel`, "POST", {});
+      await waitFor(url, run.id, finished);
+    }
   } finally {
     await server.stop();
   }
@@ -395,6 +421,36 @@ function manager() {
     fs.rmSync(home, { recursive: true, force: true, maxRetries: 20, retryDelay: 100 });
   } };
 }
+
+test("a run stopped while it starts stays cancelled", async () => {
+  const { startup, runs, harness, waitStatus, cleanup } = manager();
+  try {
+    // Stopped the moment its session exists, before the prompt goes out: the
+    // rest of the start must neither send the prompt nor mark it running.
+    let runId = "";
+    let prompted = false;
+    runs.spawnHook = (connection) => {
+      const newSession = connection.newSession.bind(connection);
+      connection.newSession = async (...args) => {
+        const session = await newSession(...args);
+        await runs.cancel(runId);
+        return session;
+      };
+      const prompt = connection.prompt.bind(connection);
+      connection.prompt = (...args) => {
+        prompted = true;
+        return prompt(...args);
+      };
+    };
+    runId = runs.create({ startupId: startup.id, harnessId: harness.id, prompt: "WAIT" }).id;
+    await waitStatus(runId, "cancelled");
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    assert.equal(runs.get(runId).status, "cancelled");
+    assert.equal(prompted, false);
+  } finally {
+    await cleanup();
+  }
+});
 
 test("at the concurrency limit a run waits as Queued", async () => {
   const { store, startup, runs, harness, waitStatus, cleanup } = manager();

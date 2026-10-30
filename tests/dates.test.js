@@ -206,10 +206,20 @@ test("backup names are read as UTC stamps", () => {
 });
 
 test("dates follow the chosen format (Settings > General)", () => {
-  assert.deepEqual([...Dates.DATE_FORMATS], ["system", "d MMM yyyy", "yyyy-MM-dd"]);
+  assert.deepEqual([...Dates.DATE_FORMATS], ["system", "d MMM yyyy", "MMM d, yyyy", "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "dd.MM.yyyy"]);
+  // The server accepts the same formats and week starts.
+  const ServerSettings = require("../lib/settings.js");
+  assert.deepEqual(ServerSettings.DATE_FORMATS, [...Dates.DATE_FORMATS]);
+  assert.deepEqual(ServerSettings.WEEK_STARTS, [...Dates.WEEK_STARTS]);
+  assert.deepEqual(Object.keys(Dates.DATE_FORMAT_KEYS), [...Dates.DATE_FORMATS]);
   assert.equal(Dates.formatDateAs("2026-10-15", "en", "d MMM yyyy"), "15 Oct 2026");
   assert.equal(Dates.formatDateAs("2026-10-05", "en", "d MMM yyyy"), "5 Oct 2026");
+  assert.equal(Dates.formatDateAs("2026-10-05", "en", "MMM d, yyyy"), "Oct 5, 2026");
   assert.equal(Dates.formatDateAs("2026-10-15", "en", "yyyy-MM-dd"), "2026-10-15");
+  assert.equal(Dates.formatDateAs("2026-10-05", "en", "dd/MM/yyyy"), "05/10/2026");
+  assert.equal(Dates.formatDateAs("2026-10-05", "en", "MM/dd/yyyy"), "10/05/2026");
+  assert.equal(Dates.formatDateAs("2026-10-05", "en", "dd.MM.yyyy"), "05.10.2026");
+  assert.equal(Dates.formatInstantAs("2026-10-15T22:30:05.000Z", "en", "UTC", "dd.MM.yyyy"), "15.10.2026 22:30");
   assert.equal(Dates.formatDateAs("2026-10-15", "en-US", "system"), Dates.formatDate("2026-10-15", "en-US", { year: "numeric", month: "short", day: "2-digit" }));
   assert.equal(Dates.formatDateAs("2026-10-15", "en", "bogus"), Dates.formatDateAs("2026-10-15", "en", "system"));
   assert.equal(Dates.formatDateAs("not a date", "en", "yyyy-MM-dd"), "");
@@ -222,13 +232,17 @@ test("dates follow the chosen format (Settings > General)", () => {
   assert.equal(Dates.formatInstantAs("", "en", "UTC", "system"), "");
 });
 
-test("weeks start on Monday or Sunday", () => {
+test("weeks start on Monday, Sunday or Saturday", () => {
   assert.equal(Dates.startOfWeek("2026-10-17", "monday"), "2026-10-12");
   assert.equal(Dates.startOfWeek("2026-10-18", "monday"), "2026-10-12");
   assert.equal(Dates.startOfWeek("2026-10-17", "sunday"), "2026-10-11");
   assert.equal(Dates.startOfWeek("2026-10-18", "sunday"), "2026-10-18");
   assert.equal(Dates.startOfWeek("2026-03-01", "sunday"), "2026-03-01");
   assert.equal(Dates.startOfWeek("2027-01-01", "sunday"), "2026-12-27");
+  assert.equal(Dates.startOfWeek("2026-10-17", "saturday"), "2026-10-17");
+  assert.equal(Dates.startOfWeek("2026-10-18", "saturday"), "2026-10-17");
+  assert.equal(Dates.startOfWeek("2026-10-16", "saturday"), "2026-10-10");
+  assert.equal(Dates.normalizeWeekStart("saturday"), "saturday");
   assert.equal(Dates.startOfWeek("2026-10-18"), "2026-10-12", "Monday is the default");
   assert.equal(Dates.startOfWeek("2026-10-18", "friday"), "2026-10-12");
   assert.equal(Dates.startOfWeek("nope", "sunday"), "");

@@ -125,9 +125,15 @@ test("falls back to a replaced block instead of allocating a huge table", () => 
 test("stays fast on a realistic note append", () => {
   const before = Array.from({ length: 400 }, (_, index) => `- entry ${index}`).join("\n");
   const after = `${before}\n- entry 400`;
-  const started = process.hrtime.bigint();
-  const rows = diffLines(before, after);
-  const elapsedMs = Number(process.hrtime.bigint() - started) / 1e6;
+  // The quickest of five runs: one run can be slowed by the rest of a
+  // parallel test run, the quickest shows what the diff itself costs.
+  let rows = [];
+  let elapsedMs = Infinity;
+  for (let run = 0; run < 5; run += 1) {
+    const started = process.hrtime.bigint();
+    rows = diffLines(before, after);
+    elapsedMs = Math.min(elapsedMs, Number(process.hrtime.bigint() - started) / 1e6);
+  }
 
   assert.deepEqual(summarize(rows), { added: 1, removed: 0, changed: true });
   assert.ok(elapsedMs < 100, `expected the common-prefix trim to keep this fast, took ${elapsedMs}ms`);
