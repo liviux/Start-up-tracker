@@ -80,11 +80,19 @@
 .item-picker-controls {
   display: flex;
   gap: 6px;
+  min-width: 0;
 }
 
 .item-picker-kind {
   flex: none;
   width: auto;
+}
+
+/* The add forms set every select to 100% width; the picker's kind select sits
+   beside the input, so it keeps its own width. */
+.manager-form-v2 .item-picker-controls .item-picker-kind {
+  width: auto;
+  min-width: 0;
 }
 
 .item-picker-input {

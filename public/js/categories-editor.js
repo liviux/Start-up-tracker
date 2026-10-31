@@ -25,6 +25,8 @@
     section: "mk",
     query: "",
     open: new Set(),
+    // Nodes whose list of targets is open.
+    openTargets: new Set(),
     // The node whose edit, add, merge or delete form is open: "edit:<id>" and so on.
     form: "",
     usage: {},
@@ -254,6 +256,35 @@
     return el("button", { type: "button", className: "categories-icon-button", "aria-label": label, title: label, disabled, on: { click: onClick } }, text);
   }
 
+  // Which targets of this startup use the node directly. The page owns the
+  // records and the record window; the editor only lists and opens them.
+  function targetsOf(node) {
+    const list = page()?.targetsForNode?.(node.section, node.id);
+    return Array.isArray(list) ? list : [];
+  }
+
+  function targetsBlock(node) {
+    const entries = targetsOf(node);
+    const total = view.usage[node.id] || 0;
+    return el("div", { className: "categories-targets" }, [
+      el("div", { className: "categories-targets-head" }, [
+        el("strong", { text: t("categories.targetsTitle", { count: entries.length }) }),
+        entries.length < total ? el("span", { className: "categories-hint", text: t("categories.targetsOtherStartups") }) : null,
+      ]),
+      entries.length
+        ? el("ul", {}, entries.map((target) => el("li", {}, el("button", {
+          type: "button",
+          className: "categories-target",
+          title: t("categories.openTarget", { name: target.name }),
+          on: { click: () => page()?.openTarget?.(node.section, target.id) },
+        }, [
+          el("span", { className: "categories-target-name", text: target.name }),
+          target.statusLabel ? el("span", { className: "categories-target-status", text: target.statusLabel }) : null,
+        ]))))
+        : el("p", { className: "categories-hint", text: t("categories.noTargets") }),
+    ]);
+  }
+
   function nodeRow(node, matches) {
     const children = Taxonomy.children(node.id, node.section).filter((child) => !matches || matches.has(child.id));
     const expanded = Boolean(matches) || view.open.has(node.id);
@@ -270,6 +301,12 @@
       on: { change: (event) => toggleEnabled(node, event.target.checked) },
     });
     const open = (form) => { view.form = view.form === form ? "" : form; draw(); };
+    const targetsOpen = view.openTargets.has(node.id);
+    const toggleTargets = () => {
+      if (targetsOpen) view.openTargets.delete(node.id);
+      else view.openTargets.add(node.id);
+      draw();
+    };
     const childLevel = node.level === "category" ? "subcategory" : node.level === "subcategory" ? "type" : null;
     const header = el("div", { className: `categories-row${enabled ? "" : " is-off"}` }, [
       children.length || Taxonomy.children(node.id, node.section).length
@@ -283,7 +320,15 @@
       el("div", { className: "categories-name" }, [
         el("strong", { text: node.level === "category" && node.shortName && node.shortName !== node.name ? `${node.name} (${node.shortName})` : node.name }),
         node.custom ? el("span", { className: "categories-badge", text: t("categories.custom") }) : null,
-        el("span", { className: "categories-usage", title: t("categories.usageHint"), text: t("categories.usage", { count: view.usage[node.id] || 0 }) }),
+        el("button", {
+          type: "button",
+          className: `categories-usage${targetsOpen ? " is-open" : ""}`,
+          title: t("categories.usageHint"),
+          "aria-expanded": String(targetsOpen),
+          "aria-label": t(targetsOpen ? "categories.hideTargets" : "categories.showTargets", { name: node.name, count: view.usage[node.id] || 0 }),
+          text: t("categories.usage", { count: view.usage[node.id] || 0 }),
+          on: { click: toggleTargets },
+        }),
         el("span", { className: "categories-description", text: node.description }),
       ]),
       el("div", { className: "categories-buttons" }, [
@@ -302,6 +347,7 @@
     else if (view.form === `delete:${node.id}`) form = deleteForm(node);
     return el("li", { className: `categories-node level-${node.level}`, dataset: { nodeId: node.id } }, [
       header,
+      targetsOpen ? targetsBlock(node) : null,
       form,
       expanded && children.length ? el("ul", {}, children.map((child) => nodeRow(child, matches))) : null,
     ]);

@@ -17,7 +17,7 @@
   "use strict";
 
   // Kept in step with package.json by tests/client-api.test.js.
-  const APP_VERSION = "1.0.0";
+  const APP_VERSION = "1.1.0";
   // Same rule as the server's ids: a slug plus a random suffix.
   const STARTUP_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,62}$/;
   const STORAGE_PREFIX = "startup-tracker";
@@ -169,6 +169,8 @@
     aboutVerify: "/api/about/verify",
     // GET: whether a newer release exists (cached for a day); POST: ask now.
     aboutUpdate: "/api/about/update",
+    // GET: a daily exchange rate from a public service (lib/exchange-rates.js).
+    exchangeRate: (from = "USD", to = "RON", { refresh = false } = {}) => withQuery("/api/exchange-rate", { from, to, refresh: refresh ? "1" : "" }),
     // GET and PUT the setup's progress (lib/setup.js); POST adds the demo
     // startup, DELETE removes it (lib/demo.js).
     setup: "/api/setup",

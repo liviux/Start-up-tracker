@@ -123,6 +123,18 @@
   // The field registry (js/fields.js), loaded at boot.
   const Fields = window.StartupTrackerFields;
 
+  // Extra > Categories lists the targets of this startup that use a node.
+  function targetsForNode(section, nodeId) {
+    const collection = section === "mk" ? state.items : section === "po" ? state.programs : section === "fu" ? state.funding : [];
+    return (collection || [])
+      .filter((record) => Array.isArray(record.taxonomy) && record.taxonomy.includes(nodeId))
+      .map((record) => ({ id: record.id, name: record.name, status: record.status || "", statusLabel: record.status ? Statuses.label(record.status) : "" }));
+  }
+
+  function openTargetOfSection(section, id) {
+    return openTargetWindow(section, id);
+  }
+
   // Extra > Categories turned nodes on or off for this startup. The choice is
   // one section, saved through the outbox.
   function setEnabledTaxonomy(selection) {
@@ -516,8 +528,17 @@
     dailyLinks: [],
     aiAccounts: [],
     aiFlow: [],
-    // The AI page's dollar to leu rate (shared, edited on the page).
-    aiSettings: { usdToRon: 4.55, rateUpdatedAt: "" },
+    // The AI page's currencies and the rate between them (shared, fetched
+    // once a day when two are chosen).
+    aiSettings: {
+      currencies: ["RON", "USD"],
+      rateFrom: "USD",
+      rateTo: "RON",
+      rate: 4.55,
+      rateDate: "",
+      rateUpdatedAt: "",
+      rateSource: "auto",
+    },
     // Which shared defaults were added once already ({ tags: <when> }).
     globalSeeded: {},
     editingAiFlowIds: new Set(),
@@ -675,6 +696,8 @@
     tagSearch: "",
     tagUsageFilter: "all",
     tagPage: 1,
+    // Page of each expanded tag group (MK, PO, FU), keyed by tag and group.
+    tagUsagePages: {},
     mediaPage: 1,
     feedbackPage: 1,
     feedbackTagFilter: [],
@@ -1433,6 +1456,8 @@
       applyStatusList,
       setEnabledTaxonomy,
       taxonomyChanged,
+      targetsForNode,
+      openTarget: openTargetOfSection,
     });
     // Labels of this startup's own entries in the combined views use its name.
     window.addEventListener("startup-tracker:startup", () => {
@@ -4686,6 +4711,12 @@
         if (field) handleTagFieldInput(field, true);
       });
       elements.tagList.addEventListener("click", async (event) => {
+        const usagePage = event.target.closest("[data-tag-usage-page]");
+        if (usagePage) {
+          state.tagUsagePages[usagePage.dataset.tagUsagePage] = Number(usagePage.dataset.tagUsagePageNumber) || 1;
+          renderTags();
+          return;
+        }
         const button = event.target.closest("[data-tag-action]");
         if (!button) return;
         const tagId = button.dataset.id;
@@ -5370,7 +5401,78 @@
   // record first.
 
   const DEFAULT_USD_TO_RON = 4.55;
+  const AI_RATE_REFRESH_MS = 24 * 60 * 60 * 1000;
+  const AI_RATE_RETRY_MS = 15 * 60 * 1000;
+  let aiRateFetch = null;
+  let aiRateError = "";
+  let aiRateRetryAt = 0;
   let globalChannel = null;
+
+  let aiCurrencyCodesCache = null;
+
+  function aiCurrencyCodes() {
+    if (aiCurrencyCodesCache) return aiCurrencyCodesCache;
+    let codes = [];
+    try {
+      codes = Intl.supportedValuesOf("currency");
+    } catch {
+      codes = [];
+    }
+    aiCurrencyCodesCache = [...new Set([...codes, ...AI_CURRENCIES_FALLBACK].filter((code) => AI_CURRENCY_CODE.test(code)))].sort();
+    return aiCurrencyCodesCache;
+  }
+
+  function aiCurrencyName(code) {
+    try {
+      return new Intl.DisplayNames([getLocale()], { type: "currency" }).of(code) || code;
+    } catch {
+      return code;
+    }
+  }
+
+  function aiCurrencyOptionsHtml(selected, { allowEmpty = false, emptyLabel = "", disabledCode = "", extra = [] } = {}) {
+    const codes = [...new Set([...extra, ...aiCurrencyCodes(), selected].map(aiCurrencyCode).filter(Boolean))].sort();
+    return [
+      allowEmpty ? `<option value=""${selected ? "" : " selected"}>${escapeHtml(emptyLabel)}</option>` : "",
+      ...codes.map((code) => `<option value="${code}"${code === selected ? " selected" : ""}${code === disabledCode && code !== selected ? " disabled" : ""}>${escapeHtml(`${code} — ${aiCurrencyName(code)}`)}</option>`),
+    ].join("");
+  }
+
+  function aiRatePair(settings = state.aiSettings) {
+    if (!settings || settings.currencies.length < 2) return null;
+    const from = aiCurrencyCode(settings.rateFrom);
+    const to = aiCurrencyCode(settings.rateTo);
+    return from && to && from !== to ? { from, to } : null;
+  }
+
+  function aiConversionRate(from, to) {
+    if (from === to) return 1;
+    const { rateFrom, rateTo, rate } = state.aiSettings;
+    const numeric = Number(rate);
+    if (!Number.isFinite(numeric) || numeric <= 0) return null;
+    if (from === rateFrom && to === rateTo) return numeric;
+    if (from === rateTo && to === rateFrom) return 1 / numeric;
+    return null;
+  }
+
+  function inferAiCurrency(cost) {
+    const text = String(cost || "");
+    if (/\bron\b|\blei\b/i.test(text)) return "RON";
+    if (/\beur\b|€/i.test(text)) return "EUR";
+    if (/\bgbp\b|£/i.test(text)) return "GBP";
+    if (/\busd\b|\$|dollars?/i.test(text)) return "USD";
+    return "";
+  }
+
+  function aiAccountCurrency(account) {
+    return aiCurrencyCode(account?.costCurrency) || inferAiCurrency(account?.cost) || state.aiSettings.currencies[0] || "USD";
+  }
+
+  function aiAccountCurrencyOptions(account) {
+    const current = aiAccountCurrency(account);
+    const codes = [...new Set([...state.aiSettings.currencies, current].map(aiCurrencyCode).filter(Boolean))];
+    return codes.map((code) => `<option value="${code}"${code === current ? " selected" : ""}>${escapeHtml(`${code} — ${aiCurrencyName(code)}`)}</option>`).join("");
+  }
 
   function normalizeTagDefinition(def) {
     if (!def || typeof def !== "object") return null;
@@ -5385,11 +5487,48 @@
     };
   }
 
+  const AI_CURRENCY_CODE = /^[A-Z]{3}$/;
+  const AI_CURRENCIES_FALLBACK = Object.freeze([
+    "AED", "AUD", "BGN", "BRL", "CAD", "CHF", "CNY", "CZK", "DKK", "EUR",
+    "GBP", "HKD", "HUF", "ILS", "INR", "JPY", "KRW", "MDL", "MXN", "NOK",
+    "NZD", "PLN", "RON", "RSD", "SEK", "SGD", "TRY", "UAH", "USD", "ZAR",
+  ]);
+
+  function aiCurrencyCode(value) {
+    const code = String(value || "").trim().toUpperCase();
+    return AI_CURRENCY_CODE.test(code) ? code : "";
+  }
+
   function normalizeAiSettings(value) {
-    const rate = Number(value?.usdToRon);
+    const saved = Array.isArray(value?.currencies)
+      ? [...new Set(value.currencies.map(aiCurrencyCode).filter(Boolean))].slice(0, 2)
+      : [];
+    const currencies = saved.length ? saved : ["RON", "USD"];
+    const legacyRate = Number(value?.usdToRon);
+    const rate = Number(value?.rate);
+    const rateFrom = aiCurrencyCode(value?.rateFrom);
+    const rateTo = aiCurrencyCode(value?.rateTo);
+    const hasPair = Boolean(rateFrom && rateTo && rateFrom !== rateTo);
+    const effectiveRate = Number.isFinite(rate) && rate > 0
+      ? rate
+      : !hasPair && Number.isFinite(legacyRate) && legacyRate > 0
+        ? legacyRate
+        : !hasPair && !value && currencies.length === 2 && currencies[0] === "RON" && currencies[1] === "USD"
+          ? DEFAULT_USD_TO_RON
+          : 0;
+    const legacyPair = !hasPair && Number.isFinite(legacyRate) && legacyRate > 0;
+    const pairFrom = hasPair ? rateFrom : legacyPair ? "USD" : currencies.length === 2 ? currencies[0] : "USD";
+    const pairTo = hasPair ? rateTo : legacyPair ? "RON" : currencies.length === 2 ? currencies[1] : "RON";
     return {
-      usdToRon: Number.isFinite(rate) && rate > 0 ? rate : DEFAULT_USD_TO_RON,
+      currencies,
+      rateFrom: pairFrom,
+      rateTo: pairTo,
+      rate: effectiveRate,
       rateUpdatedAt: typeof value?.rateUpdatedAt === "string" ? value.rateUpdatedAt : "",
+      // "auto" means the page may fetch a newer rate after a day. Older saves
+      // have no source and were typed by hand, so they stay manual.
+      rateSource: value?.rateSource === "auto" || value?.rateSource === "manual" ? value.rateSource : value?.rateUpdatedAt ? "manual" : "auto",
+      rateDate: typeof value?.rateDate === "string" ? value.rateDate : "",
     };
   }
 
@@ -5624,6 +5763,7 @@
       kind: account.kind === "subscription" ? "subscription" : "api",
       name,
       cost: String(account.cost || "").trim(),
+      costCurrency: aiCurrencyCode(account.costCurrency) || inferAiCurrency(account.cost),
       models: String(account.models || "").trim(),
       details: String(account.details || "").trim(),
       links: normalizeAiLinks(account.links),
@@ -5925,14 +6065,28 @@
     input.focus({ preventScroll: true });
   }
 
+  // The Add form of Media, Feedback, Campaigns and Tags stays out of the way
+  // until Add is used; the close button in its heading puts it away again.
+  function openExtraForm(page, input) {
+    const layout = document.querySelector(`.manager-layout[data-extra-form="${page}"]`);
+    if (!layout) return;
+    layout.classList.add("is-form-open");
+    focusExtraForm(input);
+  }
+
+  function closeExtraForm(page) {
+    const layout = document.querySelector(`.manager-layout[data-extra-form="${page}"]`);
+    layout?.classList.remove("is-form-open");
+  }
+
   // Where Add takes you on each page.
   const EXTRA_ADD_ACTIONS = Object.freeze({
     ai: () => addAiAccount(),
-    media: () => focusExtraForm(elements.mediaTitleInput),
-    feedback: () => focusExtraForm(elements.feedbackTitleInput),
+    media: () => openExtraForm("media", elements.mediaTitleInput),
+    feedback: () => openExtraForm("feedback", elements.feedbackTitleInput),
     research: () => focusExtraForm(elements.dailyTitleInput),
-    campaigns: () => focusExtraForm(elements.campaignNameInput),
-    tags: () => focusExtraForm(elements.tagLabelInput),
+    campaigns: () => openExtraForm("campaigns", elements.campaignNameInput),
+    tags: () => openExtraForm("tags", elements.tagLabelInput),
   });
 
   // The pages whose count is not set by their own list.
@@ -5962,6 +6116,11 @@
 
   function bindExtraHeaders() {
     elements.extraView?.addEventListener("click", (event) => {
+      const close = event.target.closest("[data-extra-form-close]");
+      if (close) {
+        closeExtraForm(close.dataset.extraFormClose);
+        return;
+      }
       const button = event.target.closest("[data-extra-add]");
       if (button) EXTRA_ADD_ACTIONS[button.dataset.extraAdd]?.();
     });
@@ -5980,7 +6139,15 @@
       });
     });
     elements.aiRate?.addEventListener("change", (event) => {
+      const currency = event.target.closest("[data-ai-currency]");
+      if (currency) {
+        updateAiCurrency(Number(currency.dataset.aiCurrency), currency.value);
+        return;
+      }
       if (event.target.matches("[data-ai-rate]")) updateAiRate(event.target.value);
+    });
+    elements.aiRate?.addEventListener("click", (event) => {
+      if (event.target.closest("[data-ai-rate-refresh]")) refreshAiRate();
     });
   }
 
@@ -6749,6 +6916,61 @@
     `;
   }
 
+  const TAG_USAGE_PAGE_SIZE = 25;
+
+  function tagUsagePageKey(tagId, group) {
+    return `${tagId}:${group}`;
+  }
+
+  function tagUsagePage(tagId, group, total) {
+    const key = tagUsagePageKey(tagId, group);
+    const totalPages = Math.max(1, Math.ceil(total / TAG_USAGE_PAGE_SIZE));
+    const page = Math.min(Math.max(1, Number(state.tagUsagePages[key]) || 1), totalPages);
+    state.tagUsagePages[key] = page;
+    return page;
+  }
+
+  function renderTagUsagePagination(tagId, group, total) {
+    const page = tagUsagePage(tagId, group, total);
+    const totalPages = Math.max(1, Math.ceil(total / TAG_USAGE_PAGE_SIZE));
+    if (totalPages <= 1) return "";
+    const key = tagUsagePageKey(tagId, group);
+    const start = (page - 1) * TAG_USAGE_PAGE_SIZE + 1;
+    const end = Math.min(total, page * TAG_USAGE_PAGE_SIZE);
+    return `
+      <nav class="pagination tag-usage-pagination" aria-label="${escapeAttribute(group)}">
+        <span class="page-summary">${tHtml("app.renderManagerPagination.showingOf", { start, end, total })}</span>
+        <button class="secondary-button" type="button" data-tag-usage-page="${escapeAttribute(key)}" data-tag-usage-page-number="${Math.max(1, page - 1)}" ${page <= 1 ? "disabled" : ""}>${escapeHtml(t("app.renderManagerPagination.previous"))}</button>
+        <span class="page-summary">${tHtml("app.renderManagerPagination.page", { page, totalPages })}</span>
+        <button class="secondary-button" type="button" data-tag-usage-page="${escapeAttribute(key)}" data-tag-usage-page-number="${Math.min(totalPages, page + 1)}" ${page >= totalPages ? "disabled" : ""}>${escapeHtml(t("app.renderManagerPagination.next"))}</button>
+      </nav>`;
+  }
+
+  function renderTagUsageGroup({ tagId, group, title, items, emptyText, renderItems }) {
+    const id = `tag-${group}:${tagId}`;
+    const expanded = isLinkedTargetSectionExpanded(id);
+    const total = items.length;
+    const page = tagUsagePage(tagId, group, total);
+    const start = (page - 1) * TAG_USAGE_PAGE_SIZE;
+    const pageItems = items.slice(start, start + TAG_USAGE_PAGE_SIZE);
+    return `
+      <div class="linked-target-section ${expanded ? "expanded" : "collapsed"}">
+        <button
+          class="linked-target-toggle"
+          type="button"
+          data-linked-target-toggle="${escapeAttribute(id)}"
+          aria-expanded="${expanded}"
+        >
+          <span class="linked-target-section-title">${escapeHtml(title)}</span>
+          <span class="linked-target-count">${total}</span>
+          <span class="linked-target-toggle-action">${expanded ? t("app.renderCollapsibleTargetSection.hide") : t("app.renderCollapsibleTargetSection.show")}</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        ${expanded ? (total ? `${renderItems(pageItems)}${renderTagUsagePagination(tagId, group, total)}` : `<div class="linked-target-empty">${escapeHtml(emptyText)}</div>`) : ""}
+      </div>
+    `;
+  }
+
   function renderTagUsageSections(record) {
     const renderManagerRecords = (records, owner, emptyText) => {
       if (!records.length) return `<div class="linked-target-empty">${escapeHtml(emptyText)}</div>`;
@@ -6762,82 +6984,85 @@
           </button>`;
         }).join("")}</div>`;
     };
-    const campaignItems = record.campaigns
+    const campaigns = record.campaigns.slice().sort((a, b) => a.name.localeCompare(b.name));
+    const feedback = record.feedback
       .slice()
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .map(
-        (campaign) => `
+      .sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")) || a.title.localeCompare(b.title));
+    const media = record.media
+      .slice()
+      .sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")) || a.title.localeCompare(b.title));
+    const renderCampaignItems = (items) => items.length
+      ? `<div class="linked-target-list">${items.map((campaign) => `
           <div class="linked-target-item">
             <span class="linked-target-name">${escapeHtml(campaign.name)}</span>
             <span class="linked-target-meta">
               <span class="status-badge" data-status="${escapeAttribute(campaign.status)}">${escapeHtml(Statuses.campaignStatusLabel(campaign.status))}</span>
             </span>
-          </div>`,
-      )
-      .join("");
-    const feedbackItems = record.feedback
-      .slice()
-      .sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")) || a.title.localeCompare(b.title))
-      .map(
-        (item) => `
+          </div>`).join("")}</div>`
+      : `<div class="linked-target-empty">${escapeHtml(t("app.renderTagUsageSections.noCampaignsUseThisTag"))}</div>`;
+    const renderFeedbackItems = (items) => items.length
+      ? `<div class="linked-target-list">${items.map((item) => `
           <div class="linked-target-item">
             <span class="linked-target-name">${escapeHtml(item.title)}</span>
             <span class="linked-target-meta">
               <span class="type-badge" data-type="${escapeAttribute(item.type)}">${escapeHtml(item.type.toUpperCase())}</span>
               <span class="status-badge" data-status="${escapeAttribute(item.status)}">${escapeHtml(item.status.toUpperCase())}</span>
             </span>
-          </div>`,
-      )
-      .join("");
+          </div>`).join("")}</div>`
+      : `<div class="linked-target-empty">${escapeHtml(t("app.renderTagUsageSections.noFeedbackUsesThisTag"))}</div>`;
+    const targets = record.targets.slice().sort(compareItems);
+    const programs = record.programs.slice().sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")));
+    const funding = record.funding.slice().sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")));
     return `
       <div class="tag-usage-grid">
-        ${renderCollapsibleTargetSection({
-          id: `tag-targets:${record.id}`,
-          title: t("ui.common.targets"),
-          targets: record.targets,
+        ${renderTagUsageGroup({
+          tagId: record.id,
+          group: "targets",
+          title: t("sections.mk.name"),
+          items: targets,
           emptyText: t("app.renderTagUsageSections.noTargetsUseThisTag"),
+          renderItems: (items) => `<div class="linked-target-list">${items.map(renderLinkedTargetItem).join("")}</div>`,
         })}
-        <div class="linked-target-section linked-media-section">
-          <div class="linked-target-section-title">${escapeHtml(t("app.renderTagUsageSections.programs"))}</div>
-          ${renderManagerRecords(record.programs, "program", t("app.renderTagUsageSections.noProgramsUseThisTag"))}
-        </div>
-        <div class="linked-target-section linked-media-section">
-          <div class="linked-target-section-title">${escapeHtml(t("ui.common.funding"))}</div>
-          ${renderManagerRecords(record.funding, "funding", t("app.renderTagUsageSections.noFundingRecordsUseThis"))}
-        </div>
-        <div class="linked-target-section linked-media-section">
-          <div class="linked-target-section-title">${escapeHtml(t("app.renderTagUsageSections.media"))}</div>
-          ${renderLinkedMediaList(record.media, t("app.renderTagUsageSections.noMediaUsesThisTag"))}
-        </div>
-        <div class="linked-target-section linked-media-section">
-          <div class="linked-target-section-title">${escapeHtml(t("ui.common.campaigns"))}</div>
-          ${campaignItems ? `<div class="linked-target-list">${campaignItems}</div>` : `<div class="linked-target-empty">${escapeHtml(t("app.renderTagUsageSections.noCampaignsUseThisTag"))}</div>`}
-        </div>
-        <div class="linked-target-section linked-media-section">
-          <div class="linked-target-section-title">${escapeHtml(t("app.renderTagUsageSections.feedback"))}</div>
-          ${feedbackItems ? `<div class="linked-target-list">${feedbackItems}</div>` : `<div class="linked-target-empty">${escapeHtml(t("app.renderTagUsageSections.noFeedbackUsesThisTag"))}</div>`}
-        </div>
-      </div>
-    `;
-  }
-
-  function renderCollapsibleTargetSection({ id, title, targets, emptyText }) {
-    const expanded = isLinkedTargetSectionExpanded(id);
-    const targetCount = targets.length;
-    return `
-      <div class="linked-target-section ${expanded ? "expanded" : "collapsed"}">
-        <button
-          class="linked-target-toggle"
-          type="button"
-          data-linked-target-toggle="${escapeAttribute(id)}"
-          aria-expanded="${expanded}"
-        >
-          <span class="linked-target-section-title">${escapeHtml(title)}</span>
-          <span class="linked-target-count">${targetCount}</span>
-          <span class="linked-target-toggle-action">${expanded ? t("app.renderCollapsibleTargetSection.hide") : t("app.renderCollapsibleTargetSection.show")}</span>
-          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        ${expanded ? renderLinkedTargetList(targets, emptyText) : ""}
+        ${renderTagUsageGroup({
+          tagId: record.id,
+          group: "programs",
+          title: t("app.renderTagUsageSections.programs"),
+          items: programs,
+          emptyText: t("app.renderTagUsageSections.noProgramsUseThisTag"),
+          renderItems: (items) => renderManagerRecords(items, "program", t("app.renderTagUsageSections.noProgramsUseThisTag")),
+        })}
+        ${renderTagUsageGroup({
+          tagId: record.id,
+          group: "funding",
+          title: t("ui.common.funding"),
+          items: funding,
+          emptyText: t("app.renderTagUsageSections.noFundingRecordsUseThis"),
+          renderItems: (items) => renderManagerRecords(items, "funding", t("app.renderTagUsageSections.noFundingRecordsUseThis")),
+        })}
+        ${renderTagUsageGroup({
+          tagId: record.id,
+          group: "media",
+          title: t("app.renderTagUsageSections.media"),
+          items: media,
+          emptyText: t("app.renderTagUsageSections.noMediaUsesThisTag"),
+          renderItems: (items) => renderLinkedMediaList(items, t("app.renderTagUsageSections.noMediaUsesThisTag")),
+        })}
+        ${renderTagUsageGroup({
+          tagId: record.id,
+          group: "campaigns",
+          title: t("ui.common.campaigns"),
+          items: campaigns,
+          emptyText: t("app.renderTagUsageSections.noCampaignsUseThisTag"),
+          renderItems: renderCampaignItems,
+        })}
+        ${renderTagUsageGroup({
+          tagId: record.id,
+          group: "feedback",
+          title: t("app.renderTagUsageSections.feedback"),
+          items: feedback,
+          emptyText: t("app.renderTagUsageSections.noFeedbackUsesThisTag"),
+          renderItems: renderFeedbackItems,
+        })}
       </div>
     `;
   }
@@ -7079,37 +7304,52 @@
       .join("")}</div>`;
   }
 
-  // Monthly totals in lei and dollars. A cost that names RON or lei is in
-  // lei; any other number is read as dollars and converted at the rate set on
-  // the page.
+  // Monthly totals in the page's chosen currencies. A subscription's own
+  // currency is used when it has one; otherwise the cost text is read, and a
+  // number with no currency falls back to the first chosen currency.
   function calculateSubscriptionTotals(accounts) {
-    const usdToRon = state.aiSettings.usdToRon;
-    let totalRon = 0;
-    let totalUsd = 0;
+    const currencies = state.aiSettings.currencies;
+    const totals = Object.fromEntries(currencies.map((currency) => [currency, 0]));
+    const missing = new Set();
 
     accounts.forEach((account) => {
       if (!account || !account.cost || account.strikethrough) return;
-      const costStr = String(account.cost).trim();
-      const match = costStr.match(/([\d.]+)/);
+      const match = String(account.cost).match(/([\d.]+)/);
       if (!match) return;
-      const num = parseFloat(match[1]);
-      if (isNaN(num)) return;
-
-      if (/ron|lei/i.test(costStr)) {
-        totalRon += num;
-        totalUsd += num / usdToRon;
-      } else {
-        totalUsd += num;
-        totalRon += num * usdToRon;
-      }
+      const amount = parseFloat(match[1]);
+      if (!Number.isFinite(amount)) return;
+      const from = aiAccountCurrency(account);
+      currencies.forEach((to) => {
+        const conversion = aiConversionRate(from, to);
+        if (conversion === null) missing.add(from);
+        else totals[to] += amount * conversion;
+      });
     });
 
-    return { totalRon, totalUsd };
+    return { currencies, totals, missing: [...missing] };
+  }
+
+  function formatAiMoney(amount, currency) {
+    try {
+      return new Intl.NumberFormat(getLocale(), { style: "currency", currency, maximumFractionDigits: 2 }).format(amount);
+    } catch {
+      return `${amount.toFixed(2)} ${currency}`;
+    }
+  }
+
+  function aiCostLabel(account) {
+    const cost = String(account.cost || "").trim();
+    if (!cost) return "";
+    const currency = aiAccountCurrency(account);
+    const inferred = inferAiCurrency(cost);
+    if (inferred === currency) return cost;
+    return inferred ? `${cost} (${currency})` : `${cost} ${currency}`;
   }
 
   function renderAiGroups() {
     renderAiFlow();
     renderAiRate();
+    maybeRefreshAiRate();
     if (!elements.aiGroups) return;
     const query = String(state.aiSearch || "").toLowerCase();
     const matches = (account) => !query || [account.name, account.models, account.details, account.cost].join(" ").toLowerCase().includes(query);
@@ -7141,8 +7381,9 @@
           <div class="ai-slim-separator" aria-hidden="true"></div>
           <div class="ai-total-row">
             <span class="ai-total-label">${escapeHtml(t("app.renderAiGroups.totalMonthlyCost"))}</span>
-            <span class="ai-total-value"><strong>${tHtml("app.renderAiGroups.ron", { value: totals.totalRon.toFixed(2) })}</strong> <span class="ai-total-usd">($${totals.totalUsd.toFixed(2)})</span></span>
+            <span class="ai-total-value">${totals.currencies.map((currency) => `<strong>${escapeHtml(formatAiMoney(totals.totals[currency], currency))}</strong>`).join(" <span class=\"ai-total-separator\">+</span> ")}</span>
           </div>
+          ${totals.missing.length ? `<p class="settings-hint is-warning">${escapeHtml(t("extra.ai.rateMissing", { currencies: totals.missing.join(", ") }))}</p>` : ""}
         ` : "";
 
         return `
@@ -7168,27 +7409,172 @@
       .join("");
   }
 
-  // The dollar to leu rate the totals use, editable, with the day it was last
-  // changed.
+  // The exchange rate between the two chosen currencies. Frankfurter is asked
+  // at most once a day; a rate typed by hand stays until the refresh button is
+  // used.
+  function aiRateIsStale(settings) {
+    if (settings.currencies.length < 2) return false;
+    const pair = aiRatePair(settings);
+    if (!pair || !(Number(settings.rate) > 0)) return true;
+    if (settings.rateSource === "manual") return false;
+    const updated = Date.parse(settings.rateUpdatedAt || "");
+    return !Number.isFinite(updated) || Date.now() - updated >= AI_RATE_REFRESH_MS;
+  }
+
+  async function refreshAiRate({ auto = false } = {}) {
+    if (aiRateFetch) return aiRateFetch;
+    const pair = aiRatePair();
+    if (!pair) return true;
+    aiRateFetch = (async () => {
+      try {
+        const response = await fetch(Api.urls.exchangeRate(pair.from, pair.to, { refresh: !auto }), { cache: "no-store" });
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok || body.ok === false) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        const rate = Number(body.rate?.rate);
+        if (!Number.isFinite(rate) || rate <= 0) throw new Error(t("extra.ai.rateNoValue"));
+        const current = aiRatePair();
+        if (!current || current.from !== pair.from || current.to !== pair.to) {
+          renderAiRate();
+          return false;
+        }
+        state.aiSettings = {
+          ...state.aiSettings,
+          rateFrom: pair.from,
+          rateTo: pair.to,
+          rate,
+          rateUpdatedAt: new Date().toISOString(),
+          rateSource: "auto",
+          rateDate: String(body.rate?.date || ""),
+        };
+        aiRateError = body.rate?.error
+          ? t(body.rate.error === "networkOff" ? "extra.ai.rateNetworkOff" : "extra.ai.rateStale", { error: body.rate.error })
+          : "";
+        aiRateRetryAt = 0;
+        if (auto) {
+          // A fetched rate is shared data, saved quietly. A manual refresh may
+          // show the usual saved message.
+          markDataChanged();
+          globalChannel?.schedule();
+        } else {
+          persist(t("extra.ai.rateSaved"));
+        }
+        renderAiGroups();
+        return true;
+      } catch (error) {
+        aiRateError = t("extra.ai.rateFailed", { error: error.message });
+        aiRateRetryAt = Date.now() + AI_RATE_RETRY_MS;
+        renderAiRate();
+        return false;
+      } finally {
+        aiRateFetch = null;
+      }
+    })();
+    return aiRateFetch;
+  }
+
+  function maybeRefreshAiRate() {
+    if (aiRateFetch || Date.now() < aiRateRetryAt || !aiRateIsStale(state.aiSettings)) return;
+    refreshAiRate({ auto: true });
+  }
+
   function renderAiRate() {
     if (!elements.aiRate) return;
-    const { usdToRon, rateUpdatedAt } = state.aiSettings;
+    const settings = state.aiSettings;
+    const pair = aiRatePair(settings);
     const input = elements.aiRate.querySelector("input");
     if (input && document.activeElement === input) return;
+    const help = settings.rateSource === "manual"
+      ? t("extra.ai.rateManual", { date: settings.rateUpdatedAt ? formatTimestamp(settings.rateUpdatedAt) : t("extra.ai.rateNever") })
+      : settings.rateUpdatedAt
+        ? t("extra.ai.rateFetched", { date: settings.rateDate ? formatDate(settings.rateDate) : formatTimestamp(settings.rateUpdatedAt), source: "Frankfurter" })
+        : t("extra.ai.ratePending");
+    const currencyPicker = (index, selected, allowEmpty) => `
+      <label class="ai-currency-field">
+        <span class="label-title">${escapeHtml(t(index === 0 ? "extra.ai.currencyPrimary" : "extra.ai.currencySecond"))}</span>
+        <select data-ai-currency="${index}">${aiCurrencyOptionsHtml(selected, {
+          allowEmpty,
+          emptyLabel: t("extra.ai.currencyNone"),
+          disabledCode: index === 1 ? settings.currencies[0] : "",
+        })}</select>
+      </label>`;
     elements.aiRate.innerHTML = `
-      <label class="ai-rate-field">
-        <span class="label-title">${escapeHtml(t("extra.ai.rateLabel"))}</span>
-        <span class="ai-rate-input"><span aria-hidden="true">${escapeHtml(t("app.renderAiRate.1Usd"))}</span><input type="number" min="0.0001" step="0.0001" value="${escapeAttribute(String(usdToRon))}" data-ai-rate aria-describedby="aiRateHint"><span aria-hidden="true">${escapeHtml(t("app.renderAiRate.ron"))}</span></span>
-      </label>
-      <span class="settings-hint" id="aiRateHint">${escapeHtml(rateUpdatedAt ? t("extra.ai.rateUpdated", { date: formatTimestamp(rateUpdatedAt) }) : t("extra.ai.rateDefault", { rate: String(DEFAULT_USD_TO_RON) }))}</span>`;
+      <div class="ai-rate-heading">
+        <span class="ai-rate-title">${escapeHtml(t("extra.ai.currenciesLabel"))}</span>
+      </div>
+      <div class="ai-currency-row">
+        ${currencyPicker(0, settings.currencies[0], false)}
+        ${currencyPicker(1, settings.currencies[1] || "", true)}
+      </div>
+      ${pair ? `
+        <div class="ai-rate-heading ai-rate-heading-rate">
+          <span class="ai-rate-title">${escapeHtml(t("extra.ai.rateLabel"))}</span>
+          <button type="button" class="secondary-button compact" data-ai-rate-refresh>${escapeHtml(t("extra.ai.rateRefresh"))}</button>
+        </div>
+        <label class="ai-rate-field">
+          <span class="ai-rate-input"><span aria-hidden="true">1 ${escapeHtml(pair.from)} =</span><input type="number" min="0.0001" step="0.0001" value="${escapeAttribute(settings.rate > 0 ? String(settings.rate) : "")}" data-ai-rate aria-describedby="aiRateHint"><span aria-hidden="true">${escapeHtml(pair.to)}</span></span>
+        </label>
+        <span class="settings-hint" id="aiRateHint">${escapeHtml(help)}</span>
+        ${aiRateError ? `<span class="settings-hint is-warning" role="status">${escapeHtml(aiRateError)}</span>` : ""}
+      ` : `<p class="settings-hint">${escapeHtml(t("extra.ai.rateNotNeeded"))}</p>`}`;
   }
 
   function updateAiRate(value) {
+    const pair = aiRatePair();
     const rate = Number(value);
-    if (!Number.isFinite(rate) || rate <= 0 || rate === state.aiSettings.usdToRon) return;
-    state.aiSettings = { usdToRon: rate, rateUpdatedAt: new Date().toISOString() };
+    if (!pair || !Number.isFinite(rate) || rate <= 0 || rate === state.aiSettings.rate) return;
+    state.aiSettings = {
+      ...state.aiSettings,
+      rateFrom: pair.from,
+      rateTo: pair.to,
+      rate,
+      rateUpdatedAt: new Date().toISOString(),
+      rateSource: "manual",
+      rateDate: "",
+    };
+    aiRateError = "";
     persist(t("extra.ai.rateSaved"));
     renderAiGroups();
+  }
+
+  function updateAiCurrency(index, value) {
+    const code = aiCurrencyCode(value);
+    const currencies = [...state.aiSettings.currencies];
+    if (index === 0) {
+      if (!code) return;
+      if (currencies[1] === code) currencies.reverse();
+      else currencies[0] = code;
+    } else if (index === 1) {
+      if (!code) currencies.splice(1, 1);
+      else if (code !== currencies[0]) {
+        if (currencies.length < 2) currencies.push(code);
+        else currencies[1] = code;
+      }
+    } else {
+      return;
+    }
+    const two = currencies.length === 2;
+    state.aiSettings = { ...state.aiSettings, currencies };
+    if (!two) {
+      // The rate is kept so subscriptions in the other currency still count
+      // in the one currency that is shown.
+      aiRateError = "";
+      persist(t("extra.ai.currenciesSaved"));
+      renderAiGroups();
+      return;
+    }
+    state.aiSettings = {
+      ...state.aiSettings,
+      rateFrom: currencies[0],
+      rateTo: currencies[1],
+      rate: 0,
+      rateDate: "",
+      rateUpdatedAt: "",
+      rateSource: "auto",
+    };
+    aiRateError = "";
+    persist(t("extra.ai.currenciesSaved"));
+    renderAiGroups();
+    refreshAiRate({ auto: true });
   }
 
   // "Add subscription or API": a new entry, open for editing. Its type can be
@@ -7232,9 +7618,12 @@
               ${escapeHtml(t("ui.common.name"))}
               <input class="inline-input" type="text" value="${escapeAttribute(account.name)}" data-ai-field="name" data-id="${escapeAttribute(account.id)}">
             </label>
-            <label>
+            <label class="ai-cost-field">
               ${escapeHtml(t("app.renderAiAccountCard.cost"))}
-              <input class="inline-input" type="text" value="${escapeAttribute(account.cost)}" data-ai-field="cost" data-id="${escapeAttribute(account.id)}" placeholder="${escapeAttribute(t("app.renderAiAccountCard.leaveBlankIfUnknown"))}">
+              <span class="ai-cost-inputs">
+                <input class="inline-input" type="text" value="${escapeAttribute(account.cost)}" data-ai-field="cost" data-id="${escapeAttribute(account.id)}" placeholder="${escapeAttribute(t("app.renderAiAccountCard.leaveBlankIfUnknown"))}">
+                <select class="row-select" data-ai-field="costCurrency" data-id="${escapeAttribute(account.id)}" aria-label="${escapeAttribute(t("app.renderAiAccountCard.costCurrency"))}">${aiAccountCurrencyOptions(account)}</select>
+              </span>
             </label>
             <label class="checkbox-field">
               <input type="checkbox" data-ai-field="strikethrough" data-id="${escapeAttribute(account.id)}" ${account.strikethrough ? "checked" : ""}>
@@ -7264,7 +7653,7 @@
           <div>
             <div class="ai-title-row">
               <strong>${escapeHtml(account.name)}</strong>
-              ${account.cost ? `<span class="ai-cost">${escapeHtml(account.cost)}</span>` : ""}
+              ${account.cost ? `<span class="ai-cost">${escapeHtml(aiCostLabel(account))}</span>` : ""}
             </div>
             <div class="card-meta">
               <span class="ai-kind-badge" data-kind="${escapeAttribute(account.kind)}">${escapeHtml(getAiKindLabel(account.kind))}</span>
@@ -8322,6 +8711,7 @@
     state.campaigns.unshift(campaign);
     state.campaignPage = 1;
     resetCampaignForm();
+    closeExtraForm("campaigns");
     persist(t("app.handleCampaignFormSubmit.campaignAdded"));
     render();
   }
@@ -8347,6 +8737,7 @@
     const index = records.findIndex((record) => record.id === tagId);
     state.tagPage = index >= 0 ? Math.floor(index / MANAGER_PAGE_SIZE) + 1 : 1;
     resetTagForm();
+    closeExtraForm("tags");
     persist(t("app.handleTagFormSubmit.tagAdded"));
     render();
   }
@@ -8418,6 +8809,7 @@
     state.links = Links.mergeLinks(state.links, feedbackAboutPicker().getValue().map((ref) => Links.makeLink({ kind: "feedback", id: item.id }, ref, "feedback-about")));
     state.feedbackPage = 1;
     resetFeedbackForm();
+    closeExtraForm("feedback");
     persist(t("app.handleFeedbackFormSubmit.evidenceAdded"));
     render();
   }
@@ -8503,6 +8895,7 @@
     state.mediaPage = 1;
     await persist(t("app.handleMediaFormSubmit.mediaAdded"));
     resetMediaForm();
+    closeExtraForm("media");
     render();
   }
 
@@ -8654,7 +9047,9 @@
         ? (field.value === "subscription" ? "subscription" : "api")
         : fieldName === "strikethrough"
           ? Boolean(rawValue)
-          : String(field.value || "").trim();
+          : fieldName === "costCurrency"
+            ? aiCurrencyCode(field.value)
+            : String(field.value || "").trim();
     const currentValue = fieldName === "links" ? account.links : account[fieldName];
     if (JSON.stringify(currentValue) === JSON.stringify(nextValue)) {
       if (immediate && state.editingAiAccountId !== account.id) renderAiGroups();

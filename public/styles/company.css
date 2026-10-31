@@ -71,7 +71,10 @@
 }
 
 .company-budget {
-  padding: 5px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
   border: 1px solid var(--border-strong);
   border-radius: 999px;
   color: var(--text-soft);
@@ -251,12 +254,33 @@
 
 .company-secret {
   display: flex;
+  align-items: stretch;
   gap: 6px;
 }
 
 .company-secret input {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+.company-secret .secondary-button {
+  flex: 0 0 auto;
+  min-width: 0;
+  height: auto;
+  align-self: stretch;
+  padding-inline: 12px;
+}
+
+.company-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.company-item-head .secondary-button {
+  margin: 0;
 }
 
 .company-people,
@@ -360,11 +384,6 @@
 
 .company-notes {
   white-space: pre-wrap;
-}
-
-.company-step .secondary-button,
-.company-obligation .secondary-button {
-  margin-top: 8px;
 }
 
 .company-table {

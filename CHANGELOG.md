@@ -2,6 +2,26 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-10-31
+
+### Added
+- Extra > AI totals can use one or two currencies. Each subscription has its own cost currency, and the totals convert into every chosen currency.
+- The exchange rate between the two chosen currencies is fetched once a day from Frankfurter and cached in the data folder. It can be refreshed or typed by hand.
+- Extra > Categories lists the targets that use a category, subcategory or type, and opens one when clicked.
+- Tags show their Marketing, Programs, Funding, Media, Campaigns and Feedback entries in collapsible groups, 25 at a time with pages.
+
+### Changed
+- Extra > AI puts the currency and exchange-rate controls after Current flow.
+- Media, Feedback, Campaigns and Tags keep their add forms hidden until Add is used; the form closes after an entry is added.
+- Company setup steps and obligations show Edit beside the status instead of at the bottom of each card.
+- The Company budget and sensitive-value buttons line up with their fields.
+
+### Fixed
+- The left add panel on Media and Feedback no longer shows a stray horizontal scrollbar.
+- Tag action buttons stay inside their card instead of running into the right border.
+- AI Current flow action buttons stay on one row.
+- Extra > Categories has space between its tabs and the search field.
+
 ## [1.0.0] - 2026-10-31
 
 ### Added

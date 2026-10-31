@@ -483,7 +483,10 @@
             <li class="company-step${step.status && hooks.isDone(step.status) ? " is-done" : ""}" data-step-id="${escapeHtml(step.id)}">
               <div class="company-item-head">
                 <h4>${escapeHtml(step.title)}</h4>
-                ${hooks.statusBadgeHtml(step.status || hooks.defaultStatus())}
+                <div class="company-item-actions">
+                  ${hooks.statusBadgeHtml(step.status || hooks.defaultStatus())}
+                  <button type="button" class="secondary-button compact" data-company-open="step:${escapeHtml(step.id)}">${escapeHtml(t("company.edit"))}</button>
+                </div>
               </div>
               ${step.description ? `<p>${escapeHtml(step.description)}</p>` : ""}
               <p class="company-meta">
@@ -496,7 +499,6 @@
               </p>
               ${sourcesHtml(step.sources, step.checkLocally)}
               ${step.notes ? `<p class="company-notes">${escapeHtml(step.notes)}</p>` : ""}
-              <button type="button" class="secondary-button compact" data-company-open="step:${escapeHtml(step.id)}">${escapeHtml(t("company.edit"))}</button>
             </li>`).join("")}
         </ol>
         ${view.steps.length ? "" : `<p class="empty-text">${escapeHtml(t("company.setup.none"))}</p>`}
@@ -541,7 +543,10 @@
               <li class="company-obligation${obligation.applies ? "" : " is-off"}" data-obligation-id="${escapeHtml(obligation.id)}">
                 <div class="company-item-head">
                   <h4>${escapeHtml(obligation.title)}</h4>
-                  <span class="company-frequency">${escapeHtml(t(`company.frequency.${obligation.frequency}`))}</span>
+                  <div class="company-item-actions">
+                    <span class="company-frequency">${escapeHtml(t(`company.frequency.${obligation.frequency}`))}</span>
+                    <button type="button" class="secondary-button compact" data-company-open="obligation:${escapeHtml(obligation.id)}">${escapeHtml(t("company.edit"))}</button>
+                  </div>
                 </div>
                 ${obligation.description ? `<p>${escapeHtml(obligation.description)}</p>` : ""}
                 <p class="company-meta">
@@ -555,7 +560,6 @@
                 ${obligation.disabled ? `<p class="field-help">${escapeHtml(t("company.obligations.switchedOff"))}</p>` : ""}
                 ${sourcesHtml(obligation.sources, obligation.checkLocally)}
                 ${obligation.notes ? `<p class="company-notes">${escapeHtml(obligation.notes)}</p>` : ""}
-                <button type="button" class="secondary-button compact" data-company-open="obligation:${escapeHtml(obligation.id)}">${escapeHtml(t("company.edit"))}</button>
               </li>`).join("")}
           </ul>
           ${view.obligations.length ? "" : `<p class="empty-text">${escapeHtml(t("company.obligations.none"))}</p>`}

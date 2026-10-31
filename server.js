@@ -18,6 +18,7 @@ const settingsStore = require("./lib/settings");
 const statusStore = require("./lib/statuses");
 const taxonomyStore = require("./lib/taxonomy");
 const updateCheck = require("./lib/cli/update");
+const exchangeRates = require("./lib/exchange-rates");
 const fieldRegistry = require("./lib/field-registry");
 const optionStore = require("./lib/options");
 const tagStore = require("./lib/tags");
@@ -645,6 +646,34 @@ async function handleApiRequest(req, res, url) {
       networkAllowed: () => settingsStore.readSettings(store).network !== false,
     });
     sendJson(res, { ok: true, update: req.method === "POST" && offline ? { ...result, error: "The network is off for this run." } : result });
+    return;
+  }
+
+  // The AI page's exchange rate. Frankfurter needs no key; the module keeps
+  // the answer for a day in the data folder so every tab shares one request.
+  if (pathname === "/api/exchange-rate" && req.method === "GET") {
+    const from = url.searchParams.get("from") || "USD";
+    const to = url.searchParams.get("to") || "RON";
+    try {
+      exchangeRates.normalizePair(from, to);
+    } catch (error) {
+      sendJson(res, { ok: false, error: "badCurrencyPair", message: error.message }, 400);
+      return;
+    }
+    const offline = process.env.STARTUP_TRACKER_OFFLINE === "1";
+    const networkAllowed = settingsStore.readSettings(store).network !== false;
+    try {
+      const rate = await exchangeRates.getRate({
+        from,
+        to,
+        cacheFile: path.join(paths.cacheDir, "exchange-rates.json"),
+        force: url.searchParams.get("refresh") === "1",
+        allowNetwork: !offline && networkAllowed,
+      });
+      sendJson(res, { ok: true, rate });
+    } catch (error) {
+      sendJson(res, { ok: false, error: "rateUnavailable", message: error.message }, 503);
+    }
     return;
   }
 

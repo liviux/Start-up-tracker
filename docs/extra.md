@@ -16,7 +16,7 @@ Shared data is saved a moment after you change it. If another tab or startup cha
 
 Keep the AI subscriptions and API accounts you pay for, the models you prefer, and links to their dashboards. **Add subscription or API** creates an entry and opens it; change its type in the form. The page starts empty.
 
-The monthly total adds up the subscriptions that are not struck through. A cost that mentions RON or lei counts as lei; any other number counts as dollars and is converted at the rate shown above the list. Change the rate there when it moves; the page shows when you last changed it. The starting rate is 4.55.
+The monthly total adds up the subscriptions that are not struck through and shows it in one or two currencies you choose at the end of the page. Each subscription has its own cost currency. When two currencies are chosen, the rate between them is fetched once a day from [Frankfurter](https://frankfurter.dev/), a free service that needs no key, and the date of the rate is shown beside it. Edit the rate yourself and it stays as typed until you press **Refresh**. With one currency selected, its subscriptions and the rate already known are used for the total, and no new rate is fetched.
 
 "Current flow" is the order in which you use your tools, as before.
 
@@ -65,6 +65,8 @@ Editing a tag shows which startups use it and lets you:
 - **Rename** it. Every record with the tag, in every startup, gets the new name. Renaming onto a tag that exists merges the two.
 - **Merge** it into another tag.
 - **Delete** it. The tag is taken off every record and goes to the recycle bin.
+
+The Marketing, Programs, Funding, Media, Campaigns and Feedback lists on a tag start collapsed. Opening one shows 25 entries at a time, with pages for the rest.
 
 Merging and deleting take a safety backup first (Settings > Backups). Save any open edits before you rename, merge or delete; the page asks you to if something is still saving.
 

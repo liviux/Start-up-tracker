@@ -243,6 +243,8 @@ An uploaded file stays while its media record is in the bin. When the server del
 
 `GET /api/about` answers `{ version, dataFolder, databasePath, mediaDir, backupDir, port, schemaVersion, databaseBytes, integrity: { checkedAt, ok, problems } }`. `POST /api/about/verify` runs the integrity check now. `GET /api/about/update` answers `{ update: { configured, current, latest, available, checkedAt, error } }` from a cache that lasts a day, asking GitHub for the latest release only while the network switch (`network` in the settings) is on; `POST /api/about/update` asks now whatever the switch says. Neither installs anything. `node tools/about.js` prints the same facts in a terminal without changing anything.
 
+`GET /api/exchange-rate?from=USD&to=RON` answers `{ rate: { from, to, rate, date, source, fetchedAt, cached } }`. It asks [Frankfurter](https://frankfurter.dev/) no more than once a day per pair and keeps the answer in `cache/exchange-rates.json`; `refresh=1` asks now. With the network switch off it answers from the cache when there is one (with `stale: true` and `error: "networkOff"`), and answers 503 when there is not.
+
 ## Setup and the demo startup
 
 | Route | What it does |

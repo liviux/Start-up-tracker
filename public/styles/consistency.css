@@ -1751,6 +1751,27 @@ html:root .manager-card-header > div {
   min-width: 0;
 }
 
+/* The action buttons keep their size; the text beside them shrinks instead of
+   pushing the last button past the card's right border. */
+html:root .card-actions {
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
+}
+
+/* The flow rows have their own four-button column; keep the row on one line
+   and the buttons compact so the last one does not drop below the others. */
+html:root .ai-flow-actions {
+  flex-wrap: nowrap;
+}
+
+html:root .ai-flow-actions .icon-button {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+}
+
 html:root .card-meta {
   min-width: 0;
 }
