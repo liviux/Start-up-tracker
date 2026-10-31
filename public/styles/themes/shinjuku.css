@@ -1399,6 +1399,18 @@ html[data-taste="shinjuku"] #calendarView .calendar-detail-sections {
   gap: 12px;
 }
 
+html[data-taste="shinjuku"] #calendarView .calendar-detail-sections[data-visible-sections="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-sections[data-visible-sections="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html[data-taste="shinjuku"] #calendarView .calendar-detail-sections[data-visible-sections="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 html[data-taste="shinjuku"] #calendarView .calendar-detail-section {
   min-width: 0;
   padding: 12px 12px 10px;
@@ -1985,7 +1997,10 @@ html[data-taste="shinjuku"] .record-window-tab.active {
     font-size: 22px;
   }
 
-  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-sections {
+  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-sections,
+  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-sections[data-visible-sections="1"],
+  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-sections[data-visible-sections="2"],
+  html:root[data-taste="shinjuku"] #calendarView .calendar-detail-sections[data-visible-sections="3"] {
     grid-template-columns: minmax(0, 1fr);
     gap: 8px;
   }

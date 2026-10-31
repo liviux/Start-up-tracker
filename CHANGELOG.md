@@ -2,6 +2,35 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.0.0] - 2026-10-31
+
+### Added
+- A Columns menu on the Targets tables: tick any field to show it as a column, search the list, or go back to the standard columns. Every column sorts, with empty values last.
+- With added columns the table scrolls sideways; on a narrow screen each added field is a labelled line on the target's card.
+- Custom fields at the end of a target's Details: your own label and value rows.
+- A Timeline in the target window holds key dates and updates in one list. Key dates show on the calendar; an update can move the status and the next action on.
+- Campaigns has its own chip (CP) in the calendar's Sections filter.
+- Questions and messages open in the app's own dialog, in the theme's style, instead of the browser's pop-ups.
+
+### Changed
+- The target window's five tabs span its full width.
+- Overview shows the status and category, a slim "Key facts" line, the link and the notes. Key facts stay folded until you open them, and then stay open in this browser.
+- Edit holds only the notes and their preview, without inner scrollbars. Status and priority are set in Details.
+- In Details, categories are folded until opened, Priority takes the place of Kind, benefits sit in one row, and filled fields have their label tinted in the section colour.
+- Example text in empty fields is much fainter.
+- The Targets tables drop the tags filter and the "Your fields" row; the search box covers tags.
+- When the calendar hides sections, the ones left share the day's row.
+- Programs' "Expected value" counts every open program.
+- Every section stores a target's basics under the same names (`name`, `organization`, `link`, `nextActionDate` and so on), and saving uses protocol 3: a tab opened before the update must be reloaded before it can save. 0.4 cannot read data saved by 1.0, and data saved by 0.4 is not converted, so fields that changed name do not show.
+
+### Removed
+- The Extras tab of the target window, the Documents list and the Kind field (Opportunity or Watchlist).
+- Extra > Fields, the custom fields shared by every target, and `/api/fields/custom`.
+- Reading database and backup formats from before 0.1.0, old browser caches and old theme names.
+
+### Fixed
+- Tags in the Targets tables line up with their rows again.
+
 ## [0.4.0] - 2026-10-30
 
 ### Added

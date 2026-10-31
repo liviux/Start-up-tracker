@@ -107,7 +107,7 @@ test("cached outbox reloads refresh from the authoritative server snapshot", () 
 });
 
 test("operation requests use the locked mutation protocol", () => {
-  assert.match(source, /protocolVersion: 2/);
+  assert.match(source, /protocolVersion: 3/);
   assert.match(source, /missingBaseRevision/);
   assert.match(source, /payload\.error === "reloadRequired"/);
 });
@@ -144,8 +144,34 @@ test("only an explicit choice resolves a conflict, never autosave", () => {
   assert.match(source, /async function resolveRecordConflictsKeepingMine\(\)/);
   assert.match(source, /async function resolveRecordConflictsUsingTheirs\(\)/);
   // Both are destructive in opposite directions, so both confirm first.
-  assert.match(source, /window\.confirm\(t\("app\.resolveRecordConflictsKeepingMine\.confirm"/);
-  assert.match(source, /window\.confirm\(t\("app\.resolveRecordConflictsUsingTheirs\.confirm"/);
+  assert.match(source, /Dialog\.confirm\(t\("app\.resolveRecordConflictsKeepingMine\.confirm"/);
+  assert.match(source, /Dialog\.confirm\(t\("app\.resolveRecordConflictsUsingTheirs\.confirm"/);
+});
+
+test("every question and message uses the app's own dialog, never the browser's", () => {
+  // js/dialog.js draws an ordinary modal card, so it follows the theme; the
+  // browser's confirm and alert do not, and they block the page.
+  const files = [path.join(root, "app.js"), ...fs.readdirSync(path.join(root, "js")).map((name) => path.join(root, "js", name)), ...fs.readdirSync(path.join(root, "scripts")).map((name) => path.join(root, "scripts", name))]
+    .filter((file) => file.endsWith(".js") && !file.endsWith("dialog.js"));
+  for (const file of files) {
+    assert.doesNotMatch(fs.readFileSync(file, "utf8"), /(?:window|root)\.(?:confirm|alert)\(|[^.\w](?:confirm|alert)\(/, path.basename(file));
+  }
+  assert.match(markup, /<script src="\/js\/dialog\.js"><\/script>[\s\S]*<script src="\/app\.js"><\/script>/);
+  // The target window waits for the answer before it closes or opens another.
+  const windowSource = fs.readFileSync(path.join(root, "js", "record-window.js"), "utf8");
+  assert.match(windowSource, /async function open\(/);
+  assert.match(windowSource, /if \(current && !\(await requestClose\(\)\)\) return false;/);
+  assert.match(source, /if \(!\(await RecordWindow\.requestClose\(\)\)\) return;/);
+  // A press outside the window asks before unsaved changes are lost, and
+  // keeps the focus for the question.
+  assert.match(windowSource, /if \(event\.target !== overlay\) return;\s*event\.preventDefault\(\);\s*requestClose\(\);/);
+  // The dialog takes every key while open, ahead of the app's own Escape
+  // (which would hide it unanswered), and lets go when it closes.
+  const dialogSource = fs.readFileSync(path.join(root, "js", "dialog.js"), "utf8");
+  assert.match(dialogSource, /root\.addEventListener\("keydown", onKey, true\)/);
+  assert.match(dialogSource, /root\.removeEventListener\("keydown", onKey, true\)/);
+  // Visible before its first style pass, or the button cannot take the focus.
+  assert.ok(dialogSource.indexOf('overlay.style.visibility = "visible"') < dialogSource.indexOf("void overlay.offsetHeight"));
 });
 
 test("same-record edits merge by field before prompting", () => {
@@ -180,10 +206,8 @@ test("blocked records are not duplicated by later autosaves", () => {
 });
 
 test("definition collections use their live standalone arrays during conflict resolution", () => {
-  // A startup's older category list is kept as it was (the library replaced it).
-  assert.match(source, /if \(section === "categories"\) return state\.legacyCategories \|\| \[\]/);
-  assert.match(source, /if \(section === "extraParamsDefinition"\) return extraParamsDefinition/);
   assert.match(source, /if \(section === "tagDefinitions"\) return tagDefinitions/);
+  assert.doesNotMatch(source, /legacyCategories|extraParamsDefinition/, "no collections of the old app");
   assert.match(source, /const collection = getLiveCollection\(section\)/);
   assert.match(source, /setLiveSection\(section, copy\)/);
   assert.match(source, /const liveCollection = getLiveCollection\(operation\.section\)/);
@@ -241,7 +265,7 @@ test("global search in top bar shows item current status and date", () => {
 });
 
 test("the target window has one History pane, which the history timeline fills", () => {
-  // js/record-window.js builds the six tab panes; app.js points the timeline at
+  // js/record-window.js builds the five tab panes; app.js points the timeline at
   // the History one and reads the record the window has open.
   const windowSource = fs.readFileSync(path.join(root, "js", "record-window.js"), "utf8");
   assert.match(windowSource, /id="recordWindowPane-\$\{tab\.id\}" data-rw-pane="\$\{tab\.id\}"/);
@@ -252,7 +276,8 @@ test("the target window has one History pane, which the history timeline fills",
   const panes = source.match(/const HISTORY_PANES = \{[\s\S]*?\n  \};/)?.[0] || "";
   assert.match(panes, /get section\(\)/);
   assert.match(panes, /return open && !open\.draft \? open\.id : "";/);
-  assert.match(panes, /activityLog: true/);
+  // The target's timeline updates join the history.
+  assert.match(panes, /timeline: true/);
   // The window's change check compares field values, never DOM controls, so
   // the buttons the timeline draws cannot read as an edit.
   assert.match(windowSource, /function changedFields\(section, original, work\)/);
@@ -751,17 +776,17 @@ test("the Details tab shows the core fields first, in the same order in every se
   const read = (name) => JSON.parse(fs.readFileSync(path.join(root, "..", "content", "fields", `${name}.json`), "utf8"));
   Fields.setRegistry({ common: read("common"), mk: read("mk"), po: read("po"), fu: read("fu") });
   const order = (section) => Fields.coreFields(section).map((field) => field.key);
-  // ID, name, categories, status and the next action date come first, then
-  // organization, link and priority.
+  // ID, name, categories, priority, status and the next action date come
+  // first, then organization and link.
   for (const section of ["mk", "po", "fu"]) {
     const keys = order(section);
-    for (const [before, after] of [["id", "name"], ["name", "taxonomy"], ["taxonomy", "status"], ["status", "nextActionDate"], ["nextActionDate", "organization"], ["organization", "link"], ["link", "priority"]]) {
+    for (const [before, after] of [["id", "name"], ["name", "taxonomy"], ["taxonomy", "priority"], ["priority", "status"], ["status", "nextActionDate"], ["nextActionDate", "organization"], ["organization", "link"]]) {
       assert.ok(keys.indexOf(before) < keys.indexOf(after), `${section}: ${before} before ${after}`);
     }
   }
-  // PO adds the record kind, FU the funding round; the rest is shared.
-  assert.ok(order("po").includes("recordKind") && !order("mk").includes("recordKind"));
+  // FU adds the funding round; the rest is shared, with no kind field.
   assert.ok(order("fu").includes("roundId") && !order("po").includes("roundId"));
+  assert.ok(!order("po").includes("recordKind"));
 });
 
 test("extra/ai includes Current flow section with Sub/API, model, and details columns", () => {
@@ -884,7 +909,7 @@ test("every write names the revision the page loaded, also for older cached batc
   assert.equal(getOutboxRequest({ mutationId: "m", baseRevision: 7, knownRevision: 5, operations: [] }).knownRevision, 5);
   assert.equal(getOutboxRequest({ mutationId: "m", baseRevision: 7, operations: [] }).knownRevision, 7, "a batch cached before Part 3 uses its baseRevision");
   assert.equal(getOutboxRequest({ mutationId: "m", baseRevision: 7, knownRevision: 0, operations: [] }).knownRevision, 0);
-  assert.equal(getOutboxRequest({ mutationId: "m", operations: [] }).protocolVersion, 2);
+  assert.equal(getOutboxRequest({ mutationId: "m", operations: [] }).protocolVersion, 3);
 });
 
 test("a write refused as restored is held for the user and never resent on its own", () => {
@@ -932,7 +957,7 @@ test("every record type is soft deleted into its paired recycle-bin section", ()
     assert.match(body, new RegExp(`moveRecordToBin\\("${live}", `), `${fn} moves the record to the bin`);
     assert.doesNotMatch(body, /\.filter\(\(entry\) => entry\.id !==/, `${fn} no longer deletes for good`);
   }
-  assert.match(source, /if \(!window\.confirm\(t\("recycle\.confirmDeletePrompt"[\s\S]{0,120}moveRecordToBin\("prompts", prompt\.id\)/);
+  assert.match(source, /if \(!\(await Dialog\.confirm\(t\("recycle\.confirmDeletePrompt"[\s\S]{0,140}moveRecordToBin\("prompts", prompt\.id\)/);
   // The default tags are added once, never again after they were deleted.
   assert.match(source, /if \(seedDefaults && !state\.globalSeeded\.tags\)/);
   assert.doesNotMatch(source, /mergeTagDefinitions/);
@@ -961,31 +986,20 @@ test("dates, the time zone and the calendar week follow Settings > General", () 
   assert.match(source, /Settings\.subscribe\(applySettingsToPage\);/);
 });
 
-test("links are one saved collection, and old link fields are written out once", () => {
+test("links are one saved collection, read as stored", () => {
   assert.match(source, /const PATCHABLE_RECORD_COLLECTIONS = \[\s*"links",/);
   assert.match(source, /\n      links: state\.links,\n/);
-  // Stored links win over the ones read again from old fields.
-  assert.match(source, /state\.links = Links\.mergeLinks\(storedLinks, legacyLinks\);/);
-  // After a load, the links read from old fields and the records that carried
-  // them are forgotten from the saved copy, so the next save writes them.
-  const accept = source.match(/function acceptAcknowledgedPersistedState\(trackerState\) \{[\s\S]*?\n  \}/)?.[0] || "";
-  assert.match(accept, /if \(pendingLinkMigration\) applyPendingLinkMigration\(\);/);
-  const migrate = source.match(/function applyPendingLinkMigration\(\) \{[\s\S]*?\n  \}/)?.[0] || "";
-  assert.match(migrate, /forget\("links", id\)/);
-  assert.match(migrate, /migration\.records\.forEach/);
-  assert.match(migrate, /scheduleAutosave\(\);/);
-  // Deleting for good drops the links too; a target's old dependency fields
-  // are retired, funding keeps its text ones.
+  // Records carry no link fields of their own, so nothing else becomes a link.
+  assert.match(source, /state\.links = \(Array\.isArray\(trackerState\.links\) \? trackerState\.links : \[\]\)\.flatMap/);
+  assert.doesNotMatch(source, /fromLegacy|legacyRecords|pendingLinkMigration|RETIRED_EXTRA_PARAM_IDS|filterRetiredExtraParams/);
+  // Deleting for good drops the links too.
   for (const fn of ["deleteFromBin", "emptyBin"]) {
     const body = source.match(new RegExp(`function ${fn}\\([^)]*\\) \\{[\\s\\S]*?\\n  \\}`))?.[0] || "";
     assert.match(body, /dropLinksTo\(/, `${fn} drops links`);
   }
-  assert.match(source, /const RETIRED_EXTRA_PARAM_IDS = new Set\(\["assets", "linkedMedia"\]\);/);
-  assert.match(source, /const extraParams = filterRetiredExtraParams\(rawExtra, RETIRED_TARGET_EXTRA_PARAM_IDS\);/);
   assert.match(markup, /<script src="\/js\/links-model\.js"><\/script>\s*<script src="\/js\/components\/item-picker\.js"><\/script>[\s\S]*<script src="\/app\.js"><\/script>/);
 });
-
-test("the target window saves through the outbox on every path, and old link and field keys are written out once", () => {
+test("the target window saves through the outbox on every path", () => {
   const save = source.match(/function saveTargetFromWindow\([^)]*\) \{[\s\S]*?\n  \}/)?.[0] || "";
   // Edits and drafts both reach the server as normal record operations with
   // their history, and a draft is added only on its first Save.
@@ -995,12 +1009,9 @@ test("the target window saves through the outbox on every path, and old link and
   assert.match(save, /finishAddForm\(section\);/);
   // A repeating target still makes its next occurrence when it is closed.
   assert.match(save, /handleRepeatingTarget\(next\)/);
-  // Older field keys move on load and those records are saved once.
-  assert.match(source, /const result = Fields\.migrate\(section, record\);\s*if \(result\.changed\) migrated\.records\.push/);
-  // Normalizers keep keys they do not know.
-  assert.match(source, /function withTargetFields\(raw, normalized\)/);
-  assert.match(source, /return withTargetFields\(item, \{/);
-  assert.match(source, /return withTargetFields\(prog, \{/);
-  assert.match(source, /return withTargetFields\(fund, \{/);
-  assert.match(markup, /<script src="\/js\/fields\.js"><\/script>\s*<script src="\/js\/record-window\.js"><\/script>[\s\S]*<script src="\/app\.js"><\/script>/);
+  // One normalizer serves every section, and it keeps keys it does not know.
+  assert.match(source, /function normalizeTarget\(section, raw\) \{[\s\S]*?const record = \{\s*\.\.\.raw,/);
+  for (const section of ["mk", "po", "fu"]) assert.match(source, new RegExp(`normalize: \\(record\\) => normalizeTarget\\("${section}", record\\)`));
+  assert.doesNotMatch(source, /Fields\.migrate|withTargetFields|normalizeItem\b|normalizeProgram\b|normalizeFundingSource\b/);
+  assert.match(markup, /<script src="\/js\/fields\.js"><\/script>\s*<script src="\/js\/dialog\.js"><\/script>\s*<script src="\/js\/record-window\.js"><\/script>[\s\S]*<script src="\/app\.js"><\/script>/);
 });

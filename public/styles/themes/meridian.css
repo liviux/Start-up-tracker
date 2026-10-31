@@ -1245,6 +1245,18 @@ html:root[data-taste="meridian"] #calendarView .calendar-detail-sections {
   gap: 0;
 }
 
+html:root[data-taste="meridian"] #calendarView .calendar-detail-sections[data-visible-sections="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+html:root[data-taste="meridian"] #calendarView .calendar-detail-sections[data-visible-sections="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html:root[data-taste="meridian"] #calendarView .calendar-detail-sections[data-visible-sections="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 html:root[data-taste="meridian"] #calendarView .calendar-detail-section {
   min-width: 0;
   padding: 0 18px 20px;
@@ -1888,6 +1900,14 @@ html:root[data-taste="meridian"] .focus-empty-state {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  html:root[data-taste="meridian"] #calendarView .calendar-detail-sections[data-visible-sections="3"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="meridian"] #calendarView .calendar-detail-sections[data-visible-sections="3"] > .calendar-detail-section:not([hidden]):not(:has(~ .calendar-detail-section:not([hidden]))) {
+    grid-column: 1 / -1;
+  }
+
   html:root[data-taste="meridian"] #calendarView .calendar-detail-section:nth-child(odd) {
     padding-left: 0;
     border-left: 0;
@@ -2027,7 +2047,10 @@ html:root[data-taste="meridian"] .focus-empty-state {
     font-size: 22px;
   }
 
-  html:root[data-taste="meridian"] #calendarView .calendar-detail-sections {
+  html:root[data-taste="meridian"] #calendarView .calendar-detail-sections,
+  html:root[data-taste="meridian"] #calendarView .calendar-detail-sections[data-visible-sections="1"],
+  html:root[data-taste="meridian"] #calendarView .calendar-detail-sections[data-visible-sections="2"],
+  html:root[data-taste="meridian"] #calendarView .calendar-detail-sections[data-visible-sections="3"] {
     grid-template-columns: minmax(0, 1fr);
   }
 

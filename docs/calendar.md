@@ -1,6 +1,6 @@
 # Calendar
 
-The calendar shows the dated moments of your records: marketing target dates, program next actions, deadlines and milestones, funding next actions, expected closes, payments and commitments, Company deadlines, and, if you turn them on, campaign start and end dates.
+The calendar shows the dated moments of your records: marketing target dates, program next actions, deadlines and milestones, funding next actions, expected closes, payments and commitments, Company deadlines, and, if you turn on CP, campaign start and end dates.
 
 ![The calendar on a Wednesday: the nine-day strip, section and event filters, and the day's work grouped by section](assets/screenshot-calendar.png)
 
@@ -19,8 +19,8 @@ The arrow under the day strip opens the month: whole weeks from the one holding 
 ## Filters
 
 - **This startup / All startups**: with all startups, each event shows its startup, and the counts and the summary cover every startup that is not archived.
-- **Sections**: MK, PO, FU and COMP turn a section on or off everywhere in the calendar.
-- **Show**: next actions, deadlines, milestones, payments, Company deadlines and campaign dates. Campaign dates are off until you turn them on.
+- **Sections**: MK, PO, FU, COMP and CP (campaigns) turn a column on or off everywhere in the calendar. Campaign dates are off until you turn them on; the columns left on share the width.
+- **Show**: next actions, deadlines, milestones (the key dates of a target's timeline), payments and Company deadlines.
 - **Status filter**: the same filter as the focus queues (see [Statuses](statuses.md)). The statuses are the same in every section, so one filter covers them all: for example only Scheduled and Preparing, or only part of Done.
 
 The filters are remembered per startup.

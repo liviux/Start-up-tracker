@@ -63,13 +63,13 @@ test("over HTTP: the page makes a token, an agent uses it within its limits", as
     const { token } = await made.json();
     assert.notEqual(token, server.token, "never the master token");
     const agent = (path, method, body) => fetch(`${url}${path}`, { method, headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
-    const added = await agent(`api/s/${one.id}/state/operations`, "PATCH", { protocolVersion: 2, origin: "ui", operations: [{ type: "upsert", section: "items", id: "a1", value: { id: "a1", platform: "Found by an agent" }, baseRevision: 0 }] });
+    const added = await agent(`api/s/${one.id}/state/operations`, "PATCH", { protocolVersion: 3, origin: "ui", operations: [{ type: "upsert", section: "items", id: "a1", value: { id: "a1", name: "Found by an agent" }, baseRevision: 0 }] });
     assert.equal(added.status, 200);
     const history = await (await browserFetch(`${url}api/s/${one.id}/state/history?section=items&id=a1`)).json();
     assert.equal(history.entries[0].origin, "api", "an agent's write is never recorded as the page");
     assert.equal(history.entries[0].actor, "Agent: Copied prompt");
-    assert.equal((await agent(`api/s/${two.id}/state/operations`, "PATCH", { protocolVersion: 2, operations: [] })).status, 403, "another startup");
-    assert.equal((await agent(`api/s/${one.id}/state/operations`, "PATCH", { protocolVersion: 2, operations: [{ type: "delete", section: "items", id: "a1", baseRevision: 99 }] })).status, 403, "no deletes");
+    assert.equal((await agent(`api/s/${two.id}/state/operations`, "PATCH", { protocolVersion: 3, operations: [] })).status, 403, "another startup");
+    assert.equal((await agent(`api/s/${one.id}/state/operations`, "PATCH", { protocolVersion: 3, operations: [{ type: "delete", section: "items", id: "a1", baseRevision: 99 }] })).status, 403, "no deletes");
     assert.equal((await agent("api/backups", "POST", {})).status, 403, "no backups");
     assert.equal((await agent(`api/s/${one.id}/agent-tokens`, "POST", {})).status, 403, "a token cannot make tokens");
     assert.equal((await agent("api/global/operations", "PATCH", { operations: [] })).status, 403);
@@ -78,7 +78,7 @@ test("over HTTP: the page makes a token, an agent uses it within its limits", as
     assert.equal(listed.tokens.length, 1);
     assert.equal("hash" in listed.tokens[0], false);
     assert.equal((await sendJson(`${url}api/agent-tokens/${listed.tokens[0].id}/revoke`, "POST", {})).status, 200);
-    assert.equal((await agent(`api/s/${one.id}/state/operations`, "PATCH", { protocolVersion: 2, operations: [] })).status, 403, "revoked");
+    assert.equal((await agent(`api/s/${one.id}/state/operations`, "PATCH", { protocolVersion: 3, operations: [] })).status, 403, "revoked");
     const shared = await (await browserFetch(`${url}api/global`)).json();
     assert.equal(shared.state.agentTokens, undefined, "tokens are not part of the shared data");
     assert.equal((await sendJson(`${url}api/global/operations`, "PATCH", { operations: [{ type: "upsert", section: "agentTokens", id: "x", value: { id: "x" } }] })).status, 400);

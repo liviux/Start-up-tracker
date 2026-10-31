@@ -5,14 +5,12 @@
 // a throwaway data folder.
 
 const assert = require("node:assert/strict");
-const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
 const test = require("node:test");
 const { GLOBAL_STARTUP_ID, SCHEMA_VERSION, TrackerSqliteStore, verifyDatabaseFile } = require("../lib/tracker-sqlite-store");
 const startupsLib = require("../lib/startups");
 const { startServer, makeTempHome } = require("./helpers/server");
-const { writeLegacyDatabase } = require("./helpers/legacy-schema");
 const { handMadeZip } = require("./helpers/zip");
 const { browserFetch, sendJson, createStartup, saveOperations, uploadFile, seedStartup } = require("./helpers/api");
 
@@ -79,10 +77,6 @@ async function download(serverUrl, route) {
   const response = await browserFetch(`${serverUrl}${route}`);
   assert.equal(response.status, 200, route);
   return { response, data: Buffer.from(await response.arrayBuffer()) };
-}
-
-function sha256(buffer) {
-  return crypto.createHash("sha256").update(buffer).digest("hex");
 }
 
 test("settings come back complete, merge one level deep and name the field they refuse", async () => {
@@ -678,7 +672,6 @@ test("a database export imports over the whole database", async () => {
     const prepared = await prepareImport(url, data, "application/octet-stream");
     assert.equal(prepared.status, 200, JSON.stringify(prepared.payload));
     assert.equal(prepared.payload.kind, "database");
-    assert.equal(prepared.payload.preview.legacy, false);
     assert.equal(prepared.payload.preview.startupCount, 1);
     assert.deepEqual(prepared.payload.preview.startups, ["Kept"]);
     assert.equal((await applyImport(url, prepared.payload.token, { mode: "new" })).status, 400, "a database restores the whole database");
@@ -696,47 +689,6 @@ test("a database export imports over the whole database", async () => {
     const refused = await prepareImport(url, broken, "application/octet-stream");
     assert.equal(refused.status, 400);
     assert.equal(refused.payload.code, "badDatabase");
-  } finally {
-    await server.stop();
-  }
-});
-
-test("a database from before startups is upgraded on a copy when it is imported", async () => {
-  const server = await startServer();
-  const url = server.url;
-  const workDir = path.join(server.home, "backups", ".work");
-  try {
-    const current = await createStartup(url, "Current");
-    const legacyState = {
-      updatedAt: "2026-05-01T09:00:00.000Z",
-      items: [{ id: "old-1", platform: "Legacy forum" }, { id: "old-2", platform: "Legacy blog" }],
-      profile: { pitch: "Before startups" },
-    };
-    const legacyFile = path.join(server.home, "legacy-upload.sqlite");
-    writeLegacyDatabase(legacyFile, legacyState, { version: 3, revision: 7 });
-    const uploaded = fs.readFileSync(legacyFile);
-    const uploadedHash = sha256(uploaded);
-
-    const prepared = await prepareImport(url, uploaded, "application/octet-stream");
-    assert.equal(prepared.status, 200, JSON.stringify(prepared.payload));
-    assert.equal(prepared.payload.kind, "database");
-    assert.equal(prepared.payload.preview.legacy, true);
-    assert.equal(prepared.payload.preview.startupCount, 1);
-    // The file the server keeps for the apply is the upload, untouched.
-    const held = path.join(workDir, `import-${prepared.payload.token}.sqlite`);
-    assert.equal(sha256(fs.readFileSync(held)), uploadedHash);
-    assert.equal(verifyDatabaseFile(held).legacy, true);
-
-    const applied = await applyImport(url, prepared.payload.token, { mode: "database" });
-    assert.equal(applied.status, 200, JSON.stringify(applied.payload));
-    const list = await listStartups(url);
-    assert.equal(list.length, 1);
-    assert.equal(list[0].name, "Imported");
-    assert.notEqual(list[0].id, current.id);
-    assert.deepEqual((await readState(url, list[0].id)).payload.state, legacyState);
-
-    assert.equal(sha256(fs.readFileSync(legacyFile)), uploadedHash, "the uploaded file stays as it was");
-    assert.deepEqual(fs.readdirSync(workDir).filter((name) => name.startsWith("import-")), [], "nothing is left in the work folder");
   } finally {
     await server.stop();
   }

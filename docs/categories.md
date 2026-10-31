@@ -42,7 +42,3 @@ The library has a version number. When a newer release adds entries, Extra > Cat
 ## Sharing a library
 
 **Export the library** downloads it as a JSON file. **Import a library** adds the entries from such a file that this tracker does not have yet, marked as added here. Entries you already have are left alone.
-
-## Older data
-
-Records from before the library keep their old category values until you change them. `lib/migrations/taxonomy-map.js` lists where each older top-level category belongs in the library, for anyone importing older data.

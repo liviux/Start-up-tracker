@@ -696,10 +696,10 @@
         saveProfile({ people: [...profile().people, { id: makeId("person"), role: roles[0]?.id || "", name: "", ownershipPercent: null, appointedOn: "" }] });
         draw();
       });
-      container.querySelectorAll("[data-person-remove]").forEach((button) => button.addEventListener("click", () => {
+      container.querySelectorAll("[data-person-remove]").forEach((button) => button.addEventListener("click", async () => {
         const id = button.dataset.personRemove;
         const person = profile().people.find((entry) => entry.id === id);
-        if (!root.confirm(t("company.people.confirmRemove", { name: person?.name || t("company.people.unnamed") }))) return;
+        if (!(await root.StartupTrackerDialog.confirm(t("company.people.confirmRemove", { name: person?.name || t("company.people.unnamed") }), { danger: true }))) return;
         saveProfile({ people: profile().people.filter((entry) => entry.id !== id) });
         if (ui.secrets?.people?.[id]) {
           delete ui.secrets.people[id];
@@ -733,9 +733,9 @@
         saveSecrets();
         draw();
       });
-      container.querySelectorAll("[data-bank-remove]").forEach((button) => button.addEventListener("click", () => {
+      container.querySelectorAll("[data-bank-remove]").forEach((button) => button.addEventListener("click", async () => {
         const account = ui.secrets.bankAccounts.find((entry) => entry.id === button.dataset.bankRemove);
-        if (!root.confirm(t("company.bank.confirmRemove", { name: account?.label || Model.mask(account?.account) || "" }))) return;
+        if (!(await root.StartupTrackerDialog.confirm(t("company.bank.confirmRemove", { name: account?.label || Model.mask(account?.account) || "" }), { danger: true }))) return;
         ui.secrets.bankAccounts = ui.secrets.bankAccounts.filter((entry) => entry.id !== button.dataset.bankRemove);
         saveSecrets();
         draw();
@@ -855,9 +855,9 @@
       draw();
     }
 
-    function removeCurrent() {
+    async function removeCurrent() {
       if (!current?.canDelete) return;
-      if (!root.confirm(t("company.confirmBin", { name: current.title }))) return;
+      if (!(await root.StartupTrackerDialog.confirm(t("company.confirmBin", { name: current.title }), { danger: true }))) return;
       hooks.remove(current.section, current.record.id, t("company.movedToBin"));
       close();
       draw();

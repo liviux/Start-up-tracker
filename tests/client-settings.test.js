@@ -66,13 +66,7 @@ test("the appearance is mirrored for the first paint, with system as no key", ()
   assert.equal(Appearance.resolveMode("system", true), "dark");
   assert.equal(Appearance.resolveMode("system", false), "light");
   assert.equal(Appearance.resolveMode("light", true), "light");
-  // Old saved ids open the new theme that carries their idea.
-  assert.equal(Appearance.normalizeTaste("a"), "meridian");
-  assert.equal(Appearance.normalizeTaste("b"), "studio");
-  assert.equal(Appearance.normalizeTaste("c"), "signal");
-  assert.equal(Appearance.normalizeTaste("cyber"), "nightshift");
-  assert.equal(Appearance.normalizeTaste("paper"), "broadsheet");
-  assert.deepEqual(Appearance.readMirror(memoryStorage({ [Appearance.TASTE_KEY]: "c" })), { mode: "system", theme: "signal" });
+  assert.deepEqual(Appearance.readMirror(memoryStorage({ [Appearance.TASTE_KEY]: "signal" })), { mode: "system", theme: "signal" });
   const throwing = { getItem: () => { throw new Error("blocked"); } };
   assert.deepEqual(Appearance.readMirror(throwing), { mode: "system", theme: "studio" });
 });

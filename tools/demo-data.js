@@ -23,11 +23,8 @@ const { DEMO_STARTUP_NAME, buildDemoState, buildDemoShared, countRecords } = req
 function writeDemoData({ dataDir, force = false, size = "normal", now } = {}) {
   if (!dataDir) throw new Error("Pass the data folder explicitly: --data-dir <folder>.");
   const paths = dataPaths(path.resolve(dataDir), {});
-  // Opening a database from before startups read-write would upgrade it without
-  // the copy the server takes first.
   if (fs.existsSync(paths.databaseFile)) {
     const verification = verifyDatabaseFile(paths.databaseFile);
-    if (verification.legacy) throw new Error(`${paths.databaseFile} uses the older one-startup format. Start the server on it once to upgrade it.`);
     if (!verification.ok) throw new Error(`${paths.databaseFile} did not verify: ${verification.problems.join("; ")}`);
   }
   fs.mkdirSync(path.dirname(paths.databaseFile), { recursive: true, mode: 0o700 });

@@ -131,7 +131,7 @@
         draw();
       };
       const reset = async () => {
-        if (!window.confirm(t("options.resetConfirm"))) return;
+        if (!(await window.StartupTrackerDialog.confirm(t("options.resetConfirm"), { danger: true }))) return;
         try {
           await saveLists({ [name]: null });
           rows = Options.list(name).map((option) => ({ ...option }));

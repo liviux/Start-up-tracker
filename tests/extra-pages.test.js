@@ -15,13 +15,13 @@ const extra = markup.slice(markup.indexOf('id="extraView"'), markup.indexOf('id=
 
 test("Extra lists AI, Prompts, Media, Feedback, Research links, then Customize", () => {
   const order = [...extra.matchAll(/data-extra-tab="(\w+)"|data-i18n="extra\.customize"/g)].map((match) => match[1] || "|customize|");
-  assert.deepEqual(order, ["ai", "prompts", "media", "feedback", "research", "|customize|", "campaigns", "tags", "categories", "fields"]);
+  assert.deepEqual(order, ["ai", "prompts", "media", "feedback", "research", "|customize|", "campaigns", "tags", "categories"]);
   assert.doesNotMatch(extra, /Sub-taburi/);
 });
 
 test("every Extra page has the same header: title, count, and a filter and Add where it lists records", () => {
   const pages = [...extra.matchAll(/<div class="extra-subpage" id="extraSubpage(\w+)"/g)].map((match) => match[1].toLowerCase());
-  assert.deepEqual(pages.sort(), ["ai", "campaigns", "categories", "feedback", "fields", "media", "prompts", "research", "tags"]);
+  assert.deepEqual(pages.sort(), ["ai", "campaigns", "categories", "feedback", "media", "prompts", "research", "tags"]);
   for (const page of pages) {
     const header = extra.match(new RegExp(`<header class="extra-page-header" data-extra-header="${page}">([\\s\\S]*?)</header>`))?.[1];
     assert.ok(header, `${page} has the header`);

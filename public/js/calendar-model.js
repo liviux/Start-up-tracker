@@ -15,20 +15,23 @@
 
   const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
   const SECTION_IDS = ["mk", "po", "fu", "comp"];
+  // The timeline entry type that is a date ahead (js/record-window.js).
+  const KEY_DATE = "key-date";
 
-  // Event types the calendar can filter by. Campaign dates are off until
-  // they are turned on.
-  const EVENT_KINDS = Object.freeze([
-    { id: "next_action", standard: true },
-    { id: "deadline", standard: true },
-    { id: "milestone", standard: true },
-    { id: "payment", standard: true },
-    { id: "company", standard: true },
-    { id: "campaign", standard: false },
-  ].map((kind) => Object.freeze(kind)));
+  // Event types the calendar can filter by. Campaign dates are not one of
+  // them: campaigns are turned on and off like a section.
+  const EVENT_KINDS = Object.freeze(["next_action", "deadline", "milestone", "payment", "company"].map((id) => Object.freeze({ id })));
+  // The calendar's columns: the four sections, then campaigns, which are off
+  // until they are turned on.
+  const CAMPAIGNS = "campaign";
+  const COLUMN_IDS = Object.freeze([...SECTION_IDS, CAMPAIGNS]);
 
   function defaultKinds() {
-    return new Set(EVENT_KINDS.filter((kind) => kind.standard).map((kind) => kind.id));
+    return new Set(EVENT_KINDS.map((kind) => kind.id));
+  }
+
+  function defaultSections() {
+    return new Set(SECTION_IDS);
   }
 
   function text(value) {
@@ -71,43 +74,36 @@
       events.push({ id: String(record.id ?? ""), section, kind, date: at.date, time: at.time, label, detail: text(detail), status: text(record.status), ...extra });
     };
     let label = "";
-    if (collection === "items") {
-      label = firstText(record, ["platform", "title", "name"]) || String(record.id ?? "");
-      push("mk", "next_action", record.date, record.time, record.nextAction);
-    } else if (collection === "programs") {
-      const details = record.details || {};
-      label = firstText(record, ["name", "applicationName"]) || String(record.id ?? "");
-      push("po", "next_action", record.nextActionDate, record.nextActionTime, record.nextAction || details.nextAction);
-      if (details.actionDeadline && details.actionDeadline !== record.nextActionDate) push("po", "deadline", details.actionDeadline, "", "Action deadline");
-      push("po", "deadline", details.submittedOn || details.submissionDate, "", "Submission");
-      push("po", "milestone", details.interviewOn || details.interviewDate, "", "Interview");
-      push("po", "milestone", details.pitchDate, "", "Pitch");
-      push("po", "milestone", details.opensOn, "", "Opens");
-      push("po", "milestone", details.decisionExpected, "", "Decision expected");
-    } else if (collection === "funding") {
-      label = firstText(record, ["funder", "opportunity", "name"]) || String(record.id ?? "");
-      push("fu", "next_action", record.nextActionDate, record.nextActionTime, record.nextAction);
-      push("fu", "deadline", record.expectedCloseDate, "", "Expected close");
-      for (const payment of Array.isArray(record.payments) ? record.payments : []) {
-        push("fu", "payment", payment?.date, "", ["Payment", amountText(payment)].filter(Boolean).join(" "), { entryStatus: text(payment?.status) });
-      }
-      for (const commitment of Array.isArray(record.commitments) ? record.commitments : []) {
-        push("fu", "payment", commitment?.date, "", ["Commitment", amountText(commitment)].filter(Boolean).join(" "), { entryStatus: text(commitment?.status) });
-      }
-    }
-    // Every target's deadline and its own milestones (the target window's
-    // Details tab).
     const section = { items: "mk", programs: "po", funding: "fu" }[collection];
     if (section) {
+      const details = record.details || {};
+      label = text(record.name) || String(record.id ?? "");
+      push(section, "next_action", record.nextActionDate, record.nextActionTime, record.nextAction);
       push(section, "deadline", record.deadline, "", "Deadline");
-      for (const entry of Array.isArray(record.timeEntries) ? record.timeEntries : []) {
-        push(section, "milestone", entry?.date, entry?.time, text(entry?.label) || "Milestone");
+      if (section === "po") {
+        push("po", "deadline", details.submittedOn, "", "Submission");
+        push("po", "milestone", details.interviewOn, "", "Interview");
+        push("po", "milestone", details.opensOn, "", "Opens");
+        push("po", "milestone", details.decisionExpected, "", "Decision expected");
+      } else if (section === "fu") {
+        push("fu", "deadline", details.expectedCloseDate, "", "Expected close");
+        for (const payment of Array.isArray(record.payments) ? record.payments : []) {
+          push("fu", "payment", payment?.dueDate, "", ["Payment", amountText(payment)].filter(Boolean).join(" "), { entryStatus: text(payment?.status) });
+        }
+        for (const commitment of Array.isArray(record.commitments) ? record.commitments : []) {
+          push("fu", "payment", commitment?.date, "", ["Commitment", amountText(commitment)].filter(Boolean).join(" "), { entryStatus: text(commitment?.state) });
+        }
+      }
+      // The key dates of the target's timeline; its updates stay off the
+      // calendar.
+      for (const entry of Array.isArray(record.timeline) ? record.timeline : []) {
+        if (entry?.type === KEY_DATE) push(section, "milestone", entry.date, entry.time, text(entry.title) || "Key date");
       }
     }
     if (collection === "campaigns") {
       label = firstText(record, ["name"]) || String(record.id ?? "");
-      push("campaign", "campaign", record.startDate, "", "Starts");
-      push("campaign", "campaign", record.endDate, "", "Ends");
+      push(CAMPAIGNS, "campaign", record.startDate, "", "Starts");
+      push(CAMPAIGNS, "campaign", record.endDate, "", "Ends");
     }
     return events;
   }
@@ -118,11 +114,11 @@
   // ---- filters and counts ------------------------------------------------
 
   // filters: { sections: Set, kinds: Set, matchesStatus(status) }. Campaign
-  // dates follow their type only; their statuses are a separate list.
+  // dates follow the campaigns toggle only; their statuses are a separate list.
   function eventMatches(event, filters = {}) {
-    if (filters.kinds && !filters.kinds.has(event.kind)) return false;
-    if (event.section === "campaign") return true;
     if (filters.sections && !filters.sections.has(event.section)) return false;
+    if (event.section === CAMPAIGNS) return true;
+    if (filters.kinds && !filters.kinds.has(event.kind)) return false;
     if (filters.matchesStatus && !filters.matchesStatus(event.status)) return false;
     return true;
   }
@@ -215,8 +211,11 @@
 
   return Object.freeze({
     SECTION_IDS,
+    CAMPAIGNS,
+    COLUMN_IDS,
     EVENT_KINDS,
     defaultKinds,
+    defaultSections,
     recordEvents,
     eventMatches,
     inRange,

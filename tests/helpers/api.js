@@ -28,7 +28,7 @@ async function createStartup(serverUrl, name, extra = {}) {
 
 // Writes through the per-startup operations route with the current protocol.
 function saveOperations(serverUrl, startupId, operations, extra = {}) {
-  return sendJson(`${serverUrl}api/s/${startupId}/state/operations`, "PATCH", { protocolVersion: 2, operations, ...extra });
+  return sendJson(`${serverUrl}api/s/${startupId}/state/operations`, "PATCH", { protocolVersion: 3, operations, ...extra });
 }
 
 function multipartFile(fileName, content, contentType = "application/octet-stream") {

@@ -9,13 +9,11 @@ const test = require("node:test");
 // Every scoped store call names its startup; these tests use one.
 const SID = "test-0001";
 const {
-  GLOBAL_STARTUP_ID,
   RecordConflictError,
   RevisionConflictError,
   TrackerSqliteStore,
   verifyDatabaseFile,
 } = require("../lib/tracker-sqlite-store");
-const { writeLegacyDatabase } = require("./helpers/legacy-schema");
 
 function fixtureState() {
   return {
@@ -445,74 +443,27 @@ test("reports only what changed after a revision, deletions included", () => {
   }
 });
 
-for (const version of [1, 3]) {
-  test(`upgrades a schema v${version} database into one startup named Imported without touching any record`, () => {
-    const temporaryDir = fs.mkdtempSync(path.join(os.tmpdir(), "tracker-schema-upgrade-"));
-    const databasePath = path.join(temporaryDir, "tracker.sqlite");
-    try {
-      const original = fixtureState();
-      const legacy = writeLegacyDatabase(databasePath, original, {
-        version,
-        revision: 7,
-        history: version === 3 ? [{ section: "items", id: String(original.items[0].id), event: "created", at: "2026-01-01T00:00:00.000Z" }] : [],
-      });
-      let upgradeSeen = null;
-      const store = new TrackerSqliteStore(databasePath, { onBeforeUpgrade: (info) => { upgradeSeen = info; } });
-      try {
-        assert.equal(upgradeSeen.fromVersion, version);
-        assert.equal(store.getInfo().schemaVersion, 4);
-        const ids = store.listStartupIds();
-        assert.equal(ids.length, 1, "all old rows go into one startup");
-        const [importedId] = ids;
-        assert.match(importedId, /^imported-[a-z0-9]{4}$/);
-        const startups = store.readSection(GLOBAL_STARTUP_ID, "startups");
-        assert.deepEqual(startups.map((startup) => [startup.id, startup.name, startup.archived]), [[importedId, "Imported", false]]);
-
-        // Byte-identical record JSON, in the same order, under the new id.
-        const raw = new (require("node:sqlite").DatabaseSync)(databasePath, { readOnly: true });
-        try {
-          const rows = raw.prepare("SELECT section_name, record_id, value_json FROM state_records WHERE startup_id = ? ORDER BY section_name, ordinal").all(importedId);
-          assert.deepEqual(rows.map((row) => ({ ...row })), legacy.records.map((row) => ({ ...row })));
-          const sections = raw.prepare("SELECT section_name, kind, value_json FROM state_sections WHERE startup_id = ? ORDER BY ordinal").all(importedId);
-          assert.deepEqual(sections.map((row) => ({ ...row })), legacy.sections.map((row) => ({ ...row })));
-        } finally {
-          raw.close();
-        }
-        const state = store.readState(importedId);
-        assert.deepEqual(state.state, original);
-        assert.equal(state.revision, 7, "the startup keeps the old revision");
-        if (version === 3) {
-          assert.equal(store.readRecordHistory(importedId, "items", String(original.items[0].id)).total, 1, "history moves with its records");
-        }
-        // Rows are stamped with the revision they were last known at, so an
-        // edit based on the state just read applies cleanly.
-        const map = store.readRevisionMap(importedId);
-        const id = String(state.state.items[0].id);
-        assert.equal(map.records.items[id], 7);
-        const applied = store.applyOperations(importedId, [{ type: "upsert", section: "items", id, value: { id, platform: "After upgrade" }, baseRevision: 7 }]);
-        assert.equal(applied.unchanged, false);
-        assert.deepEqual(store.checkIntegrity().foreignKeyErrors, []);
-      } finally {
-        store.close();
-      }
-      // A second open does not upgrade again.
-      const again = new TrackerSqliteStore(databasePath, { onBeforeUpgrade: () => { throw new Error("upgraded twice"); } });
-      again.close();
-    } finally {
-      fs.rmSync(temporaryDir, { recursive: true, force: true });
-    }
-  });
-}
-
-test("a database from before startups cannot be opened read-only", () => {
-  const temporaryDir = fs.mkdtempSync(path.join(os.tmpdir(), "tracker-legacy-ro-"));
+test("a database with another schema version is refused and left as it was", () => {
+  const temporaryDir = fs.mkdtempSync(path.join(os.tmpdir(), "tracker-schema-version-"));
   try {
     const databasePath = path.join(temporaryDir, "tracker.sqlite");
-    writeLegacyDatabase(databasePath, fixtureState(), { version: 3 });
-    assert.throws(() => new TrackerSqliteStore(databasePath, { readOnly: true }), (error) => error.code === "SQLITE_TRACKER_LEGACY_SCHEMA");
-    const verification = verifyDatabaseFile(databasePath);
-    assert.equal(verification.ok, false);
-    assert.equal(verification.legacy, true);
+    const store = new TrackerSqliteStore(databasePath);
+    store.replaceState(SID, fixtureState());
+    store.close();
+
+    for (const [version, message] of [[3, /schema version 3 is not supported/], [5, /schema version 5 is newer/]]) {
+      const raw = new (require("node:sqlite").DatabaseSync)(databasePath);
+      raw.exec(`PRAGMA user_version = ${version}`);
+      raw.close();
+      const before = fs.readFileSync(databasePath);
+
+      assert.throws(() => new TrackerSqliteStore(databasePath), message);
+      assert.throws(() => new TrackerSqliteStore(databasePath, { readOnly: true }), message);
+      const verification = verifyDatabaseFile(databasePath);
+      assert.equal(verification.ok, false);
+      assert.match(verification.problems.join("; "), message);
+      assert.ok(fs.readFileSync(databasePath).equals(before), `schema version ${version}: the file is unchanged`);
+    }
   } finally {
     fs.rmSync(temporaryDir, { recursive: true, force: true });
   }

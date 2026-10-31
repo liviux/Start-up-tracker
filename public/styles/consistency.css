@@ -764,15 +764,10 @@ html:root :is(.sp-tags) {
   white-space: normal;
 }
 
-html:root .sp-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  align-content: flex-start;
-}
-
+/* The pills wrap as text does; a flex cell would leave the table row and
+   draw its border apart from the others. */
 html:root .sp-tags .tag-pill {
-  margin: 0;
+  margin: 1px 2px 1px 0;
 }
 
 html:root .sp-value {

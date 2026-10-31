@@ -4,7 +4,6 @@ const path = require("path");
 const crypto = require("crypto");
 const zlib = require("zlib");
 const { spawn } = require("child_process");
-const { DatabaseSync } = require("node:sqlite");
 const {
   GLOBAL_STARTUP_ID,
   STARTUPS_SECTION,
@@ -78,9 +77,6 @@ const IMPORT_CONTENT_TYPES = new Set(["application/zip", "application/x-zip-comp
 // clean-up is due. The rules themselves are in lib/backups/schedule.js.
 const BACKUP_CHECK_MS = 10 * 60 * 1000;
 const RECYCLE_PURGE_MS = 24 * 60 * 60 * 1000;
-// Backups that can be restored, which is a wider set than the ones that rotate:
-// a snapshot given a label is restorable but never pruned.
-const BACKUP_FILE_PATTERN = /^tracker-[A-Za-z0-9._-]*\.sqlite$/;
 const responseCompressionCache = new Map();
 
 // Serialized state per startup, kept against that startup's revision so an
@@ -185,7 +181,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method !== "GET" && req.method !== "HEAD") throw new security.HttpError(405, "Method not allowed", "methodNotAllowed");
 
     if (url.pathname === "/media" || url.pathname.startsWith("/media/")) {
-      await serveMedia(req, res, url);
+      await mediaHandler.serve(req, res, url);
       return;
     }
 
@@ -483,14 +479,7 @@ async function handleApiRequest(req, res, url) {
   }
 
   if (pathname === "/api/fields" && req.method === "GET") {
-    sendJson(res, { ok: true, registry: fieldRegistry.readRegistry(), custom: fieldRegistry.readCustomFields(store), revision: store.getRevision(GLOBAL_STARTUP_ID) });
-    return;
-  }
-
-  if (pathname === "/api/fields/custom" && req.method === "PUT") {
-    const parsed = await readJsonBody(req);
-    const custom = fieldRegistry.writeCustomFields(store, parsed.fields, { origin: historyOrigin(parsed.origin), actor: historyActor(parsed.origin) });
-    sendJson(res, { ok: true, custom, revision: store.getRevision(GLOBAL_STARTUP_ID) });
+    sendJson(res, { ok: true, registry: fieldRegistry.readRegistry() });
     return;
   }
 
@@ -709,7 +698,9 @@ async function handleStartupApi(req, res, url, startupId, subPath) {
       operation && (operation.type === "reorder" || operation.type === "replaceSection")
       && operation.section !== "updatedAt"
       && (operation.baseRevision === undefined || operation.baseRevision === null));
-    if (parsed.protocolVersion !== 2 || missingLockBases.length > 0 || unlockedSectionReplacements.length > 0) {
+    // Version 3 stores every target under the same field names; a tab that
+    // still runs an older page would write the old ones.
+    if (parsed.protocolVersion !== 3 || missingLockBases.length > 0 || unlockedSectionReplacements.length > 0) {
       sendJson(res, {
         ok: false,
         error: "reloadRequired",
@@ -1033,24 +1024,6 @@ function startupRevisionMap(startupId) {
   return map;
 }
 
-// /media/<startupId>/<file>. A link from before startups existed names only
-// the file, so it is sent on to the startup folder that holds that file.
-async function serveMedia(req, res, url) {
-  const segments = url.pathname.slice("/media".length).split("/").filter(Boolean);
-  if (segments.length === 1) {
-    const fileName = safeDecode(segments[0]);
-    // The startup list, not the ids holding records: a startup can have uploads
-    // before it has any records.
-    const owner = startups.listStartups(store)
-      .map((startup) => startup.id)
-      .find((startupId) => resolveMediaFileSync(mediaDir, `${startupId}/${fileName}`));
-    if (!owner) throw new security.HttpError(404, "Not found", "notFound");
-    redirect(res, `/media/${encodeURIComponent(owner)}/${segments[0]}`);
-    return;
-  }
-  await mediaHandler.serve(req, res, url);
-}
-
 // Takes a safety backup first, which holds the database and the media files,
 // and stops if it cannot. Then removes the startup's rows and media folder.
 function deleteStartupWithBackup(startupId) {
@@ -1305,7 +1278,7 @@ function sendNotModified(res, headers = {}) {
 }
 
 function initializeStore() {
-  // The database is now the only copy of the data, so serving from a damaged one
+  // The database is the only copy of the data, so serving from a damaged one
   // is worse than not starting: edits made on top of corruption are unrecoverable
   // once they push the newest good snapshot out of rotation.
   //
@@ -1314,16 +1287,13 @@ function initializeStore() {
   // disk image is malformed" stack tells nobody how to get their data back.
   if (fs.existsSync(databaseFile)) {
     const verification = verifyDatabaseFile(databaseFile);
-    // A sound database from before startups existed is upgraded in place, after
-    // a copy of it is kept in the backup folder.
-    const onlyLegacy = verification.legacy && verification.problems.length === 1;
-    lastIntegrity = { checkedAt: new Date().toISOString(), ok: verification.ok || onlyLegacy, problems: onlyLegacy ? [] : verification.problems };
-    if (!verification.ok && !onlyLegacy) {
-      const newestSnapshot = listRestorableSnapshots()[0];
-      const advice = newestSnapshot
-        ? `The newest verified backup is ${newestSnapshot.fileName} (${newestSnapshot.createdAt}).\n`
-          + `  Restore it with: node tools/restore-sqlite.js --snapshot ${newestSnapshot.fileName}`
-        : `No usable snapshot was found in ${backupDir}.`;
+    lastIntegrity = { checkedAt: new Date().toISOString(), ok: verification.ok, problems: verification.problems };
+    if (!verification.ok) {
+      const newestBackup = newestRestorableBackup();
+      const advice = newestBackup
+        ? `The newest verified backup is ${newestBackup.id} (${newestBackup.createdAt}).\n`
+          + `  Restore it with: node tools/restore-sqlite.js --snapshot ${newestBackup.id}`
+        : `No usable backup was found in ${backupDir}.`;
       throw new Error(
         `${databaseFile} failed its integrity check and the server will not serve from it.\n`
         + `${verification.problems.map((problem) => `  ${problem}`).join("\n")}\n`
@@ -1332,77 +1302,15 @@ function initializeStore() {
     }
   }
 
-  let upgraded = false;
-  store = new TrackerSqliteStore(databaseFile, {
-    onBeforeUpgrade: ({ fromVersion }) => {
-      copyBeforeUpgrade(fromVersion);
-      upgraded = true;
-    },
-  });
-  if (upgraded) moveLegacyMedia(store.getInfo().importedStartupId);
+  store = new TrackerSqliteStore(databaseFile);
 }
 
-// The upgrade rewrites every table, so the old file is copied first. The copy
-// is checked before the upgrade may start; if it cannot be made, nothing runs.
-function copyBeforeUpgrade(fromVersion) {
-  const iso = new Date().toISOString();
-  const stamp = `${iso.slice(0, 10).replaceAll("-", "")}-${iso.slice(11, 19).replaceAll(":", "")}`;
-  const target = path.join(backupDir, `tracker-${stamp}-pre-upgrade-v${fromVersion}.sqlite`);
-  const source = new DatabaseSync(databaseFile, { readOnly: true });
-  try {
-    source.prepare("VACUUM INTO ?").run(target);
-  } finally {
-    source.close();
-  }
-  const check = verifyDatabaseFile(target);
-  if (!check.legacy || check.problems.length !== 1) {
-    throw new Error(`The copy taken before upgrading ${databaseFile} did not verify, so the upgrade did not run: ${check.problems.join("; ")}`);
-  }
-  console.log(`Upgraded the database to hold several startups. The old file is kept as ${target}`);
-}
-
-// Before startups, uploads sat directly in media/. They belong to the startup
-// the upgrade created, so they move into its folder; old /media/<file> links
-// are redirected there.
-function moveLegacyMedia(importedStartupId) {
-  if (!importedStartupId) return;
-  const target = startupMediaDir(importedStartupId);
-  fs.mkdirSync(target, { recursive: true });
-  for (const entry of fs.readdirSync(mediaDir, { withFileTypes: true })) {
-    if (!entry.isFile()) continue;
-    const destination = path.join(target, entry.name);
-    if (!fs.existsSync(destination)) fs.renameSync(path.join(mediaDir, entry.name), destination);
-  }
-}
-
-// Snapshots that pass verification, newest first. Used to point at a recovery
+// The newest backup that passes verification. Used to point at a recovery
 // path when the live database is unusable, so it must not assume the store is
-// open or healthy.
-function listRestorableSnapshots() {
-  if (!fs.existsSync(backupDir)) return [];
-  // Backup folders first: they hold the media files too. The store is not
-  // open here, and listing and verifying backups does not need it.
+// open or healthy: listing and verifying backups does not need it.
+function newestRestorableBackup() {
   const manager = createBackupManager({ store: null, backupDir, mediaDir });
-  const folders = manager.list()
-    .filter((backup) => backup.complete)
-    .map((backup) => ({ fileName: backup.id, filePath: manager.databasePath(backup.id), createdAt: backup.createdAt }))
-    .filter(({ filePath }) => verifyDatabaseFile(filePath).ok);
-  if (folders.length) return folders;
-  return fs
-    .readdirSync(backupDir)
-    .filter((fileName) => BACKUP_FILE_PATTERN.test(fileName))
-    .map((fileName) => {
-      const filePath = path.join(backupDir, fileName);
-      const stats = fs.statSync(filePath);
-      return { fileName, filePath, createdAt: stats.mtime.toISOString(), mtimeMs: stats.mtimeMs };
-    })
-    .sort((a, b) => b.mtimeMs - a.mtimeMs)
-    // A sound copy from before startups existed can be restored too; the
-    // server upgrades it on the next start.
-    .filter(({ filePath }) => {
-      const verification = verifyDatabaseFile(filePath);
-      return verification.ok || (verification.legacy && verification.problems.length === 1);
-    });
+  return manager.list().find((backup) => backup.complete && verifyDatabaseFile(manager.databasePath(backup.id)).ok);
 }
 
 // Deleting in the app moves a record between sections rather than removing it,

@@ -27,12 +27,6 @@ test("picking a type also records its subcategory and category, primary first", 
   load();
   assert.deepEqual(Taxonomy.normalizeSelection(["mk.a.one.x", "mk.b.three"]), ["mk.a.one.x", "mk.a.one", "mk.a", "mk.b.three", "mk.b"]);
   assert.deepEqual(Taxonomy.leaves(Taxonomy.normalizeSelection(["mk.a.one.x", "mk.b.three"])), ["mk.a.one.x", "mk.b.three"]);
-  assert.deepEqual(Taxonomy.legacyFields(Taxonomy.normalizeSelection(["mk.a.one.x", "mk.b.three"])), {
-    category: "mk.a",
-    subcategory: "mk.a.one",
-    subcategories: ["mk.a.one", "mk.b.three"],
-    type: "mk.a.one.x",
-  });
 });
 
 test("a target in two branches shows under both and counts once in the total", () => {
@@ -74,18 +68,15 @@ test("a target keeps a node that is off or unknown", () => {
   assert.deepEqual(list, ["mk.a.one", "mk.a", "old-category"]);
   assert.deepEqual(Taxonomy.disabledIn(list), ["mk.a.one", "mk.a"]);
   assert.deepEqual(Taxonomy.unknownIn(list), ["old-category"]);
-  assert.equal(Taxonomy.nestedCategory("old-category", "mk").name, "old-category", "shown under its own id, never as another category");
-  assert.deepEqual(Taxonomy.listFor({ category: "launches", subcategories: ["product-launch"] }), ["product-launch", "launches"]);
-  assert.deepEqual(Taxonomy.legacyFields(["launches"], { category: "launches", subcategories: ["product-launch"] }).subcategories, ["product-launch"]);
+  assert.equal(Taxonomy.pathLabel("old-category"), "old-category", "shown under its own id, never as another category");
 });
 
-test("names, paths and the nested shape", () => {
+test("names, paths and the tree", () => {
   load();
   assert.equal(Taxonomy.pathLabel("mk.a.one.x"), "Name mk.a > Name mk.a.one > Name mk.a.one.x");
   assert.equal(Taxonomy.shortName("mk.a"), "Short mk.a");
-  const nested = Taxonomy.nestedCategories("mk");
-  assert.deepEqual(nested.map((category) => category.id), ["mk.a", "mk.b"]);
-  assert.deepEqual(nested[0].subcategories.map((sub) => sub.id), ["mk.a.one", "mk.a.two"]);
-  assert.deepEqual(nested[0].subcategories[0].types.map((type) => type.id), ["mk.a.one.x"]);
+  assert.deepEqual(Taxonomy.categories("mk").map((category) => category.id), ["mk.a", "mk.b"]);
+  assert.deepEqual(Taxonomy.children("mk.a", "mk").map((sub) => sub.id), ["mk.a.one", "mk.a.two"]);
+  assert.deepEqual([...Taxonomy.descendants("mk.a")].sort(), ["mk.a", "mk.a.one", "mk.a.one.x", "mk.a.two"]);
   assert.deepEqual(Taxonomy.search("mk", "one x").map((entry) => entry.id), ["mk.a.one.x"]);
 });

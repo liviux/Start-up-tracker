@@ -11,7 +11,7 @@ Statuses.setConfig(require("../content/statuses.json"), require("../content/prio
 const GROUP_IDS = [...Statuses.groups().map((group) => group.id), Statuses.UNMAPPED];
 
 test("every record type gives its dated moments, with its section and type", () => {
-  const target = Calendar.recordEvents("items", { id: "a", platform: "Forum", status: "scheduled", date: "2026-11-02", time: "10:00" });
+  const target = Calendar.recordEvents("items", { id: "a", name: "Forum", status: "scheduled", nextActionDate: "2026-11-02", nextActionTime: "10:00" });
   assert.deepEqual(target.map((event) => [event.section, event.kind, event.date, event.time, event.label]), [["mk", "next_action", "2026-11-02", "10:00", "Forum"]]);
 
   const program = Calendar.recordEvents("programs", {
@@ -19,23 +19,23 @@ test("every record type gives its dated moments, with its section and type", () 
     name: "Accelerator",
     status: "submitted",
     nextActionDate: "2026-11-03",
-    details: { submissionDate: "2026-11-10", interviewDate: "2026-11-20", pitchDate: "not a date" },
-    timeEntries: [{ label: "Demo day", date: "2026-12-01" }],
+    details: { submittedOn: "2026-11-10", interviewOn: "2026-11-20T14:00", opensOn: "not a date" },
+    timeline: [{ type: "key-date", title: "Demo day", date: "2026-12-01" }, { type: "sent", title: "Applied", date: "2026-10-20" }],
   });
   assert.deepEqual(program.map((event) => [event.kind, event.date, event.detail]), [
     ["next_action", "2026-11-03", ""],
     ["deadline", "2026-11-10", "Submission"],
     ["milestone", "2026-11-20", "Interview"],
     ["milestone", "2026-12-01", "Demo day"],
-  ]);
+  ], "key dates show; the timeline's updates stay off the calendar");
 
   const funding = Calendar.recordEvents("funding", {
     id: "f",
-    funder: "Angel group",
+    name: "Angel group",
     status: "negotiating",
-    expectedCloseDate: "2026-12-15",
-    payments: [{ date: "2027-01-10", amount: 5000, currency: "EUR", status: "Expected" }],
-    commitments: [{ date: "2026-12-20", amount: 20000, currency: "EUR" }],
+    details: { expectedCloseDate: "2026-12-15" },
+    payments: [{ dueDate: "2027-01-10", amount: 5000, currency: "EUR", status: "expected" }],
+    commitments: [{ date: "2026-12-20", amount: 20000, currency: "EUR", state: "signed" }],
   });
   assert.deepEqual(funding.map((event) => [event.kind, event.detail]), [
     ["deadline", "Expected close"],
@@ -69,7 +69,7 @@ test("Company steps and deadlines reach the calendar with their real status", ()
   assert.equal(view.deadlines.items.find((item) => item.dueDate === "2026-11-25").state, "done");
 });
 
-test("filters by section, event type and status; campaign dates follow their type only", () => {
+test("filters by section, event type and status; campaign dates follow the campaigns toggle", () => {
   const events = [
     { section: "mk", kind: "next_action", status: "scheduled" },
     { section: "po", kind: "deadline", status: "completed" },
@@ -78,10 +78,11 @@ test("filters by section, event type and status; campaign dates follow their typ
   const selection = Statuses.defaultSelection();
   const filters = { sections: new Set(["mk", "po"]), kinds: Calendar.defaultKinds(), matchesStatus: (status) => Statuses.matches(selection, status) };
   assert.deepEqual(events.filter((event) => Calendar.eventMatches(event, filters)).map((event) => event.section), ["mk"]);
-  filters.kinds = new Set([...filters.kinds, "campaign"]);
-  filters.sections = new Set(["po"]);
-  assert.deepEqual(events.filter((event) => Calendar.eventMatches(event, filters)).map((event) => event.section), ["campaign"]);
-  assert.equal(Calendar.defaultKinds().has("campaign"), false, "campaign dates start off");
+  filters.sections = new Set(["po", Calendar.CAMPAIGNS]);
+  assert.deepEqual(events.filter((event) => Calendar.eventMatches(event, filters)).map((event) => event.section), ["campaign"], "campaigns ignore the event types and the status filter");
+  assert.equal(Calendar.defaultSections().has(Calendar.CAMPAIGNS), false, "campaign dates start off");
+  assert.equal(Calendar.EVENT_KINDS.some((kind) => kind.id === "campaign"), false, "campaigns are a column, not an event type");
+  assert.deepEqual(Calendar.COLUMN_IDS, ["mk", "po", "fu", "comp", "campaign"]);
 });
 
 test("per-day counts per section and per status group", () => {

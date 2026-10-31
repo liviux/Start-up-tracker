@@ -53,24 +53,6 @@
     coda: "COD",
   });
 
-  // The first three variants were called a, b and c. The earlier palette-only
-  // themes keep opening the new theme that carries their idea, so a saved
-  // choice never falls back to the default without the reader knowing.
-  const LEGACY_TASTES = Object.freeze({
-    a: "meridian",
-    b: "studio",
-    c: "signal",
-    kinpaku: "lacquer",
-    paper: "broadsheet",
-    mirai: "shinjuku",
-    aurora: "fieldnotes",
-    cyber: "nightshift",
-    "soft-ui": "tactile",
-    linear: "meridian",
-    minimal: "signal",
-    classic: "studio",
-  });
-
   // The design skill each theme was built with, shown as a small credit in the
   // picker. The default theme predates this collection.
   const THEME_CREDITS = Object.freeze({
@@ -110,8 +92,6 @@
   }
 
   function normalizeTaste(value) {
-    if (typeof value !== "string" || !value) return DEFAULT_TASTE;
-    if (Object.prototype.hasOwnProperty.call(LEGACY_TASTES, value)) return LEGACY_TASTES[value];
     return THEMES.includes(value) ? value : DEFAULT_TASTE;
   }
 
@@ -249,7 +229,6 @@
     MODES,
     THEMES,
     THEME_CODES,
-    LEGACY_TASTES,
     THEME_PREVIEW_MODES,
     THEME_CREDITS,
     previewPath,

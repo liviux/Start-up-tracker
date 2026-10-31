@@ -15,18 +15,11 @@
     // Storage can be blocked by the browser; fall back to the defaults.
   }
   if (theme !== "light" && theme !== "dark") theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  // The first variants were saved as letters, and the palette-only themes by
-  // name (the same table as LEGACY_TASTES in taste-switcher.js).
-  var legacy = {
-    a: "meridian", b: "studio", c: "signal",
-    kinpaku: "lacquer", paper: "broadsheet", mirai: "shinjuku", aurora: "fieldnotes",
-    cyber: "nightshift", "soft-ui": "tactile", linear: "meridian", minimal: "signal", classic: "studio"
-  };
+  // The same list as THEMES in taste-switcher.js.
   var themes = ["studio", "ledger", "nightshift", "fieldnotes", "meridian", "lacquer", "shinjuku", "quiet", "tactile", "broadsheet", "signal", "coda"];
-  if (taste && Object.prototype.hasOwnProperty.call(legacy, taste)) taste = legacy[taste];
-  if (taste && themes.indexOf(taste) === -1) taste = "studio";
+  if (themes.indexOf(taste) === -1) taste = "studio";
   document.documentElement.setAttribute("data-theme", theme);
-  document.documentElement.setAttribute("data-taste", taste || "studio");
+  document.documentElement.setAttribute("data-taste", taste);
   // The live theme switcher reserves a strip at the top. Reading its open
   // state here avoids the page shifting when scripts/live-themes.js restores
   // the bar after the first paint.

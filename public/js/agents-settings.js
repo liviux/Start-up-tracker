@@ -206,7 +206,7 @@
         warning: first ? t("settings.agents.warning") : "",
         confirmText,
       })
-      : root.confirm([t("settings.agents.confirmCommand", { command: answer.preview }), first ? `\n\n${t("settings.agents.warning")}` : ""].join(""));
+      : await root.StartupTrackerDialog.confirm([t("settings.agents.confirmCommand", { command: answer.preview }), first ? `\n\n${t("settings.agents.warning")}` : ""].join(""), { danger: true });
     if (!accepted) return null;
     return send(true);
   }
@@ -366,7 +366,7 @@
         const body = await request(Api.urls.harnessCheck(harness.id), { method: "POST", body: { testPrompt, consent } });
         replaceHarness(body.harness);
         if (body.check.state === "consent-needed") {
-          if (root.confirm(t("settings.agents.consent", { package: body.check.package }))) {
+          if (await root.StartupTrackerDialog.confirm(t("settings.agents.consent", { package: body.check.package }))) {
             const again = await request(Api.urls.harnessCheck(harness.id), { method: "POST", body: { testPrompt, consent: true } });
             replaceHarness(again.harness);
             say(t(`settings.agents.states.${again.check.state}`));
@@ -618,8 +618,8 @@
             type: "button",
             className: "text-button danger-text",
             text: t("settings.agents.remove"),
-            on: { click: () => {
-              if (!root.confirm(t("settings.agents.removeConfirm", { name: harness.name }))) return;
+            on: { click: async () => {
+              if (!(await root.StartupTrackerDialog.confirm(t("settings.agents.removeConfirm", { name: harness.name }), { danger: true }))) return;
               run(`save:${harness.id}`, async () => {
                 await request(Api.urls.harness(harness.id), { method: "DELETE" });
                 ui.overview.harnesses = ui.overview.harnesses.filter((entry) => entry.id !== harness.id);

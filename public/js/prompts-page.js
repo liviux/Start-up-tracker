@@ -207,29 +207,11 @@
     };
   }
 
-  // How the stored keys of the basics differ from their common names, per
-  // section, for the agent that writes records directly.
-  function storedKeyLines(Fields) {
-    if (!Fields) return [];
-    return SECTIONS.map((section) => {
-      const pairs = Fields.coreFields(section)
-        .filter((field) => !["id", "repeat", "taxonomy"].includes(field.key))
-        .map((field) => {
-          const at = Fields.where(section, field);
-          if (at.place === "flat" && at.key !== field.key) return `${field.key} is "${at.key}"`;
-          if (at.place === "flat-money") return `${field.key} is "${at.amount}" and "${at.currency}"`;
-          return "";
-        })
-        .filter(Boolean);
-      return pairs.length ? `  - ${TABS[section]}: ${pairs.join(", ")}.` : "";
-    }).filter(Boolean);
-  }
-
   // {{TRACKER_ACCESS}}: "agent" for an agent that runs commands, "chat" for a
   // chat without tools, "run" for a run started from the tracker (Part 13),
   // whose agent gets the tracker tools. The token is made when the prompt is
   // copied; the preview shows where it will go.
-  function trackerAccess(mode, { baseUrl = "", startupId = "", startupName = "", token = "", expiresAt = "", Fields = null, formatExample = null } = {}) {
+  function trackerAccess(mode, { baseUrl = "", startupId = "", startupName = "", token = "", expiresAt = "", formatExample = null } = {}) {
     if (mode === "run") {
       return [
         "Save your work with the tracker tools of the \"tracker\" MCP server this run gives you. Do not edit files to change the tracker.",
@@ -260,11 +242,10 @@
       `- Read the data: \`curl -s ${baseUrl}/api/s/${startupId}/state\` returns \`state\` (\`items\` is Marketing, \`programs\` Programs, \`funding\` Funding, \`links\` the links) and \`revisionMap\`.`,
       `- Read the fields, categories and statuses: \`${baseUrl}/api/fields\`, \`${baseUrl}/api/taxonomy\`, \`${baseUrl}/api/statuses\`.`,
       "- Add or update records:",
-      `  \`curl -s -X PATCH ${baseUrl}/api/s/${startupId}/state/operations -H "Authorization: Bearer ${shownToken}" -H "Content-Type: application/json" -d '{"protocolVersion":2,"operations":[{"type":"upsert","section":"items","id":"<new unique id>","value":{...},"baseRevision":0}]}'\``,
+      `  \`curl -s -X PATCH ${baseUrl}/api/s/${startupId}/state/operations -H "Authorization: Bearer ${shownToken}" -H "Content-Type: application/json" -d '{"protocolVersion":3,"operations":[{"type":"upsert","section":"items","id":"<new unique id>","value":{...},"baseRevision":0}]}'\``,
       "  A new record needs a new unique id and \"baseRevision\": 0. To update one, send the whole record with its current revision from revisionMap.records.<section>.<id>. An answer of 409 means it changed meanwhile: read it again and retry.",
-      "- Record keys: the basics use their common names except:",
-      ...storedKeyLines(Fields),
-      "  Section fields go under \"details\", your own fields under \"custom\", categories in \"taxonomy\" as a list of category ids, the notes in \"notes\" as Markdown.",
+      "- Record keys: the basics under their names (name, organization, link, status, priority, nextActionDate, nextActionTime, nextAction, deadline, owner, campaignId, tags), the section's fields under \"details\", categories in \"taxonomy\" as a list of category ids, the notes in \"notes\" as Markdown, and anything no field covers in \"customFields\" as a list of {\"label\": \"...\", \"value\": \"...\"}.",
+      "- Dated entries go in \"timeline\", a list of {\"id\", \"date\", \"type\", \"title\", \"outcome\", \"notes\"}: type \"key-date\" for a date ahead, which shows on the calendar, or what happened (\"sent\", \"reply\", \"meeting\", \"decision\", \"other\").",
       "- A link between two records is a record in \"links\": {\"id\": \"<new id>\", \"a\": {\"kind\": \"mk\", \"id\": \"...\"}, \"b\": {\"kind\": \"po\", \"id\": \"...\"}, \"relation\": \"related\"}.",
     ].join("\n");
   }
@@ -375,7 +356,7 @@
       const out = {
         ...profileValues(hooks.profile() || {}, { startupName: hooks.startupName(), timeZone: hooks.timeZone(), today: hooks.today(), linkLabel: hooks.linkLabel }),
         ...scopeValues(ui.section, ui.picks, hooks.Taxonomy),
-        TRACKER_ACCESS: trackerAccess(mode, { baseUrl: root.location?.origin || "", startupId: hooks.startupId, startupName: hooks.startupName(), token, expiresAt, Fields: hooks.Fields, formatExample: hooks.AiImport?.formatExample }),
+        TRACKER_ACCESS: trackerAccess(mode, { baseUrl: root.location?.origin || "", startupId: hooks.startupId, startupName: hooks.startupName(), token, expiresAt, formatExample: hooks.AiImport?.formatExample }),
       };
       for (const name of EXAMPLE_VARIABLES) out[name] = exampleValue(all.examples, ui.selections[name], { extra: ui.extra[name], fills: ui.fills });
       return out;
@@ -660,7 +641,7 @@
       draw();
     }
 
-    function handleAction(action, button) {
+    async function handleAction(action, button) {
       const lists = sharedLists();
       const all = lib();
       if (action === "toggle-all") {
@@ -698,14 +679,14 @@
         draw();
       } else if (action === "reset-prompt") {
         const prompt = currentPrompt(all);
-        if (!prompt?.builtIn || !root.confirm(t("prompts.resetConfirm", { name: prompt.shipped?.name || prompt.name }))) return;
+        if (!prompt?.builtIn || !(await root.StartupTrackerDialog.confirm(t("prompts.resetConfirm", { name: prompt.shipped?.name || prompt.name })))) return;
         hooks.saveShared({ prompts: lists.prompts.filter((entry) => entry.id !== prompt.id) }, t("prompts.resetDone"));
         ui.message = t("prompts.resetDone");
         draw();
       } else if (action === "delete-prompt") {
         const prompt = currentPrompt(all);
         if (!prompt || prompt.builtIn) return;
-        if (!hooks.deletePrompt(prompt)) return;
+        if (!(await hooks.deletePrompt(prompt))) return;
         ui.promptId = "target-research";
         remember();
         draw();
@@ -721,7 +702,7 @@
         draw();
       } else if (action === "delete-preset") {
         const preset = all.presets.find((entry) => entry.id === ui.presetId);
-        if (!preset || preset.builtIn || !root.confirm(t("prompts.deletePresetConfirm", { name: preset.name }))) return;
+        if (!preset || preset.builtIn || !(await root.StartupTrackerDialog.confirm(t("prompts.deletePresetConfirm", { name: preset.name }), { danger: true }))) return;
         hooks.saveShared({ presets: lists.presets.filter((entry) => entry.id !== preset.id) }, t("prompts.presetDeleted"));
         ui.presetId = "";
         remember();
@@ -744,7 +725,7 @@
       } else if (action === "delete-example") {
         const id = button.dataset.id;
         const example = lists.examples.find((entry) => entry.id === id);
-        if (!example || !root.confirm(t("prompts.deleteExampleConfirm", { name: example.label || "" }))) return;
+        if (!example || !(await root.StartupTrackerDialog.confirm(t("prompts.deleteExampleConfirm", { name: example.label || "" }), { danger: true }))) return;
         hooks.saveShared({ examples: lists.examples.filter((entry) => entry.id !== id) }, t("prompts.exampleDeleted"));
         for (const name of EXAMPLE_VARIABLES) ui.selections[name] = (ui.selections[name] || []).filter((entry) => entry !== id);
         remember();
@@ -837,7 +818,7 @@
         if (!file) return;
         try {
           const { merged, counts } = importPack(JSON.parse(await file.text()), sharedLists());
-          if (counts.replaced && !root.confirm(t("prompts.packReplace", { count: counts.replaced }))) return;
+          if (counts.replaced && !(await root.StartupTrackerDialog.confirm(t("prompts.packReplace", { count: counts.replaced })))) return;
           hooks.saveShared(merged, t("prompts.packImported"));
           ui.message = t("prompts.packDone", { added: counts.added, replaced: counts.replaced });
         } catch (error) {

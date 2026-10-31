@@ -506,7 +506,7 @@
     {
       "key": "opensOn",
       "label": "Opens on",
-      "description": "The first day you can submit. On a watchlist target, the day the next round is expected to open.",
+      "description": "The first day you can submit, or the day the next round is expected to open.",
       "example": "",
       "type": "date",
       "group": "application",
@@ -637,81 +637,5 @@
       "searchable": true
     }
   ],
-  "activities": [
-    {
-      "id": "documents",
-      "label": "Documents",
-      "description": "The documents this program asks for, each with a status, a link and notes. The checklist is shared by all your startups and can be edited in Extra > Fields.",
-      "sections": ["po"],
-      "checklist": [
-        { "id": "pitch-deck", "label": "Pitch deck", "description": "A short slide presentation of the problem, solution, market, team and plans." },
-        { "id": "one-pager", "label": "One-pager", "description": "A one-page summary of the company that someone can read in a minute." },
-        { "id": "business-plan", "label": "Business plan", "description": "A written plan covering the market, business model, strategy, team and finances." },
-        { "id": "budget", "label": "Budget", "description": "How you will spend the money or resources you ask for, by cost type and period." },
-        { "id": "financials", "label": "Financial statements or projections", "description": "Past accounts, or projections and their assumptions if the company is young." },
-        { "id": "company-documents", "label": "Company registration documents", "description": "Proof that the company exists, such as a registration certificate or an extract from the company register." },
-        { "id": "cvs", "label": "Team CVs", "description": "Short CVs or bios of the founders and the key team members." },
-        { "id": "support-letters", "label": "Letters of support or references", "description": "Letters from customers, partners, mentors or institutions that back the application." },
-        { "id": "product-demo", "label": "Product demo or video", "description": "A video or screenshots that show the product working." },
-        { "id": "technical-description", "label": "Technical description", "description": "How the product or technology works today and what you plan to build next." },
-        { "id": "market-analysis", "label": "Market analysis", "description": "The market, the customers, the competitors and how you will reach them." },
-        { "id": "impact-statement", "label": "Impact statement", "description": "The social or environmental effect of the work, and how you will measure it." },
-        { "id": "signed-forms", "label": "Signed declarations and forms", "description": "Forms and declarations that someone must sign, such as an eligibility or conflict of interest declaration." },
-        { "id": "other", "label": "Other", "description": "Any other document the provider asks for; name it in the notes." }
-      ],
-      "fields": [
-        {
-          "key": "status",
-          "label": "Status",
-          "description": "Where this document stands. Leave it empty until you know whether the program asks for it.",
-          "example": "",
-          "type": "select",
-          "options": [
-            { "value": "not-needed", "label": "Not needed", "description": "This program does not ask for it." },
-            { "value": "to-do", "label": "To do", "description": "The program asks for it and you have not started." },
-            { "value": "drafting", "label": "Drafting", "description": "You are writing or collecting it." },
-            { "value": "ready", "label": "Ready", "description": "Finished and checked, waiting to go out." },
-            { "value": "submitted", "label": "Submitted", "description": "Sent or uploaded to the provider." },
-            { "value": "needs-changes", "label": "Needs changes", "description": "The provider sent it back or asked for changes." },
-            { "value": "accepted", "label": "Accepted", "description": "The provider has accepted it." }
-          ],
-          "group": "documents",
-          "tab": "details",
-          "sections": ["po"],
-          "suggested": null,
-          "validation": null,
-          "showInList": false,
-          "searchable": false
-        },
-        {
-          "key": "link",
-          "label": "Link",
-          "description": "Where the file or the latest draft lives, such as a shared folder.",
-          "example": "e.g. https://example.com/files/pitch-deck",
-          "type": "url",
-          "group": "documents",
-          "tab": "details",
-          "sections": ["po"],
-          "suggested": null,
-          "validation": null,
-          "showInList": false,
-          "searchable": true
-        },
-        {
-          "key": "notes",
-          "label": "Notes",
-          "description": "Anything to remember about this document, such as a page limit or who is writing it.",
-          "example": "e.g. Ten pages at most, PDF only",
-          "type": "text",
-          "group": "documents",
-          "tab": "details",
-          "sections": ["po"],
-          "suggested": null,
-          "validation": null,
-          "showInList": false,
-          "searchable": true
-        }
-      ]
-    }
-  ]
+  "activities": []
 }

@@ -30,10 +30,10 @@ test("a dotted path resolves into nested objects and creates what is missing", (
 });
 
 test("a literal key containing dots wins over a nested lookup", () => {
-  // extraParams keys are labels the user typed. "Reach (est.)" splits into
+  // details keys can be labels someone typed. "Reach (est.)" splits into
   // segments that would otherwise be walked as if it were nested.
-  const record = { extraParams: { "Reach (est.) 2026": 500 } };
-  const found = timeline.resolvePath(record, "extraParams.Reach (est.) 2026", false);
+  const record = { details: { "Reach (est.) 2026": 500 } };
+  const found = timeline.resolvePath(record, "details.Reach (est.) 2026", false);
   assert.equal(found.key, "Reach (est.) 2026");
   assert.equal(found.container[found.key], 500);
 

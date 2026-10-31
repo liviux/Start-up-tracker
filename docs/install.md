@@ -83,7 +83,7 @@ The tracker listens only on `127.0.0.1`, on port 57322. The port is saved in `co
 startup-tracker update
 ```
 
-It looks up the latest release, checks the archive against `SHA256SUMS`, takes a safety backup of the database, swaps the new version in, restarts the tracker if it was running and shows what changed. If the new version does not start, the old one comes back. `startup-tracker update --rollback` returns to the previous version later. Your data is not changed by the update itself; a new version that needs a newer database layout upgrades it when it opens it, after a backup of its own.
+It looks up the latest release, checks the archive against `SHA256SUMS`, takes a safety backup of the database, swaps the new version in, restarts the tracker if it was running and shows what changed. If the new version does not start, the old one comes back. `startup-tracker update --rollback` returns to the previous version later. Your data is not changed by the update itself.
 
 `startup-tracker update --check` only looks. **Settings > About** shows whether a newer version exists and has **Check for updates now**. The tracker checks by itself once a day only while the network switch in **Settings > General** is on.
 

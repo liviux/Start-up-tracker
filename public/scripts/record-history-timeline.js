@@ -65,9 +65,9 @@
   }
 
   // Splits a dotted history path into the keys the data actually nests by, so a
-  // user-supplied label containing a dot stays one segment. extraParams keys and
-  // programs.details keys are free text, so "extraParams.Reach (est.) 2026" is
-  // two levels, not four. Longest candidate first, which makes a literal key
+  // user-supplied label containing a dot stays one segment. details keys can
+  // be free text, so "details.Reach (est.) 2026" is two levels, not four.
+  // Longest candidate first, which makes a literal key
   // with dots win over a nested lookup that happens to match its prefix.
   // Returns null when the path does not resolve against this object at all.
   function splitPath(rootValue, path) {

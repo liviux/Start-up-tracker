@@ -1,6 +1,6 @@
 # Extra
 
-Extra holds the pages that are not targets. They come in this order: **AI**, **Prompts**, **Media**, **Feedback** and **Research links**, then, under "Customize", **Campaigns**, **Tags**, **Categories** and **Fields**. Statuses are edited in Settings > Statuses.
+Extra holds the pages that are not targets. They come in this order: **AI**, **Prompts**, **Media**, **Feedback** and **Research links**, then, under "Customize", **Campaigns**, **Tags** and **Categories**. Statuses are edited in Settings > Statuses.
 
 Every page starts with the same header: its name, how many entries it has, a filter box and an **Add** button. On pages with a form, Add takes you to the form's first box. A page with nothing on it says what it is for.
 
@@ -68,6 +68,6 @@ Editing a tag shows which startups use it and lets you:
 
 Merging and deleting take a safety backup first (Settings > Backups). Save any open edits before you rename, merge or delete; the page asks you to if something is still saving.
 
-## Categories and Fields
+## Categories
 
-**Categories** is the category library (see [Categories](categories.md)). **Fields** holds your own fields (see [The target window and fields](fields.md)) and the **Programs documents checklist**: the documents a program can ask for, shared by all your startups. A program keeps a document you remove from the checklist, with its status.
+**Categories** is the category library (see [Categories](categories.md)).

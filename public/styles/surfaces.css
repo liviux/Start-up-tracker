@@ -389,7 +389,7 @@ html:root :is(.extra-subnav-btn, .oc-subnav-btn, .company-subnav-btn, .prompt-ta
   border-color: transparent;
 }
 
-/* Legacy module navigation declares its brand colors with !important. */
+/* The page navigations set their colours with !important; the active tab wins here. */
 html:root :is(.extra-subnav-btn[data-extra-tab], .oc-subnav-btn, .company-subnav-btn, .prompt-tab-btn).active {
   color: var(--accent) !important;
   background: var(--accent-soft) !important;

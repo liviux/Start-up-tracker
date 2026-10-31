@@ -329,19 +329,6 @@
     return addDays(value, -offset);
   }
 
-  // Backup files are named tracker-YYYYMMDD-HHMMSS[-suffix].sqlite with a UTC
-  // stamp. Returns the instant and the suffix (a label, or digits that only
-  // keep two names apart), or null when the name has no stamp.
-  function parseBackupStamp(fileName) {
-    const match = /^tracker-(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})(\d{2})(?:-([A-Za-z0-9._-]+?))?\.(?:sqlite|json)$/.exec(String(fileName || ""));
-    if (!match) return null;
-    const [, year, month, day, hour, minute, second, suffix = ""] = match;
-    if (!isDateString(`${year}-${month}-${day}`)) return null;
-    const instant = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute), Number(second)));
-    if (Number.isNaN(instant.getTime())) return null;
-    return { instant, label: /^\d+$/.test(suffix) ? "" : suffix };
-  }
-
   return Object.freeze({
     DAY_MS,
     isDateString,
@@ -370,7 +357,6 @@
     nowPartsIn,
     formatDate,
     formatInstant,
-    parseBackupStamp,
     DATE_FORMATS,
     DATE_FORMAT_KEYS,
     WEEK_STARTS,

@@ -97,7 +97,7 @@ test("writes need the tracker page or the API token", async () => {
     const writes = [
       ["PATCH", `api/startups/${startup.id}`, { name: "Renamed" }],
       ["DELETE", `api/startups/${startup.id}`, undefined],
-      ["PATCH", `api/s/${startup.id}/state/operations`, { protocolVersion: 2, operations: [] }],
+      ["PATCH", `api/s/${startup.id}/state/operations`, { protocolVersion: 3, operations: [] }],
       ["PUT", `api/s/${startup.id}/media/document`, { sourceType: "upload", storedName: "x.md", content: "" }],
       ["POST", `api/s/${startup.id}/media/upload`, {}],
       ["PATCH", "api/global/operations", { operations: [] }],
@@ -146,10 +146,10 @@ test("JSON routes refuse other content types and invalid JSON", async () => {
     const startup = await createStartup(server.url, "Json");
     const textOperations = await fetch(`${server.url}api/s/${startup.id}/state/operations`, { method: "PATCH", headers: { ...headers, "Content-Type": "text/plain" }, body: "{}" });
     assert.equal(textOperations.status, 415);
-    // The old whole-state replace is gone, and so are the routes without a startup.
+    // There is no whole-state replace, and no state route without a startup.
     for (const route of ["api/state", `api/s/${startup.id}/state`]) {
-      const legacy = await fetch(`${server.url}${route}`, { method: "PUT", headers: { ...headers, "Content-Type": "application/json" }, body: "{}" });
-      assert.equal(legacy.status, 404, route);
+      const replace = await fetch(`${server.url}${route}`, { method: "PUT", headers: { ...headers, "Content-Type": "application/json" }, body: "{}" });
+      assert.equal(replace.status, 404, route);
     }
     assert.equal((await fetch(`${server.url}api/state`)).status, 404);
     assert.equal((await fetch(`${server.url}api/state/operations`, { method: "PATCH", headers: { ...headers, "Content-Type": "application/json" }, body: "{}" })).status, 404);
@@ -189,7 +189,6 @@ test("uploaded files are served from /media/ only, active types as sandboxed dow
     }
     if (symlinked) {
       assert.equal((await fetch(`${base}link.txt`)).status, 404, "a symlink cannot lead outside the media folder");
-      assert.equal((await fetch(`${server.url}media/link.txt`, { redirect: "manual" })).status, 404, "nor through the redirect for old links");
     }
     for (const traversal of [`/media/${startup.id}/%2e%2e/%2e%2e/outside.txt`, "/media/%2e%2e/outside.txt", `/media/${startup.id}/..%2f..%2foutside.txt`]) {
       assert.equal((await rawRequest(server.url, traversal)).status, 400, traversal);

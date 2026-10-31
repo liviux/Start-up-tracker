@@ -1,9 +1,8 @@
-// Option lists shared by every startup: media types, the feedback lists,
-// research link groups and the Programs documents checklist.
+// Option lists shared by every startup: media types, the feedback lists and
+// research link groups.
 //
-// The shipped lists are content/options.json (the documents checklist comes
-// from content/fields/po.json). An edited list is kept whole in the global
-// "optionLists" section and replaces the shipped one; removing an option never
+// The shipped lists are content/options.json. An edited list is kept whole in
+// the global "optionLists" section and replaces the shipped one; removing an option never
 // changes the records that use it, which then show its id until it comes back.
 //
 // UMD: browsers get window.StartupTrackerOptions, Node gets module.exports
@@ -34,7 +33,6 @@
     { name: "feedbackJourneySteps", page: "feedback" },
     { name: "feedbackVerdicts", page: "feedback" },
     { name: "researchGroups", page: "research", extra: { key: "linkType" } },
-    { name: "documentChecklist", page: "fields" },
   ].map((spec) => Object.freeze(spec)));
   const LIST_NAMES = Object.freeze(LISTS.map((spec) => spec.name));
   const MAX_OPTIONS = 100;

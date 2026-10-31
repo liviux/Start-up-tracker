@@ -25,11 +25,12 @@ test("the three pages have the same panels, controls and names", () => {
       panels: [...html.matchAll(/data-sp-panel="(\w+)"/g)].map((match) => match[1]).join(","),
       headings: [...html.matchAll(/<h2(?: data-i18n="[^"]+")?>([^<]+)<\/h2>/g)].map((match) => match[1]).slice(1).join(","),
       fields: [...html.matchAll(/<(?:input|select) name="(\w+)"/g)].map((match) => match[1]).join(","),
-      controls: [...html.matchAll(/data-sp-(search|view|priority|campaign|page-size|statuses|tag-input|facet-key)\b/g)].map((match) => match[1]).join(","),
+      controls: [...html.matchAll(/data-sp-(search|view|priority|campaign|page-size|columns|statuses|tag-input|facet-key)\b/g)].map((match) => match[1]).join(","),
     };
   });
   assert.deepEqual(shapes[1], shapes[0]);
   assert.deepEqual(shapes[2], shapes[0]);
+  assert.equal(shapes[0].controls, "search,view,priority,campaign,page-size,columns,statuses", "no tag or custom field filter row: the search reads tags");
   assert.equal(shapes[0].panels, "focus,form,table");
   assert.equal(shapes[0].headings, "Focus queue,Add target,Targets");
   assert.equal(shapes[0].fields, "name,organization,link,status,priority,nextAction,nextActionDate,nextActionTime,campaignId,tags");
@@ -62,10 +63,10 @@ test("each saved view keeps the right rows", () => {
   assert.deepEqual(SectionPage.SAVED_VIEWS.map((view) => view.id), ["all", "overdue", "due-week", "due-month", "waiting", "no-next-action", "high", "no-campaign"]);
 });
 
-test("filters combine, and the search matches every word", () => {
-  const rows = [row("a", { search: "Spring accelerator Lisbon", tags: ["launch"], priority: "High" }), row("b", { search: "Spring grant", tags: [] })];
+test("filters combine, and the search matches every word, tags included", () => {
+  const rows = [row("a", { search: "Spring accelerator Lisbon launch", tags: ["launch"], priority: "High" }), row("b", { search: "Spring grant", tags: [] })];
   assert.deepEqual(SectionPage.filterRows(rows, { search: "spring lisbon", today: TODAY }).map((entry) => entry.id), ["a"]);
-  assert.deepEqual(SectionPage.filterRows(rows, { tags: ["launch"], today: TODAY }).map((entry) => entry.id), ["a"]);
+  assert.deepEqual(SectionPage.filterRows(rows, { search: "launch", today: TODAY }).map((entry) => entry.id), ["a"]);
   assert.deepEqual(SectionPage.filterRows(rows, { priority: "Medium", today: TODAY }).map((entry) => entry.id), ["b"]);
   assert.deepEqual(SectionPage.filterRows(rows, { statuses: () => false, today: TODAY }), []);
   assert.deepEqual(SectionPage.filterRows(rows, { today: TODAY }, (entry) => entry.id === "b").map((entry) => entry.id), ["b"]);
@@ -104,4 +105,23 @@ test("the Focus queue shows dated targets on the day or up to it", () => {
   assert.deepEqual(SectionPage.focusRows(rows, { date: TODAY, mode: "by" }).map((entry) => entry.id), ["past", "today"]);
   assert.deepEqual(SectionPage.focusRows(rows, { date: "", mode: "by" }).map((entry) => entry.id), ["past", "today", "future"]);
   assert.match(SectionPage.focusCardHtml(row("c", { nextActionDate: TODAY, owner: "Ana", nextAction: "Call back" })), /Ana[\s\S]*Call back/);
+});
+
+test("the Columns menu adds any field as a column, and field columns sort by value", () => {
+  assert.deepEqual(SectionPage.defaultColumns(false), ["priority", "name", "category", "status", "date", "campaign", "tags"]);
+  assert.deepEqual(SectionPage.defaultColumns(true).at(-1), "value");
+  const html = SectionPage.rowHtml(row("x", { priority: "High" }), { columns: ["name", "field:owner", "field:deadline"], fieldText: (entry, id) => (id === "field:owner" ? "Ana & Co" : ""), fieldLabel: (id) => (id === "field:owner" ? "Owner" : "Deadline") });
+  assert.equal((html.match(/<td/g) || []).length, 3, "only the columns asked for");
+  // The label names the value where a narrow screen shows the row as a card.
+  assert.match(html, /<td class="sp-field" data-label="Owner"><div class="sp-field-text" title="Ana &amp; Co">Ana &amp; Co<\/div><\/td>/);
+  assert.match(html, /<td class="sp-field" data-label="Deadline"><\/td>/, "an empty field leaves its cell empty, so the card hides it");
+  const menu = SectionPage.columnPickerHtml([{ label: "Table", columns: [{ id: "name", label: "Name" }] }, { label: "Basics", columns: [{ id: "field:owner", label: "Owner" }] }], ["name"]);
+  assert.match(menu, /data-sp-column="name" checked/);
+  assert.match(menu, /data-sp-column="field:owner">/);
+  assert.match(menu, /<legend>Basics<\/legend>/);
+  const rows = [row("a"), row("b"), row("c")];
+  const reach = { a: 40, b: "", c: 1200 };
+  const valueOf = (entry) => reach[entry.id];
+  assert.deepEqual(SectionPage.sortRows(rows, { column: "field:reach", direction: "asc" }, valueOf).map((entry) => entry.id), ["a", "c", "b"], "numbers by size, empty last");
+  assert.deepEqual(SectionPage.sortRows(rows, { column: "field:reach", direction: "desc" }, valueOf).map((entry) => entry.id), ["c", "a", "b"]);
 });

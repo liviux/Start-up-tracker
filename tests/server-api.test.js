@@ -7,6 +7,7 @@ const zlib = require("node:zlib");
 const { spawn } = require("node:child_process");
 const test = require("node:test");
 const { TrackerSqliteStore } = require("../lib/tracker-sqlite-store");
+const { createBackupManager } = require("../lib/backups/manager");
 const { startServer, makeTempHome, rootDir } = require("./helpers/server");
 const { browserFetch, sendJson, createStartup, saveOperations, uploadFile, seedStartup } = require("./helpers/api");
 
@@ -94,7 +95,7 @@ test("state API compresses reads and applies idempotent incremental writes", asy
     assert.equal((await unlockedResponse.json()).error, "reloadRequired");
 
     const mutation = {
-      protocolVersion: 2,
+      protocolVersion: 3,
       mutationId: "api-test-mutation",
       baseRevision: 1,
       updatedAt: "2026-08-19T08:01:00.000Z",
@@ -134,7 +135,7 @@ test("state API compresses reads and applies idempotent incremental writes", asy
     assert.equal(retried.replayed, true);
 
     const largeMutation = {
-      protocolVersion: 2,
+      protocolVersion: 3,
       mutationId: "compressed-api-test-mutation",
       baseRevision: 2,
       updatedAt: "2026-08-19T08:01:30.000Z",
@@ -223,11 +224,6 @@ test("state API compresses reads and applies idempotent incremental writes", asy
     } finally {
       backupStore.close();
     }
-
-    // The flat-file snapshot routes are gone.
-    assert.equal((await sendJson(`${serverUrl}api/state/snapshot`, "POST", {})).status, 404);
-    assert.equal((await sendJson(`${serverUrl}api/backups/snapshot`, "POST", { label: "old" })).status, 404);
-    assert.equal((await sendJson(`${serverUrl}api/backups/restore`, "POST", { fileName: "tracker-x.sqlite" })).status, 404);
 
     // The seeded data was backed up automatically when the server started.
     const listing = await (await browserFetch(`${serverUrl}api/backups?startupId=${startupId}`)).json();
@@ -416,7 +412,7 @@ test("server enforces decompression maxOutputLength on gzip and brotli requests 
     const operationsUrl = `${server.url}api/s/${startup.id}/state/operations`;
 
     const largePayload = JSON.stringify({
-      protocolVersion: 2,
+      protocolVersion: 3,
       padding: "a".repeat(2048),
     });
 
@@ -438,7 +434,7 @@ test("server enforces decompression maxOutputLength on gzip and brotli requests 
     assert.equal((await send("deflate", zlib.deflateSync(largePayload))).status, 415);
 
     const validPayload = JSON.stringify({
-      protocolVersion: 2,
+      protocolVersion: 3,
       mutationId: "valid-zip-test",
       baseRevision: 1,
       operations: [],
@@ -495,11 +491,11 @@ test("a damaged database is refused instead of served", async () => {
 
   const startupId = seedStartup(databasePath, "Damaged", { updatedAt: "seed", items: [{ id: "a", title: "Real" }] });
   const seed = new TrackerSqliteStore(databasePath);
+  let backup;
   try {
     // Enough rows that the corruption below lands on table pages.
     seed.upsertRecord(startupId, "items", { id: "b", title: "x".repeat(40_000) });
-    fs.mkdirSync(backupDir, { recursive: true });
-    seed.createSnapshot(path.join(backupDir, "tracker-20260819-090000.sqlite"));
+    backup = createBackupManager({ store: seed, backupDir, mediaDir: path.join(home, "media") }).create({ kind: "pinned", label: "before-damage" });
   } finally {
     seed.close();
   }
@@ -525,8 +521,8 @@ test("a damaged database is refused instead of served", async () => {
     // corruption until the last clean snapshot rotates away.
     assert.notEqual(exitCode, 0);
     assert.match(output, /failed its integrity check/);
-    // The operator is told which snapshot to restore, not just that it broke.
-    assert.match(output, /tracker-20260819-090000\.sqlite/);
+    // The operator is told which backup to restore, not just that it broke.
+    assert.ok(output.includes(`--snapshot ${backup.id}`), output);
     assert.doesNotMatch(output, /Startup Tracker: http/);
   } finally {
     if (child.exitCode === null) child.kill("SIGKILL");

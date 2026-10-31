@@ -52,7 +52,7 @@ Choose a `.zip` or `.json` export, or a `.sqlite` database. The tracker checks i
 - **Replace this startup**: the current startup's records are replaced with the export's (it must hold exactly one startup).
 - **Restore the whole database** (for a `.sqlite` file): like restoring a backup of the whole database.
 
-A safety backup is taken first. A database from an older version of the tracker is upgraded on a copy; the file you chose is not changed. Archives with paths that leave the archive, absolute paths, symbolic links, more than 20,000 entries or more than 2 GB of content are refused.
+A safety backup is taken first. Archives with paths that leave the archive, absolute paths, symbolic links, more than 20,000 entries or more than 2 GB of content are refused.
 
 ## From a terminal
 

@@ -11,7 +11,7 @@ test("the status list is seeded on first start and edited through the API", asyn
     const listed = await (await browserFetch(`${server.url}api/statuses`)).json();
     assert.equal(listed.statuses.statuses.length, 22);
     assert.deepEqual(listed.statuses.groups.map((group) => group.id), ["planned", "in_progress", "done", "closed"]);
-    assert.deepEqual(listed.priorities.priorities.map((priority) => priority.id), ["very_high", "high", "medium", "low", "very_low"]);
+    assert.deepEqual(listed.priorities.priorities.map((priority) => priority.id), ["Very High", "High", "Medium", "Low", "Very Low"]);
 
     const config = listed.statuses;
     const withCustom = { ...config, statuses: [...config.statuses, { id: "waiting_list", group: "in_progress", label: "Waiting list", description: "" }] };

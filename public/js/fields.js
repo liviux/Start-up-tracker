@@ -2,21 +2,16 @@
 // (window.StartupTrackerFields).
 //
 // Every target has the same core fields (name, organization, link, status...)
-// in MK, PO and FU, then its section's detail fields in groups, then the
-// startup's own custom fields. This file knows where each one is stored on a
-// record, turns what an input holds into a stored value and back, and builds
-// the inputs. The record window (js/record-window.js) draws them.
+// in MK, PO and FU, then its section's detail fields in groups, then its own
+// custom fields: label and value pairs that belong to that one target. This
+// file knows where each one is stored on a record, turns what an input holds
+// into a stored value and back, and builds the inputs. The record window
+// (js/record-window.js) draws them.
 //
-// Where values live:
-// - core fields flat on the record. The sections stored some of them under
-//   older names before the registry existed (MK `platform` for the name, FU
-//   `opportunity` and `funder`...); STORAGE maps those, so records keep the
-//   keys every other part of the app reads.
-// - detail fields in `record.details`, except a few FU ones that were already
-//   flat on its records.
-// - custom fields (Extra > Fields) in `record.custom`.
-// Keys no definition knows stay on the record untouched; otherFields() lists
-// them for the window's "Other fields".
+// Where values live: core fields flat on the record, detail fields in
+// `record.details`, custom fields in `record.customFields` as a list of
+// { label, value }, and the entries of an activity (the timeline, and FU
+// commitments and payments) in a list named after the activity.
 //
 // Numbers keep empty and 0 apart: empty (null) means unknown, 0 is a value.
 // Examples are placeholders only and are never read back as values.
@@ -39,142 +34,15 @@
 
   const SECTIONS = Object.freeze(["mk", "po", "fu"]);
   const TYPES = Object.freeze(["text", "textarea", "markdown", "number", "money", "money-range", "percent", "date", "datetime", "time", "url", "email", "select", "multiselect", "tristate", "person", "rating", "list"]);
-  const CUSTOM_TYPES = Object.freeze(["text", "textarea", "number", "money", "percent", "date", "datetime", "url", "email", "select", "multiselect", "tristate", "person"]);
   const DATE = /^\d{4}-\d{2}-\d{2}$/;
   const TIME = /^\d{2}:\d{2}$/;
   const DATETIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
   const CURRENCY = /^[A-Z]{3}$/;
-
-  // Where a field is stored when it is not `details[key]` (detail fields) or
-  // `record[key]` (core fields).
-  const STORAGE = Object.freeze({
-    mk: { name: "platform", nextActionDate: "date", nextActionTime: "time" },
-    po: { link: "applicationLink" },
-    fu: {
-      name: "opportunity",
-      organization: "funder",
-      link: "funderLink",
-      // FU detail fields its records already held flat.
-      contactName: "contactName",
-      contactRole: "contactRole",
-      contactEmail: "contactEmail",
-      introducer: "introducer",
-      lastContactDate: "lastContactDate",
-      expectedCloseDate: "expectedCloseDate",
-      probabilityPercent: "probability",
-      outcomeReason: "lossReason",
-      askAmount: { amount: "askAmount", currency: "askCurrency" },
-    },
-  });
-
-  // Keys a section keeps flat on its records for the app's own use; anything
-  // else flat that no field claims shows under "Other fields".
-  const INTERNAL_KEYS = new Set([
-    "id", "createdAt", "updatedAt", "deletedAt", "taxonomy", "category", "subcategory", "subcategories", "type",
-    "details", "custom", "extraParams", "documents", "timeEntries", "activityLog", "commitments", "payments",
-    "repeatInterval", "repeatUnit", "hasRepeated", "status", "priority", "tags", "notes", "campaignId",
-  ]);
-  const INTERNAL_BY_SECTION = Object.freeze({
-    mk: new Set(["platform", "date", "time"]),
-    po: new Set(["applicationLink"]),
-    fu: new Set(["opportunity", "funder", "funderLink", "askAmount", "askCurrency", "probability", "lossReason", "sourceType", "roundId"]),
-  });
-
-  // Activity entries keep the shape their records already had: a field's
-  // stored key and, for some options, the stored value.
-  const ACTIVITY_STORAGE = Object.freeze({
-    milestones: { collection: "timeEntries", keys: {}, values: {} },
-    updateLog: {
-      collection: "activityLog",
-      keys: { whatHappened: "type" },
-      values: { whatHappened: { research: "verification", sent: "application", reply: "response", "follow-up": "follow-up", meeting: "meeting", published: "published", decision: "decision", other: "other" } },
-    },
-    commitments: {
-      collection: "commitments",
-      keys: {},
-      values: { state: { verbal: "Verbal", written: "Written", conditional: "Conditional", signed: "Signed" } },
-    },
-    payments: {
-      collection: "payments",
-      keys: { dueDate: "date" },
-      values: { status: { expected: "Expected", scheduled: "Scheduled", invoiced: "Invoiced", "partially-received": "Partially Received", received: "Received", delayed: "Delayed", cancelled: "Cancelled" } },
-    },
-    documents: {
-      collection: "documents",
-      keys: {},
-      values: { status: { "not-needed": "Not required", "to-do": "Required", drafting: "In progress", ready: "Ready", submitted: "Submitted", "needs-changes": "Needs changes", accepted: "Accepted" } },
-    },
-  });
-
-  // Older keys whose value has exactly one new home. Moved once when a
-  // record is loaded, and only into an empty field; the old key goes, since
-  // the value now lives in the new one. Anything else stays where it was.
-  const MOVES = Object.freeze({
-    mk: [
-      ["extraParams", "impressions", "reach"],
-      ["extraParams", "clicks", "clicks"],
-      ["extraParams", "installs", "conversions"],
-      ["extraParams", "sentiment", "sentiment"],
-      ["extraParams", "lastContactDate", "lastContactDate"],
-      ["extraParams", "followUpCount", "followUps"],
-      ["extraParams", "responseType", "response"],
-      ["extraParams", "cost", "cost"],
-      ["extraParams", "effortHours", "effortHours"],
-      ["extraParams", "bestTime", "bestTime"],
-      ["extraParams", "scheduledFor", "scheduledFor"],
-      ["extraParams", "actuallyPostedAt", "postedAt"],
-      ["extraParams", "language", "language"],
-      ["extraParams", "region", "region"],
-      ["extraParams", "targetAudience", "audience"],
-      ["extraParams", "targetProblem", "problem"],
-    ],
-    po: [
-      ["details", "providerOrg", "organization"],
-      ["details", "internalOwner", "owner"],
-      ["details", "actionOwner", "owner"],
-      ["details", "nextAction", "nextAction"],
-      ["details", "refCallId", "referenceId"],
-      ["details", "lastVerifiedAt", "lastVerified"],
-      ["details", "evidenceSource", "evidence"],
-      ["details", "appUrl", "applicationUrl"],
-      ["details", "appId", "applicationId"],
-      ["details", "submissionDate", "submittedOn"],
-      ["details", "interviewDate", "interviewOn"],
-      ["details", "incorpCountry", "incorporationCountry"],
-      ["details", "appLanguage", "applicationLanguage"],
-      ["details", "maxCompanyAge", "maxCompanyAgeYears"],
-      ["details", "sectorReq", "sectorRules"],
-      ["details", "founderTimeCommitment", "timeCommitment"],
-      ["details", "prepHours", "effortHours"],
-      ["details", "probability", "probabilityPercent"],
-      ["details", "incorpReq", "incorporationRequired"],
-      ["extraParams", "deadline", "deadline"],
-      ["extraParams", "effortHours", "effortHours"],
-      ["extraParams", "learnings", "lessonsLearned"],
-      ["extraParams", "timeCommitment", "timeCommitment"],
-      ["extraParams", "applicationWindowOpen", "opensOn"],
-    ],
-    fu: [
-      ["extraParams", "instrument", "instrument"],
-      ["extraParams", "investorThesis", "thesis"],
-      ["extraParams", "sectorFocus", "sectors"],
-      ["extraParams", "geographicMandate", "geography"],
-      ["extraParams", "portfolioConflict", "portfolioConflicts"],
-      ["extraParams", "opportunityUrl", "sourceUrl"],
-      ["extraParams", "introductionBy", "introducer"],
-      ["extraParams", "warmth", "relationship"],
-      ["extraParams", "boardSeatRequired", "boardSeat"],
-      ["extraParams", "valuationCap", "valuationOrCap"],
-      ["extraParams", "dilutionPercent", "dilutionPercent"],
-      ["extraParams", "interestRatePercent", "interestRatePercent"],
-      ["extraParams", "repaymentTermMonths", "termMonths"],
-      ["extraParams", "termSheetDate", "termSheetDate"],
-      ["extraParams", "learnings", "lessonsLearned"],
-    ],
-  });
+  // A custom field's label and value, as the Details tab takes them.
+  const CUSTOM_LABEL_MAX = 80;
+  const CUSTOM_VALUE_MAX = 4000;
 
   let registry = { common: { fields: [], groups: [], activities: [] }, mk: { fields: [], groups: [], activities: [] }, po: { fields: [], groups: [], activities: [] }, fu: { fields: [], groups: [], activities: [] } };
-  let customDefinitions = [];
 
   function setRegistry(next) {
     const empty = { fields: [], groups: [], activities: [] };
@@ -186,94 +54,19 @@
     };
   }
 
-  // The registry and the custom fields from the server, or the shipped files
-  // when it cannot answer (then without custom fields).
+  // The registry from the server, or the shipped files when it cannot answer.
   async function load(fetchImpl = fetch) {
     try {
       const response = await fetchImpl("/api/fields", { cache: "no-store" });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const body = await response.json();
       setRegistry(body.registry);
-      setCustomFields(body.custom);
       return body;
     } catch {
       const files = await Promise.all(["common", ...SECTIONS].map((name) => fetchImpl(`/content/fields/${name}.json`).then((response) => response.json()).catch(() => null)));
       setRegistry({ common: files[0], mk: files[1], po: files[2], fu: files[3] });
-      setCustomFields([]);
-      return { registry, custom: [] };
+      return { registry };
     }
-  }
-
-  // ---- custom fields --------------------------------------------------------
-
-  class FieldError extends Error {
-    constructor(message, code = "badField") {
-      super(message);
-      this.name = "FieldError";
-      this.code = code;
-      this.statusCode = 400;
-    }
-  }
-
-  function keyFromLabel(label) {
-    const words = String(label || "").normalize("NFKD").replace(/[^\w\s]/g, " ").trim().toLowerCase().split(/\s+/).filter(Boolean);
-    const key = words.map((word, index) => (index ? word.charAt(0).toUpperCase() + word.slice(1) : word)).join("").replace(/^[^a-z]+/, "");
-    return key.slice(0, 48);
-  }
-
-  // A custom field definition, checked: { id, section, key, label,
-  // description, example, type, options, group }.
-  function validateCustomField(definition, existing = []) {
-    if (!definition || typeof definition !== "object") throw new FieldError(t("fields.validateCustomField.aFieldMustBeAn"));
-    const section = definition.section;
-    if (!SECTIONS.includes(section)) throw new FieldError(t("fields.validateCustomField.sectionMustBeOneOf", { value: SECTIONS.join(", ") }));
-    const label = String(definition.label || "").trim();
-    if (!label) throw new FieldError(t("fields.validateCustomField.aFieldNeedsALabel"), "labelRequired");
-    if (label.length > 80) throw new FieldError(t("fields.validateCustomField.aLabelCanBeUp"), "labelTooLong");
-    const key = String(definition.key || keyFromLabel(label)).trim();
-    if (!/^[a-z][a-zA-Z0-9]{0,47}$/.test(key)) throw new FieldError(t("fields.validateCustomField.theKeyMustStartWith"), "badKey");
-    const builtIn = [...fieldsOf("common", section), ...fieldsOf(section, section)].some((field) => field.key === key);
-    if (builtIn) throw new FieldError(t("fields.validateCustomField.isAlreadyAFieldOf", { key }), "keyTaken");
-    if (existing.some((other) => other.id !== definition.id && other.section === section && other.key === key)) throw new FieldError(t("fields.validateCustomField.anotherCustomFieldAlreadyUses", { key }), "keyTaken");
-    const type = definition.type || "text";
-    if (!CUSTOM_TYPES.includes(type)) throw new FieldError(t("fields.validateCustomField.typeMustBeOneOf", { value: CUSTOM_TYPES.join(", ") }), "badType");
-    let options = [];
-    if (type === "select" || type === "multiselect") {
-      options = (Array.isArray(definition.options) ? definition.options : [])
-        .map((option) => (typeof option === "string" ? { value: option, label: option } : option))
-        .map((option) => ({ value: String(option?.value ?? option?.label ?? "").trim(), label: String(option?.label ?? option?.value ?? "").trim(), description: String(option?.description || "").trim() }))
-        .filter((option) => option.value);
-      if (!options.length) throw new FieldError(t("fields.validateCustomField.aListFieldNeedsAt"), "optionsRequired");
-      if (new Set(options.map((option) => option.value)).size !== options.length) throw new FieldError(t("fields.validateCustomField.twoOptionsHaveTheSame"), "duplicateOption");
-    }
-    return {
-      id: String(definition.id || `field-${section}-${key}`),
-      section,
-      key,
-      label,
-      description: String(definition.description || "").trim().slice(0, 400),
-      example: String(definition.example || "").trim().slice(0, 120),
-      type,
-      options,
-      group: String(definition.group || "").trim().slice(0, 60),
-    };
-  }
-
-  function setCustomFields(list) {
-    customDefinitions = [];
-    for (const definition of Array.isArray(list) ? list : []) {
-      try {
-        customDefinitions.push(validateCustomField(definition, customDefinitions));
-      } catch {
-        // A broken definition is left out; its values stay under Other fields.
-      }
-    }
-  }
-
-  function customFields(section) {
-    return customDefinitions
-      .filter((definition) => definition.section === section)
-      .map((definition) => ({ ...definition, sections: [section], tab: "extras", custom: true, suggested: null, validation: null, showInList: false, searchable: true }));
   }
 
   // ---- the registry -----------------------------------------------------------
@@ -299,35 +92,15 @@
 
   function activities(section) {
     return [...(registry.common?.activities || []), ...(registry[section]?.activities || [])]
-      .filter((activity) => !activity.sections || activity.sections.includes(section))
-      .map((activity) => (activity.checklist && documentChecklist ? { ...activity, checklist: documentChecklist } : activity));
-  }
-
-  // The Programs documents checklist as edited in Extra > Fields (shared by
-  // every startup; js/options.js keeps it as the "documentChecklist" list).
-  // null goes back to the shipped list in content/fields/po.json.
-  let documentChecklist = null;
-  function setDocumentChecklist(list) {
-    documentChecklist = Array.isArray(list)
-      ? list.map((entry) => ({ id: String(entry?.id || ""), label: String(entry?.label || entry?.id || ""), description: String(entry?.description || "") })).filter((entry) => entry.id)
-      : null;
-  }
-
-  function shippedDocumentChecklist() {
-    const activity = [...(registry.common?.activities || []), ...(registry.po?.activities || [])].find((entry) => entry.checklist);
-    return activity ? activity.checklist.map((entry) => ({ ...entry })) : [];
+      .filter((activity) => !activity.sections || activity.sections.includes(section));
   }
 
   function findField(section, key) {
-    return [...coreFields(section), ...fieldsOf("common", section), ...fieldsOf(section, section), ...customFields(section)].find((field) => field.key === key) || null;
+    return [...fieldsOf("common", section), ...fieldsOf(section, section)].find((field) => field.key === key) || null;
   }
 
   function where(section, field) {
-    if (field.custom) return { place: "custom", key: field.key };
     if (field.key === "repeat") return { place: "repeat" };
-    const stored = STORAGE[section]?.[field.key];
-    if (stored && typeof stored === "object") return { place: "flat-money", ...stored };
-    if (stored) return { place: "flat", key: stored };
     if (field.group === "core" || field.group === "notes" || field.tab === "core") return { place: "flat", key: field.key };
     return { place: "details", key: field.key };
   }
@@ -352,18 +125,13 @@
     return (field.options || []).map((option) => String(option.value));
   }
 
-  // Matches a stored value to an option: its value, its label, or the same
-  // words written as a slug ("Partially Received" is "partially-received").
+  // Matches a typed value to an option: its value or its label.
   function matchOption(field, value) {
     const text = String(value ?? "").trim();
     if (!text) return "";
-    const values = optionValues(field);
-    if (values.includes(text)) return text;
-    const slug = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    if (optionValues(field).includes(text)) return text;
     const byLabel = (field.options || []).find((option) => String(option.label).toLowerCase() === text.toLowerCase());
-    if (byLabel) return String(byLabel.value);
-    if (values.includes(slug)) return slug;
-    return null;
+    return byLabel ? String(byLabel.value) : null;
   }
 
   // What a field holds, from any input or stored value. Unknown select values
@@ -440,24 +208,18 @@
     const at = where(section, field);
     const source = record || {};
     if (at.place === "repeat") return normalize({ type: "repeat" }, { interval: source.repeatInterval, unit: source.repeatUnit });
-    if (at.place === "flat-money") return normalize(field, { amount: source[at.amount], currency: source[at.currency] });
     const holder = at.place === "flat" ? source : (source[at.place] || {});
     return normalize(field, holder[at.key]);
   }
 
-  // Writes a value where the field lives. An empty detail or custom value is
-  // removed rather than stored as "".
+  // Writes a value where the field lives. An empty detail value is removed
+  // rather than stored as "".
   function setValue(section, record, field, raw) {
     const at = where(section, field);
     const value = normalize(field, raw);
     if (at.place === "repeat") {
       record.repeatInterval = value.interval;
       record.repeatUnit = value.unit;
-      return record;
-    }
-    if (at.place === "flat-money") {
-      record[at.amount] = value.amount === null ? 0 : value.amount;
-      if (value.currency) record[at.currency] = value.currency;
       return record;
     }
     if (at.place === "flat") {
@@ -470,93 +232,37 @@
     return record;
   }
 
-  // ---- activity entries -------------------------------------------------------
+  // ---- custom fields --------------------------------------------------------
 
-  function activityStorage(activity) {
-    return ACTIVITY_STORAGE[activity.id] || { collection: activity.id, keys: {}, values: {} };
+  // A target's own label and value pairs, as text, in their order. A pair
+  // with neither a label nor a value is dropped.
+  function customFieldsOf(record) {
+    return (Array.isArray(record?.customFields) ? record.customFields : [])
+      .map((entry) => ({
+        label: String(entry?.label ?? "").trim().slice(0, CUSTOM_LABEL_MAX),
+        value: String(entry?.value ?? "").trim().slice(0, CUSTOM_VALUE_MAX),
+      }))
+      .filter((entry) => entry.label || entry.value);
   }
 
+  // ---- activity entries -------------------------------------------------------
+
   function activityEntries(record, activity) {
-    const list = record?.[activityStorage(activity).collection];
+    const list = record?.[activity.id];
     return Array.isArray(list) ? list : [];
   }
 
   function readEntryValue(activity, field, entry) {
-    const storage = activityStorage(activity);
-    const stored = entry?.[storage.keys[field.key] || field.key];
-    const map = storage.values[field.key];
-    if (map) {
-      const back = Object.entries(map).find(([, storedValue]) => storedValue === stored);
-      if (back) return back[0];
-    }
-    return normalize(field, stored);
+    return normalize(field, entry?.[field.key]);
   }
 
-  // Writes one entry's values in its stored shape; keys no field claims stay.
+  // Writes one entry's values; keys no field claims stay.
   function writeEntry(activity, entry, values) {
-    const storage = activityStorage(activity);
     const next = { ...(entry || {}) };
     for (const field of activity.fields || []) {
-      if (!(field.key in values)) continue;
-      const value = normalize(field, values[field.key]);
-      const map = storage.values[field.key];
-      next[storage.keys[field.key] || field.key] = map && map[value] !== undefined ? map[value] : value;
+      if (field.key in values) next[field.key] = normalize(field, values[field.key]);
     }
     return next;
-  }
-
-  // ---- older keys ---------------------------------------------------------------
-
-  // Moves the older keys of MOVES into their new fields. Returns the record
-  // (a copy when something moved) and whether it changed.
-  function migrate(section, record) {
-    if (!record || typeof record !== "object") return { record, changed: false };
-    let next = null;
-    for (const [place, oldKey, newKey] of MOVES[section] || []) {
-      const holder = (next || record)[place];
-      if (!holder || typeof holder !== "object" || !Object.prototype.hasOwnProperty.call(holder, oldKey)) continue;
-      const field = findField(section, newKey);
-      if (!field) continue;
-      const value = normalize(field, holder[oldKey]);
-      if (isEmpty(field, value) || (field.type === "select" && matchOption(field, value) === null)) continue;
-      if (!isEmpty(field, getValue(section, next || record, field))) continue;
-      next = next || { ...record, details: { ...(record.details || {}) }, extraParams: { ...(record.extraParams || {}) } };
-      setValue(section, next, field, value);
-      delete next[place][oldKey];
-    }
-    return next ? { record: next, changed: true } : { record, changed: false };
-  }
-
-  // Values on a record that no field definition claims: older detail keys,
-  // older extra parameters, custom values whose field was deleted and flat
-  // keys the app does not use. Each { place, key, value }.
-  function otherFields(section, record) {
-    if (!record) return [];
-    const claimed = new Set();
-    const all = [...fieldsOf("common", section), ...fieldsOf(section, section), ...customFields(section)];
-    for (const field of all) {
-      const at = where(section, field);
-      if (at.place === "flat-money") {
-        claimed.add(`flat:${at.amount}`);
-        claimed.add(`flat:${at.currency}`);
-      } else if (at.key) claimed.add(`${at.place}:${at.key}`);
-    }
-    const out = [];
-    for (const [key, value] of Object.entries(record)) {
-      if (INTERNAL_KEYS.has(key) || INTERNAL_BY_SECTION[section]?.has(key) || claimed.has(`flat:${key}`)) continue;
-      if (value === undefined) continue;
-      out.push({ place: "flat", key, value });
-    }
-    for (const place of ["details", "extraParams", "custom"]) {
-      const holder = record[place];
-      if (!holder || typeof holder !== "object") continue;
-      for (const [key, value] of Object.entries(holder)) {
-        if (claimed.has(`${place}:${key}`)) continue;
-        if (value === null || value === undefined || value === "") continue;
-        out.push({ place, key, value });
-      }
-    }
-    return out;
   }
 
   // ---- display ------------------------------------------------------------------
@@ -688,33 +394,21 @@
   return {
     SECTIONS,
     TYPES,
-    CUSTOM_TYPES,
-    STORAGE,
-    MOVES,
-    FieldError,
     load,
     setRegistry,
-    setCustomFields,
-    customFields,
-    validateCustomField,
-    keyFromLabel,
     coreFields,
     detailGroups,
     activities,
-    setDocumentChecklist,
-    shippedDocumentChecklist,
     findField,
     where,
     normalize,
     isEmpty,
     getValue,
     setValue,
+    customFieldsOf,
     activityEntries,
-    activityStorage,
     readEntryValue,
     writeEntry,
-    migrate,
-    otherFields,
     formatValue,
     optionLabel,
     inputHtml,

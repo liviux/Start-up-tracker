@@ -50,7 +50,8 @@ function validateStatuses(value, problems) {
   }
 }
 
-const PRIORITY_IDS = ["very_high", "high", "medium", "low", "very_low"];
+// The stored values; a target keeps one of these as its priority.
+const PRIORITY_IDS = ["Very High", "High", "Medium", "Low", "Very Low"];
 function validatePriorities(value, problems) {
   if (!isPlainObject(value) || !Array.isArray(value.priorities)) {
     problems.push("needs a priorities list");
@@ -65,8 +66,7 @@ function validatePriorities(value, problems) {
 }
 
 // The shared option lists: every list the app knows, each passing the same
-// checks as an edited list (public/js/options.js). The documents checklist
-// lives with the Programs fields instead.
+// checks as an edited list (public/js/options.js).
 function validateOptions(value, problems) {
   const Options = require("../public/js/options.js");
   if (!isPlainObject(value)) {

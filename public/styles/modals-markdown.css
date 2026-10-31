@@ -325,7 +325,7 @@
 .manager-extra-row textarea,
 .funding-add-row textarea,
 .milestone-add-row textarea,
-.modal-card textarea:not(#notesPaneEdit textarea):not(#programPaneEdit textarea):not(#fundingPaneEdit textarea):not(#mediaDocumentPaneEdit textarea):not(.notes-editor-pane-full textarea):not(#modalNotesInput):not(#modalProgNotes):not(#modalFundingNotes):not(#mediaDocumentInput):not(#promptMarkdownTextarea) {
+.modal-card textarea:not(#notesPaneEdit textarea):not(#programPaneEdit textarea):not(#fundingPaneEdit textarea):not(#mediaDocumentPaneEdit textarea):not(.notes-editor-pane-full textarea):not(#modalNotesInput):not(#modalProgNotes):not(#modalFundingNotes):not(#mediaDocumentInput):not(#promptMarkdownTextarea):not([data-rw-notes]) {
   width: 100%;
   min-height: 38px;
   max-height: 360px;
@@ -369,7 +369,7 @@
 [data-theme="dark"] .manager-extra-row textarea,
 [data-theme="dark"] .funding-add-row textarea,
 [data-theme="dark"] .milestone-add-row textarea,
-[data-theme="dark"] .modal-card textarea:not(#notesPaneEdit textarea):not(#programPaneEdit textarea):not(#fundingPaneEdit textarea):not(#mediaDocumentPaneEdit textarea):not(.notes-editor-pane-full textarea):not(#modalNotesInput):not(#modalProgNotes):not(#modalFundingNotes):not(#mediaDocumentInput):not(#promptMarkdownTextarea) {
+[data-theme="dark"] .modal-card textarea:not(#notesPaneEdit textarea):not(#programPaneEdit textarea):not(#fundingPaneEdit textarea):not(#mediaDocumentPaneEdit textarea):not(.notes-editor-pane-full textarea):not(#modalNotesInput):not(#modalProgNotes):not(#modalFundingNotes):not(#mediaDocumentInput):not(#promptMarkdownTextarea):not([data-rw-notes]) {
   background: var(--surface);
   color: var(--text);
   border-color: var(--border);
@@ -1265,10 +1265,6 @@
   transition: opacity 0.12s ease, transform 0.12s ease;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-}
-
-.custom-tooltip.wide-tooltip {
-  max-width: 500px;
 }
 
 .custom-tooltip.visible {

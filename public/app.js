@@ -20,9 +20,6 @@
   const CALENDAR_SCOPE_STORAGE_KEY = STARTUP_ID ? Api.storageKey("calendar-scope") : "";
   // Section toggles, event types, status filter and summary range.
   const CALENDAR_FILTERS_STORAGE_KEY = STARTUP_ID ? Api.storageKey("calendar-filters") : "";
-  // Version 2 made "all time" the default summary range. Stored ranges from
-  // version 1 came from the old default, so they are not kept.
-  const CALENDAR_FILTERS_STORAGE_VERSION = 2;
   const GLOBAL_SEARCH_DELAY = 200;
   const GLOBAL_SEARCH_LIMIT = 18;
   const GLOBAL_SEARCH_MAX_VALUE_LENGTH = 20000;
@@ -77,6 +74,8 @@
   const CompanyPage = window.StartupTrackerCompanyPage;
   // Agent runs (js/agents-page.js).
   const AgentsPage = window.StartupTrackerAgentsPage;
+  // The app's own confirm and alert (js/dialog.js).
+  const Dialog = window.StartupTrackerDialog;
   const GlobalData = window.StartupTrackerGlobalData;
   const Options = window.StartupTrackerOptions;
   const LinkTypes = window.StartupTrackerLinkTypes;
@@ -114,38 +113,12 @@
 
   const {
     DEFAULT_TAG_DEFINITIONS,
-    DEFAULT_EXTRA_PARAMS,
     dailyPriorities,
     feedbackStatuses,
     mediaSources,
     MANAGER_PAGE_SIZE,
   } = defaults;
 
-
-  const PROGRAM_DOCUMENT_STATUSES = ["Unknown", "Not required", "Required", "In progress", "Ready", "Submitted", "Accepted", "Needs changes"];
-  const PROGRAM_ACTIVITY_TYPES = [
-    { id: "verification", get label() { return t("app.programActivityTypes.verificationResearch"); } },
-    { id: "application", get label() { return t("app.programActivityTypes.applicationSubmission"); } },
-    { id: "response", get label() { return t("app.programActivityTypes.responseReceived"); } },
-    { id: "follow-up", get label() { return t("app.programActivityTypes.followUp"); } },
-    { id: "meeting", get label() { return t("app.programActivityTypes.callOrMeeting"); } },
-    { id: "published", get label() { return t("app.programActivityTypes.publishedOrLive"); } },
-    { id: "milestone", get label() { return t("app.programActivityTypes.milestone"); } },
-    { id: "decision", get label() { return t("app.programActivityTypes.decision"); } },
-    { id: "reapply", get label() { return t("app.programActivityTypes.reapplyRenewal"); } },
-    { id: "other", get label() { return t("app.programActivityTypes.other"); } },
-  ];
-  const PROGRAM_ACTIVITY_PREVIOUS_ACTION_STATUSES = [
-    { id: "completed", get label() { return t("app.programActivityPreviousActionStatuses.completed"); } },
-    { id: "deferred", get label() { return t("app.programActivityPreviousActionStatuses.deferred"); } },
-    { id: "cancelled", get label() { return t("app.programActivityPreviousActionStatuses.cancelledNoLongerRelevant"); } },
-    { id: "still-open", get label() { return t("app.programActivityPreviousActionStatuses.stillOpen"); } },
-    { id: "none", get label() { return t("app.programActivityPreviousActionStatuses.noCurrentAction"); } },
-  ];
-
-  // The marketing categories this startup has turned on, in the nested shape
-  // much of the page reads (refreshTaxonomy fills it from the library).
-  let categories = [];
   const Taxonomy = window.StartupTrackerTaxonomy;
   // The field registry (js/fields.js), loaded at boot.
   const Fields = window.StartupTrackerFields;
@@ -172,7 +145,6 @@
   // category lists.
   function refreshTaxonomy() {
     Taxonomy.setEnabled(state.enabledTaxonomy);
-    categories = Taxonomy.nestedCategories("mk", { onlyEnabled: true });
     Object.values(taxonomyPickers).forEach((picker) => picker.refresh());
   }
 
@@ -197,16 +169,16 @@
     taxonomyPickers[key]?.setValue(Array.isArray(list) ? list : []);
   }
 
-  // Stores a picked list on a record, with the older single-value fields
-  // mirrored from it.
-  function applyTaxonomy(record, list, { subcategories = false } = {}) {
+  // Stores a picked list on a record.
+  function applyTaxonomy(record, list) {
     record.taxonomy = Taxonomy.normalizeSelection(list);
-    const fields = Taxonomy.legacyFields(record.taxonomy, record);
-    record.category = fields.category;
-    record.subcategory = fields.subcategory;
-    record.type = fields.type;
-    if (subcategories) record.subcategories = fields.subcategories;
     return record;
+  }
+
+  // A target's primary category: its short name and its path.
+  function primaryCategory(record) {
+    const leaf = Taxonomy.leaves(record?.taxonomy || [])[0];
+    return leaf ? { name: Taxonomy.name(leaf), path: Taxonomy.pathLabel(leaf) } : null;
   }
 
   // ---- Links between records (js/links-model.js) -----------------------------
@@ -239,9 +211,7 @@
 
   function recordTitle(kind, record) {
     if (!record) return "";
-    if (kind === "mk") return record.platform || record.id;
-    if (kind === "po") return record.name || record.applicationName || record.id;
-    if (kind === "fu") return record.funder || record.opportunity || record.id;
+    if (["mk", "po", "fu"].includes(kind)) return record.name || record.id;
     return record.title || record.name || record.url || record.id;
   }
 
@@ -255,9 +225,7 @@
     let subtitle = "";
     let statusHtml = "";
     if (section) {
-      const primary = Taxonomy.leaves(record.taxonomy)[0];
-      const date = ref.kind === "mk" ? record.date : record.nextActionDate;
-      subtitle = [primary ? Taxonomy.pathLabel(primary) : "", date ? formatDate(date) : ""].filter(Boolean).join(" · ");
+      subtitle = [primaryCategory(record)?.path || "", record.nextActionDate ? formatDate(record.nextActionDate) : ""].filter(Boolean).join(" · ");
       statusHtml = record.status ? statusBadgeHtml(record.status) : "";
     } else if (ref.kind === "media") {
       subtitle = [record.type, record.sourceType].filter(Boolean).join(" · ");
@@ -449,16 +417,6 @@
     return ` data-tooltip-type="tag" data-tag-id="${escapeAttribute(def.id)}"`;
   }
 
-  // Extra parameters are an editable, configurable schema of optional key/value fields
-  // that can be attached to any tracker item. They are grouped, each has guidance
-  // (description, examples, suggested defaults), and they are filterable as key:value.
-  let extraParamsDefinition = JSON.parse(JSON.stringify(DEFAULT_EXTRA_PARAMS));
-  // Extra parameters that became something else: media links, and a
-  // target's "Blocked by" / "Blocks", are links now (js/links-model.js).
-  // Funding keeps its own "Blocked by" and "Blocks" text fields.
-  const RETIRED_EXTRA_PARAM_IDS = new Set(["assets", "linkedMedia"]);
-  const RETIRED_TARGET_EXTRA_PARAM_IDS = new Set([...RETIRED_EXTRA_PARAM_IDS, "blockedBy", "blocks"]);
-
   // The shared status list (public/js/status-model.js) and its filter.
   const Statuses = window.StartupTrackerStatuses;
   const StatusFilter = window.StartupTrackerStatusFilter;
@@ -501,16 +459,10 @@
     "programFocusPageSize",
     "fundingFocusPageSize",
   ]);
-  // Links read from old record fields on load, still to be saved
-  // (applyLoadedState, applyPendingLinkMigration).
-  let pendingLinkMigration = null;
-
   // Campaigns, tags and the AI page are shared by every startup and saved
   // through js/global-data.js instead (see collectGlobalSections).
   const PATCHABLE_RECORD_COLLECTIONS = [
     "links",
-    "categories",
-    "extraParamsDefinition",
     "dailyLinks",
     "feedbackItems",
     "programs",
@@ -587,9 +539,7 @@
     deletedTags: [],
     // The startup profile (Settings > Startup profile), one object.
     profile: null,
-    // A startup's older category list (kept, unused) and its on/off choice of
-    // library categories.
-    legacyCategories: null,
+    // This startup's on/off choice of library categories.
     enabledTaxonomy: null,
     // Links between records (js/links-model.js).
     links: [],
@@ -602,7 +552,6 @@
     deletedCompanySteps: [],
     deletedCompanyObligations: [],
     deletedCompanyExpenses: [],
-    selectedOcSubTab: "ai",
     selectedExtraSubTab: "ai",
     // Your prompts, presets and examples (shared; js/prompts-page.js).
     prompts: [],
@@ -612,14 +561,10 @@
     globalSearchQuery: "",
     globalSearchOpen: false,
     globalSearchExpanded: false,
-    formLinkedProgramIds: [],
     selectedCategory: "all",
     selectedSubcategory: "all",
     selectedMkType: "all",
     search: "",
-    statusFilter: "all",
-    priorityFilter: "all",
-    campaignFilter: "all",
     // Programs filters/pages
     selectedProgramCategory: "all",
     selectedProgramStatus: "all",
@@ -633,12 +578,6 @@
     programPageSize: 10,
     programSortColumn: null,
     programSortDirection: null,
-    programExtraParamFilter: [],
-    programTagFilter: [],
-    programFormNotes: "",
-    programFormTags: [],
-    programFormExtraParams: {},
-    programFormLinkedTargetIds: [],
     programFormPanelCollapsed: true,
     programTablePanelCollapsed: false,
     // Programs date-mode focus queue
@@ -677,13 +616,6 @@
     fundingPageSize: 10,
     fundingSortColumn: null,
     fundingSortDirection: null,
-    fundingExtraParamFilter: [],
-    fundingTagFilter: [],
-    fundingFormNotes: "",
-    fundingFormTags: [],
-    fundingFormExtraParams: {},
-    fundingFormLinkedTargetIds: [],
-    fundingFormLinkedProgramId: "",
     fundingFormPanelCollapsed: true,
     fundingRoundsPanelCollapsed: false,
     fundingTablePanelCollapsed: false,
@@ -695,9 +627,6 @@
     fundingFocusPageSize: 6,
     fundingFocusStatuses: null,
     fundingFocusPanelCollapsed: false,
-    // Editing states
-    tempProgramMilestones: [],
-    tempQuickFundingCommitments: [],
     mediaDocumentItemId: null,
     mediaDocumentOriginalText: "",
     mediaDocumentLoading: false,
@@ -707,13 +636,6 @@
     focusDateMode: "on",
     focusPage: 1,
     focusPageSize: 6,
-    // Tags + extra parameters
-    tagFilter: [],
-    extraParamFilter: [],
-    pipelinePresetFilter: "all",
-    formNotes: "",
-    formTags: [],
-    formExtraParams: {},
     sortColumn: null,
     sortDirection: null,
     mediaSearch: "",
@@ -732,7 +654,6 @@
     editingFeedbackItemId: null,
     editingMediaItemId: null,
     editingTagId: null,
-    highlightedTargetId: null,
     expandedLinkedTargetSections: [],
     focusPanelCollapsed: false,
     lastServerFileHash: "",
@@ -760,8 +681,6 @@
     feedbackTypeFilter: "all",
     feedbackStageFilter: "all",
     feedbackEvidenceFilter: "all",
-    currentPage: 1,
-    pageSize: 10,
     apiReady: false,
     filePath: "",
     mediaDir: "",
@@ -780,24 +699,22 @@
   // collections while preserving current render behavior.
   let derivedDataRevision = 0;
   let idIndexCache = new WeakMap();
-  let pipelineFilterCache = null;
   let mediaFilterCache = null;
   let tagRecordsCache = null;
   let globalSearchCache = null;
   let calendarEventsCache = null;
-  let programMilestoneCache = new WeakMap();
+  let programKeyDateCache = new WeakMap();
   let programQueueCache = new WeakMap();
   let fundingQueueCache = new WeakMap();
 
   function markDataChanged() {
     derivedDataRevision += 1;
     idIndexCache = new WeakMap();
-    pipelineFilterCache = null;
     mediaFilterCache = null;
     tagRecordsCache = null;
     globalSearchCache = null;
     calendarEventsCache = null;
-    programMilestoneCache = new WeakMap();
+    programKeyDateCache = new WeakMap();
     programQueueCache = new WeakMap();
     fundingQueueCache = new WeakMap();
   }
@@ -1035,14 +952,12 @@
   // Browser storage is per startup: its own IndexedDB database (cached state
   // and outbox) and prefixed localStorage keys. The tab id lives in
   // sessionStorage and only names this tab's records inside that database.
-  const CACHE_STORAGE_KEY = STARTUP_ID ? Api.storageKey("cached-state") : "";
-  const CACHE_FILE_HASH_STORAGE_KEY = STARTUP_ID ? Api.storageKey("cached-state-file-hash") : "";
   const CACHE_DB_NAME = STARTUP_ID ? Api.cacheDbName(STARTUP_ID) : "";
   const CACHE_DB_VERSION = Api.CACHE_DB_VERSION;
   const CACHE_STORE_NAME = Api.CACHE_STORE_NAME;
-  const LEGACY_CACHE_RECORD_KEY = "current";
+  // The last clean state any tab saved: a quick starting point for a new tab.
+  const SHARED_CACHE_RECORD_KEY = "current";
   const CACHE_TAB_ID_KEY = Api.globalStorageKey("tab-id");
-  const LEGACY_CACHE_CLAIM_KEY = STARTUP_ID ? Api.storageKey("legacy-cache-owner") : "";
   const THEME_STORAGE_KEY = Api.globalStorageKey("theme");
   const cacheTabId = (() => {
     try {
@@ -1057,7 +972,6 @@
   })();
   const CACHE_SYNC_KEY = `sync:${cacheTabId}`;
   const CACHE_RECORD_KEY = `current:${cacheTabId}`;
-  const LEGACY_CACHE_SYNC_KEY = "sync";
   let cacheWriteQueue = Promise.resolve();
   let localCacheAvailable = true;
 
@@ -1070,10 +984,11 @@
 
       const request = indexedDB.open(CACHE_DB_NAME, CACHE_DB_VERSION);
       request.onupgradeneeded = () => {
+        // A cache from another version holds records in another shape; it is
+        // dropped, and the page starts again from the server.
         const db = request.result;
-        if (!db.objectStoreNames.contains(CACHE_STORE_NAME)) {
-          db.createObjectStore(CACHE_STORE_NAME);
-        }
+        if (db.objectStoreNames.contains(CACHE_STORE_NAME)) db.deleteObjectStore(CACHE_STORE_NAME);
+        db.createObjectStore(CACHE_STORE_NAME);
       };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error || new Error("Could not open the state cache"));
@@ -1178,7 +1093,7 @@
       entries.push([CACHE_RECORD_KEY, stateRecord]);
       // A clean state is safe to share as the quick starting point for a new
       // tab. Dirty state stays under this tab's key with its matching outbox.
-      if (activeOutbox.length === 0) entries.push([LEGACY_CACHE_RECORD_KEY, stateRecord]);
+      if (activeOutbox.length === 0) entries.push([SHARED_CACHE_RECORD_KEY, stateRecord]);
     }
 
     // IndexedDB runs transactions against one store in creation order, so
@@ -1187,8 +1102,6 @@
     cacheWriteQueue = writeStateCacheRecords(entries)
       .then(() => {
         localCacheAvailable = true;
-        localStorage.removeItem(CACHE_STORAGE_KEY);
-        localStorage.removeItem(CACHE_FILE_HASH_STORAGE_KEY);
       })
       .catch((error) => {
         localCacheAvailable = false;
@@ -1203,13 +1116,11 @@
       const transaction = db.transaction(CACHE_STORE_NAME, "readonly");
       const store = transaction.objectStore(CACHE_STORE_NAME);
       const stateRequest = store.get(CACHE_RECORD_KEY);
-      const legacyStateRequest = store.get(LEGACY_CACHE_RECORD_KEY);
+      const sharedStateRequest = store.get(SHARED_CACHE_RECORD_KEY);
       const syncRequest = store.get(CACHE_SYNC_KEY);
-      const legacySyncRequest = store.get(LEGACY_CACHE_SYNC_KEY);
       transaction.oncomplete = () => resolve({
-        stateRecord: stateRequest.result || legacyStateRequest.result || null,
+        stateRecord: stateRequest.result || sharedStateRequest.result || null,
         syncRecord: syncRequest.result || null,
-        legacySyncRecord: legacySyncRequest.result || null,
       });
       transaction.onerror = () => reject(transaction.error || new Error("Could not read the state cache"));
       transaction.onabort = () => reject(transaction.error || new Error("State cache read was aborted"));
@@ -1276,53 +1187,19 @@
 
   async function loadStateFromLocalCache() {
     try {
-      const { stateRecord, syncRecord, legacySyncRecord } = await readIndexedStateCache();
-      if (stateRecord?.state && Array.isArray(stateRecord.state.items)) {
-        // Caches written before the record split kept the sync fields on the
-        // state record itself, so fall back to those when `sync` is absent.
-        let sync = syncRecord;
-        if (!sync && legacySyncRecord) {
-          try {
-            const owner = localStorage.getItem(LEGACY_CACHE_CLAIM_KEY);
-            if (!owner || owner === cacheTabId) {
-              localStorage.setItem(LEGACY_CACHE_CLAIM_KEY, cacheTabId);
-              sync = legacySyncRecord;
-            }
-          } catch (error) {
-            // Without a safe one-tab claim, do not copy a possibly dirty
-            // legacy outbox into several tabs.
-          }
-        }
-        sync ||= stateRecord;
-        return {
-          state: stateRecord.state,
-          fileHash: sync.fileHash || "",
-          revision: Number(sync.revision) || 0,
-          outbox: Array.isArray(sync.outbox) ? sync.outbox : [],
-          acknowledgedState: sync.acknowledgedState || null,
-          revisionMap: sync.revisionMap || null,
-        };
-      }
-    } catch (e) {
-      // Fall through to the one-time localStorage migration.
-    }
-
-    try {
-      const raw = localStorage.getItem(CACHE_STORAGE_KEY);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.items)) return null;
-      const migrated = {
-        state: parsed,
-        fileHash: localStorage.getItem(CACHE_FILE_HASH_STORAGE_KEY) || "",
-        revision: 0,
-        outbox: [],
-        acknowledgedState: parsed,
-        revisionMap: null,
+      const { stateRecord, syncRecord } = await readIndexedStateCache();
+      if (!stateRecord?.state || !Array.isArray(stateRecord.state.items)) return null;
+      // A new tab starts from the shared clean state, with nothing to send.
+      const sync = syncRecord || {};
+      return {
+        state: stateRecord.state,
+        fileHash: sync.fileHash || "",
+        revision: Number(sync.revision) || 0,
+        outbox: Array.isArray(sync.outbox) ? sync.outbox : [],
+        acknowledgedState: sync.acknowledgedState || null,
+        revisionMap: sync.revisionMap || null,
       };
-      await saveStateToLocalCache(migrated.state, raw, migrated.fileHash, 0, [], parsed);
-      return migrated;
-    } catch (e) {
+    } catch {
       return null;
     }
   }
@@ -1666,25 +1543,13 @@
     return `${prefix}${compact}`;
   }
 
-  function getProgramCategoryLabel(categoryValue) {
-    return categoryValue ? Taxonomy.name(categoryValue) : t("app.getProgramCategoryLabel.uncategorized");
+  // The label of a timeline entry's type, from the field registry.
+  function timelineTypeLabel(type) {
+    const field = Fields.activities("mk").find((activity) => activity.id === "timeline")?.fields.find((entry) => entry.key === "type");
+    return type ? (field ? Fields.optionLabel(field, type) : type) : "";
   }
 
-  // The program's subcategory, and its type when it has one.
-  function getProgramTypeLabel(program) {
-    const parts = [program?.subcategory, program?.type].filter(Boolean).map((id) => Taxonomy.name(id));
-    return parts.join(" > ") || t("app.getProgramTypeLabel.unspecified");
-  }
-
-  function getProgramActivityTypeLabel(type) {
-    return PROGRAM_ACTIVITY_TYPES.find((entry) => entry.id === type)?.label || t("app.getProgramActivityTypeLabel.otherType");
-  }
-
-  function getProgramPreviousActionStatusLabel(status) {
-    return PROGRAM_ACTIVITY_PREVIOUS_ACTION_STATUSES.find((entry) => entry.id === status)?.label || t("app.getProgramPreviousActionStatus.noCurrentAction");
-  }
-
-  function getProgramActivityTimestamp(entry) {
+  function getTimelineEntryTimestamp(entry) {
     if (entry?.date && /^\d{4}-\d{2}-\d{2}$/.test(entry.date)) {
       const value = dateWeight(entry.date, entry.time || "00:00");
       if (value !== Number.MAX_SAFE_INTEGER) return value;
@@ -1693,26 +1558,24 @@
     return Number.isFinite(fallback) ? fallback : 0;
   }
 
-  function getProgramMilestone(program) {
+  // A program's next key date from its timeline, or its last one when all
+  // are past.
+  function getProgramKeyDate(program) {
     const today = todayDate();
-    const cached = programMilestoneCache.get(program);
+    const cached = programKeyDateCache.get(program);
     if (cached && cached.revision === derivedDataRevision && cached.today === today) {
       return cached.value;
     }
-
-    const milestones = Array.isArray(program.timeEntries) ? program.timeEntries.slice() : [];
-    if (!milestones.length) {
-      programMilestoneCache.set(program, { revision: derivedDataRevision, today, value: null });
-      return null;
-    }
-    milestones.sort((a, b) => dateWeight(a.date, a.time) - dateWeight(b.date, b.time));
+    const keyDates = (program.timeline || []).filter((entry) => entry.type === RecordWindow.KEY_DATE && entry.date);
+    keyDates.sort((a, b) => dateWeight(a.date, a.time) - dateWeight(b.date, b.time));
     const todayWeight = startOfToday().getTime();
-    const value = milestones.find((entry) => dateWeight(entry.date, entry.time) >= todayWeight)
-      || milestones[milestones.length - 1];
-    programMilestoneCache.set(program, { revision: derivedDataRevision, today, value });
+    const value = keyDates.find((entry) => dateWeight(entry.date, entry.time) >= todayWeight) || keyDates[keyDates.length - 1] || null;
+    programKeyDateCache.set(program, { revision: derivedDataRevision, today, value });
     return value;
   }
 
+  // What the calendar's "Due by" shows for a program: its next action, or
+  // else the nearest of its application dates and key dates.
   function getProgramQueueEntry(program) {
     const today = todayDate();
     const cached = programQueueCache.get(program);
@@ -1721,82 +1584,28 @@
     }
 
     const details = program.details || {};
-    const timelineCandidates = [];
-    const milestone = getProgramMilestone(program);
-
+    const candidates = [];
+    const keyDate = getProgramKeyDate(program);
     if (program.nextActionDate) {
-      timelineCandidates.push({
-        date: program.nextActionDate,
-        time: program.nextActionTime || "",
-        label: program.nextAction || details.nextAction || t("ui.common.nextAction"),
-        detail: program.owner || details.internalOwner || details.actionOwner || details.blocker || "",
-        canonical: true,
-      });
+      candidates.push({ date: program.nextActionDate, time: program.nextActionTime || "", label: program.nextAction || t("ui.common.nextAction"), canonical: true });
     }
-    if (!program.nextActionDate && details.actionDeadline) {
-      timelineCandidates.push({
-        date: details.actionDeadline,
-        time: "",
-        label: program.nextAction || details.nextAction || t("app.getProgramQueueEntry.nextActionDue"),
-        detail: program.owner || details.actionOwner || details.blocker || "",
-      });
-    }
-    const submittedOn = details.submittedOn || details.submissionDate;
-    if (submittedOn) {
-      timelineCandidates.push({
-        date: submittedOn,
-        time: "",
-        label: t("app.getProgramQueueEntry.submissionTarget"),
-        detail: program.applicationName || program.subcategory || "",
-      });
-    }
-    const interviewOn = String(details.interviewOn || details.interviewDate || "").slice(0, 10);
-    if (interviewOn) {
-      timelineCandidates.push({
-        date: interviewOn,
-        time: "",
-        label: t("app.getProgramQueueEntry.interview"),
-        detail: program.applicationName || "",
-      });
-    }
-    if (details.pitchDate) {
-      timelineCandidates.push({
-        date: details.pitchDate,
-        time: "",
-        label: t("app.getProgramQueueEntry.pitch"),
-        detail: program.applicationName || "",
-      });
-    }
-    if (milestone) {
-      timelineCandidates.push({
-        date: milestone.date,
-        time: milestone.time || "",
-        label: milestone.label || t("app.getProgramQueueEntry.milestone"),
-        detail: "",
-      });
-    }
-
-    timelineCandidates.sort((a, b) => dateWeight(a.date, a.time) - dateWeight(b.date, b.time));
+    if (details.submittedOn) candidates.push({ date: details.submittedOn, time: "", label: t("app.getProgramQueueEntry.submissionTarget") });
+    const interviewOn = String(details.interviewOn || "").slice(0, 10);
+    if (interviewOn) candidates.push({ date: interviewOn, time: "", label: t("app.getProgramQueueEntry.interview") });
+    if (keyDate) candidates.push({ date: keyDate.date, time: keyDate.time || "", label: keyDate.title || t("app.getProgramQueueEntry.milestone") });
+    candidates.sort((a, b) => dateWeight(a.date, a.time) - dateWeight(b.date, b.time));
 
     const todayWeight = startOfToday().getTime();
-    const chosenTimeline = timelineCandidates.find((entry) => entry.canonical)
-      || timelineCandidates.find((entry) => dateWeight(entry.date, entry.time) >= todayWeight)
-      || (timelineCandidates.length > 0 ? timelineCandidates[timelineCandidates.length - 1] : null);
-    const summary = details.blocker
-      ? t("app.getProgramQueueEntry.blocked", { blocker: details.blocker })
-      : program.nextAction || details.nextAction || chosenTimeline?.detail || program.applicationName || program.subcategory || t("app.getProgramQueueEntry.reviewFitAndRequirements");
-
+    const chosen = candidates.find((entry) => entry.canonical)
+      || candidates.find((entry) => dateWeight(entry.date, entry.time) >= todayWeight)
+      || candidates[candidates.length - 1]
+      || null;
     const value = {
       id: program.id,
       title: program.name,
-      status: program.status,
-      priority: program.priority,
-      actionLabel: chosenTimeline?.label || t("app.getProgramQueueEntry.reviewOpportunity"),
-      summary,
-      date: chosenTimeline?.date || "",
-      time: chosenTimeline?.time || "",
-      link: program.applicationLink || "",
-      updatedAt: program.updatedAt || "",
+      actionLabel: chosen?.label || t("app.getProgramQueueEntry.reviewOpportunity"),
+      date: chosen?.date || "",
+      time: chosen?.time || "",
     };
     programQueueCache.set(program, { revision: derivedDataRevision, today, value });
     return value;
@@ -1840,59 +1649,23 @@
     };
   }
 
+  // What the calendar's "Due by" shows for a deal: its next action, or else
+  // the next payment still to come.
   function getFundingQueueEntry(funding) {
     const cached = fundingQueueCache.get(funding);
     if (cached && cached.revision === derivedDataRevision) return cached.value;
 
     const nextExpectedPayment = (funding.payments || [])
-      .filter((payment) => ["Expected", "Scheduled", "Invoiced", "Delayed"].includes(payment.status) && payment.date)
-      .sort((a, b) => dateWeight(a.date) - dateWeight(b.date))[0] || null;
-
-    const actionByStatus = {
-      Identified: t("app.getFundingQueueEntry.qualifyFit"),
-      Qualified: t("app.getFundingQueueEntry.reachOut"),
-      Contacted: t("app.getFundingQueueEntry.bookDiscovery"),
-      Discovery: t("app.getFundingQueueEntry.defineScope"),
-      "Scope Defined": t("app.getFundingQueueEntry.sendProposal"),
-      "Proposal Sent": t("app.getFundingQueueEntry.followUp"),
-      Negotiation: t("app.getFundingQueueEntry.closeTerms"),
-      "Due Diligence": t("app.getFundingQueueEntry.completeDueDiligence"),
-      "Terms Offered": t("app.getFundingQueueEntry.reviewTerms"),
-      Committed: t("app.getFundingQueueEntry.confirmSigningAndPayment"),
-      Awarded: t("app.getFundingQueueEntry.confirmPaymentSchedule"),
-      "On Hold": t("app.getFundingQueueEntry.reviewHold"),
-      Applied: t("app.getFundingQueueEntry.followUp"),
-      "Partially Received": t("app.getFundingQueueEntry.collectBalance"),
-      "Fully Received": t("app.getFundingQueueEntry.closeOut"),
-      Withdrawn: t("app.getFundingQueueEntry.archiveNotes"),
-      Declined: t("app.getFundingQueueEntry.recordLearnings"),
-      "Closed Won": nextExpectedPayment ? t("app.getFundingQueueEntry.collectExpectedPayment") : t("app.getFundingQueueEntry.confirmTransferPlan"),
-      "Closed Lost": t("app.getFundingQueueEntry.archiveNotes"),
-    };
-
-    let summary = funding.nextAction || funding.opportunity || funding.sourceType || t("app.getFundingQueueEntry.reviewDeal");
-    if (nextExpectedPayment) {
-      summary = `${formatCompactAmount(nextExpectedPayment.amount, nextExpectedPayment.currency || "EUR")} expected${nextExpectedPayment.notes ? ` - ${nextExpectedPayment.notes}` : ""}`;
-    } else if (!funding.nextAction && funding.notes) {
-      summary = funding.notes;
-    }
-    if (funding.owner) summary += ` ${t("app.getFundingQueueEntry.owner", { owner: funding.owner })}`;
-
-    // Prefer the explicit next-action date (drives the Funding focus queue's "Due by").
-    const focusDate = funding.nextActionDate || nextExpectedPayment?.date || "";
-    const focusTime = funding.nextActionDate ? (funding.nextActionTime || "") : "";
-
+      .filter((payment) => ["expected", "scheduled", "invoiced", "delayed"].includes(payment.status) && payment.dueDate)
+      .sort((a, b) => dateWeight(a.dueDate) - dateWeight(b.dueDate))[0] || null;
     const value = {
       id: funding.id,
-      title: funding.funder,
-      status: funding.status,
-      priority: funding.priority,
-      actionLabel: actionByStatus[funding.status] || t("app.getFundingQueueEntry.reviewConversation"),
-      summary,
-      date: focusDate,
-      time: focusTime,
-      link: funding.funderLink || "",
-      updatedAt: funding.updatedAt || "",
+      title: funding.name,
+      actionLabel: funding.nextActionDate
+        ? (funding.nextAction || t("ui.common.nextAction"))
+        : (nextExpectedPayment ? t("app.getFundingQueueEntry.collectExpectedPayment") : t("app.getFundingQueueEntry.reviewConversation")),
+      date: funding.nextActionDate || nextExpectedPayment?.dueDate || "",
+      time: funding.nextActionDate ? (funding.nextActionTime || "") : "",
     };
     fundingQueueCache.set(funding, { revision: derivedDataRevision, value });
     return value;
@@ -1911,12 +1684,12 @@
       .map((round) => {
         const deals = state.funding.filter((funding) => funding.roundId === round.id);
         const commitments = deals.flatMap((funding) => funding.commitments || []).filter((entry) => entry.currency === round.currency);
-        const received = deals.flatMap((funding) => funding.payments || []).filter((entry) => entry.currency === round.currency && ["Received", "Partially Received"].includes(entry.status));
+        const received = deals.flatMap((funding) => funding.payments || []).filter((entry) => entry.currency === round.currency && ["received", "partially-received"].includes(entry.status));
         const committedAmount = commitments.reduce((sum, entry) => sum + (Number(entry.amount) || 0), 0);
         const receivedAmount = received.reduce((sum, entry) => sum + (Number(entry.amount) || 0), 0);
         const weightedAmount = deals
-          .filter((funding) => funding.askCurrency === round.currency)
-          .reduce((sum, funding) => sum + (Number(funding.askAmount) || 0) * ((Number(funding.probability) || 0) / 100), 0);
+          .filter((funding) => funding.details?.askAmount?.currency === round.currency)
+          .reduce((sum, funding) => sum + (Number(funding.details.askAmount.amount) || 0) * ((Number(funding.details.probabilityPercent) || 0) / 100), 0);
         const progress = round.targetAmount > 0 ? Math.min(100, Math.round((committedAmount / round.targetAmount) * 100)) : 0;
         return `<article class="manager-card funding-round-card" data-round-id="${escapeAttribute(round.id)}">
           <div class="manager-card-header">
@@ -1945,10 +1718,6 @@
     if (!campaignId) return "";
     const campaign = state.campaigns.find((c) => c.id === campaignId);
     return campaign ? campaign.name : "";
-  }
-
-  function getFundingCategoryName(categoryId) {
-    return categoryId ? Taxonomy.name(categoryId) : t("app.getFundingCategoryName.uncategorized");
   }
 
   function scrollActiveTabIntoView(container) {
@@ -2297,10 +2066,7 @@
     const groups = emptyCalendarGroups();
     const add = (event) => {
       const entry = { ...event, type: calendarEventType(event.section) };
-      if (event.section === "mk" && !entry.detail) {
-        const item = state.items.find((candidate) => candidate.id === event.id);
-        entry.detail = getCategory(item?.category)?.shortName || item?.category || "";
-      }
+      if (event.section === "mk" && !entry.detail) entry.detail = primaryCategory(findItem(event.id))?.name || "";
       groups[calendarGroupKey(event.section)].push(entry);
     };
     state.items.forEach((record) => Calendar.recordEvents("items", record).forEach(add));
@@ -2315,17 +2081,17 @@
   // the Company entries still open.
   function buildCalendarDueByGroups() {
     const groups = emptyCalendarGroups();
-    state.items.filter((item) => item.date).forEach((item) => {
+    state.items.filter((item) => item.nextActionDate).forEach((item) => {
       groups.marketing.push({
         id: item.id,
         section: "mk",
         kind: "next_action",
-        label: item.platform,
-        detail: getCategory(item.category)?.shortName || (item.category || ""),
+        label: item.name,
+        detail: primaryCategory(item)?.name || "",
         status: item.status,
         type: "pipeline",
-        date: item.date,
-        time: item.time || "",
+        date: item.nextActionDate,
+        time: item.nextActionTime || "",
       });
     });
     state.programs.forEach((program) => {
@@ -2335,7 +2101,7 @@
         id: program.id,
         section: "po",
         kind: "next_action",
-        label: queueEntry.title || program.name || program.applicationName || t("app.buildCalendarDueByGroups.programOpportunity"),
+        label: queueEntry.title || t("app.buildCalendarDueByGroups.programOpportunity"),
         detail: queueEntry.actionLabel || "",
         status: program.status,
         type: "program",
@@ -2350,7 +2116,7 @@
         id: funding.id,
         section: "fu",
         kind: "next_action",
-        label: queueEntry.title || funding.funder || t("ui.common.funding"),
+        label: queueEntry.title || t("ui.common.funding"),
         detail: queueEntry.actionLabel || "",
         status: funding.status,
         type: "funding",
@@ -2421,16 +2187,15 @@
       if (!Array.isArray(list)) return fallback;
       return new Set(list.filter((id) => allowed.includes(id)));
     };
-    state.calendarSections = pick(stored?.sections, Sections.IDS, new Set(Sections.IDS));
+    state.calendarSections = pick(stored?.sections, Calendar.COLUMN_IDS, Calendar.defaultSections());
     state.calendarKinds = pick(stored?.kinds, Calendar.EVENT_KINDS.map((kind) => kind.id), Calendar.defaultKinds());
-    state.calendarSummaryRange = stored?.version >= CALENDAR_FILTERS_STORAGE_VERSION && stored?.summaryRange === "range" ? "range" : "all";
+    state.calendarSummaryRange = stored?.summaryRange === "range" ? "range" : "all";
     if (Array.isArray(stored?.statuses)) state.calendarStatusFilter = restoreStatusFilter(stored.statuses);
   }
 
   function storeCalendarFilters() {
     try {
       localStorage.setItem(CALENDAR_FILTERS_STORAGE_KEY, JSON.stringify({
-        version: CALENDAR_FILTERS_STORAGE_VERSION,
         sections: [...state.calendarSections],
         kinds: [...state.calendarKinds],
         statuses: Array.isArray(state.calendarStatusFilter) ? state.calendarStatusFilter : null,
@@ -2463,13 +2228,18 @@
     return t(`sections.${sectionId}.name`);
   }
 
-  // Section toggles and event types, above the status filter.
+  // Section toggles and event types, above the status filter. Campaigns
+  // have a column of their own, so they toggle with the sections.
   function renderCalendarToggles() {
     const holder = elements.calendarToggles;
     if (!holder) return;
-    const sectionButtons = Sections.SECTIONS.map((section) => `
-      <button type="button" class="calendar-toggle section-chip" data-section="${section.id}" data-calendar-section="${section.id}" aria-pressed="${state.calendarSections.has(section.id)}">
-        <span aria-hidden="true">${escapeHtml(section.short)}</span> ${escapeHtml(sectionName(section.id))}
+    const columns = [
+      ...Sections.SECTIONS.map((section) => ({ id: section.id, short: section.short, name: sectionName(section.id) })),
+      { id: Calendar.CAMPAIGNS, short: "CP", name: t("calendar.campaigns") },
+    ];
+    const sectionButtons = columns.map((column) => `
+      <button type="button" class="calendar-toggle section-chip" data-section="${column.id}" data-calendar-section="${column.id}" aria-pressed="${state.calendarSections.has(column.id)}">
+        <span aria-hidden="true">${escapeHtml(column.short)}</span> ${escapeHtml(column.name)}
       </button>`).join("");
     const kindButtons = Calendar.EVENT_KINDS.map((kind) => `
       <button type="button" class="calendar-toggle" data-calendar-kind="${kind.id}" aria-pressed="${state.calendarKinds.has(kind.id)}">${escapeHtml(t(`calendar.kinds.${kind.id}`))}</button>`).join("");
@@ -2807,11 +2577,13 @@
     };
 
     const lists = calendarLists();
+    let visibleSections = 0;
     Object.entries(lists).forEach(([key, list]) => {
       if (!list) return;
       const section = list.closest(".calendar-detail-section");
       const sectionId = Sections.byGroup(key)?.id || "";
-      const visible = key === "campaigns" ? state.calendarKinds.has("campaign") : state.calendarSections.has(sectionId);
+      const visible = state.calendarSections.has(key === "campaigns" ? Calendar.CAMPAIGNS : sectionId);
+      if (visible) visibleSections += 1;
       if (section) section.hidden = !visible;
       list.innerHTML = visible ? renderItems(events[key] || []) : "";
       const heading = section?.querySelector("h4");
@@ -2826,6 +2598,9 @@
         });
       });
     });
+    if (elements.calendarDetailSections) {
+      elements.calendarDetailSections.dataset.visibleSections = String(visibleSections);
+    }
 
     renderCalendarSummary();
   }
@@ -3013,9 +2788,6 @@
 
   function formatGlobalSearchFieldLabel(key) {
     const labels = {
-      applicationName: t("app.formatGlobalSearchFieldLabel.application"),
-      applicationLink: t("app.formatGlobalSearchFieldLabel.applicationLink"),
-      sourceType: t("app.formatGlobalSearchFieldLabel.sourceType"),
       nextAction: t("ui.common.nextAction"),
       nextActionDate: t("ui.common.nextActionDate"),
       nextActionTime: t("app.formatGlobalSearchFieldLabel.nextActionTime"),
@@ -3234,81 +3006,41 @@
     };
     const isActive = (record) => record && !record.deletedAt;
 
-    state.items.filter(isActive).forEach((item) => {
-      const category = getCategory(item.category);
-      const subcategoryNames = (item.subcategories || []).map((id) => Taxonomy.name(id)).filter(Boolean);
-      const targetDate = item.date ? (item.time ? `${formatDate(item.date)} ${item.time}` : formatDate(item.date)) : "";
-      add({
-        type: "target",
-        id: item.id,
-        title: item.platform,
-        subtitle: category?.shortName || t("ui.common.marketing"),
-        section: t("ui.common.marketing"),
-        badge: "MK",
-        record: item,
-        status: item.status ? getStatusLabel(item.status) : "",
-        rawStatus: item.status || "",
-        date: targetDate,
-        updatedAt: item.updatedAt ? t("app.buildGlobalSearchResults.updated", { updatedAt: formatShortTimestamp(item.updatedAt) }) : "",
-        titleKeys: ["platform"],
-        noteKeys: ["notes"],
-        extraFields: [
-          { label: t("app.buildGlobalSearchResults.category"), value: category?.name || item.category },
-          { label: t("app.buildGlobalSearchResults.subcategory"), value: subcategoryNames },
-        ],
+    // Targets: the same result in every section, titled by name and dated
+    // by the date that matters most there.
+    const targetDate = (record, section) => {
+      const details = record.details || {};
+      const next = record.nextActionDate ? `${formatDate(record.nextActionDate)}${record.nextActionTime ? ` ${record.nextActionTime}` : ""}` : "";
+      if (section === "po" && record.deadline) return t("app.buildGlobalSearchResults.deadline", { deadline: formatDate(record.deadline.slice(0, 10)) });
+      if (section === "fu" && details.expectedCloseDate) return t("app.buildGlobalSearchResults.close", { expectedCloseDate: formatDate(details.expectedCloseDate) });
+      if (section === "mk" || !next) return next;
+      return t("app.buildGlobalSearchResults.next", { nextActionDate: next });
+    };
+    for (const [section, collection, type, badge, sectionLabel] of [
+      ["mk", state.items, "target", "MK", t("ui.common.marketing")],
+      ["po", state.programs, "program", "PO", t("ui.common.programsOpportunities")],
+      ["fu", state.funding, "funding", "FU", t("ui.common.funding")],
+    ]) {
+      collection.filter(isActive).forEach((record) => {
+        const category = primaryCategory(record);
+        add({
+          type,
+          id: record.id,
+          title: record.name,
+          subtitle: category?.name || sectionLabel,
+          section: sectionLabel,
+          badge,
+          record,
+          status: section === "mk" ? (record.status ? getStatusLabel(record.status) : "") : record.status || "",
+          rawStatus: record.status || "",
+          date: targetDate(record, section),
+          updatedAt: record.updatedAt ? t("app.buildGlobalSearchResults.updated", { updatedAt: formatShortTimestamp(record.updatedAt) }) : "",
+          titleKeys: ["name"],
+          noteKeys: ["notes", "nextAction"],
+          extraFields: [{ label: t("app.buildGlobalSearchResults.category"), value: Taxonomy.leaves(record.taxonomy || []).map((id) => Taxonomy.pathLabel(id)) }],
+        });
       });
-    });
-
-    state.programs.filter(isActive).forEach((program) => {
-      const programDate = program.deadline
-        ? t("app.buildGlobalSearchResults.deadline", { deadline: formatDate(program.deadline) })
-        : (program.nextActionDate
-          ? t("app.buildGlobalSearchResults.next", { nextActionDate: formatDate(program.nextActionDate) })
-          : (program.appliedDate ? t("app.buildGlobalSearchResults.applied", { appliedDate: formatDate(program.appliedDate) }) : ""));
-      add({
-        type: "program",
-        id: program.id,
-        title: program.name,
-        subtitle: t("ui.common.programsOpportunities"),
-        section: t("ui.common.programsOpportunities"),
-        badge: "PO",
-        record: program,
-        status: program.status || "",
-        rawStatus: program.status || "",
-        date: programDate,
-        updatedAt: program.updatedAt ? t("app.buildGlobalSearchResults.updated", { updatedAt: formatShortTimestamp(program.updatedAt) }) : "",
-        titleKeys: ["name", "applicationName"],
-        noteKeys: ["notes"],
-        extraFields: [
-          { label: t("app.buildGlobalSearchResults.category"), value: getProgramCategoryLabel(program.category) },
-          { label: t("app.buildGlobalSearchResults.type"), value: getProgramTypeLabel(program) },
-        ],
-      });
-    });
-
-    state.funding.filter(isActive).forEach((funding) => {
-      const fundingDate = funding.expectedCloseDate
-        ? t("app.buildGlobalSearchResults.close", { expectedCloseDate: formatDate(funding.expectedCloseDate) })
-        : (funding.nextActionDate
-          ? t("app.buildGlobalSearchResults.next", { nextActionDate: formatDate(funding.nextActionDate) })
-          : (funding.lastContactDate ? t("app.buildGlobalSearchResults.contacted", { lastContactDate: formatDate(funding.lastContactDate) }) : ""));
-      add({
-        type: "funding",
-        id: funding.id,
-        title: funding.funder,
-        subtitle: funding.opportunity || t("app.buildGlobalSearchResults.fundingOpportunity"),
-        section: t("ui.common.funding"),
-        badge: "FU",
-        record: funding,
-        status: funding.status || "",
-        rawStatus: funding.status || "",
-        date: fundingDate,
-        updatedAt: funding.updatedAt ? t("app.buildGlobalSearchResults.updated", { updatedAt: formatShortTimestamp(funding.updatedAt) }) : "",
-        titleKeys: ["funder", "opportunity"],
-        noteKeys: ["notes", "nextAction", "lossReason"],
-        extraFields: [{ label: t("app.buildGlobalSearchResults.category"), value: getFundingCategoryName(funding.category) }],
-      });
-    });
+    }
 
     state.fundingRounds.filter(isActive).forEach((round) => {
       add({
@@ -3482,7 +3214,9 @@
       });
     });
 
-    categories.forEach((category) => {
+    // Marketing categories this startup turned on, found by their own words
+    // and by the names of what sits under them.
+    Taxonomy.categories("mk", { onlyEnabled: true }).forEach((category) => {
       add({
         type: "category",
         id: category.id,
@@ -3490,7 +3224,7 @@
         subtitle: `${t("app.buildGlobalSearchResults.subtitleMarketingCategory")}${category.shortName ? ` · ${category.shortName}` : ""}`,
         section: t("app.buildGlobalSearchResults.marketingSetup"),
         badge: "CAT",
-        record: category,
+        record: { name: category.name, shortName: category.shortName || "", description: category.description || "", contains: [...Taxonomy.descendants(category.id)].filter((id) => id !== category.id).map((id) => Taxonomy.name(id)) },
         status: "",
         rawStatus: "",
         date: "",
@@ -3743,11 +3477,11 @@
     elements.globalSearchList.innerHTML = rows + note;
   }
 
-  function openAllStartupsSearchResult(result) {
+  async function openAllStartupsSearchResult(result) {
     const kind = result ? ALL_SEARCH_KINDS[result.kind] : null;
     if (!kind) return;
     if (result.startup?.id && result.startup.id !== STARTUP_ID) {
-      if (!prepareGlobalSearchNavigation()) return;
+      if (!(await prepareGlobalSearchNavigation())) return;
       clearGlobalSearch();
       openRecordInOtherStartup(result.startup.id, kind.type, result.id);
       return;
@@ -3958,8 +3692,8 @@
     renderGlobalSearch();
   }
 
-  function prepareGlobalSearchNavigation() {
-    if (isModalOpen(elements.mediaDocumentModal) && !requestCloseMediaDocumentModal()) return false;
+  async function prepareGlobalSearchNavigation() {
+    if (isModalOpen(elements.mediaDocumentModal) && !(await requestCloseMediaDocumentModal())) return false;
     return RecordWindow.requestClose();
   }
 
@@ -3993,8 +3727,8 @@
     render();
   }
 
-  function openGlobalSearchResult(result) {
-    if (!result || !prepareGlobalSearchNavigation()) return;
+  async function openGlobalSearchResult(result) {
+    if (!result || !(await prepareGlobalSearchNavigation())) return;
 
     clearGlobalSearch();
 
@@ -4008,14 +3742,14 @@
     if (result.type === "program") {
       state.selectedAppTab = "programs";
       render();
-      openProgramModal(result.id, result.matchKind === "note" ? "preview" : "core");
+      openProgramModal(result.id, result.matchKind === "note" ? "overview" : "details");
       return;
     }
 
     if (result.type === "funding") {
       state.selectedAppTab = "funding";
       render();
-      openFundingModal(result.id, result.matchKind === "note" ? "preview" : "core");
+      openFundingModal(result.id, result.matchKind === "note" ? "overview" : "details");
       return;
     }
 
@@ -4695,7 +4429,7 @@
             e.preventDefault();
             const itemId = href.slice(6);
             const item = findItem(itemId);
-            if (item) openNotesModal(item, "preview");
+            if (item) openNotesModal(item, "overview");
             return;
           }
           if (href && href.startsWith("#program-")) {
@@ -4802,15 +4536,6 @@
       state[pageKey] = Number(button.dataset.managerPage) || 1;
       render();
     });
-
-    elements.taskRows.addEventListener("input", handleInlineInput);
-    elements.taskRows.addEventListener("focusout", handleInlineBlur);
-
-    // --- Tags + Extra Parameters bindings ---
-
-
-
-
 
     if (elements.campaignSearchInput) {
       elements.campaignSearchInput.addEventListener("input", () => {
@@ -4960,7 +4685,7 @@
         const field = event.target.closest("[data-tag-field]");
         if (field) handleTagFieldInput(field, true);
       });
-      elements.tagList.addEventListener("click", (event) => {
+      elements.tagList.addEventListener("click", async (event) => {
         const button = event.target.closest("[data-tag-action]");
         if (!button) return;
         const tagId = button.dataset.id;
@@ -4978,17 +4703,17 @@
           const to = normalizeTagId(input?.value);
           if (!to || to === tagId) return;
           const merging = getAllTagRecords().some((other) => other.id === to);
-          if (merging && !window.confirm(t("extra.tags.confirmRenameExisting", { from: tagId, to }))) return;
+          if (merging && !(await Dialog.confirm(t("extra.tags.confirmRenameExisting", { from: tagId, to }), { danger: true }))) return;
           runTagAction("rename", { from: tagId, to }, t("extra.tags.renamed", { from: tagId, to }));
         } else if (button.dataset.tagAction === "merge") {
           const select = elements.tagList.querySelector(`[data-tag-merge-target="${cssEscape(tagId)}"]`);
           const to = select?.value;
           if (!to) return;
-          if (!window.confirm(t("extra.tags.confirmMerge", { from: tagId, to }))) return;
+          if (!(await Dialog.confirm(t("extra.tags.confirmMerge", { from: tagId, to }), { danger: true }))) return;
           runTagAction("merge", { from: [tagId], to }, t("extra.tags.merged", { from: tagId, to }));
         } else if (button.dataset.tagAction === "filter") {
-          // Marketing targets with this tag.
-          if (sectionPages.mk) Object.assign(sectionPages.mk.ui, { tags: [tagId], page: 1 });
+          // Marketing targets with this tag: the search reads tags.
+          if (sectionPages.mk) Object.assign(sectionPages.mk.ui, { search: tagId, page: 1 });
           state.selectedAppTab = "pipeline";
           render();
         }
@@ -5376,7 +5101,10 @@
       elements.fundingRoundForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const name = String(elements.fundingRoundNameInput.value || "").trim();
-        if (!name) return alert(t("app.bindEvents.roundNameIsRequired"));
+        if (!name) {
+          Dialog.alert(t("app.bindEvents.roundNameIsRequired"));
+          return;
+        }
         const round = normalizeFundingRound({
           name,
           stage: elements.fundingRoundStageInput.value,
@@ -5408,11 +5136,11 @@
         scheduleAutosave();
       });
       elements.fundingRoundList.addEventListener("change", () => renderFundingRounds());
-      elements.fundingRoundList.addEventListener("click", (event) => {
+      elements.fundingRoundList.addEventListener("click", async (event) => {
         const button = event.target.closest("[data-round-action='delete']");
         if (!button) return;
         const round = state.fundingRounds.find((entry) => entry.id === button.dataset.id);
-        if (!round || !window.confirm(t("app.bindEvents.deleteFundingRoundLinkedDeals", { name: round.name }))) return;
+        if (!round || !(await Dialog.confirm(t("app.bindEvents.deleteFundingRoundLinkedDeals", { name: round.name }), { danger: true }))) return;
         state.fundingRounds = state.fundingRounds.filter((entry) => entry.id !== round.id);
         if (state.selectedFundingRound === round.id) state.selectedFundingRound = "all";
         state.funding.forEach((funding) => {
@@ -5432,15 +5160,6 @@
       if (pendingOutbox.length > 0 && !forceSnapshot) {
         state.apiReady = true;
         markSyncing(t("app.loadStateFromServer.syncingSavedChanges"));
-        await reconcileLegacyBlockedConflicts();
-        if (pendingOutbox.length === 0) {
-          // A legacy cache may have been the only reason this tab skipped the
-          // server request. Once its local queue is gone, replace that cached
-          // snapshot with the authoritative state, even if the old revision
-          // happens to match and would otherwise produce a 304.
-          await loadStateFromServer({ forceSnapshot: true });
-          return;
-        }
         // `persist()` drains every sendable batch. Calling the single-batch
         // sender here left a stale cached snapshot on screen after reload.
         const synced = await persist(SAVE_STATE.synced);
@@ -5540,23 +5259,15 @@
 
   function applyLoadedState(trackerState) {
     markDataChanged();
-    // Categories come from the shared library (js/taxonomy-model.js). A
-    // startup's own older category list is kept as it was, unused.
-    state.legacyCategories = Array.isArray(trackerState.categories) ? trackerState.categories : null;
+    // Categories come from the shared library (js/taxonomy-model.js).
     state.enabledTaxonomy = trackerState.enabledTaxonomy && typeof trackerState.enabledTaxonomy === "object" && !Array.isArray(trackerState.enabledTaxonomy)
       ? trackerState.enabledTaxonomy
       : null;
     refreshTaxonomy();
 
-    if (Array.isArray(trackerState.extraParamsDefinition) && trackerState.extraParamsDefinition.length) {
-      extraParamsDefinition = mergeExtraParamsDefinitions(trackerState.extraParamsDefinition);
-    } else {
-      extraParamsDefinition = JSON.parse(JSON.stringify(DEFAULT_EXTRA_PARAMS));
-    }
-
     // Shared research links stay as the shared data last gave them.
     const sharedDeletedLinks = state.deletedDailyLinks.filter((link) => link.shared);
-    BIN_SECTIONS_ADDED_IN_PART_3.forEach((section) => {
+    PLAIN_BIN_SECTIONS.forEach((section) => {
       state[section] = loadBinSection(trackerState[section]);
     });
     state.deletedDailyLinks = [...state.deletedDailyLinks.filter((link) => !link.shared), ...sharedDeletedLinks];
@@ -5574,19 +5285,19 @@
       ? trackerState.feedbackItems.map(normalizeFeedbackItem).filter(Boolean)
       : [];
     state.programs = Array.isArray(trackerState.programs)
-      ? trackerState.programs.map(normalizeProgram).filter(Boolean)
+      ? trackerState.programs.map((record) => normalizeTarget("po", record)).filter(Boolean)
       : [];
     state.funding = Array.isArray(trackerState.funding)
-      ? trackerState.funding.map(normalizeFundingSource).filter(Boolean)
+      ? trackerState.funding.map((record) => normalizeTarget("fu", record)).filter(Boolean)
       : [];
     state.fundingRounds = Array.isArray(trackerState.fundingRounds)
       ? trackerState.fundingRounds.map(normalizeFundingRound).filter(Boolean)
       : [];
     state.deletedPrograms = Array.isArray(trackerState.deletedPrograms)
-      ? trackerState.deletedPrograms.map(normalizeProgram).filter(Boolean)
+      ? trackerState.deletedPrograms.map((record) => normalizeTarget("po", record)).filter(Boolean)
       : [];
     state.deletedFunding = Array.isArray(trackerState.deletedFunding)
-      ? trackerState.deletedFunding.map(normalizeFundingSource).filter(Boolean)
+      ? trackerState.deletedFunding.map((record) => normalizeTarget("fu", record)).filter(Boolean)
       : [];
 
     state.companyProfile = trackerState.companyProfile && typeof trackerState.companyProfile === "object" && !Array.isArray(trackerState.companyProfile)
@@ -5596,42 +5307,19 @@
     companyPageInstance?.forgetSecrets();
     loadCompanyTemplate();
 
-    state.items = loadedItems.map(normalizeItem).filter(Boolean);
-    state.deletedItems = loadedDeleted.map(normalizeItem).filter(Boolean);
+    state.items = loadedItems.map((record) => normalizeTarget("mk", record)).filter(Boolean);
+    state.deletedItems = loadedDeleted.map((record) => normalizeTarget("mk", record)).filter(Boolean);
     state.mediaItems = Array.isArray(trackerState.mediaItems)
       ? trackerState.mediaItems.map(normalizeMediaItem).filter(Boolean)
       : [];
-    // Links between records. Fields that linked records before links existed
-    // (linked ids, media "used in", a feedback's target, "Blocked by" and
-    // "Blocks") become links once; the records drop those fields.
-    const storedLinks = (Array.isArray(trackerState.links) ? trackerState.links : []).flatMap((link) => {
+    // Links between records; one that does not check out is left out.
+    state.links = (Array.isArray(trackerState.links) ? trackerState.links : []).flatMap((link) => {
       try {
         return [Links.validateLink(link)];
       } catch {
         return [];
       }
     });
-    const legacyLinks = Links.fromLegacy(trackerState);
-    state.links = Links.mergeLinks(storedLinks, legacyLinks);
-    // Saved on the next write: the new links, and the records without the old
-    // fields (otherwise a link removed here would come back on the next load).
-    const storedLinkIds = new Set(storedLinks.map((link) => link.id));
-    const migrated = {
-      links: legacyLinks.filter((link) => !storedLinkIds.has(link.id)).map((link) => link.id),
-      records: Links.legacyRecords(trackerState),
-    };
-    // Older field keys with exactly one new home move into it (js/fields.js
-    // MOVES), and those records are saved once too.
-    for (const [section, collections] of [["mk", ["items", "deletedItems"]], ["po", ["programs", "deletedPrograms"]], ["fu", ["funding", "deletedFunding"]]]) {
-      for (const collection of collections) {
-        state[collection] = state[collection].map((record) => {
-          const result = Fields.migrate(section, record);
-          if (result.changed) migrated.records.push({ section: collection, id: String(record.id) });
-          return result.record;
-        });
-      }
-    }
-    pendingLinkMigration = migrated.links.length || migrated.records.length ? migrated : null;
 
     state.focusStatuses = restoreStatusFilter(trackerState.focusStatuses);
     if (typeof trackerState.focusPageSize === "number") {
@@ -5652,37 +5340,11 @@
     feedbackAboutPicker();
   }
 
-  function mergeExtraParamsDefinitions(savedDefinitions) {
-    const saved = Array.isArray(savedDefinitions) ? savedDefinitions : [];
-    const normalized = saved
-      .map((param) => {
-        if (!param || typeof param !== "object") return null;
-        return {
-          id: String(param.id || "").trim(),
-          name: String(param.name || "Untitled Parameter").trim() || "Untitled Parameter",
-          group: String(param.group || "Custom").trim() || "Custom",
-          type: ["text", "number", "date", "select", "multiselect"].includes(param.type) ? param.type : "text",
-          description: String(param.description || ""),
-          examples: String(param.examples || ""),
-          defaults: Array.isArray(param.defaults) ? param.defaults.map((entry) => String(entry)) : [],
-        };
-      })
-      .filter((param) => param && param.id && !RETIRED_TARGET_EXTRA_PARAM_IDS.has(param.id));
 
-    const existingIds = new Set(normalized.map((param) => param.id));
-    DEFAULT_EXTRA_PARAMS.forEach((param) => {
-      if (!existingIds.has(param.id)) {
-        normalized.push(JSON.parse(JSON.stringify(param)));
-      }
-    });
-
-    return normalized;
-  }
-
-  // The record types whose bin sections Part 3 added (the MK, PO and FU bins
-  // are older and load with their own normalizers).
-  // (Campaign, tag and prompt bins are shared; applyGlobalSections loads them.)
-  const BIN_SECTIONS_ADDED_IN_PART_3 = [
+  // Bin sections loaded as they are stored; the MK, PO and FU bins load with
+  // their normalizers. (Campaign, tag and prompt bins are shared;
+  // applyGlobalSections loads them.)
+  const PLAIN_BIN_SECTIONS = [
     "deletedMediaItems",
     "deletedFeedbackItems",
     "deletedDailyLinks",
@@ -5838,11 +5500,6 @@
       // Without the server the lists stay empty until the next load; records
       // keep their values and show them as stored.
     }
-    applyOptionLists();
-  }
-
-  function applyOptionLists() {
-    Fields.setDocumentChecklist(Options.isEdited("documentChecklist") ? Options.list("documentChecklist") : null);
   }
 
   function normalizeCampaignId(value) {
@@ -5889,8 +5546,8 @@
   }
 
   // A research link. `subcategory` holds the id of its group (Research links
-  // > Groups); a group name from before the groups became editable is read
-  // as that group, and a group that was removed is kept as stored. `shared`
+  // > Groups); a group named by its label is read as that group, and a group
+  // that was removed is kept as stored. `shared`
   // links belong to every startup and are saved with the shared data.
   function normalizeDailyLink(link) {
     if (!link || typeof link !== "object") return null;
@@ -5970,23 +5627,22 @@
       models: String(account.models || "").trim(),
       details: String(account.details || "").trim(),
       links: normalizeAiLinks(account.links),
-      hasSeparatorAbove: Boolean(account.hasSeparatorAbove || account.separatorAbove || account.separator),
-      strikethrough: Boolean(account.strikethrough || account.strikethroughLine || account.isStrikethrough),
+      hasSeparatorAbove: Boolean(account.hasSeparatorAbove),
+      strikethrough: Boolean(account.strikethrough),
     };
   }
 
   function normalizeAiFlowItem(item) {
     if (!item || typeof item !== "object") return null;
-    const isSeparator = Boolean(item.isSeparator || item.type === "separator");
-    if (isSeparator) {
+    if (item.isSeparator) {
       return {
         id: String(item.id || "ai-flow-separator-occasional").trim() || "ai-flow-separator-occasional",
         isSeparator: true,
-        title: String(item.title || item.subApi || "occasional").trim() || "occasional",
+        title: String(item.title || "occasional").trim() || "occasional",
       };
     }
-    const subApi = String(item.subApi || item.name || "").trim();
-    const model = String(item.model || item.models || "").trim();
+    const subApi = String(item.subApi || "").trim();
+    const model = String(item.model || "").trim();
     const details = String(item.details || "").trim();
     return {
       id: String(item.id || makeId()).trim() || makeId(),
@@ -6006,19 +5662,16 @@
 
   // A feedback record. Option values (type, source, stage...) are kept as
   // stored even when their option was removed from Feedback > Options, and
-  // fields from older versions are kept as they were.
+  // fields it does not know are kept as they are.
   function normalizeFeedbackItem(item) {
     if (!item || typeof item !== "object") return null;
     const now = new Date().toISOString();
     const option = (value, fallback) => String(value ?? "").trim() || fallback;
     const text = (value) => String(value || "").trim();
     const date = (value) => (/^\d{4}-\d{2}-\d{2}$/.test(value || "") ? value : "");
-    // targetId was the old "About" field; it is a link now (js/links-model.js).
-    const { targetId, ...kept } = item;
-    void targetId;
 
     return {
-      ...kept,
+      ...item,
       id: String(item.id || makeId()).trim() || makeId(),
       type: option(item.type, "feedback"),
       source: option(item.source, "other"),
@@ -6060,8 +5713,8 @@
     // A type removed from Media > Options is kept as stored.
     const type = String(item.type || "").trim() || guessMediaType(item);
     const originalName = String(item.originalName || "").trim();
-    const externalPath = cleanStoredLink(item.externalPath || item.url);
-    const filePath = String(item.filePath || item.path || "").trim();
+    const externalPath = cleanStoredLink(item.externalPath);
+    const filePath = String(item.filePath || "").trim();
     const absolutePath = String(item.absolutePath || "").trim();
     const fallbackTitle = originalName || externalPath || filePath || "Untitled media";
     const tags = normalizeTagArray(item.tags);
@@ -6086,98 +5739,121 @@
     };
   }
 
-  function normalizeProgramActivity(entry) {
-    if (!entry || typeof entry !== "object") return null;
-    const now = new Date().toISOString();
-    const type = PROGRAM_ACTIVITY_TYPES.some((activityType) => activityType.id === entry.type) ? entry.type : "other";
-    const previousAction = String(entry.previousAction || "").trim();
-    const previousActionStatus = PROGRAM_ACTIVITY_PREVIOUS_ACTION_STATUSES.some((status) => status.id === entry.previousActionStatus)
-      ? entry.previousActionStatus
-      : (previousAction ? "completed" : "none");
-    const loggedAt = entry.loggedAt && !Number.isNaN(new Date(entry.loggedAt).getTime()) ? entry.loggedAt : now;
 
+  // ---- Targets (js/fields.js) --------------------------------------------------
+  //
+  // MK, PO and FU targets share one shape: the core fields flat, the
+  // section's fields in `details`, the target's own custom fields and its
+  // timeline, and for FU the commitments and payments. Fields that are empty
+  // stay off the record. Keys nobody knows are kept, so a save never drops
+  // what another tool wrote.
+  const PRIORITY_VALUES = ["Very High", "High", "Medium", "Low", "Very Low"];
+  const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+  const TIME_ONLY = /^\d{2}:\d{2}$/;
+
+  function cleanDetails(details) {
+    const out = {};
+    for (const [key, value] of Object.entries(details && typeof details === "object" ? details : {})) {
+      if (value === null || value === undefined || value === "") continue;
+      out[key] = value;
+    }
+    return out;
+  }
+
+  // The option values of one field of an activity, from the registry.
+  function activityOptionValues(section, activityId, key) {
+    const field = Fields.activities(section).find((activity) => activity.id === activityId)?.fields.find((entry) => entry.key === key);
+    return (field?.options || []).map((option) => option.value);
+  }
+
+  function normalizeTimelineEntry(entry) {
+    const text = (key) => String(entry[key] ?? "").trim();
     return {
       ...entry,
-      id: String(entry.id || makeId()).trim() || makeId(),
-      date: /^\d{4}-\d{2}-\d{2}$/.test(entry.date || "") ? entry.date : "",
-      time: /^\d{2}:\d{2}$/.test(entry.time || "") ? entry.time : "",
-      type,
-      outcome: String(entry.outcome || "").trim(),
-      previousAction,
-      previousActionDate: /^\d{4}-\d{2}-\d{2}$/.test(entry.previousActionDate || "") ? entry.previousActionDate : "",
-      previousActionTime: /^\d{2}:\d{2}$/.test(entry.previousActionTime || "") ? entry.previousActionTime : "",
-      previousActionOwner: String(entry.previousActionOwner || "").trim(),
-      previousActionStatus,
-      nextAction: String(entry.nextAction || "").trim(),
-      nextActionDate: /^\d{4}-\d{2}-\d{2}$/.test(entry.nextActionDate || "") ? entry.nextActionDate : "",
-      nextActionTime: /^\d{2}:\d{2}$/.test(entry.nextActionTime || "") ? entry.nextActionTime : "",
-      owner: String(entry.owner || "").trim(),
-      statusAfter: typeof entry.statusAfter === "string" ? entry.statusAfter : "",
-      blocker: String(entry.blocker || "").trim(),
-      round: String(entry.round || "").trim(),
+      id: text("id") || makeId(),
+      date: DATE_ONLY.test(entry.date || "") ? entry.date : "",
+      time: TIME_ONLY.test(entry.time || "") ? entry.time : "",
+      type: text("type"),
+      title: text("title"),
+      outcome: text("outcome"),
+      nextAction: text("nextAction"),
+      nextActionDate: DATE_ONLY.test(entry.nextActionDate || "") ? entry.nextActionDate : "",
+      statusAfter: text("statusAfter"),
       sourceUrl: cleanStoredLink(entry.sourceUrl),
-      notes: String(entry.notes || "").trim(),
-      loggedAt,
+      notes: text("notes"),
     };
   }
 
-  function normalizeProgram(prog) {
-    if (!prog || typeof prog !== "object") return null;
+  function normalizeTarget(section, raw) {
+    if (!raw || typeof raw !== "object") return null;
     const now = new Date().toISOString();
-    const status = typeof prog.status === "string" && prog.status ? prog.status : Statuses.defaultStatus();
-    const priority = ["Very High", "High", "Medium", "Low", "Very Low"].includes(prog.priority) ? prog.priority : "Medium";
-    
-    const timeEntries = Array.isArray(prog.timeEntries)
-      ? prog.timeEntries.map((te) => ({
-          id: String(te.id || makeId()).trim(),
-          label: String(te.label || "Milestone").trim(),
-          date: /^\d{4}-\d{2}-\d{2}$/.test(te.date || "") ? te.date : "",
-          time: /^\d{2}:\d{2}$/.test(te.time || "") ? te.time : ""
-        })).filter(te => te.label && te.date)
-      : [];
-
-    const d = prog.details || {};
-    // The program's categories: its own list, or one built from the older
-    // fields. Unknown ids are kept.
-    const taxonomy = Taxonomy.listFor(prog);
-    const taxonomyFields = Taxonomy.legacyFields(taxonomy, prog);
-    // Documents from the checklist and older ones it no longer lists alike.
-    const documents = Array.isArray(prog.documents) ? prog.documents.map((document) => ({
-      ...document,
-      id: String(document?.id || "").trim(),
-      status: PROGRAM_DOCUMENT_STATUSES.includes(document?.status) ? document.status : "Unknown",
-      link: cleanStoredLink(document?.link),
-      notes: String(document?.notes || "").trim(),
-    })).filter((document) => document.id) : [];
-
-    return withTargetFields(prog, {
-      id: String(prog.id || makeId()).trim() || makeId(),
-      name: String(prog.name || "Untitled Opportunity").trim() || "Untitled Opportunity",
-      taxonomy,
-      category: taxonomyFields.category,
-      subcategory: taxonomyFields.subcategory,
-      type: taxonomyFields.type,
-      applicationName: String(prog.applicationName || "").trim(),
-      applicationLink: cleanStoredLink(prog.applicationLink || prog.details?.appUrl),
-      recordKind: prog.recordKind === "watchlist" ? "watchlist" : "opportunity",
-      campaignId: normalizeCampaignId(prog.campaignId),
-      nextActionDate: /^\d{4}-\d{2}-\d{2}$/.test(prog.nextActionDate || d.actionDeadline || "") ? (prog.nextActionDate || d.actionDeadline) : "",
-      nextActionTime: /^\d{2}:\d{2}$/.test(prog.nextActionTime || "") ? prog.nextActionTime : "",
-      status,
-      priority,
-      notes: String(prog.notes || "").trim(),
-      tags: normalizeTagArray(prog.tags),
-      documents,
-      extraParams: filterRetiredExtraParams(prog.extraParams || {}),
-      timeEntries,
-      activityLog: Array.isArray(prog.activityLog)
-        ? prog.activityLog.map(normalizeProgramActivity).filter(Boolean)
-        : [],
-      details: cleanDetails(d),
-      deletedAt: prog.deletedAt || "",
-      createdAt: prog.createdAt || now,
-      updatedAt: prog.updatedAt || now
-    });
+    const text = (key) => String(raw[key] ?? "").trim();
+    const record = {
+      ...raw,
+      id: text("id") || makeId(),
+      name: text("name") || "Untitled target",
+      link: cleanStoredLink(raw.link),
+      taxonomy: Taxonomy.normalizeSelection(Array.isArray(raw.taxonomy) ? raw.taxonomy : []),
+      status: text("status") || Statuses.defaultStatus(),
+      priority: PRIORITY_VALUES.includes(raw.priority) ? raw.priority : "Medium",
+      nextActionDate: DATE_ONLY.test(raw.nextActionDate || "") ? raw.nextActionDate : "",
+      nextActionTime: TIME_ONLY.test(raw.nextActionTime || "") ? raw.nextActionTime : "",
+      campaignId: normalizeCampaignId(raw.campaignId),
+      tags: normalizeTagArray(raw.tags),
+      repeatInterval: Number(raw.repeatInterval) > 0 ? parseInt(raw.repeatInterval, 10) : 0,
+      repeatUnit: ["days", "weeks", "months"].includes(raw.repeatUnit) ? raw.repeatUnit : "",
+      notes: String(raw.notes || "").trim(),
+      deletedAt: raw.deletedAt || "",
+      createdAt: raw.createdAt || now,
+      updatedAt: raw.updatedAt || now,
+    };
+    const optional = {
+      organization: text("organization"),
+      nextAction: text("nextAction"),
+      owner: text("owner"),
+      deadline: Fields.normalize({ type: "datetime" }, raw.deadline),
+    };
+    for (const [key, value] of Object.entries(optional)) {
+      if (value) record[key] = value;
+      else delete record[key];
+    }
+    const lists = {
+      details: cleanDetails(raw.details),
+      customFields: Fields.customFieldsOf(raw),
+      timeline: (Array.isArray(raw.timeline) ? raw.timeline : []).filter((entry) => entry && typeof entry === "object").map(normalizeTimelineEntry),
+    };
+    for (const [key, value] of Object.entries(lists)) {
+      if (Array.isArray(value) ? value.length : Object.keys(value).length) record[key] = value;
+      else delete record[key];
+    }
+    if (section === "mk") record.hasRepeated = Boolean(raw.hasRepeated);
+    if (section === "fu") {
+      const states = activityOptionValues("fu", "commitments", "state");
+      const statuses = activityOptionValues("fu", "payments", "status");
+      record.roundId = text("roundId");
+      record.commitments = (Array.isArray(raw.commitments) ? raw.commitments : []).map((entry) => ({
+        ...entry,
+        id: String(entry?.id || makeId()).trim(),
+        amount: Number(entry?.amount) || 0,
+        currency: String(entry?.currency || "EUR").trim().toUpperCase(),
+        state: states.includes(entry?.state) ? entry.state : "verbal",
+        instrument: String(entry?.instrument || "").trim(),
+        date: DATE_ONLY.test(entry?.date || "") ? entry.date : "",
+        notes: String(entry?.notes || "").trim(),
+      })).filter((entry) => entry.amount > 0);
+      record.payments = (Array.isArray(raw.payments) ? raw.payments : []).map((entry) => ({
+        ...entry,
+        id: String(entry?.id || makeId()).trim(),
+        amount: Number(entry?.amount) || 0,
+        currency: String(entry?.currency || "EUR").trim().toUpperCase(),
+        status: statuses.includes(entry?.status) ? entry.status : "expected",
+        dueDate: DATE_ONLY.test(entry?.dueDate || "") ? entry.dueDate : "",
+        receivedDate: DATE_ONLY.test(entry?.receivedDate || "") ? entry.receivedDate : "",
+        reference: String(entry?.reference || "").trim(),
+        notes: String(entry?.notes || "").trim(),
+      })).filter((entry) => entry.amount > 0);
+    }
+    return record;
   }
 
   function normalizeFundingRound(round) {
@@ -6195,207 +5871,6 @@
       createdAt: round.createdAt || now,
       updatedAt: round.updatedAt || now,
     };
-  }
-
-  function normalizeFundingSource(fund) {
-    if (!fund || typeof fund !== "object") return null;
-    const now = new Date().toISOString();
-    const status = typeof fund.status === "string" && fund.status ? fund.status : Statuses.defaultStatus();
-    const priority = ["Very High", "High", "Medium", "Low", "Very Low"].includes(fund.priority) ? fund.priority : "Medium";
-    
-    const commitments = Array.isArray(fund.commitments)
-      ? fund.commitments.map((c) => {
-          const legacyType = String(c.type || "").trim();
-          const allowedStates = ["Verbal", "Written", "Conditional", "Signed"];
-          const stateValue = allowedStates.includes(c.state) ? c.state : (allowedStates.includes(legacyType) ? legacyType : "Verbal");
-          const instrument = String(c.instrument || (allowedStates.includes(legacyType) ? "" : legacyType)).trim();
-          return {
-            id: String(c.id || makeId()).trim(),
-            amount: Number(c.amount) || 0,
-            currency: String(c.currency || "EUR").trim().toUpperCase(),
-            state: stateValue,
-            instrument,
-            type: instrument || stateValue,
-            date: /^\d{4}-\d{2}-\d{2}$/.test(c.date || "") ? c.date : "",
-            notes: String(c.notes || "").trim()
-          };
-        }).filter(c => c.amount > 0)
-      : [];
-
-    const payments = Array.isArray(fund.payments)
-      ? fund.payments.map((p) => ({
-          id: String(p.id || makeId()).trim(),
-          amount: Number(p.amount) || 0,
-          currency: String(p.currency || "EUR").trim().toUpperCase(),
-          status: ["Expected", "Scheduled", "Partially Received", "Received", "Invoiced", "Delayed", "Cancelled"].includes(p.status) ? p.status : "Expected",
-          date: /^\d{4}-\d{2}-\d{2}$/.test(p.date || "") ? p.date : "",
-          receivedDate: /^\d{4}-\d{2}-\d{2}$/.test(p.receivedDate || "") ? p.receivedDate : "",
-          reference: String(p.reference || "").trim(),
-          linkedProgramId: String(p.linkedProgramId || "").trim(),
-          notes: String(p.notes || "").trim()
-        })).filter(p => p.amount > 0)
-      : [];
-
-    const fundingTaxonomy = Taxonomy.listFor(fund);
-    const fundingTaxonomyFields = Taxonomy.legacyFields(fundingTaxonomy, fund);
-
-    return withTargetFields(fund, {
-      id: String(fund.id || makeId()).trim() || makeId(),
-      funder: String(fund.funder || "Untitled Funder").trim() || "Untitled Funder",
-      funderLink: cleanStoredLink(fund.funderLink),
-      opportunity: String(fund.opportunity || "Untitled Opportunity").trim() || "Untitled Opportunity",
-      taxonomy: fundingTaxonomy,
-      category: fundingTaxonomyFields.category,
-      subcategory: fundingTaxonomyFields.subcategory,
-      type: fundingTaxonomyFields.type,
-      // The free-text source type of older records, shown until it is mapped.
-      sourceType: String(fund.sourceType || "").trim(),
-      campaignId: normalizeCampaignId(fund.campaignId),
-      roundId: String(fund.roundId || "").trim(),
-      nextActionDate: /^\d{4}-\d{2}-\d{2}$/.test(fund.nextActionDate || "") ? fund.nextActionDate : "",
-      nextActionTime: /^\d{2}:\d{2}$/.test(fund.nextActionTime || "") ? fund.nextActionTime : "",
-      nextAction: String(fund.nextAction || "").trim(),
-      owner: String(fund.owner || fund.actionOwner || "").trim(),
-      contactName: String(fund.contactName || "").trim(),
-      contactRole: String(fund.contactRole || "").trim(),
-      contactEmail: String(fund.contactEmail || "").trim(),
-      introducer: String(fund.introducer || "").trim(),
-      lastContactDate: /^\d{4}-\d{2}-\d{2}$/.test(fund.lastContactDate || "") ? fund.lastContactDate : "",
-      // Empty is unknown; 0 is an ask of nothing.
-      askAmount: fund.askAmount === null || fund.askAmount === undefined || fund.askAmount === "" ? null : Math.max(0, Number(fund.askAmount) || 0),
-      askCurrency: String(fund.askCurrency || "EUR").trim().toUpperCase() || "EUR",
-      probability: fund.probability === null || fund.probability === undefined || fund.probability === "" ? null : Math.min(100, Math.max(0, Number(fund.probability) || 0)),
-      expectedCloseDate: /^\d{4}-\d{2}-\d{2}$/.test(fund.expectedCloseDate || "") ? fund.expectedCloseDate : "",
-      lossReason: String(fund.lossReason || "").trim(),
-      status,
-      priority,
-      notes: String(fund.notes || "").trim(),
-      tags: normalizeTagArray(fund.tags),
-      extraParams: filterRetiredExtraParams(fund.extraParams || {}),
-      commitments,
-      payments,
-      deletedAt: fund.deletedAt || "",
-      createdAt: fund.createdAt || now,
-      updatedAt: fund.updatedAt || now
-    });
-  }
-
-  function filterRetiredExtraParams(extraParams, retired = RETIRED_EXTRA_PARAM_IDS) {
-    const rawExtra = extraParams && typeof extraParams === "object" ? extraParams : {};
-    const filtered = {};
-    Object.keys(rawExtra).forEach((key) => {
-      const normalizedKey = String(key);
-      if (Object.prototype.hasOwnProperty.call(rawExtra, key) && !retired.has(normalizedKey)) {
-        filtered[normalizedKey] = String(rawExtra[key] ?? "");
-      }
-    });
-    return filtered;
-  }
-
-  // ---- What every target keeps (js/fields.js) ----------------------------------
-  //
-  // The normalizers below set the fields each section has always had. Every
-  // target also keeps the fields the target window added (organization, next
-  // action, deadline, owner, its detail and custom fields, milestones and the
-  // update log), and any key nobody knows, so a field from an older version or
-  // an import is never lost on save; the window lists those under "Other
-  // fields". Fields that became links (js/links-model.js) are dropped.
-  const DROPPED_TARGET_KEYS = new Set(["linkedProgramIds", "linkedFundingIds", "linkedMediaIds", "linkedTargetIds", "linkedProgramId"]);
-
-  function cleanDetails(details) {
-    const out = {};
-    for (const [key, value] of Object.entries(details && typeof details === "object" ? details : {})) {
-      if (value === null || value === undefined || value === "") continue;
-      out[key] = value;
-    }
-    return out;
-  }
-
-  function normalizeTimeEntries(entries) {
-    return (Array.isArray(entries) ? entries : [])
-      .map((entry) => ({
-        ...entry,
-        id: String(entry?.id || makeId()).trim(),
-        label: String(entry?.label || "Milestone").trim(),
-        date: /^\d{4}-\d{2}-\d{2}$/.test(entry?.date || "") ? entry.date : "",
-        time: /^\d{2}:\d{2}$/.test(entry?.time || "") ? entry.time : "",
-      }))
-      .filter((entry) => entry.label && entry.date);
-  }
-
-  function withTargetFields(raw, normalized) {
-    const kept = {};
-    for (const [key, value] of Object.entries(raw || {})) {
-      if (value === undefined || DROPPED_TARGET_KEYS.has(key) || key in normalized) continue;
-      kept[key] = value;
-    }
-    const text = (key) => String(raw?.[key] ?? normalized[key] ?? "").trim();
-    const extra = {};
-    for (const key of ["organization", "nextAction", "owner"]) if (text(key)) extra[key] = text(key);
-    const deadline = Fields.normalize({ type: "datetime" }, raw?.deadline);
-    if (deadline) extra.deadline = deadline;
-    const details = cleanDetails(normalized.details || raw?.details);
-    if (Object.keys(details).length) extra.details = details;
-    const custom = cleanDetails(raw?.custom);
-    if (Object.keys(custom).length) extra.custom = custom;
-    const timeEntries = normalizeTimeEntries(normalized.timeEntries || raw?.timeEntries);
-    if (timeEntries.length) extra.timeEntries = timeEntries;
-    const activityLog = (Array.isArray(raw?.activityLog) ? raw.activityLog : []).map(normalizeProgramActivity).filter(Boolean);
-    if (activityLog.length) extra.activityLog = activityLog;
-    if (!("repeatInterval" in normalized) && Number(raw?.repeatInterval) > 0 && ["days", "weeks", "months"].includes(raw?.repeatUnit)) {
-      extra.repeatInterval = parseInt(raw.repeatInterval, 10);
-      extra.repeatUnit = raw.repeatUnit;
-    }
-    return { ...kept, ...normalized, ...extra };
-  }
-
-  function normalizeItem(item) {
-    if (!item || typeof item !== "object") return null;
-
-    // Ids the lists do not know are kept and saved back unchanged: a category,
-    // subcategory or status is never silently swapped for the first one.
-    const taxonomy = Taxonomy.listFor(item);
-    const { category, subcategory, subcategories, type } = Taxonomy.legacyFields(taxonomy, item);
-
-    const finalStatus = typeof item.status === "string" && item.status ? item.status : Statuses.defaultStatus();
-    const priority = ["Very High", "High", "Medium", "Low", "Very Low"].includes(item.priority) ? item.priority : "Medium";
-
-    const rawTags = Array.isArray(item.tags) ? item.tags : [];
-    const tags = Array.from(
-      new Set(
-        rawTags
-          .map((t) => String(t || "").trim().toLowerCase())
-          .filter((t) => t.length > 0 && t.length <= 60),
-      ),
-    );
-
-    const rawExtra = item.extraParams && typeof item.extraParams === "object" ? item.extraParams : {};
-    const extraParams = filterRetiredExtraParams(rawExtra, RETIRED_TARGET_EXTRA_PARAM_IDS);
-
-    return withTargetFields(item, {
-      id: String(item.id || makeId()),
-      campaignId: normalizeCampaignId(item.campaignId),
-      taxonomy,
-      category,
-      subcategory,
-      subcategories,
-      type,
-      platform: String(item.platform || "Untitled target").trim() || "Untitled target",
-      link: cleanStoredLink(item.link),
-      status: finalStatus,
-      date: /^\d{4}-\d{2}-\d{2}$/.test(item.date || "") ? item.date : "",
-      time: /^\d{2}:\d{2}$/.test(item.time || "") ? item.time : nowDateTimeParts().time,
-      priority,
-      tags,
-      extraParams,
-      notes: String(item.notes || "").trim(),
-      repeatInterval: item.repeatInterval ? parseInt(item.repeatInterval, 10) : 0,
-      repeatUnit: ["days", "weeks", "months"].includes(item.repeatUnit) ? item.repeatUnit : "",
-      hasRepeated: !!item.hasRepeated,
-      deletedAt: item.deletedAt || "",
-      createdAt: item.createdAt || new Date().toISOString(),
-      updatedAt: item.updatedAt || new Date().toISOString(),
-    });
   }
 
   function render() {
@@ -6465,14 +5940,12 @@
     // Built-in prompts and yours; the page reports the number once loaded.
     prompts: () => state.prompts.length,
     categories: () => ["mk", "po", "fu"].reduce((sum, section) => sum + Taxonomy.categories(section).length, 0),
-    fields: () => ["mk", "po", "fu"].reduce((sum, section) => sum + Fields.customFields(section).length, 0),
   });
 
   const EXTRA_OPTION_LISTS = Object.freeze({
     media: ["mediaTypes"],
     feedback: ["feedbackTypes", "feedbackSources", "feedbackStages", "feedbackAreas", "feedbackEvidence", "feedbackRelationships", "feedbackJourneySteps", "feedbackVerdicts"],
     research: ["researchGroups"],
-    fields: ["documentChecklist"],
   });
 
   function renderExtraOptionEditors(page) {
@@ -6481,7 +5954,6 @@
     holder.dataset.mounted = "1";
     window.StartupTrackerOptionsEditor?.render(holder, EXTRA_OPTION_LISTS[page], {
       onSaved: () => {
-        applyOptionLists();
         markDataChanged();
         render();
       },
@@ -6536,8 +6008,6 @@
     const promptsSubpage = document.querySelector("#extraSubpagePrompts");
     const categoriesPage = document.querySelector("#extraSubpageCategories");
     if (categoriesPage) categoriesPage.style.display = activeSubTab === "categories" ? "" : "none";
-    const fieldsPage = document.querySelector("#extraSubpageFields");
-    if (fieldsPage) fieldsPage.style.display = activeSubTab === "fields" ? "" : "none";
 
     if (aiPage) aiPage.style.display = activeSubTab === "ai" ? "" : "none";
     if (mediaPage) mediaPage.style.display = activeSubTab === "media" ? "" : "none";
@@ -6570,8 +6040,6 @@
       promptsPage()?.render();
     } else if (activeSubTab === "categories") {
       window.StartupTrackerCategoriesEditor?.render(document.querySelector("#categoriesEditor"));
-    } else if (activeSubTab === "fields") {
-      window.StartupTrackerFieldsEditor?.render(document.querySelector("#fieldsEditor"));
     }
     if (EXTRA_COUNTS[activeSubTab]) setExtraCount(activeSubTab, EXTRA_COUNTS[activeSubTab]());
     renderExtraOptionEditors(activeSubTab);
@@ -7061,11 +6529,9 @@
     const fundingRecords = state.funding.filter((funding) => funding.campaignId === campaign.id);
     const renderManagerCampaignList = (records, owner, emptyText) => records.length
       ? `<div class="linked-target-list">${records.map((record) => {
-          const title = owner === "program" ? record.name : record.funder;
-          const detail = owner === "program" ? record.applicationName : record.opportunity;
           return `<button class="linked-target-item linked-target-main" type="button" data-manager-open="${owner}" data-id="${escapeAttribute(record.id)}">
-            <span class="linked-target-name">${escapeHtml(title)}</span>
-            <span class="linked-target-meta">${statusBadgeHtml(record.status)}${detail ? `<span>${escapeHtml(detail)}</span>` : ""}</span>
+            <span class="linked-target-name">${escapeHtml(record.name)}</span>
+            <span class="linked-target-meta">${statusBadgeHtml(record.status)}${record.organization ? `<span>${escapeHtml(record.organization)}</span>` : ""}</span>
           </button>`;
         }).join("")}</div>`
       : `<div class="linked-target-empty">${escapeHtml(emptyText)}</div>`;
@@ -7290,11 +6756,9 @@
         .slice()
         .sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")))
         .map((item) => {
-          const title = owner === "program" ? item.name : item.funder;
-          const subtitle = owner === "program" ? item.applicationName : item.opportunity;
           return `<button class="linked-target-item linked-target-main" type="button" data-manager-open="${owner}" data-id="${escapeAttribute(item.id)}">
-            <span class="linked-target-name">${escapeHtml(title)}</span>
-            <span class="linked-target-meta">${statusBadgeHtml(item.status)}${subtitle ? `<span>${escapeHtml(subtitle)}</span>` : ""}</span>
+            <span class="linked-target-name">${escapeHtml(item.name)}</span>
+            <span class="linked-target-meta">${statusBadgeHtml(item.status)}${item.organization ? `<span>${escapeHtml(item.organization)}</span>` : ""}</span>
           </button>`;
         }).join("")}</div>`;
     };
@@ -7537,20 +7001,19 @@
 
   function renderLinkedTargetItem(item) {
     const safeHref = safeLink(item.link);
-    const category = getCategory(item.category);
-    const subcategoriesDisplay = getSubcategoriesDisplay(item);
+    const category = primaryCategory(item);
     const campaignName = getCampaignName(item.campaignId);
-    const dateText = formatDateTime(item.date, item.time);
+    const dateText = formatDateTime(item.nextActionDate, item.nextActionTime);
     const tags = (item.tags || []).slice(0, 4);
 
     return `
       <div class="linked-target-item ${safeHref ? "has-link" : ""}">
         <button class="linked-target-main" type="button" data-target-action="edit-details" data-id="${escapeAttribute(item.id)}">
-          <span class="linked-target-name">${escapeHtml(item.platform)}</span>
+          <span class="linked-target-name">${escapeHtml(item.name)}</span>
           <span class="linked-target-meta">
             <span class="status-pill" data-status="${escapeAttribute(item.status)}" data-status-group="${escapeAttribute(Statuses.groupOf(item.status).replace(/_/g, "-"))}" title="${escapeAttribute(Statuses.description(item.status))}">${escapeHtml(getStatusLabel(item.status))}</span>
             <span class="priority-pill" data-priority="${escapeAttribute(item.priority)}">${escapeHtml(item.priority)}</span>
-            <span>${escapeHtml(category.shortName)}${subcategoriesDisplay ? ` / ${escapeHtml(subcategoriesDisplay)}` : ""}</span>
+            ${category ? `<span>${escapeHtml(category.path)}</span>` : ""}
             ${campaignName ? `<span>${escapeHtml(campaignName)}</span>` : ""}
             <span>${escapeHtml(dateText)}</span>
           </span>
@@ -8591,7 +8054,7 @@
     // The server copies what it holds, so this item's latest edits go first.
     const saved = await persist(t("app.copyMediaToStartup.saved"));
     if (!saved) {
-      window.alert(t("extra.media.copySaveFirst"));
+      Dialog.alert(t("extra.media.copySaveFirst"));
       return;
     }
     try {
@@ -8606,7 +8069,7 @@
       markSaved(t("extra.media.copied", { name: target?.name || startupId }));
       renderMediaList();
     } catch (error) {
-      window.alert(t("extra.media.copyFailed", { message: error.message }));
+      Dialog.alert(t("extra.media.copyFailed", { message: error.message }));
     }
   }
 
@@ -8782,72 +8245,6 @@
     return Statuses.optionsHtml(selected, { unmappedLabel: t("statusFilter.unmapped") });
   }
 
-  function getFilteredItems() {
-    const cacheKey = JSON.stringify([
-      derivedDataRevision,
-      state.search,
-      selectedTaxonomyNode("mk"),
-      state.statusFilter,
-      state.priorityFilter,
-      state.campaignFilter,
-      state.pipelinePresetFilter,
-      state.tagFilter,
-      state.extraParamFilter,
-    ]);
-    if (pipelineFilterCache && pipelineFilterCache.key === cacheKey) {
-      return pipelineFilterCache.items.slice();
-    }
-
-    const query = state.search.toLowerCase();
-    const today = todayDate();
-    const currentMonth = today.slice(0, 7);
-    const weekAheadStr = Dates.addDays(today, 7);
-
-    const filtered = state.items.filter((item) => {
-      const matchesCategory = matchesTaxonomyTabs("mk", item);
-      const matchesStatus = state.statusFilter === "all" || item.status === state.statusFilter;
-      const matchesPriority = state.priorityFilter === "all" || item.priority === state.priorityFilter;
-      const matchesCampaign = state.campaignFilter === "all" || item.campaignId === state.campaignFilter;
-      const haystack = `${item.id || ""} ${item.platform} ${item.link} ${item.notes} ${(item.tags || []).join(" ")} ${getCategory(item.category).name} ${getCampaignName(item.campaignId)}`.toLowerCase();
-      const matchesSearch = !query || haystack.includes(query);
-
-      const itemTags = item.tags || [];
-      const matchesTags =
-        state.tagFilter.length === 0 || state.tagFilter.every((t) => itemTags.includes(t));
-
-      const matchesExtraParams =
-        state.extraParamFilter.length === 0 ||
-        state.extraParamFilter.every((f) => {
-          const val = (item.extraParams && item.extraParams[f.paramId]) || "";
-          return String(val) === String(f.value);
-        });
-
-      const isOpen = Statuses.isOpen(item.status);
-      const matchesPreset =
-        state.pipelinePresetFilter === "all" ||
-        (state.pipelinePresetFilter === "overdue" && isOpen && !!item.date && item.date < today) ||
-        (state.pipelinePresetFilter === "due-this-week" && !!item.date && item.date >= today && item.date <= weekAheadStr) ||
-        (state.pipelinePresetFilter === "this-month" && !!item.date && item.date.slice(0, 7) === currentMonth) ||
-        (state.pipelinePresetFilter === "needs-followup" && isOpen) ||
-        (state.pipelinePresetFilter === "no-campaign" && !item.campaignId) ||
-        (state.pipelinePresetFilter === "warm-contact" && itemTags.includes("warm-contact")) ||
-        (state.pipelinePresetFilter === "high-priority" && ["Very High", "High"].includes(item.priority));
-
-      return (
-        matchesCategory &&
-        matchesStatus &&
-        matchesPriority &&
-        matchesCampaign &&
-        matchesSearch &&
-        matchesTags &&
-        matchesExtraParams &&
-        matchesPreset
-      );
-    });
-
-    pipelineFilterCache = { key: cacheKey, items: filtered };
-    return filtered.slice();
-  }
 
   function getFilteredMediaItems() {
     const cacheKey = JSON.stringify([
@@ -9408,99 +8805,10 @@
     return nextValue;
   }
 
-  function handleInlineInput(event) {
-    const field = event.target.closest("[data-inline-field]");
-    if (!field || isImmediateField(field)) return;
 
-    if (field.dataset.inlineField === "notes") {
-      autoResizeTextarea(field);
-    }
 
-    const item = findItem(field.dataset.id);
-    if (!item) return;
 
-    updateItemField(item, field.dataset.inlineField, field.value);
-    scheduleAutosave();
-  }
 
-  function handleInlineBlur(event) {
-    const field = event.target.closest("[data-inline-field]");
-    if (!field || isImmediateField(field)) return;
-
-    const item = findItem(field.dataset.id);
-    if (!item) return;
-
-    if (field.dataset.inlineField === "platform" && !field.value.trim()) {
-      updateItemField(item, "platform", "Untitled target");
-    }
-
-    if (field.dataset.inlineField === "link") {
-      updateItemField(item, "link", field.value.trim());
-    }
-
-    flushAutosave();
-    render();
-  }
-
-  function isImmediateField(field) {
-    return field.matches("select") || field.type === "date" || field.type === "time";
-  }
-
-  function updateItemField(item, field, value) {
-    const nextValue = normalizeFieldValue(field, value);
-    if (item[field] === nextValue) return;
-    const oldStatus = item.status;
-    item[field] = nextValue;
-    item.updatedAt = new Date().toISOString();
-    
-    // A repeating target makes its next occurrence when it leaves the open
-    // groups (Planned, In progress) for Done or Closed.
-    const isFinalStatus = !Statuses.isOpen(nextValue);
-    const wasFinalStatus = !Statuses.isOpen(oldStatus);
-    if (field === "status" && isFinalStatus && !wasFinalStatus) {
-      handleRepeatingTarget(item);
-    }
-  }
-
-  function normalizeFieldValue(field, value) {
-    const nextValue = String(value ?? "");
-
-    if (field === "category") {
-      // An unknown value keeps the current one rather than the first category.
-      return Taxonomy.isKnown(nextValue) ? nextValue : "";
-    }
-
-    if (field === "campaignId") {
-      return state.campaigns.some((campaign) => campaign.id === nextValue) ? nextValue : "";
-    }
-
-    if (field === "status") {
-      return nextValue ? String(nextValue) : Statuses.defaultStatus();
-    }
-
-    if (field === "repeatInterval") {
-      const val = parseInt(value, 10);
-      return isNaN(val) || val < 0 ? 0 : val;
-    }
-
-    if (field === "repeatUnit") {
-      return ["days", "weeks", "months"].includes(nextValue) ? nextValue : "";
-    }
-
-    if (field === "priority") {
-      return ["Very High", "High", "Medium", "Low", "Very Low"].includes(nextValue) ? nextValue : "Medium";
-    }
-
-    if (field === "date") {
-      return /^\d{4}-\d{2}-\d{2}$/.test(nextValue) ? nextValue : "";
-    }
-
-    if (field === "time") {
-      return /^\d{2}:\d{2}$/.test(nextValue) ? nextValue : nowDateTimeParts().time;
-    }
-
-    return nextValue;
-  }
 
   function deleteItem(item) {
     state.items = state.items.filter((entry) => entry.id !== item.id);
@@ -9509,7 +8817,6 @@
       deletedAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
-    clampPage();
     persist(t("app.deleteItem.movedToRecycleBin"));
     render();
   }
@@ -9599,11 +8906,10 @@
     renderMediaControls();
   }
 
-  function deleteCampaign(campaign) {
+  async function deleteCampaign(campaign) {
     const linkedCount = countCampaignItems(campaign.id);
     if (linkedCount) {
-      const confirmed = window.confirm(t("recycle.confirmDeleteCampaignLinked", { name: campaign.name, count: linkedCount }));
-      if (!confirmed) return;
+      if (!(await Dialog.confirm(t("recycle.confirmDeleteCampaignLinked", { name: campaign.name, count: linkedCount }), { danger: true }))) return;
       state.items.forEach((item) => {
         if (item.campaignId === campaign.id) {
           item.campaignId = "";
@@ -9624,27 +8930,24 @@
           }
         });
       });
-    } else if (!window.confirm(t("recycle.confirmDeleteCampaign", { name: campaign.name }))) {
+    } else if (!(await Dialog.confirm(t("recycle.confirmDeleteCampaign", { name: campaign.name }), { danger: true }))) {
       return;
     }
 
     moveRecordToBin("campaigns", campaign.id);
-    if (state.campaignFilter === campaign.id) {
-      state.campaignFilter = "all";
-    }
     persist(t("recycle.moved"));
     render();
   }
 
-  function deleteDailyLink(link) {
-    if (!window.confirm(t("recycle.confirmDeleteLink", { name: link.title || link.url || "" }))) return;
+  async function deleteDailyLink(link) {
+    if (!(await Dialog.confirm(t("recycle.confirmDeleteLink", { name: link.title || link.url || "" }), { danger: true }))) return;
     moveRecordToBin("dailyLinks", link.id);
     persist(t("recycle.moved"));
     renderDailyGroups();
   }
 
-  function deleteAiAccount(account) {
-    if (!window.confirm(t("app.deleteAiAccount.deleteAiEntry", { name: account.name }))) return;
+  async function deleteAiAccount(account) {
+    if (!(await Dialog.confirm(t("app.deleteAiAccount.deleteAiEntry", { name: account.name }), { danger: true }))) return;
     state.aiAccounts = state.aiAccounts.filter((entry) => entry.id !== account.id);
     if (state.editingAiAccountId === account.id) state.editingAiAccountId = null;
     persist(t("app.deleteAiAccount.aiAccessDeleted"));
@@ -9685,9 +8988,9 @@
     }, 0);
   }
 
-  function deleteAiFlowItem(item) {
+  async function deleteAiFlowItem(item) {
     if (!item || item.isSeparator) return;
-    if (!window.confirm(t("app.deleteAiFlowItem.confirm", { name: item.subApi || t("app.deleteAiFlowItem.item") }))) return;
+    if (!(await Dialog.confirm(t("app.deleteAiFlowItem.confirm", { name: item.subApi || t("app.deleteAiFlowItem.item") }), { danger: true }))) return;
     state.aiFlow = state.aiFlow.filter((entry) => entry.id !== item.id);
     state.editingAiFlowIds.delete(item.id);
     persist(t("app.deleteAiFlowItem.currentFlowEntryDeleted"));
@@ -9740,15 +9043,15 @@
     }
   }
 
-  function deleteFeedbackItem(item) {
-    if (!window.confirm(t("recycle.confirmDeleteFeedback", { name: item.title || "" }))) return;
+  async function deleteFeedbackItem(item) {
+    if (!(await Dialog.confirm(t("recycle.confirmDeleteFeedback", { name: item.title || "" }), { danger: true }))) return;
     moveRecordToBin("feedbackItems", item.id);
     persist(t("recycle.moved"));
     renderFeedbackList();
   }
 
-  function deleteMediaItem(media) {
-    if (!window.confirm(t("recycle.confirmDeleteMedia", { name: media.title || "" }))) return;
+  async function deleteMediaItem(media) {
+    if (!(await Dialog.confirm(t("recycle.confirmDeleteMedia", { name: media.title || "" }), { danger: true }))) return;
     moveRecordToBin("mediaItems", media.id);
     persist(t("recycle.moved"));
     renderMediaControls();
@@ -9757,13 +9060,13 @@
 
   // Deleting a tag takes it off every record in every startup and moves its
   // definition to the recycle bin (lib/tags.js).
-  function deleteTagDefinition(tagId) {
+  async function deleteTagDefinition(tagId) {
     const tag = tagDefinitions.find((def) => def.id === tagId) || { id: tagId, label: tagId };
     const usage = tagUsageOf(tagId);
     const message = usage.total
       ? t("extra.tags.confirmDeleteUsed", { name: tag.label || tag.id, count: usage.total, startups: usage.startups.length })
       : t("recycle.confirmDeleteTag", { name: tag.label || tag.id });
-    if (!window.confirm(message)) return;
+    if (!(await Dialog.confirm(message, { danger: true }))) return;
     if (state.editingTagId === tagId) state.editingTagId = null;
     runTagAction("delete", { tag: tagId }, t("extra.tags.deleted", { name: tag.label || tag.id }));
   }
@@ -9802,7 +9105,7 @@
   async function runTagAction(action, payload, doneMessage) {
     const saved = await persist(t("app.runTagAction.saved"));
     if (!saved || hasSendableOutboxBatch() || hasBlockedConflictBatch()) {
-      window.alert(t("extra.tags.saveFirst"));
+      Dialog.alert(t("extra.tags.saveFirst"));
       return false;
     }
     await globalChannel?.flush();
@@ -9816,7 +9119,7 @@
       if (!response.ok || body.ok === false) throw new Error(body.error || `HTTP ${response.status}`);
       if (action !== "delete") state.editingTagId = body.tag || null;
     } catch (error) {
-      window.alert(t("extra.tags.failed", { message: error.message }));
+      Dialog.alert(t("extra.tags.failed", { message: error.message }));
       return false;
     }
     tagUsageCache = null;
@@ -9938,10 +9241,10 @@
   }
 
   // Shows a Marketing target in its list, and opens its window when asked.
-  function openTargetForEditing(id, { openNotes = false, initialTab = "overview" } = {}) {
+  async function openTargetForEditing(id, { openNotes = false, initialTab = "overview" } = {}) {
     const item = findItem(id);
     if (!item) return;
-    navigateToTarget(item.id);
+    await navigateToTarget(item.id);
     if (openNotes) openNotesModal(item, initialTab);
   }
 
@@ -9957,11 +9260,11 @@
     }, 0);
   }
 
-  function navigateToCampaign(campaignId) {
+  async function navigateToCampaign(campaignId) {
     const campaign = findCampaign(campaignId);
     if (!campaign) return;
 
-    if (!RecordWindow.requestClose()) return;
+    if (!(await RecordWindow.requestClose())) return;
     state.selectedAppTab = "extra";
     state.selectedExtraSubTab = "campaigns";
     state.campaignSearch = "";
@@ -9980,11 +9283,11 @@
     flashElement(`[data-campaign-id="${cssEscape(campaign.id)}"]`);
   }
 
-  function navigateToFeedback(feedbackId, { edit = false } = {}) {
+  async function navigateToFeedback(feedbackId, { edit = false } = {}) {
     const item = findFeedbackItem(feedbackId);
     if (!item) return;
 
-    if (!RecordWindow.requestClose()) return;
+    if (!(await RecordWindow.requestClose())) return;
     state.selectedAppTab = "extra";
     state.selectedExtraSubTab = "feedback";
     state.feedbackTypeFilter = "all";
@@ -10057,16 +9360,7 @@
     renderDailyGroups();
     if (hrefs.length > 1 && openedCount < hrefs.length) {
       markSaved(t("app.openDailyLink.openedLinksBrowserBlockedPop", { openedCount, length: hrefs.length }));
-      setTimeout(() => {
-        alert(
-          `Opened ${openedCount} of ${hrefs.length} links.\n\n` +
-            `Your browser blocked ${hrefs.length - openedCount} tab(s).\n\n` +
-            `To open all ${hrefs.length} links with 1 click:\n` +
-            `1. Click the "Pop-ups blocked" icon (🔒 or 🗔) in your browser address bar.\n` +
-            `2. Select "Always allow pop-ups and redirects".\n` +
-            t("app.openDailyLink.3ClickDoneAndTry"),
-        );
-      }, 150);
+      Dialog.alert(t("app.popupsBlocked", { opened: openedCount, total: hrefs.length, blocked: hrefs.length - openedCount }));
     } else if (hrefs.length > 1) {
       markSaved(t("app.openDailyLink.openedAllLinks", { length: hrefs.length }));
     }
@@ -10096,16 +9390,7 @@
     renderDailyGroups();
     if (totalCount > 1 && openedCount < totalCount) {
       markSaved(t("app.openDailyGroup.openedLinksBrowserBlockedPop", { openedCount, totalCount }));
-      setTimeout(() => {
-        alert(
-          `Opened ${openedCount} of ${totalCount} links.\n\n` +
-            `Your browser blocked ${totalCount - openedCount} tab(s).\n\n` +
-            `To open all ${totalCount} links with 1 click:\n` +
-            `1. Click the "Pop-ups blocked" icon (🔒 or 🗔) in your browser address bar.\n` +
-            `2. Select "Always allow pop-ups and redirects".\n` +
-            t("app.openDailyGroup.3ClickDoneAndTry"),
-        );
-      }, 150);
+      Dialog.alert(t("app.popupsBlocked", { opened: openedCount, total: totalCount, blocked: totalCount - openedCount }));
     } else if (totalCount > 1) {
       markSaved(t("app.openDailyGroup.openedAllLinks", { totalCount }));
     }
@@ -10142,10 +9427,6 @@
     });
   }
 
-  function clampPage() {
-    const totalPages = Math.max(1, Math.ceil(getFilteredItems().length / state.pageSize));
-    state.currentPage = Math.min(Math.max(1, state.currentPage), totalPages);
-  }
 
   function renderMarkdown(text) {
     if (!text || !text.trim()) return "";
@@ -10194,7 +9475,7 @@
   }
 
   function confirmDiscardModalChanges() {
-    return window.confirm(t("app.confirmDiscardModalChanges.discardUnsavedChangesAllProgress"));
+    return Dialog.confirm(t("app.confirmDiscardModalChanges.discardUnsavedChangesAllProgress"), { title: t("recordWindow.requestClose.title"), confirmLabel: t("recordWindow.requestClose.discard"), cancelLabel: t("recordWindow.requestClose.keepEditing"), danger: true });
   }
 
   // ---- The target window (js/record-window.js) ------------------------------
@@ -10205,12 +9486,10 @@
 
   const RecordWindow = window.StartupTrackerRecordWindow;
   const WINDOW_SECTIONS = {
-    mk: { collection: "items", tab: "pipeline", normalize: (record) => normalizeItem(record) },
-    po: { collection: "programs", tab: "programs", normalize: (record) => normalizeProgram(record) },
-    fu: { collection: "funding", tab: "funding", normalize: (record) => normalizeFundingSource(record) },
+    mk: { collection: "items", tab: "pipeline", normalize: (record) => normalizeTarget("mk", record) },
+    po: { collection: "programs", tab: "programs", normalize: (record) => normalizeTarget("po", record) },
+    fu: { collection: "funding", tab: "funding", normalize: (record) => normalizeTarget("fu", record) },
   };
-  // Tab names the older windows had, which other code and saved links still pass.
-  const OLD_WINDOW_TABS = { preview: "overview", metadata: "details", core: "details", extra: "extras", commitments: "details", payments: "details", eligibility: "details", valuecosts: "details", tracking: "details" };
   const RECORD_WINDOW_HISTORY_PANE = "recordWindowPane-history";
   // "Create a linked target": the record the new one links back to.
   let pendingLinkFromWindow = null;
@@ -10218,7 +9497,7 @@
   function openTargetWindow(section, id, tab = "overview") {
     const record = (state[WINDOW_SECTIONS[section].collection] || []).find((entry) => entry.id === id);
     if (!record) return false;
-    return RecordWindow.open({ section, record, tab: OLD_WINDOW_TABS[tab] || tab });
+    return RecordWindow.open({ section, record, tab });
   }
 
   function openNotesModal(item, tab) {
@@ -10260,9 +9539,9 @@
     return next;
   }
 
-  function removeTargetFromWindow({ section, record }) {
+  async function removeTargetFromWindow({ section, record }) {
     const name = RecordWindow.nameOf(section, record) || t("app.removeTargetFromWindow.thisTarget");
-    if (!window.confirm(t("app.removeTargetFromWindow.moveToTheRecycleBin", { name }))) return false;
+    if (!(await Dialog.confirm(t("app.removeTargetFromWindow.moveToTheRecycleBin", { name }), { confirmLabel: t("recordWindow.ensureOverlay.moveToRecycleBin"), danger: true }))) return false;
     if (section === "mk") {
       const item = findItem(record.id);
       if (item) deleteItem(item);
@@ -10317,7 +9596,9 @@
       linkedSummary: (section, id) => visibleLinksOf(section, id).map((entry) => `${entry.label}: ${describeRecord(entry.other)?.title || entry.other.id}`),
       createLinked: ({ section, from }) => {
         const link = { kind: from.section, id: String(from.record.id) };
-        if (RecordWindow.open({ section, draft: { campaignId: from.record.campaignId || "" }, tab: "details" })) pendingLinkFromWindow = link;
+        RecordWindow.open({ section, draft: { campaignId: from.record.campaignId || "" }, tab: "details" }).then((opened) => {
+          if (opened) pendingLinkFromWindow = link;
+        });
       },
       renderHistory: () => activateRecordHistoryPane(RECORD_WINDOW_HISTORY_PANE),
       save: saveTargetFromWindow,
@@ -10362,6 +9643,50 @@
     return sectionFieldCache[section];
   }
 
+  // Fields the Targets table can add as columns (js/section-page.js): the
+  // basics its standard columns do not show, then the section's groups.
+  const STANDARD_COLUMN_FIELDS = new Set(["name", "taxonomy", "priority", "status", "nextActionDate", "nextActionTime", "nextAction", "campaignId", "tags", "notes"]);
+
+  function sectionFieldColumns(section) {
+    const valueKey = sectionFields(section).value?.key;
+    const column = (field) => ({ id: `field:${field.key}`, label: field.label });
+    return [
+      { label: t("recordWindow.allDetailsHtml.basics"), columns: Fields.coreFields(section).filter((field) => !STANDARD_COLUMN_FIELDS.has(field.key)).map(column) },
+      ...Fields.detailGroups(section).map((group) => ({ label: group.label, columns: group.fields.filter((field) => field.key !== valueKey).map(column) })),
+    ].filter((group) => group.columns.length);
+  }
+
+  function fieldColumnText(section, record, key) {
+    const field = Fields.findField(section, key);
+    if (!field) return "";
+    if (field.type === "readonly-id") return String(record.id);
+    return Fields.formatValue(field, Fields.getValue(section, record, field), {
+      formatDate,
+      formatDateTime: formatWindowDateTime,
+      formatNumber,
+      label: (definition, value) => {
+        if (definition.type === "status") return getStatusLabel(value);
+        if (definition.type === "campaign") return getCampaignName(value) || value;
+        if (definition.type === "round") return state.fundingRounds.find((round) => round.id === value)?.name || value;
+        return undefined;
+      },
+    });
+  }
+
+  // What a field column sorts by: numbers and amounts by size, dates as
+  // written (they sort as text), anything else by the text shown.
+  function fieldColumnSort(section, record, key) {
+    const field = Fields.findField(section, key);
+    if (!field) return "";
+    const value = Fields.getValue(section, record, field);
+    if (Fields.isEmpty(field, value)) return "";
+    if (["number", "percent", "rating"].includes(field.type)) return value;
+    if (field.type === "money") return value.amount;
+    if (field.type === "money-range") return value.max ?? value.min;
+    if (["date", "datetime", "time"].includes(field.type)) return value;
+    return fieldColumnText(section, record, key).toLowerCase();
+  }
+
   function describeTarget(section, record) {
     const fields = sectionFields(section);
     const read = (field) => (field ? Fields.getValue(section, record, field) : "");
@@ -10373,7 +9698,7 @@
     const name = read(fields.name);
     const organization = read(fields.organization);
     const campaignName = record.campaignId ? getCampaignName(record.campaignId) : "";
-    const custom = Object.values(record.custom || {}).map((entry) => (Array.isArray(entry) ? entry.join(" ") : typeof entry === "object" && entry ? Object.values(entry).join(" ") : entry));
+    const custom = Fields.customFieldsOf(record).map((entry) => `${entry.label} ${entry.value}`);
     return {
       id: record.id,
       name,
@@ -10420,14 +9745,14 @@
     if (section === "fu") {
       const open = records.filter((record) => Statuses.isOpen(record.status));
       metrics.push(
-        { label: t("app.sectionMetrics.pipeline"), value: summarizeMoney(open.map((funding) => ({ amount: funding.askAmount, currency: funding.askCurrency }))).display, help: t("app.sectionMetrics.whatTheOpenDealsAsk") },
+        { label: t("app.sectionMetrics.pipeline"), value: summarizeMoney(open.map((funding) => funding.details?.askAmount).filter(Boolean)).display, help: t("app.sectionMetrics.whatTheOpenDealsAsk") },
         { label: t("app.sectionMetrics.committed"), value: summarizeMoney(records.flatMap((funding) => funding.commitments || [])).display },
-        { label: t("app.sectionMetrics.received"), value: summarizeMoney(records.flatMap((funding) => funding.payments || []), (payment) => payment.status === "Received" || payment.status === "Partially Received").display },
+        { label: t("app.sectionMetrics.received"), value: summarizeMoney(records.flatMap((funding) => funding.payments || []), (payment) => payment.status === "received" || payment.status === "partially-received").display },
       );
     } else if (section === "po") {
       const cashField = sectionFields("po").value;
       const expected = records
-        .filter((program) => Statuses.isOpen(program.status) && program.recordKind !== "watchlist")
+        .filter((program) => Statuses.isOpen(program.status))
         .map((program) => {
           const cash = Fields.getValue("po", program, cashField);
           const amount = cash.max ?? cash.min;
@@ -10483,11 +9808,9 @@
         campaigns: () => state.campaigns.map((campaign) => ({ id: campaign.id, name: campaign.name })),
         metrics: (records) => sectionMetrics(section, records),
         matchesTabs: (record) => matchesTaxonomyTabs(section, record),
-        customFields: () => Fields.customFields(section),
-        customValue: (record, key) => {
-          const value = record.custom?.[key];
-          return Array.isArray(value) ? value.join(", ") : value && typeof value === "object" ? Object.values(value).join(" ") : value;
-        },
+        fieldColumns: () => sectionFieldColumns(section),
+        fieldText: (record, key) => fieldColumnText(section, record, key),
+        fieldSort: (record, key) => fieldColumnSort(section, record, key),
         open: (id) => openTargetWindow(section, id),
         add: (values, options) => addTargetFromPage(section, values, options),
         taxonomyValue: () => pickerValue(config.picker),
@@ -10602,7 +9925,7 @@
         RecordWindow.refresh(record);
         RecordWindow.selectTab("history");
       },
-      activityLog: true,
+      timeline: true,
     },
   };
 
@@ -10721,18 +10044,19 @@
   }
 
   // The merged server timeline turned into display items: move pairs collapsed,
-  // PO activity entries interleaved, and each item annotated with the record as
-  // it stood before and after, which is what the comparison view needs.
+  // the target's timeline updates interleaved (its key dates are plans, not
+  // history), and each item annotated with the record as it stood before and
+  // after, which is what the comparison view needs.
   function buildRecordHistoryTimeline(paneId) {
     const view = HISTORY_PANES[paneId];
     const paneState = getHistoryPaneState(paneId);
     const record = view.findRecord(paneState.recordId);
 
     const activities = [];
-    if (view.activityLog) {
-      const log = Array.isArray(record && record.activityLog) ? record.activityLog : [];
-      for (const activity of log) {
-        const stamp = getProgramActivityTimestamp(activity);
+    if (view.timeline) {
+      for (const activity of Array.isArray(record?.timeline) ? record.timeline : []) {
+        if (activity.type === RecordWindow.KEY_DATE) continue;
+        const stamp = getTimelineEntryTimestamp(activity);
         if (!Number.isFinite(stamp) || stamp <= 0) continue;
         activities.push({ at: new Date(stamp).toISOString(), activity });
       }
@@ -11148,30 +10472,24 @@
     const paneState = getHistoryPaneState(paneId);
     const open = paneState.expandedEntries.has(item.key);
     const activity = item.activity;
-    const meta = [
-      activity.owner ? t("app.renderHistoryActivityItem.owner", { owner: activity.owner }) : "",
-      activity.statusAfter ? t("app.renderHistoryActivityItem.status", { statusAfter: activity.statusAfter }) : "",
-      activity.round ? t("app.renderHistoryActivityItem.round", { round: activity.round }) : "",
-    ].filter(Boolean);
+    const statusAfter = activity.statusAfter ? getStatusLabel(activity.statusAfter) : "";
+    const meta = [statusAfter ? t("app.renderHistoryActivityItem.status", { statusAfter }) : ""].filter(Boolean);
     const blocks = [
       activity.outcome ? [t("app.renderHistoryActivityItem.outcome"), activity.outcome] : null,
-      activity.previousAction
-        ? [t("app.renderHistoryActivityItem.previousAction", { previousActionStatus: getProgramPreviousActionStatusLabel(activity.previousActionStatus) }), activity.previousAction]
-        : null,
       activity.nextAction ? [t("ui.common.nextAction"), activity.nextAction] : null,
-      activity.blocker ? [t("app.renderHistoryActivityItem.blocker"), activity.blocker] : null,
       activity.notes ? [t("app.renderHistoryActivityItem.note"), activity.notes] : null,
     ].filter(Boolean);
 
-    const digest = activity.statusAfter
+    const digest = statusAfter
       ? `<span class="record-history-digest-status">`
-        + `<span class="record-history-digest-status-after">${escapeHtml(activity.statusAfter)}</span></span>`
+        + `<span class="record-history-digest-status-after">${escapeHtml(statusAfter)}</span></span>`
       : `<span class="record-history-digest-fields">${escapeHtml(t("app.counts.note", { count: blocks.length }))}</span>`;
+    const event = [timelineTypeLabel(activity.type), activity.title].filter(Boolean).join(": ") || t("app.getProgramActivityTypeLabel.otherType");
 
     return `
       <details class="record-history-entry record-history-entry-activity" data-history-entry="${escapeAttribute(item.key)}"${open ? " open" : ""}>
         <summary class="record-history-entry-head">
-          <span class="record-history-event">${escapeHtml(getProgramActivityTypeLabel(activity.type))}</span>
+          <span class="record-history-event">${escapeHtml(event)}</span>
           ${renderHistoryEntryTime(item.at)}
           <div class="record-history-badges">
             <span class="record-history-badge record-history-badge-activity">${escapeHtml(t("app.renderHistoryActivityItem.loggedByHand"))}</span>
@@ -11905,13 +11223,11 @@
       if (usageFilter === "empty-description" && hasDescription) return false;
 
       if (!query) return true;
-      const targetNames = record.targets.map((item) => item.platform).join(" ");
-      const programNames = record.programs.map((item) => `${item.name} ${item.applicationName || ""}`).join(" ");
-      const fundingNames = record.funding.map((item) => `${item.funder} ${item.opportunity || ""}`).join(" ");
+      const targetNames = [...record.targets, ...record.programs, ...record.funding].map((item) => `${item.name} ${item.organization || ""}`).join(" ");
       const mediaNames = record.media.map((media) => media.title).join(" ");
       const campaignNames = record.campaigns.map((campaign) => campaign.name).join(" ");
       const feedbackNames = record.feedback.map((item) => item.title).join(" ");
-      const haystack = `${record.id} ${record.label} ${record.description} ${targetNames} ${programNames} ${fundingNames} ${mediaNames} ${campaignNames} ${feedbackNames}`.toLowerCase();
+      const haystack = `${record.id} ${record.label} ${record.description} ${targetNames} ${mediaNames} ${campaignNames} ${feedbackNames}`.toLowerCase();
       return haystack.includes(query);
     });
   }
@@ -11920,9 +11236,6 @@
     return getAllTagRecords().map((record) => record.id);
   }
 
-  function getExtraParamDef(id) {
-    return extraParamsDefinition.find((p) => p.id === id) || null;
-  }
 
   function tagDatalistId(suffix) {
     return `tagDatalist_${suffix}`;
@@ -12008,22 +11321,9 @@
 
   // --- Tooltip for extra params ---
 
-  function formatExtraParamTooltip(param) {
-    const defaults = (param.defaults || []).filter((d) => d !== "");
-    return `
-      <div class="tooltip-title">${escapeHtml(param.name)}</div>
-      <div class="tooltip-section">
-        <div class="tooltip-heading">${escapeHtml(t("app.formatExtraParamTooltip.whyTrackThis"))}</div>
-        <div class="tooltip-body">${escapeHtml(param.description || t("app.formatExtraParamTooltip.noDescription"))}</div>
-      </div>
-      ${param.examples ? `<div class="tooltip-section"><div class="tooltip-heading">${escapeHtml(t("app.formatExtraParamTooltip.examples"))}</div><div class="tooltip-body">${escapeHtml(param.examples)}</div></div>` : ""}
-      ${defaults.length ? `<div class="tooltip-section"><div class="tooltip-heading">${escapeHtml(t("app.formatExtraParamTooltip.defaultPossibilities"))}</div><div class="tooltip-body">${defaults.map(escapeHtml).join(", ")}</div></div>` : ""}
-      <div class="tooltip-section"><div class="tooltip-heading">${escapeHtml(t("app.formatExtraParamTooltip.type"))}</div><div class="tooltip-body">${escapeHtml(param.type || "text")}</div></div>
-    `;
-  }
 
   function handleTooltipMouseOver(event) {
-    const target = event.target.closest("[data-tooltip], [data-tooltip-type], [data-modal-extra-param]");
+    const target = event.target.closest("[data-tooltip], [data-tooltip-type]");
     // A target removed while hovered (a redraw) never sends mouseout.
     if (!target) {
       hideTooltip();
@@ -12031,20 +11331,7 @@
     }
 
     let html = "";
-    let isWide = false;
-    if (target.dataset.modalExtraParam) {
-      const val = target.value || "";
-      if (val.trim()) {
-        const paramId = target.dataset.modalExtraParam;
-        const paramDef = getExtraParamDef(paramId);
-        const paramName = paramDef ? paramDef.name : paramId;
-        html = `
-          <div class="tooltip-title">${escapeHtml(paramName)}</div>
-          <div class="tooltip-body" style="white-space: pre-wrap; word-break: break-word;">${escapeHtml(val)}</div>
-        `;
-        isWide = true;
-      }
-    } else if (target.dataset.tooltipType === "taxonomy") {
+    if (target.dataset.tooltipType === "taxonomy") {
       const nodeId = target.dataset.nodeId || "";
       html = nodeId.startsWith("all:") ? formatAllTaxonomyTooltip(nodeId.slice(4)) : formatTaxonomyTooltip(nodeId);
     } else if (["category", "subcategory", "program-category", "program-subcategory", "funding-category", "funding-subcategory"].includes(target.dataset.tooltipType)) {
@@ -12053,11 +11340,6 @@
       const nodeId = target.dataset.subcategoryId || target.dataset.categoryId || "";
       const section = type.startsWith("program") ? "po" : type.startsWith("funding") ? "fu" : "mk";
       html = !nodeId || nodeId === "all" ? formatAllTaxonomyTooltip(section) : formatTaxonomyTooltip(nodeId);
-    } else if (target.dataset.tooltipType === "extraParam") {
-      const param = getExtraParamDef(target.dataset.extraParamId);
-      if (param) {
-        html = formatExtraParamTooltip(param);
-      }
     } else if (target.dataset.tooltipType === "tag") {
       const def = getTagDefinition(target.dataset.tagId);
       if (def) {
@@ -12071,18 +11353,18 @@
     }
 
     if (html) {
-      showTooltip(target, html, isWide);
+      showTooltip(target, html);
     }
   }
 
   function handleTooltipMouseOut(event) {
-    const target = event.target.closest("[data-tooltip], [data-tooltip-type], [data-modal-extra-param]");
+    const target = event.target.closest("[data-tooltip], [data-tooltip-type]");
     if (target) {
       hideTooltip();
     }
   }
 
-  function showTooltip(target, htmlContent, isWide = false) {
+  function showTooltip(target, htmlContent) {
     let tooltip = document.getElementById("customTooltip");
     if (!tooltip) {
       tooltip = document.createElement("div");
@@ -12095,7 +11377,6 @@
     if (tooltip.parentNode !== host) host.appendChild(tooltip);
 
     tooltip.innerHTML = htmlContent;
-    tooltip.classList.toggle("wide-tooltip", isWide);
     tooltip.classList.add("visible");
 
     const targetRect = target.getBoundingClientRect();
@@ -12264,7 +11545,7 @@
 
   function getOutboxRequest(batch) {
     return {
-      protocolVersion: 2,
+      protocolVersion: 3,
       mutationId: batch.mutationId,
       baseRevision: batch.baseRevision,
       baseHash: batch.baseHash,
@@ -12479,35 +11760,13 @@
   }
 
   function getLiveCollection(section) {
-    if (section === "categories") return state.legacyCategories || [];
-    if (section === "extraParamsDefinition") return extraParamsDefinition;
     if (section === "tagDefinitions") return tagDefinitions;
     return state[section];
   }
 
   function setLiveSection(section, value) {
-    if (section === "categories") state.legacyCategories = value;
-    else if (section === "extraParamsDefinition") extraParamsDefinition = value;
-    else if (section === "tagDefinitions") tagDefinitions = value;
+    if (section === "tagDefinitions") tagDefinitions = value;
     else state[section] = value;
-  }
-
-  // Older tab caches may contain record-level conflicts created before field
-  // details and automatic merging existed. Re-run those cached collisions
-  // through the current comparison once at startup.
-  async function reconcileLegacyBlockedConflicts() {
-    const legacyBatches = pendingOutbox.filter((batch) => batch.blockedByConflict
-      && (batch.conflicts || []).some((conflict) => !Array.isArray(conflict.overlapFields)));
-    for (const batch of legacyBatches) {
-      await handleRecordConflict(batch, {
-        conflicts: batch.conflicts || [],
-        revision: state.lastServerRevision,
-        revisionMap: serverRevisionMap,
-      });
-    }
-    state.recordConflicts = pendingOutbox
-      .filter((batch) => batch.blockedByConflict)
-      .flatMap((batch) => Array.isArray(batch.conflicts) ? batch.conflicts : []);
   }
 
   // A stale whole-record write gets a three-way comparison against the exact
@@ -13265,8 +12524,7 @@
     const names = conflicts
       .map((conflict) => (conflict.id ? `${conflict.section}/${conflict.id}` : conflict.section))
       .join("\n  ");
-    const confirmed = window.confirm(t("app.resolveRecordConflictsKeepingMine.confirm", { records: names }));
-    if (!confirmed) return;
+    if (!(await Dialog.confirm(t("app.resolveRecordConflictsKeepingMine.confirm", { records: names }), { danger: true }))) return;
     closeRecordConflictModal();
     rebaseBlockedConflictBatches();
     await persist(SAVE_STATE.synced);
@@ -13280,8 +12538,7 @@
     const names = conflicts
       .map((conflict) => (conflict.id ? `${conflict.section}/${conflict.id}` : conflict.section))
       .join("\n  ");
-    const confirmed = window.confirm(t("app.resolveRecordConflictsUsingTheirs.confirm", { records: names }));
-    if (!confirmed) return;
+    if (!(await Dialog.confirm(t("app.resolveRecordConflictsUsingTheirs.confirm", { records: names }), { danger: true }))) return;
 
     const resolvedKeys = new Set();
     let serverStatePromise = null;
@@ -13400,7 +12657,7 @@
       elements.saveStateLabel.textContent = t("app.showConflictNotification.conflictReload");
       elements.saveStateLabel.setAttribute("data-tooltip", t("app.showConflictNotification.theDatabaseHasBeenUpdated"));
     }
-    window.alert(t("app.showConflictNotification.alert"));
+    Dialog.alert(t("app.showConflictNotification.alert"));
   }
 
   function buildPersistedState() {
@@ -13409,10 +12666,8 @@
       version: 3,
       timeZone: getTimeZone(),
       updatedAt: new Date().toISOString(),
-      ...(state.legacyCategories ? { categories: state.legacyCategories } : {}),
       ...(state.enabledTaxonomy ? { enabledTaxonomy: state.enabledTaxonomy } : {}),
       links: state.links,
-      extraParamsDefinition: extraParamsDefinition,
       // Research links ticked "Shared" are saved with the shared data.
       dailyLinks: state.dailyLinks.filter((link) => !link.shared),
       feedbackItems: state.feedbackItems,
@@ -13434,8 +12689,8 @@
       deletedCompanyObligations: state.deletedCompanyObligations,
       deletedCompanyExpenses: state.deletedCompanyExpenses,
       mediaItems: buildPersistedMediaItems(),
-      items: state.items.map((item) => ({ ...item, extraParams: filterRetiredExtraParams(item.extraParams, RETIRED_TARGET_EXTRA_PARAM_IDS) })),
-      deletedItems: state.deletedItems.map((item) => ({ ...item, extraParams: filterRetiredExtraParams(item.extraParams, RETIRED_TARGET_EXTRA_PARAM_IDS) })),
+      items: state.items,
+      deletedItems: state.deletedItems,
     };
   }
 
@@ -13484,19 +12739,8 @@
     acknowledgedPersistedState = clonePersistedState(trackerState);
     acknowledgedPatchSnapshot = buildPatchSnapshot(acknowledgedPersistedState);
     state.lastPersistedContentSignature = null;
-    if (pendingLinkMigration) applyPendingLinkMigration();
   }
 
-  // Old link fields read into links on load (applyLoadedState): forget the
-  // saved copies of those links and records so the next save writes them.
-  function applyPendingLinkMigration() {
-    const migration = pendingLinkMigration;
-    pendingLinkMigration = null;
-    const forget = (section, id) => acknowledgedPatchSnapshot.collections[section]?.signatures.delete(String(id));
-    migration.links.forEach((id) => forget("links", id));
-    migration.records.forEach(({ section, id }) => forget(section, id));
-    scheduleAutosave();
-  }
 
   // Fold an already-computed operation list into the acknowledged snapshot.
   // Re-deriving the snapshot from scratch means stringifying all ~1,100 records
@@ -13572,7 +12816,7 @@
     PATCHABLE_RECORD_COLLECTIONS.forEach((section) => {
       const previousCollection = acknowledgedPatchSnapshot.collections[section];
       const currentCollection = current.collections[section];
-      // A collection the startup does not have (an older category list) is empty.
+      // A collection the startup has not saved yet is empty.
       const recordsById = new Map((trackerState[section] || []).map((record) => [String(record.id), record]));
       const blockedIds = blockedRecordIds(section);
 
@@ -13732,11 +12976,6 @@
     return bTime - aTime;
   }
 
-  // A marketing category in the nested shape, also one this startup turned
-  // off or one the library lacks, so a target never shows under another.
-  function getCategory(id) {
-    return categories.find((category) => category.id === id) || Taxonomy.nestedCategory(id, "mk");
-  }
 
   function findCampaign(id) {
     if (id === undefined || id === null) return undefined;
@@ -13998,8 +13237,7 @@
   function localMediaFetchHref(value) {
     const normalized = String(value || "").trim().replace(/\\/g, "/").replace(/^\.\//, "");
     if (!normalized || /^[a-z][a-z0-9+.-]*:/i.test(normalized)) return "";
-    // "/media/<file>" from before startups existed is redirected by the server
-    // to the startup that holds the file.
+    // "/media/<startupId>/<file>" is served as it is.
     if (normalized.startsWith("/media/")) return encodeURI(normalized);
     // "media/<file>" is relative to this startup's media folder.
     if (normalized.startsWith("media/")) return Api.media(normalized.slice("media/".length));
@@ -14148,8 +13386,8 @@
     }, 200);
   }
 
-  function requestCloseMediaDocumentModal() {
-    if (hasMediaDocumentModalUnsavedChanges() && !confirmDiscardModalChanges()) {
+  async function requestCloseMediaDocumentModal() {
+    if (hasMediaDocumentModalUnsavedChanges() && !(await confirmDiscardModalChanges())) {
       return false;
     }
     hideMediaDocumentModal();
@@ -14307,11 +13545,6 @@
     return "";
   }
 
-  function getSubcategoriesDisplay(item) {
-    const subs = item.subcategories || (item.subcategory ? [item.subcategory] : []);
-    return subs.map((subId) => Taxonomy.name(subId)).filter(Boolean).join(", ");
-  }
-
   function getStatusLabel(id) {
     return Statuses.label(id);
   }
@@ -14335,52 +13568,37 @@
     return "";
   }
 
+  // A repeating MK target, once done, makes its next occurrence: the same
+  // target on its next date, with the results of this one left behind.
   function handleRepeatingTarget(item) {
     if (!item.repeatUnit || !item.repeatInterval || item.hasRepeated) return;
-    const nextDate = calculateNextDate(item.date, item.repeatInterval, item.repeatUnit);
+    const nextDate = calculateNextDate(item.nextActionDate, item.repeatInterval, item.repeatUnit);
     if (!nextDate) return;
-
-    // Clone the item
-    // Clear results & metrics from extraParams
-    const cleanExtraParams = { ...item.extraParams };
-    const metricKeys = [
-      "impressions",
-      "upvotes",
-      "comments",
-      "clicks",
-      "starsDelta",
-      "referrals",
-      "installs",
-      "engagementScore",
-      "sentiment"
-    ];
-    metricKeys.forEach((key) => {
-      delete cleanExtraParams[key];
-    });
-
-    const nextItem = normalizeItem({
+    const results = new Set((Fields.detailGroups("mk").find((group) => group.id === "results")?.fields || []).map((field) => field.key));
+    const now = new Date().toISOString();
+    const nextItem = normalizeTarget("mk", {
       id: makeId(),
-      campaignId: item.campaignId,
-      category: item.category,
-      subcategories: [...(item.subcategories || [])],
-      subcategory: item.subcategory,
-      platform: item.platform,
+      name: item.name,
+      organization: item.organization,
       link: item.link,
+      taxonomy: [...(item.taxonomy || [])],
+      campaignId: item.campaignId,
       // The next occurrence of a repeating target already has its date.
       status: "scheduled",
       priority: item.priority,
-      date: nextDate,
-      time: item.time,
+      nextActionDate: nextDate,
+      nextActionTime: item.nextActionTime,
+      nextAction: item.nextAction,
+      owner: item.owner,
       notes: item.notes,
       tags: [...(item.tags || [])],
-      extraParams: cleanExtraParams,
+      details: Object.fromEntries(Object.entries(item.details || {}).filter(([key]) => !results.has(key))),
+      customFields: item.customFields,
       repeatInterval: item.repeatInterval,
       repeatUnit: item.repeatUnit,
-      hasRepeated: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: now,
+      updatedAt: now,
     });
-
     if (nextItem) {
       state.items.unshift(nextItem);
       item.hasRepeated = true;
@@ -14463,10 +13681,6 @@
 
   // Today's date and the current time ("HH:MM") in the app's time zone, for
   // "today" checks and as the default of new date and time fields.
-  function nowDateTimeParts() {
-    return Dates.nowPartsIn(getTimeZone());
-  }
-
   function todayDate() {
     return Dates.todayIn(getTimeZone());
   }
@@ -14647,9 +13861,9 @@
     textareas.forEach((ta) => autoResizeTextarea(ta));
   }
 
-  function navigateToMedia(mediaId) {
+  async function navigateToMedia(mediaId) {
     // 1. Close the target window if this came from a link in it.
-    if (!RecordWindow.requestClose()) return;
+    if (!(await RecordWindow.requestClose())) return;
 
     // 2. Switch to extra tab with media sub-tab
     state.selectedAppTab = "extra";
@@ -14694,10 +13908,10 @@
 
   // --- Dependency target helpers ---
 
-  function navigateToTarget(targetId) {
+  async function navigateToTarget(targetId) {
     const item = findItem(targetId);
     if (!item) return;
-    if (!RecordWindow.requestClose()) return;
+    if (!(await RecordWindow.requestClose())) return;
     state.selectedAppTab = "pipeline";
     state.selectedCategory = "all";
     state.selectedSubcategory = "all";
@@ -14708,61 +13922,9 @@
   window.navigateToTarget = navigateToTarget;
 
 
-  function syncExtraParamPills(paramId) {
-    const input = document.querySelector(`[data-modal-extra-param="${paramId}"]`);
-    if (!input) return;
-    const val = input.value || "";
-    const selectedVals = val.split(/[,\s]+/).map(v => v.trim()).filter(Boolean);
 
-    const checkboxes = document.querySelectorAll(`input[data-ep-pill-checkbox="${paramId}"]`);
-    checkboxes.forEach(cb => {
-      const isChecked = selectedVals.includes(cb.value);
-      cb.checked = isChecked;
-      const label = cb.closest(".subcategory-checkbox-label");
-      if (label) {
-        label.classList.toggle("active", isChecked);
-      }
-    });
-  }
-  window.syncExtraParamPills = syncExtraParamPills;
 
-  function toggleElementPicker(paramId) {
-    const picker = document.getElementById(`elementPicker_${paramId}`);
-    const input = document.querySelector(`[data-modal-extra-param="${paramId}"]`);
-    const btn = input?.nextElementSibling;
-    if (picker) {
-      const isHidden = picker.classList.toggle("hidden");
-      if (btn) {
-        btn.classList.toggle("open", !isHidden);
-      }
-    }
-  }
-  window.toggleElementPicker = toggleElementPicker;
 
-  function openElementPicker(paramId) {
-    const picker = document.getElementById(`elementPicker_${paramId}`);
-    const input = document.querySelector(`[data-modal-extra-param="${paramId}"]`);
-    const btn = input?.nextElementSibling;
-    if (picker && picker.classList.contains("hidden")) {
-      picker.classList.remove("hidden");
-      if (btn) {
-        btn.classList.add("open");
-      }
-    }
-  }
-  window.openElementPicker = openElementPicker;
-
-  function togglePickerCategory(paramId, catId) {
-    const content = document.getElementById(`pickerCategory_${paramId}_${catId}`);
-    const header = content?.previousElementSibling;
-    if (content) {
-      const isCollapsed = content.classList.toggle("collapsed");
-      if (header) {
-        header.classList.toggle("collapsed", isCollapsed);
-      }
-    }
-  }
-  window.togglePickerCategory = togglePickerCategory;
 
   // Markup built from templates carries data attributes instead of inline
   // handlers, because the page's security policy runs only scripts served by
@@ -14774,22 +13936,8 @@
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
       const mediaBadge = target.closest("[data-navigate-media]");
-      if (mediaBadge) {
-        navigateToMedia(mediaBadge.dataset.navigateMedia);
-        return;
-      }
-      const categoryHeader = target.closest("[data-picker-category-param]");
-      if (categoryHeader) {
-        togglePickerCategory(categoryHeader.dataset.pickerCategoryParam, categoryHeader.dataset.pickerCategory);
-        return;
-      }
-      const pickerToggle = target.closest("[data-element-picker-toggle]");
-      if (pickerToggle) toggleElementPicker(pickerToggle.dataset.elementPickerToggle);
+      if (mediaBadge) navigateToMedia(mediaBadge.dataset.navigateMedia);
     }, true);
-    document.addEventListener("focusin", (event) => {
-      const input = event.target instanceof Element ? event.target.closest("[data-element-picker-open]") : null;
-      if (input) openElementPicker(input.dataset.elementPickerOpen);
-    });
     document.addEventListener("change", (event) => {
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
@@ -14851,8 +13999,8 @@
         if (changes.examples) state.promptExamples = changes.examples;
         persist(message);
       },
-      deletePrompt: (prompt) => {
-        if (!window.confirm(t("recycle.confirmDeletePrompt", { name: prompt.name || "" }))) return false;
+      deletePrompt: async (prompt) => {
+        if (!(await Dialog.confirm(t("recycle.confirmDeletePrompt", { name: prompt.name || "" }), { danger: true }))) return false;
         moveRecordToBin("prompts", prompt.id);
         persist(t("recycle.moved"));
         return true;
@@ -14954,7 +14102,7 @@
       onCounts: updateAgentBadge,
       openRecord: (kind, id) => {
         document.querySelector("#agentRunOverlay")?.close?.();
-        if (!openTargetWindow(kind, id)) window.alert(t("agents.run.recordGone"));
+        if (!openTargetWindow(kind, id)) Dialog.alert(t("agents.run.recordGone"));
       },
       // The run's final JSON block, in "Import AI results" on the Prompts page.
       openImport: (text) => {
@@ -14978,7 +14126,7 @@
           if (document.querySelector("#agentRunOverlay")?.open) AgentsPage.openOverlay(body.run.id, agentHooks());
           else agentsPage()?.openRun(body.run.id);
         } catch (error) {
-          window.alert(t("agents.run.againFailed", { message: error.message }));
+          Dialog.alert(t("agents.run.againFailed", { message: error.message }));
         }
       },
     };

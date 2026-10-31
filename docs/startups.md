@@ -27,7 +27,3 @@ Deleting a startup asks you to type its name, then takes a safety backup of the 
 ## Search and calendar across startups
 
 The search box in the top bar and the calendar have a **This startup / All startups** switch, remembered per startup. "All startups" shows matching records and dated events from every startup that is not archived, each with its startup's name. Opening one switches to that startup first. Across startups, search covers marketing, programs, funding, campaigns and media, and the calendar shows marketing, program, funding, company and campaign dates.
-
-## Upgrading an older tracker database
-
-A database from before startups existed (one tracker per file) is upgraded the first time the server opens it. A copy of the old file is kept in the backup folder as `tracker-<time>-pre-upgrade-v<version>.sqlite`, and the upgrade does not run if that copy cannot be made. All existing records go into one startup named "Imported", which you can rename. Uploads that sat directly in the media folder move into that startup's folder, and old `/media/<file>` links keep working.

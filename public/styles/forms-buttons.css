@@ -586,9 +586,11 @@ input[type="radio"] {
   box-shadow: none;
 }
 
+/* Placeholders show examples, never data: faint, whatever the theme's colour. */
 input::placeholder,
 textarea::placeholder {
   color: #94a3b8;
+  opacity: 0.6;
 }
 
 input:focus,

@@ -9,7 +9,6 @@ const { spawnSync } = require("node:child_process");
 const { SCHEMA_VERSION, TrackerSqliteStore } = require("../lib/tracker-sqlite-store");
 const { createStartup } = require("../lib/startups");
 const { dataPaths } = require("../lib/data-root");
-const { writeLegacyDatabase } = require("./helpers/legacy-schema");
 const { createBackup } = require("../tools/backup-sqlite");
 const { collectAbout, formatAbout } = require("../tools/about");
 
@@ -62,12 +61,6 @@ test("about reports the data folder, database, integrity, startups and backups w
     fs.mkdirSync(path.join(paths.mediaDir, "first"), { recursive: true });
     fs.writeFileSync(path.join(paths.mediaDir, "first", "deck.pdf"), "deck");
     createBackup({ databasePath: paths.databaseFile, outputDir: paths.backupDir, mediaDir: paths.mediaDir, label: "one" });
-    const flat = new TrackerSqliteStore(paths.databaseFile);
-    try {
-      flat.createSnapshot(path.join(paths.backupDir, "tracker-20260101-000000-old.sqlite"));
-    } finally {
-      flat.close();
-    }
     const before = snapshotFolder(root);
 
     const about = collectAbout({ argv: ["--data-dir", root], env: CLEAN_ENV, now: () => new Date("2026-10-17T12:00:00Z") });
@@ -84,7 +77,6 @@ test("about reports the data folder, database, integrity, startups and backups w
     assert.deepEqual(about.integrity, { checkedAt: "2026-10-17T12:00:00.000Z", ok: true, problems: [] });
     assert.equal(about.startupCount, 2);
     assert.equal(about.backupCount, 1);
-    assert.equal(about.olderBackupFiles, 1);
 
     assert.deepEqual(withoutWalFiles(snapshotFolder(root)), before, "nothing in the data folder changed");
 
@@ -92,7 +84,7 @@ test("about reports the data folder, database, integrity, startups and backups w
     assert.match(text, new RegExp(`^Startup Tracker ${VERSION.replaceAll(".", "\\.")}\\n`));
     assert.match(text, /Startups {6}2/);
     assert.match(text, /Integrity {5}ok \(checked 2026-10-17T12:00:00\.000Z\)/);
-    assert.match(text, /1 backup, 1 older backup file/);
+    assert.match(text, /Backups {7}.* \(1 backup\)/);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
@@ -105,26 +97,6 @@ test("the port follows --port, PORT and --dev like the server", () => {
     assert.equal(collectAbout({ argv: ["--data-dir", root, "--port", "4200"], env: { PORT: "4100" } }).port, 4200);
     assert.equal(collectAbout({ argv: ["--data-dir", root, "--dev"], env: CLEAN_ENV }).port, 57323);
     assert.throws(() => collectAbout({ argv: ["--data-dir", root], env: { PORT: "nope" } }), /Not a valid port: nope/);
-  } finally {
-    fs.rmSync(root, { recursive: true, force: true });
-  }
-});
-
-test("a legacy database reports its older format and is not upgraded", () => {
-  const { root, paths } = makeDataFolder();
-  try {
-    fs.mkdirSync(paths.dataDir, { recursive: true });
-    writeLegacyDatabase(paths.databaseFile, { items: [{ id: "a", title: "Old" }] });
-    const before = fs.readFileSync(paths.databaseFile);
-
-    const about = collectAbout({ argv: ["--data-dir", root], env: CLEAN_ENV });
-    assert.equal(about.databaseFormat, "legacy");
-    assert.equal(about.schemaVersion, 3);
-    assert.match(about.databaseFormatNote, /one startup per file/);
-    assert.equal(about.integrity.ok, true);
-    assert.equal(about.startupCount, 1);
-    assert.ok(fs.readFileSync(paths.databaseFile).equals(before), "the database is byte-identical");
-    assert.match(formatAbout(about), /Older format: one startup per file \(schema 3\)/);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

@@ -2,14 +2,15 @@
 // (window.StartupTrackerRecordWindow), drawn from the field registry
 // (js/fields.js).
 //
-// Six tabs, the same in every section:
-//   Overview  the header, the link, the rendered notes and "All details"
-//   Edit      quick status and priority, the Markdown notes with a preview
-//   Details   the core fields, the section's field groups, then the activity
-//             (milestones, the update log, documents, commitments, payments)
+// Five tabs, the same in every section:
+//   Overview  the status, the key facts, the link, the rendered notes and
+//             "All details"
+//   Edit      the Markdown notes with a live preview
+//   Details   the core fields, the section's field groups, the activities
+//             (the timeline, FU commitments and payments), then the target's
+//             own custom fields
 //   Links     the record's links (js/links-model.js) and "Create linked..."
-//   Extras    custom fields, and "Other fields": keys no field claims
-//   History   the record's timeline
+//   History   the record's changes
 //
 // The window edits a copy of the record. Save hands the copy to the page
 // (hooks.save), which stores it like any other edit; Cancel, Esc or the close
@@ -17,7 +18,7 @@
 // saved yet) is created on its first Save.
 //
 // What can be tested without a browser is exported on its own: the tab ids,
-// the change check and the update log rule.
+// the change check and the timeline rules.
 //
 // UMD: browsers get window.StartupTrackerRecordWindow, Node gets module.exports.
 (function (root, factory) {
@@ -42,12 +43,15 @@
     { id: "edit", get label() { return t("recordWindow.tabs.edit"); } },
     { id: "details", get label() { return t("recordWindow.tabs.details"); } },
     { id: "links", get label() { return t("ui.common.links"); } },
-    { id: "extras", get label() { return t("recordWindow.tabs.extras"); } },
     { id: "history", get label() { return t("recordWindow.tabs.history"); } },
   ]);
   const TAB_IDS = Object.freeze(TABS.map((tab) => tab.id));
   const SECTION_LABELS = Object.freeze({ get mk() { return t("ui.common.marketing"); }, get po() { return t("recordWindow.sectionLabels.programs"); }, get fu() { return t("ui.common.funding"); } });
   const PRIORITIES = Object.freeze(["Very High", "High", "Medium", "Low", "Very Low"]);
+  // The timeline entry type that is a date ahead; it shows on the calendar.
+  const KEY_DATE = "key-date";
+  // Fields a key date has no use for; its form leaves them out.
+  const UPDATE_ONLY_FIELDS = Object.freeze(["outcome", "nextAction", "nextActionDate", "statusAfter"]);
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[character]));
@@ -72,7 +76,6 @@
       ...Fields.coreFields(section),
       Fields.findField(section, "notes"),
       ...Fields.detailGroups(section).flatMap((group) => group.fields),
-      ...Fields.customFields(section),
     ].filter(Boolean);
   }
 
@@ -85,10 +88,9 @@
       if (stable(Fields.getValue(section, original, field)) !== stable(Fields.getValue(section, work, field))) changed.push(field.key);
     }
     for (const activity of Fields.activities(section)) {
-      const collection = Fields.activityStorage(activity).collection;
-      if (stable(original?.[collection] || []) !== stable(work?.[collection] || [])) changed.push(collection);
+      if (stable(Fields.activityEntries(original, activity)) !== stable(Fields.activityEntries(work, activity))) changed.push(activity.id);
     }
-    if (stable(Fields.otherFields(section, original)) !== stable(Fields.otherFields(section, work))) changed.push("otherFields");
+    if (stable(Fields.customFieldsOf(original)) !== stable(Fields.customFieldsOf(work))) changed.push("customFields");
     return changed;
   }
 
@@ -96,14 +98,21 @@
     return changedFields(section, original, work).length > 0;
   }
 
-  // A new update log entry also moves the target on: its status, and its next
+  // A new timeline entry also moves the target on: its status, and its next
   // action when the entry names one.
-  function applyUpdateLogEntry(section, work, values) {
+  function applyTimelineEntry(section, work, values) {
     const field = (key) => Fields.findField(section, key);
     if (values.statusAfter) Fields.setValue(section, work, field("status"), values.statusAfter);
     if (values.nextAction) Fields.setValue(section, work, field("nextAction"), values.nextAction);
     if (values.nextActionDate) Fields.setValue(section, work, field("nextActionDate"), values.nextActionDate);
     return work;
+  }
+
+  // The positions of the entries, latest date first, so key dates ahead lead
+  // and the oldest updates come last. Entries without a date go to the end.
+  function timelineOrder(entries) {
+    const at = (entry) => (entry?.date ? `${entry.date}T${entry.time || "00:00"}` : "");
+    return (entries || []).map((entry, index) => index).sort((a, b) => at(entries[b]).localeCompare(at(entries[a])) || b - a);
   }
 
   function nameOf(section, record) {
@@ -115,6 +124,8 @@
   let hooks = {};
   let overlay = null;
   let current = null;
+  // The open "discard changes?" question, so a second Esc does not ask again.
+  let closing = null;
 
   // Sets the page's hooks and builds the window, so its panes exist before
   // the page binds anything to them.
@@ -181,8 +192,12 @@
     overlay.addEventListener("input", onEdit);
     overlay.addEventListener("change", onEdit);
     overlay.addEventListener("keydown", onKeyDown);
+    // A press outside the window closes it, or asks first when something
+    // would be lost; the focus stays put, so that question gets it.
     overlay.addEventListener("mousedown", (event) => {
-      if (event.target === overlay) requestClose();
+      if (event.target !== overlay) return;
+      event.preventDefault();
+      requestClose();
     });
     return overlay;
   }
@@ -192,10 +207,11 @@
   }
 
   // Opens a record. `record` null with `draft` opens an unsaved target filled
-  // from `draft` (the add form's values).
-  function open({ section, record = null, draft = null, tab = "overview" }) {
+  // from `draft` (the add form's values). Resolves to false when the open
+  // window had changes the person chose to keep.
+  async function open({ section, record = null, draft = null, tab = "overview" }) {
     if (!Fields.SECTIONS.includes(section)) throw new Error(t("recordWindow.open.unknownSection", { section }));
-    if (current && !requestClose()) return false;
+    if (current && !(await requestClose())) return false;
     ensureOverlay();
     const isDraft = !record;
     const base = isDraft ? { id: hooks.newId ? hooks.newId() : `draft-${Date.now()}`, ...(draft || {}) } : record;
@@ -245,7 +261,7 @@
       button.tabIndex = active ? 0 : -1;
       button.classList.toggle("active", active);
       pane.hidden = !active;
-      // Status and priority show in two tabs; only the open tab holds controls.
+      // Only the open tab holds controls; the others are drawn when opened.
       if (!active) pane.innerHTML = "";
     }
     renderPane(tabId);
@@ -259,7 +275,6 @@
     else if (tabId === "edit") renderEdit(pane);
     else if (tabId === "details") renderDetails(pane);
     else if (tabId === "links") renderLinks(pane);
-    else if (tabId === "extras") renderExtras(pane);
     else if (tabId === "history") renderHistory(pane);
   }
 
@@ -269,6 +284,27 @@
     return Fields.formatValue(definition, entry, helpers());
   }
 
+  // Key facts start folded, as the link and the notes matter more; once the
+  // person unfolds them they open unfolded on every target in this browser,
+  // until folded again.
+  function factsOpen() {
+    try {
+      return root.localStorage.getItem(root.StartupTrackerApi.globalStorageKey("key-facts")) === "open";
+    } catch {
+      return false;
+    }
+  }
+
+  function rememberFacts(open) {
+    try {
+      root.localStorage.setItem(root.StartupTrackerApi.globalStorageKey("key-facts"), open ? "open" : "folded");
+    } catch {
+      // Without storage they start folded again next time.
+    }
+  }
+
+  // The status and primary category, then the key facts in a slim fold: one
+  // row, where each fact grows to five lines at most and scrolls after that.
   function overviewHtml() {
     const { section, work } = current;
     const status = value("status");
@@ -279,9 +315,9 @@
       .map((definition) => {
         let text = fieldText(definition, Fields.getValue(section, work, definition));
         if (definition.key === "nextActionDate" && text && value("nextActionTime")) text += ` ${value("nextActionTime")}`;
-        return text ? `<div class="record-window-fact"><span>${escapeHtml(definition.label)}</span><strong>${escapeHtml(text)}</strong></div>` : "";
+        return text ? `<div class="record-window-fact" data-fact="${escapeHtml(definition.key)}"><span>${escapeHtml(definition.label)}</span><strong tabindex="0">${escapeHtml(text)}</strong></div>` : "";
       })
-      .join("");
+      .filter(Boolean);
     const notes = value("notes");
     return `
       <div class="record-window-overview">
@@ -289,7 +325,10 @@
           ${status && hooks.statusBadgeHtml ? hooks.statusBadgeHtml(status) : ""}
           ${hooks.taxonomyLabel && (work.taxonomy || []).length ? `<span class="record-window-path">${escapeHtml(hooks.taxonomyLabel(work.taxonomy.slice(0, 1)))}</span>` : ""}
         </div>
-        ${facts ? `<div class="record-window-facts">${facts}</div>` : ""}
+        ${facts.length ? `<details class="record-window-facts-fold" data-rw-facts${factsOpen() ? " open" : ""}>
+          <summary><svg class="record-window-fold-icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg>${escapeHtml(t("recordWindow.overviewHtml.keyFacts"))}<span class="record-window-count">${escapeHtml(t("recordWindow.groupCount.fields", { count: facts.length }))}</span></summary>
+          <div class="record-window-facts">${facts.join("")}</div>
+        </details>` : ""}
         ${link ? `<a class="record-window-link-banner" href="${escapeHtml(link)}" target="_blank" rel="noreferrer noopener">${escapeHtml(link)}</a>` : ""}
         <div class="markdown-rendered record-window-notes">${notes ? (hooks.renderMarkdown ? hooks.renderMarkdown(notes) : escapeHtml(notes)) : `<p class="empty-text">${escapeHtml(t("recordWindow.overviewHtml.noNotesYetWriteThem"))}</p>`}</div>
         <h3 class="record-window-subheading">${escapeHtml(t("recordWindow.overviewHtml.allDetails"))}</h3>
@@ -314,18 +353,13 @@
       const list = definitionList(group.fields.map((definition) => [definition.label, fieldText(definition, Fields.getValue(section, work, definition))]));
       if (list) blocks.push(`<section><h4>${escapeHtml(group.label)}</h4>${list}</section>`);
     }
-    const custom = definitionList(Fields.customFields(section).map((definition) => [definition.label, fieldText(definition, Fields.getValue(section, work, definition))]));
-    if (custom) blocks.push(`<section><h4>${escapeHtml(t("ui.common.yourFields"))}</h4>${custom}</section>`);
     for (const activity of Fields.activities(section)) {
       const entries = Fields.activityEntries(work, activity);
-      if (activity.checklist) {
-        const rows = entries.filter((entry) => entry.status && entry.status !== "Unknown").map((entry) => [documentLabel(activity, entry.id), fieldText(activity.fields[0], Fields.readEntryValue(activity, activity.fields[0], entry))]);
-        const list = definitionList(rows);
-        if (list) blocks.push(`<section><h4>${escapeHtml(activity.label)}</h4>${list}</section>`);
-      } else if (entries.length) {
-        blocks.push(`<section><h4>${escapeHtml(activity.label)}</h4><ul class="record-window-entries">${entries.map((entry) => `<li>${escapeHtml(entrySummary(activity, entry))}</li>`).join("")}</ul></section>`);
-      }
+      const order = activity.id === "timeline" ? timelineOrder(entries) : entries.map((entry, index) => index);
+      if (order.length) blocks.push(`<section><h4>${escapeHtml(activity.label)}</h4><ul class="record-window-entries">${order.map((index) => `<li>${escapeHtml(entrySummary(activity, entries[index]))}</li>`).join("")}</ul></section>`);
     }
+    const custom = definitionList(Fields.customFieldsOf(work).map((entry) => [entry.label || t("recordWindow.customFields.noLabel"), entry.value]));
+    if (custom) blocks.push(`<section><h4>${escapeHtml(t("recordWindow.customFields.title"))}</h4>${custom}</section>`);
     const linked = hooks.linkedSummary && !current.draft ? hooks.linkedSummary(section, work.id) : [];
     if (linked.length) blocks.push(`<section><h4>${escapeHtml(t("ui.common.links"))}</h4><ul class="record-window-entries">${linked.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul></section>`);
     const changed = [work.createdAt ? t("recordWindow.allDetailsHtml.created", { value: hooks.formatDateTime ? hooks.formatDateTime(work.createdAt) : work.createdAt }) : "", work.updatedAt ? t("recordWindow.allDetailsHtml.lastChanged", { value: hooks.formatDateTime ? hooks.formatDateTime(work.updatedAt) : work.updatedAt }) : ""].filter(Boolean).join(", ");
@@ -340,22 +374,11 @@
       .join(" · ");
   }
 
-  function documentLabel(activity, id) {
-    const known = (activity.checklist || []).find((entry) => entry.id === id);
-    if (known) return known.label;
-    const text = String(id || "").replace(/[-_]+/g, " ").trim();
-    return text ? text.charAt(0).toUpperCase() + text.slice(1) : t("recordWindow.documentLabel.document");
-  }
-
   // ---- Edit -------------------------------------------------------------------------
 
+  // The notes and their preview grow with the text, so only the window scrolls.
   function renderEdit(pane) {
-    const { section } = current;
     pane.innerHTML = `
-      <div class="record-window-quick">
-        ${fieldRowHtml(field(section, "status"))}
-        ${fieldRowHtml(field(section, "priority"))}
-      </div>
       <div class="record-window-editor">
         <label class="record-window-notes-input">
           <span class="label-title">${escapeHtml(t("recordWindow.renderEdit.notes"))}</span>
@@ -379,7 +402,8 @@
   // ---- Details ------------------------------------------------------------------------
 
   // One field with its label, its help (always shown in this window) and a
-  // suggested value, which is saved only once "Use" is pressed.
+  // suggested value, which is saved only once "Use" is pressed. A field that
+  // holds a value has its label tinted in the section colour.
   function fieldRowHtml(definition, { prefix = "rw-" } = {}) {
     if (!definition) return "";
     const { section, work } = current;
@@ -392,7 +416,11 @@
         control = `<div class="field-control field-control-id" data-field="id"><input type="text" id="${escapeHtml(id)}" value="${escapeHtml(current.draft ? t("recordWindow.fieldRowHtml.givenWhenSaved") : work.id)}" readonly aria-describedby="${helpId}"><button type="button" class="icon-button" data-rw-copy-id title="${escapeHtml(t("recordWindow.fieldRowHtml.copyId"))}" aria-label="${escapeHtml(t("recordWindow.fieldRowHtml.copyId"))}"${current.draft ? " disabled" : ""}>⧉</button></div>`;
         break;
       case "taxonomy":
-        control = `<div class="field-control field-control-taxonomy" data-field="taxonomy"><div data-rw-taxonomy aria-labelledby="${escapeHtml(id)}-label"></div></div>`;
+        // Folded by default: the picks show in the summary, the tree on open.
+        control = `<details class="field-control field-control-taxonomy" data-field="taxonomy" data-rw-group="taxonomy"${current.openGroups?.has("taxonomy") ? " open" : ""}>
+          <summary data-rw-taxonomy-summary>${escapeHtml(taxonomySummary(entry))}</summary>
+          <div data-rw-taxonomy aria-labelledby="${escapeHtml(id)}-label"></div>
+        </details>`;
         break;
       case "status":
         control = `<div class="field-control" data-field="${escapeHtml(definition.key)}"><select id="${escapeHtml(id)}" data-field-input="${escapeHtml(definition.key)}" aria-describedby="${helpId}">${hooks.statusOptionsHtml ? hooks.statusOptionsHtml(entry) : `<option>${escapeHtml(entry)}</option>`}</select></div>`;
@@ -417,13 +445,19 @@
     }
     const suggestion = suggestionHtml(definition, entry);
     const labelTag = ["multiselect", "taxonomy", "repeat"].includes(definition.type) ? "span" : "label";
+    const filled = definition.type !== "readonly-id" && !Fields.isEmpty(definition, entry);
     return `
-      <div class="field-row field-row-${escapeHtml(definition.type)}" data-field-row="${escapeHtml(definition.key)}">
+      <div class="field-row field-row-${escapeHtml(definition.type)}${filled ? " is-filled" : ""}" data-field-row="${escapeHtml(definition.key)}">
         <${labelTag} class="field-label" id="${escapeHtml(id)}-label"${labelTag === "label" ? ` for="${escapeHtml(id)}"` : ""}>${escapeHtml(definition.label)}${definition.validation?.required ? ` <span class="field-required" aria-hidden="true">*</span>` : ""}</${labelTag}>
         ${control}
         ${suggestion}
         ${definition.description ? `<p class="field-help" id="${escapeHtml(helpId)}">${escapeHtml(definition.description)}</p>` : ""}
       </div>`;
+  }
+
+  function taxonomySummary(list) {
+    if (!list?.length) return t("recordWindow.taxonomy.nonePicked");
+    return hooks.taxonomyLabel ? hooks.taxonomyLabel(list) : list.join(", ");
   }
 
   function suggestionHtml(definition, entry) {
@@ -450,7 +484,8 @@
           ${group.description ? `<p class="record-window-group-help">${escapeHtml(group.description)}</p>` : ""}
           <div class="field-grid">${group.fields.map((definition) => fieldRowHtml(definition)).join("")}</div>
         </details>`).join("")}
-      ${Fields.activities(section).map(activityHtml).join("")}`;
+      ${Fields.activities(section).map(activityHtml).join("")}
+      ${customFieldsHtml()}`;
     mountTaxonomy(pane);
   }
 
@@ -465,6 +500,9 @@
     current.taxonomyPicker = hooks.mountTaxonomyPicker(holder, current.section, current.work.taxonomy || [], (list) => {
       current.work.taxonomy = list;
       if (hooks.applyTaxonomy) hooks.applyTaxonomy(current.work, list, current.section);
+      const summary = q("[data-rw-taxonomy-summary]");
+      if (summary) summary.textContent = taxonomySummary(list);
+      q("[data-field-row='taxonomy']")?.classList.toggle("is-filled", list.length > 0);
       updateState();
     });
   }
@@ -473,30 +511,38 @@
 
   function activityHtml(activity) {
     const entries = Fields.activityEntries(current.work, activity);
-    const open = current.openGroups?.has(activity.id) ? " open" : "";
-    if (activity.checklist) return documentsHtml(activity, entries, open);
+    const timeline = activity.id === "timeline";
+    const order = timeline ? timelineOrder(entries) : entries.map((entry, index) => index);
     const editing = current.editing[activity.id];
-    const rows = entries.map((entry, index) => `
-      <li class="record-window-entry">
+    const rows = order.map((index) => {
+      const entry = entries[index];
+      const keyDate = timeline && entry?.type === KEY_DATE;
+      return `
+      <li class="record-window-entry${keyDate ? " is-key-date" : ""}">
         <span>${escapeHtml(entrySummary(activity, entry)) || t("recordWindow.activityHtml.empty")}</span>
         <span class="record-window-entry-actions">
           <button type="button" class="text-button" data-rw-entry-edit="${escapeHtml(activity.id)}" data-index="${index}">${escapeHtml(t("recordWindow.activityHtml.edit"))}</button>
           <button type="button" class="text-button danger-text" data-rw-entry-remove="${escapeHtml(activity.id)}" data-index="${index}">${escapeHtml(t("recordWindow.activityHtml.remove"))}</button>
         </span>
-      </li>`).join("");
+      </li>`;
+    }).join("");
     const adding = editing !== undefined;
-    const entry = adding && editing >= 0 ? entries[editing] : {};
+    const entry = adding && editing >= 0 ? entries[editing] : (current.preset?.[activity.id] || {});
+    const addButtons = timeline
+      ? `<button type="button" class="secondary-button compact" data-rw-entry-add="timeline" data-preset="${KEY_DATE}">${escapeHtml(t("recordWindow.activityHtml.addKeyDate"))}</button>
+         <button type="button" class="secondary-button compact" data-rw-entry-add="timeline" data-preset="">${escapeHtml(t("recordWindow.activityHtml.logUpdate"))}</button>`
+      : `<button type="button" class="secondary-button compact" data-rw-entry-add="${escapeHtml(activity.id)}">${escapeHtml(t("ui.common.add"))}</button>`;
     const form = adding ? `
-      <div class="record-window-entry-form" data-rw-entry-form="${escapeHtml(activity.id)}">
+      <div class="record-window-entry-form" data-rw-entry-form="${escapeHtml(activity.id)}" data-type="${escapeHtml(timeline ? entry.type || "" : "")}">
         <div class="field-grid">${activity.fields.map((definition) => entryFieldHtml(activity, definition, entry)).join("")}</div>
         <div class="record-window-entry-buttons">
           <button type="button" class="primary-button compact" data-rw-entry-save="${escapeHtml(activity.id)}">${editing >= 0 ? t("recordWindow.activityHtml.updateEntry") : t("recordWindow.activityHtml.addEntry")}</button>
           <button type="button" class="secondary-button compact" data-rw-entry-cancel="${escapeHtml(activity.id)}">${escapeHtml(t("recordWindow.activityHtml.cancel"))}</button>
         </div>
-      </div>` : `<button type="button" class="secondary-button compact" data-rw-entry-add="${escapeHtml(activity.id)}">${activity.id === "updateLog" ? t("recordWindow.activityHtml.logUpdate") : t("ui.common.add")}</button>`;
+      </div>` : `<div class="record-window-entry-buttons">${addButtons}</div>`;
     return `
-      <details class="record-window-group record-window-activity" data-rw-group="${escapeHtml(activity.id)}"${open || adding ? " open" : ""}>
-        <summary><span>${escapeHtml(activity.label)}</span><span class="record-window-count">${entries.length || "none"}</span></summary>
+      <details class="record-window-group record-window-activity" data-rw-group="${escapeHtml(activity.id)}"${current.openGroups?.has(activity.id) || adding ? " open" : ""}>
+        <summary><span>${escapeHtml(activity.label)}</span><span class="record-window-count">${entries.length || t("recordWindow.activityHtml.none")}</span></summary>
         ${activity.description ? `<p class="record-window-group-help">${escapeHtml(activity.description)}</p>` : ""}
         ${rows ? `<ul class="record-window-entries">${rows}</ul>` : ""}
         ${form}
@@ -516,56 +562,12 @@
       control = Fields.inputHtml(definition, startValue, { idPrefix: prefix, describedBy: `${id}-help` });
     }
     const labelTag = definition.type === "multiselect" ? "span" : "label";
-    return `<div class="field-row" data-field-row="${escapeHtml(definition.key)}">
+    const updateOnly = activity.id === "timeline" && UPDATE_ONLY_FIELDS.includes(definition.key);
+    return `<div class="field-row field-row-${escapeHtml(definition.type)}" data-field-row="${escapeHtml(definition.key)}"${updateOnly ? " data-update-only" : ""}>
       <${labelTag} class="field-label"${labelTag === "label" ? ` for="${escapeHtml(id)}"` : ""}>${escapeHtml(definition.label)}${definition.validation?.required ? ` <span class="field-required" aria-hidden="true">*</span>` : ""}</${labelTag}>
       ${control}
       ${definition.description ? `<p class="field-help" id="${escapeHtml(id)}-help">${escapeHtml(definition.description)}</p>` : ""}
     </div>`;
-  }
-
-  function documentsHtml(activity, entries, open) {
-    const statusField = activity.fields.find((definition) => definition.key === "status");
-    const linkField = activity.fields.find((definition) => definition.key === "link");
-    const notesField = activity.fields.find((definition) => definition.key === "notes");
-    const ids = [...(activity.checklist || []).map((entry) => entry.id), ...entries.map((entry) => entry.id).filter((id) => !(activity.checklist || []).some((known) => known.id === id))];
-    const rows = ids.map((docId) => {
-      const entry = entries.find((candidate) => candidate.id === docId) || { id: docId };
-      const known = (activity.checklist || []).find((candidate) => candidate.id === docId);
-      return `<tr data-rw-document="${escapeHtml(docId)}">
-        <th scope="row"${known?.description ? ` title="${escapeHtml(known.description)}"` : ""}>${escapeHtml(documentLabel(activity, docId))}</th>
-        <td>${Fields.inputHtml({ ...statusField, label: t("recordWindow.documentsHtml.status", { activity: documentLabel(activity, docId) }) }, Fields.readEntryValue(activity, statusField, entry), { idPrefix: `rw-doc-${docId}-` })}</td>
-        <td>${Fields.inputHtml({ ...linkField, example: "https://..." }, Fields.readEntryValue(activity, linkField, entry), { idPrefix: `rw-doc-${docId}-` })}</td>
-        <td>${Fields.inputHtml({ ...notesField, example: "" }, Fields.readEntryValue(activity, notesField, entry), { idPrefix: `rw-doc-${docId}-` })}</td>
-      </tr>`;
-    }).join("");
-    const filled = entries.filter((entry) => entry.status && entry.status !== "Unknown").length;
-    return `
-      <details class="record-window-group record-window-activity" data-rw-group="${escapeHtml(activity.id)}"${open}>
-        <summary><span>${escapeHtml(activity.label)}</span><span class="record-window-count">${filled ? `${filled} tracked` : t("recordWindow.documentsHtml.noneTracked")}</span></summary>
-        ${activity.description ? `<p class="record-window-group-help">${escapeHtml(activity.description)}</p>` : ""}
-        <div class="record-window-table-wrap"><table class="record-window-documents">
-          <thead><tr><th scope="col">${escapeHtml(t("recordWindow.documentsHtml.document"))}</th><th scope="col">${escapeHtml(statusField.label)}</th><th scope="col">${escapeHtml(linkField.label)}</th><th scope="col">${escapeHtml(notesField.label)}</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table></div>
-      </details>`;
-  }
-
-  function readDocumentRow(activity, row) {
-    const docId = row.dataset.rwDocument;
-    const values = {};
-    for (const definition of activity.fields) values[definition.key] = Fields.readInput(definition, row);
-    const entries = Fields.activityEntries(current.work, activity);
-    const index = entries.findIndex((entry) => entry.id === docId);
-    const empty = activity.fields.every((definition) => Fields.isEmpty(definition, values[definition.key]));
-    const next = entries.slice();
-    if (empty) {
-      if (index >= 0) next.splice(index, 1);
-    } else {
-      const written = Fields.writeEntry(activity, index >= 0 ? entries[index] : { id: docId }, values);
-      if (index >= 0) next[index] = written;
-      else next.push(written);
-    }
-    current.work[Fields.activityStorage(activity).collection] = next;
   }
 
   function saveEntry(activityId) {
@@ -574,25 +576,28 @@
     if (!activity || !form) return;
     const values = {};
     for (const definition of activity.fields) values[definition.key] = Fields.readInput(definition, form);
+    if (activityId === "timeline" && values.type === KEY_DATE) for (const key of UPDATE_ONLY_FIELDS) delete values[key];
     const missing = activity.fields.filter((definition) => definition.validation?.required && Fields.isEmpty(definition, values[definition.key]));
     if (missing.length) {
       setNotice(t("recordWindow.saveEntry.fillInFirst", { value: missing.map((definition) => definition.label).join(", ") }));
       form.querySelector(`[data-field="${missing[0].key}"] [data-field-input], [data-field="${missing[0].key}"] input`)?.focus();
       return;
     }
-    const collection = Fields.activityStorage(activity).collection;
     const entries = Fields.activityEntries(current.work, activity).slice();
     const index = current.editing[activityId];
     if (index >= 0) {
       entries[index] = Fields.writeEntry(activity, entries[index], values);
     } else {
       const entry = Fields.writeEntry(activity, { id: hooks.newId ? hooks.newId() : `entry-${Date.now()}` }, values);
-      if (activityId === "updateLog") entry.loggedAt = new Date().toISOString();
+      if (activityId === "timeline") {
+        entry.loggedAt = new Date().toISOString();
+        applyTimelineEntry(current.section, current.work, values);
+      }
       entries.push(entry);
-      if (activityId === "updateLog") applyUpdateLogEntry(current.section, current.work, values);
     }
-    current.work[collection] = entries;
+    current.work[activity.id] = entries;
     delete current.editing[activityId];
+    if (current.preset) delete current.preset[activityId];
     keepGroupOpen(activityId);
     setNotice("");
     renderPane("details");
@@ -602,6 +607,38 @@
   function keepGroupOpen(id) {
     current.openGroups = current.openGroups || new Set();
     current.openGroups.add(id);
+  }
+
+  // ---- custom fields ----------------------------------------------------------------
+
+  // The target's own label and value pairs, last in Details. Rows are edited
+  // in place; an empty row is dropped when the target is saved.
+  function customFieldsHtml() {
+    const rows = Array.isArray(current.work.customFields) ? current.work.customFields : [];
+    const filled = Fields.customFieldsOf(current.work).length;
+    return `
+      <details class="record-window-group record-window-custom" data-rw-group="customFields"${current.openGroups?.has("customFields") ? " open" : ""}>
+        <summary><span>${escapeHtml(t("recordWindow.customFields.title"))}</span><span class="record-window-count" data-rw-custom-count>${filled || t("recordWindow.activityHtml.none")}</span></summary>
+        <p class="record-window-group-help">${escapeHtml(t("recordWindow.customFields.help"))}</p>
+        ${rows.length ? `<div class="record-window-custom-list">${rows.map((entry, index) => `
+          <div class="record-window-custom-row" data-rw-custom="${index}">
+            <input type="text" data-rw-custom-label maxlength="80" value="${escapeHtml(entry?.label ?? "")}" placeholder="${escapeHtml(t("recordWindow.customFields.labelExample"))}" aria-label="${escapeHtml(t("recordWindow.customFields.label"))}">
+            <textarea data-rw-custom-value rows="1" maxlength="4000" placeholder="${escapeHtml(t("recordWindow.customFields.valueExample"))}" aria-label="${escapeHtml(t("recordWindow.customFields.value"))}">${escapeHtml(entry?.value ?? "")}</textarea>
+            <button type="button" class="icon-button" data-rw-custom-remove="${index}" title="${escapeHtml(t("recordWindow.customFields.remove"))}" aria-label="${escapeHtml(t("recordWindow.customFields.remove"))}">×</button>
+          </div>`).join("")}</div>` : ""}
+        <div class="record-window-entry-buttons">
+          <button type="button" class="secondary-button compact" data-rw-custom-add>${escapeHtml(t("recordWindow.customFields.add"))}</button>
+        </div>
+      </details>`;
+  }
+
+  function readCustomRow(row) {
+    const index = Number(row.dataset.rwCustom);
+    const rows = Array.isArray(current.work.customFields) ? current.work.customFields.slice() : [];
+    rows[index] = { label: row.querySelector("[data-rw-custom-label]").value, value: row.querySelector("[data-rw-custom-value]").value };
+    current.work.customFields = rows;
+    const count = q("[data-rw-custom-count]");
+    if (count) count.textContent = String(Fields.customFieldsOf(current.work).length || t("recordWindow.activityHtml.none"));
   }
 
   // ---- Links ----------------------------------------------------------------------------
@@ -621,62 +658,6 @@
         </div>
       </div>`;
     if (hooks.renderLinks) hooks.renderLinks(pane.querySelector("[data-rw-links]"), section, work.id);
-  }
-
-  // ---- Extras ---------------------------------------------------------------------------
-
-  function renderExtras(pane) {
-    const { section, work } = current;
-    const custom = Fields.customFields(section);
-    const groups = new Map();
-    for (const definition of custom) {
-      const name = definition.group || t("ui.common.yourFields");
-      if (!groups.has(name)) groups.set(name, []);
-      groups.get(name).push(definition);
-    }
-    const other = Fields.otherFields(section, work);
-    pane.innerHTML = `
-      ${custom.length ? [...groups].map(([name, list]) => `
-        <section class="record-window-group">
-          <h4>${escapeHtml(name)}</h4>
-          <div class="field-grid">${list.map((definition) => fieldRowHtml(definition, { prefix: "rw-custom-" })).join("")}</div>
-        </section>`).join("") : `<p class="empty-text">${tHtml("recordWindow.noCustomFields", { section: escapeHtml(SECTION_LABELS[section]) })}</p>`}
-      <section class="record-window-group record-window-other">
-        <h4>${escapeHtml(t("recordWindow.renderExtras.otherFields"))}</h4>
-        <p class="record-window-group-help">${escapeHtml(t("recordWindow.renderExtras.valuesThisTargetHoldsThat"))}</p>
-        ${other.length ? `<div class="field-grid">${other.map(otherFieldHtml).join("")}</div>` : `<p class="empty-text">${escapeHtml(t("recordWindow.renderExtras.none"))}</p>`}
-      </section>`;
-  }
-
-  function otherLabel(key) {
-    const spaced = String(key).replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/[_-]+/g, " ").trim().toLowerCase();
-    return spaced.charAt(0).toUpperCase() + spaced.slice(1);
-  }
-
-  function otherFieldHtml(entry, index) {
-    const id = `rw-other-${index}`;
-    const editable = typeof entry.value === "string" || typeof entry.value === "number" || typeof entry.value === "boolean";
-    const shown = editable ? String(entry.value) : JSON.stringify(entry.value, null, 2);
-    const where = entry.place === "details" ? "detail" : entry.place === "extraParams" ? t("recordWindow.otherFieldHtml.extraParameter") : entry.place === "custom" ? t("recordWindow.otherFieldHtml.customField") : "field";
-    return `<div class="field-row" data-rw-other="${escapeHtml(entry.place)}:${escapeHtml(entry.key)}">
-      <label class="field-label" for="${id}">${escapeHtml(otherLabel(entry.key))}</label>
-      ${editable
-        ? `<div class="field-control"><input type="text" id="${id}" data-rw-other-input data-kind="${typeof entry.value}" value="${escapeHtml(shown)}"></div>`
-        : `<pre class="record-window-other-value" id="${id}">${escapeHtml(shown)}</pre>`}
-      <p class="field-help">${tHtml("recordWindow.otherFieldHtml.older", { where })} <code>${escapeHtml(entry.key)}</code>.</p>
-    </div>`;
-  }
-
-  function readOther(input) {
-    const row = input.closest("[data-rw-other]");
-    const [place, ...rest] = row.dataset.rwOther.split(":");
-    const key = rest.join(":");
-    const kind = input.dataset.kind;
-    let next = input.value;
-    if (kind === "number") next = input.value.trim() === "" ? "" : Number(input.value);
-    if (kind === "boolean") next = /^(true|yes|1)$/i.test(input.value.trim());
-    if (place === "flat") current.work[key] = next;
-    else current.work[place] = { ...(current.work[place] || {}), [key]: next };
   }
 
   // ---- History ----------------------------------------------------------------------------
@@ -701,22 +682,21 @@
     if (!current) return;
     const target = event.target;
     if (target.closest("[data-rw-pane='history']") || target.closest("[data-rw-links]") || target.closest("[data-rw-taxonomy]")) return;
-    if (target.closest("[data-rw-entry-form]")) return;
+    const entryForm = target.closest("[data-rw-entry-form]");
+    if (entryForm) {
+      // A key date keeps only the fields it uses.
+      if (entryForm.dataset.rwEntryForm === "timeline" && target.matches("[data-field-input='type']")) entryForm.dataset.type = target.value;
+      return;
+    }
     if (target.matches("[data-rw-notes]")) {
       Fields.setValue(current.section, current.work, field(current.section, "notes"), target.value);
       updateNotesPreview();
       updateState();
       return;
     }
-    if (target.matches("[data-rw-other-input]")) {
-      if (event.type === "change") readOther(target);
-      updateState();
-      return;
-    }
-    const documentRow = target.closest("[data-rw-document]");
-    if (documentRow) {
-      const activity = Fields.activities(current.section).find((entry) => entry.checklist);
-      if (activity) readDocumentRow(activity, documentRow);
+    const customRow = target.closest("[data-rw-custom]");
+    if (customRow) {
+      readCustomRow(customRow);
       updateState();
       return;
     }
@@ -731,8 +711,7 @@
     else next = Fields.readInput(definition, holder.parentElement);
     if (next === undefined) return;
     Fields.setValue(current.section, current.work, definition, next);
-    // The same field can sit in two tabs (status and priority in Edit and
-    // Details); the other copy is redrawn when its tab opens.
+    holder.closest("[data-field-row]")?.classList.toggle("is-filled", !Fields.isEmpty(definition, Fields.getValue(current.section, current.work, definition)));
     if (definition.key === "name") renderTitle();
     else updateState();
   }
@@ -747,11 +726,13 @@
       return;
     }
     if (target.matches("summary")) {
-      const group = target.parentElement.dataset.rwGroup;
+      const holder = target.parentElement;
+      // The toggle happens after this click; record the state it is going to.
+      if (holder.matches("[data-rw-facts]")) rememberFacts(!holder.open);
+      const group = holder.dataset.rwGroup;
       if (group) {
         current.openGroups = current.openGroups || new Set();
-        // The toggle happens after this click; record the state it is going to.
-        if (target.parentElement.open) current.openGroups.delete(group);
+        if (holder.open) current.openGroups.delete(group);
         else current.openGroups.add(group);
       }
       return;
@@ -765,12 +746,17 @@
       return;
     }
     if (target.matches("[data-rw-delete]")) {
-      if (hooks.remove && hooks.remove({ section: current.section, record: current.original })) close();
+      const { section, original } = current;
+      Promise.resolve(hooks.remove ? hooks.remove({ section, record: original }) : false).then((removed) => {
+        if (removed) close();
+      });
       return;
     }
     if (target.matches("[data-rw-show-in-list]")) {
       const { section, work } = current;
-      if (requestClose()) hooks.showInList?.(section, work.id);
+      requestClose().then((closed) => {
+        if (closed) hooks.showInList?.(section, work.id);
+      });
       return;
     }
     if (target.matches("[data-rw-copy-id]")) {
@@ -789,11 +775,29 @@
       }
       return;
     }
-    if (target.dataset.rwEntryAdd) {
-      current.editing[target.dataset.rwEntryAdd] = -1;
-      keepGroupOpen(target.dataset.rwEntryAdd);
+    if (target.matches("[data-rw-custom-add]")) {
+      current.work.customFields = [...(Array.isArray(current.work.customFields) ? current.work.customFields : []), { label: "", value: "" }];
+      keepGroupOpen("customFields");
       renderPane("details");
-      q(`[data-rw-entry-form="${target.dataset.rwEntryAdd}"] input, [data-rw-entry-form="${target.dataset.rwEntryAdd}"] select`)?.focus();
+      [...overlay.querySelectorAll("[data-rw-custom-label]")].pop()?.focus();
+      return;
+    }
+    if (target.dataset.rwCustomRemove !== undefined) {
+      const rows = (current.work.customFields || []).slice();
+      rows.splice(Number(target.dataset.rwCustomRemove), 1);
+      current.work.customFields = rows;
+      keepGroupOpen("customFields");
+      renderPane("details");
+      updateState();
+      return;
+    }
+    if (target.dataset.rwEntryAdd) {
+      const activityId = target.dataset.rwEntryAdd;
+      current.editing[activityId] = -1;
+      current.preset = { ...(current.preset || {}), [activityId]: target.dataset.preset !== undefined ? { type: target.dataset.preset } : {} };
+      keepGroupOpen(activityId);
+      renderPane("details");
+      q(`[data-rw-entry-form="${activityId}"] input, [data-rw-entry-form="${activityId}"] select`)?.focus();
       return;
     }
     if (target.dataset.rwEntryEdit) {
@@ -804,10 +808,9 @@
     }
     if (target.dataset.rwEntryRemove) {
       const activity = Fields.activities(current.section).find((entry) => entry.id === target.dataset.rwEntryRemove);
-      const collection = Fields.activityStorage(activity).collection;
       const entries = Fields.activityEntries(current.work, activity).slice();
       entries.splice(Number(target.dataset.index), 1);
-      current.work[collection] = entries;
+      current.work[activity.id] = entries;
       keepGroupOpen(activity.id);
       renderPane("details");
       updateState();
@@ -899,19 +902,35 @@
       close();
       return true;
     }
-    const saved = hooks.save ? hooks.save({ section, record: clone(work), draft: current.draft, original: current.original }) : work;
+    const record = clone(work);
+    record.customFields = Fields.customFieldsOf(record);
+    const saved = hooks.save ? hooks.save({ section, record, draft: current.draft, original: current.original }) : work;
     if (!saved) return false;
     close();
     return true;
   }
 
+  // Closes the window, after asking when something would be lost. Resolves
+  // to true once it is closed.
   function requestClose() {
-    if (!current) return true;
+    if (!current) return Promise.resolve(true);
+    if (closing) return closing;
     const dirty = isDirty(current.section, current.original, current.work) || Object.keys(current.editing).length > 0;
-    const draftTouched = current.draft && dirty;
-    if ((dirty || draftTouched) && !root.confirm(t("recordWindow.requestClose.discardTheChangesYouMade"))) return false;
-    close();
-    return true;
+    if (!dirty) {
+      close();
+      return Promise.resolve(true);
+    }
+    const message = t("recordWindow.requestClose.discardTheChangesYouMade");
+    const dialog = root.StartupTrackerDialog;
+    const answer = dialog
+      ? dialog.confirm(message, { title: t("recordWindow.requestClose.title"), confirmLabel: t("recordWindow.requestClose.discard"), cancelLabel: t("recordWindow.requestClose.keepEditing"), danger: true })
+      : Promise.resolve(Boolean(root.confirm?.(message)));
+    closing = answer.then((discard) => {
+      closing = null;
+      if (discard) close();
+      return Boolean(discard);
+    });
+    return closing;
   }
 
   function close() {
@@ -944,9 +963,11 @@
     TABS,
     TAB_IDS,
     PRIORITIES,
+    KEY_DATE,
     changedFields,
     isDirty,
-    applyUpdateLogEntry,
+    applyTimelineEntry,
+    timelineOrder,
     nameOf,
     configure,
     open,

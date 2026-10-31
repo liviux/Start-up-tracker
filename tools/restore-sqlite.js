@@ -2,8 +2,7 @@
 "use strict";
 
 // Restore tracker data from a backup in the backup folder. <backup> is a
-// backup folder's id (see --list) or the name of an older flat
-// tracker-*.sqlite file.
+// backup folder's id (see --list).
 //
 //   node tools/restore-sqlite.js --list
 //   node tools/restore-sqlite.js --verify <backup>
@@ -24,7 +23,6 @@
 
 const fs = require("fs");
 const path = require("path");
-const { DatabaseSync } = require("node:sqlite");
 const { resolveDataRoot, dataPaths } = require("../lib/data-root");
 
 // The same data folder the server uses: --data-dir, STARTUP_TRACKER_HOME, then
@@ -40,11 +38,10 @@ const {
   normalizeStartupId,
   verifyDatabaseFile,
 } = require("../lib/tracker-sqlite-store");
-const { getStartup, listStartups } = require("../lib/startups");
+const { getStartup } = require("../lib/startups");
 const { createBackupManager, FOLDER_PATTERN } = require("../lib/backups/manager");
-const { isSoundLegacy, openBackupManager } = require("./backup-sqlite");
+const { openBackupManager } = require("./backup-sqlite");
 
-const RESTORABLE_PATTERN = /^tracker-[A-Za-z0-9._-]*\.sqlite$/;
 const LISTED_NAMES = 5;
 
 function readArgument(argv, flag, fallback) {
@@ -78,65 +75,12 @@ function readOnlyManager({ backupDir, mediaDir }) {
   return createBackupManager({ store: null, backupDir, mediaDir });
 }
 
-function listSnapshots(backupDir) {
-  if (!fs.existsSync(backupDir)) return [];
-  return fs.readdirSync(backupDir)
-    .filter((fileName) => RESTORABLE_PATTERN.test(fileName))
-    .map((fileName) => {
-      const filePath = path.join(backupDir, fileName);
-      const stats = fs.statSync(filePath);
-      return {
-        fileName,
-        filePath,
-        bytes: stats.size,
-        createdAt: stats.mtime.toISOString(),
-        mtimeMs: stats.mtimeMs,
-      };
-    })
-    .filter((entry) => fs.statSync(entry.filePath).isFile())
-    .sort((a, b) => b.mtimeMs - a.mtimeMs);
-}
-
-// Which startups a snapshot holds, for --list. Reads the startup list without
-// the full verification, so listing stays quick; a restore still verifies.
-function describeSnapshot(filePath) {
-  let store;
-  try {
-    store = new TrackerSqliteStore(filePath, { readOnly: true });
-  } catch (error) {
-    if (error.code === "SQLITE_TRACKER_LEGACY_SCHEMA") return { legacy: true, startupCount: 1, startups: [] };
-    return { error: error.message };
-  }
-  try {
-    const names = new Map(listStartups(store).map((startup) => [startup.id, startup.name]));
-    for (const id of store.listStartupIds()) if (!names.has(id)) names.set(id, id);
-    return { legacy: false, startupCount: names.size, startups: [...names.values()] };
-  } catch (error) {
-    return { error: error.message };
-  } finally {
-    store.close();
-  }
-}
-
-// Resolve a user-supplied name to a file inside the backup directory. Rejects
-// anything that escapes it, since the name reaches here from the CLI.
-function resolveSnapshot(backupDir, fileName) {
-  const safeFileName = path.basename(String(fileName || ""));
-  if (!RESTORABLE_PATTERN.test(safeFileName)) {
-    throw new Error(`Not a backup id or a tracker backup file name: ${fileName}`);
-  }
-  const filePath = path.join(backupDir, safeFileName);
-  if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
-    throw new Error(`Backup not found: ${filePath}`);
-  }
-  return { type: "file", fileName: safeFileName, filePath, expected: {} };
-}
-
-// A backup folder's id or an older flat file's name. A folder brings its
-// manifest, so its database is checked against the hash it was taken with.
-function resolveBackup(paths, reference) {
+// A backup folder's id, as --list shows it. Anything else is rejected, since
+// the name reaches here from the command line. An incomplete folder is still
+// found, so --verify can say what is wrong with it.
+function findBackup(paths, reference) {
   const name = path.basename(String(reference || ""));
-  if (!FOLDER_PATTERN.test(name)) return resolveSnapshot(paths.backupDir, reference);
+  if (!FOLDER_PATTERN.test(name)) throw new Error(`Not a backup id: ${reference}`);
   const manager = readOnlyManager(paths);
   let backup;
   try {
@@ -144,26 +88,27 @@ function resolveBackup(paths, reference) {
   } catch {
     throw new Error(`Backup not found: ${path.join(paths.backupDir, name)}`);
   }
+  return { id: backup.id, kind: backup.kind, complete: backup.complete, manager };
+}
+
+// A backup to restore from. Its manifest brings the revision and hash the
+// database was taken with, so the database is checked against them.
+function resolveBackup(paths, reference) {
+  const backup = findBackup(paths, reference);
   if (!backup.complete) {
-    throw new Error(`${name} is incomplete (its manifest or database is missing), so nothing can be restored from it.`);
+    throw new Error(`${backup.id} is incomplete (its manifest or database is missing), so nothing can be restored from it.`);
   }
-  const manifest = manager.manifest(name);
+  const manifest = backup.manager.manifest(backup.id);
   return {
-    type: "folder",
-    id: name,
-    kind: backup.kind,
-    fileName: name,
-    filePath: manager.databasePath(name),
+    ...backup,
+    filePath: backup.manager.databasePath(backup.id),
     expected: { expectedRevision: manifest.database.revision, expectedStateHash: manifest.database.stateHash },
-    manager,
   };
 }
 
-// Everything restorable in the backup folder, newest first: backup folders
-// and the older flat files (kind "file"), so no backup becomes unreachable.
+// Every backup in the backup folder, newest first.
 function listBackups(options = {}) {
-  const paths = resolvePaths(options);
-  const folders = readOnlyManager(paths).list().map((backup) => ({
+  return readOnlyManager(resolvePaths(options)).list().map((backup) => ({
     id: backup.id,
     kind: backup.kind,
     label: backup.label,
@@ -175,17 +120,6 @@ function listBackups(options = {}) {
     mediaFiles: backup.mediaFiles,
     complete: backup.complete,
   }));
-  const files = listSnapshots(paths.backupDir).map((snapshot) => ({
-    id: snapshot.fileName,
-    kind: "file",
-    label: "",
-    createdAt: snapshot.createdAt,
-    bytes: snapshot.bytes,
-    mediaFiles: null,
-    complete: true,
-    ...describeSnapshot(snapshot.filePath),
-  }));
-  return [...folders, ...files].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
 }
 
 // "<startupId>/<section>/<id>", or "<section>/<id>" when the startup comes from
@@ -218,42 +152,19 @@ function parseRecordTarget(target, startupId = "") {
   }
 }
 
-// A snapshot from before startups held one tracker. It is upgraded on a
-// throwaway copy beside it, never in place, and its only startup is the source.
-function readLegacySnapshotState(snapshot) {
-  const copyPath = path.join(path.dirname(snapshot.filePath), `.restore-${process.pid}-${Date.now()}.sqlite`);
-  try {
-    const db = new DatabaseSync(snapshot.filePath, { readOnly: true });
-    try {
-      db.prepare("VACUUM INTO ?").run(copyPath);
-    } finally {
-      db.close();
-    }
-    const store = new TrackerSqliteStore(copyPath);
-    try {
-      return store.readState(store.getInfo().importedStartupId).state;
-    } finally {
-      store.close();
-    }
-  } finally {
-    for (const suffix of ["", "-wal", "-shm"]) fs.rmSync(`${copyPath}${suffix}`, { force: true });
-  }
-}
-
-// One startup's state in a snapshot, proven readable before anything depends
-// on it, with its entry in the snapshot's startup list (null for a file from
-// before startups, which has no list).
+// One startup's state in a backup, proven readable before anything depends on
+// it, with its entry in the backup's startup list (null when the list does not
+// name it).
 function readSnapshotStartup(snapshot, startupId) {
-  const verification = verifyDatabaseFile(snapshot.filePath, snapshot.expected || {});
-  if (isSoundLegacy(verification)) return { state: readLegacySnapshotState(snapshot), listEntry: null };
+  const verification = verifyDatabaseFile(snapshot.filePath, snapshot.expected);
   if (!verification.ok) {
-    throw new Error(`${snapshot.fileName} did not verify: ${verification.problems.join("; ")}`);
+    throw new Error(`${snapshot.id} did not verify: ${verification.problems.join("; ")}`);
   }
   const store = new TrackerSqliteStore(snapshot.filePath, { readOnly: true });
   try {
     const ids = store.listStartupIds({ includeGlobal: true });
     if (!ids.includes(startupId)) {
-      throw new Error(`${snapshot.fileName} holds nothing for startup ${startupId}. It has: ${ids.join(", ") || "no startups"}.`);
+      throw new Error(`${snapshot.id} holds nothing for startup ${startupId}. It has: ${ids.join(", ") || "no startups"}.`);
     }
     return { state: store.readState(startupId).state, listEntry: getStartup(store, startupId) };
   } finally {
@@ -261,52 +172,21 @@ function readSnapshotStartup(snapshot, startupId) {
   }
 }
 
-function readSnapshotStartupState(snapshot, startupId) {
-  return readSnapshotStartup(snapshot, startupId).state;
-}
-
-// Opening a legacy database read-write upgrades it, which the server does only
-// after taking a copy. A record restore must not do it behind its back.
-function assertCurrentFormat(databasePath) {
+// A record or startup restore writes into the live database through the
+// store, and never creates one.
+function assertLiveDatabase(databasePath) {
   if (!fs.existsSync(databasePath)) throw new Error(`No database at ${databasePath}.`);
-  const db = new DatabaseSync(databasePath, { readOnly: true });
-  try {
-    const columns = db.prepare("PRAGMA table_info(state_sections)").all().map((column) => column.name);
-    if (columns.length > 0 && !columns.includes("startup_id")) {
-      throw new Error(`${databasePath} uses the older one-startup format. Start the server once to upgrade it, then run the restore again.`);
-    }
-  } finally {
-    db.close();
-  }
 }
 
-// A backup folder gets the manager's full check (database and every media
-// file); a flat file gets the database check.
+// The manager's full check: the database and every media file.
 function verifySnapshot(reference, options = {}) {
-  const backup = resolveBackupForCheck(resolvePaths(options), reference);
-  if (backup.type === "folder") return { fileName: backup.id, kind: backup.kind, ...backup.manager.verify(backup.id) };
-  return { fileName: backup.fileName, kind: "file", ...verifyDatabaseFile(backup.filePath) };
+  const backup = findBackup(resolvePaths(options), reference);
+  return { fileName: backup.id, kind: backup.kind, ...backup.manager.verify(backup.id) };
 }
 
-// Like resolveBackup, but an incomplete folder is still checked, so --verify
-// can say what is wrong with it.
-function resolveBackupForCheck(paths, reference) {
-  const name = path.basename(String(reference || ""));
-  if (!FOLDER_PATTERN.test(name)) return resolveSnapshot(paths.backupDir, reference);
-  const manager = readOnlyManager(paths);
-  let backup;
-  try {
-    backup = manager.find(name);
-  } catch {
-    throw new Error(`Backup not found: ${path.join(paths.backupDir, name)}`);
-  }
-  return { type: "folder", id: backup.id, kind: backup.kind, manager };
-}
-
-// A backup folder is restored only when its database and every media file
-// it lists check out. Restoring half of a backup is worse than none.
-function assertFolderVerifies(backup) {
-  if (backup.type !== "folder") return;
+// A backup is restored only when its database and every media file it lists
+// check out. Restoring half of a backup is worse than none.
+function assertBackupVerifies(backup) {
   const report = backup.manager.verify(backup.id);
   if (!report.ok) throw new Error(`${backup.id} did not verify: ${report.problems.join("; ")}. Nothing was changed.`);
 }
@@ -320,26 +200,22 @@ function replacedPathFor(databasePath) {
   return candidate;
 }
 
-// Replace the whole database file with the snapshot. The live file is set aside
-// rather than deleted, so a restore from the wrong snapshot is still
-// recoverable. A file copy rather than a write through the store, because this
-// is the way back when the live database is too damaged to open. A snapshot
-// from before startups is restored as it is; the server upgrades it on start.
-//
-// A backup folder also puts its media files back, as the manifest lists
-// them. Media files the backup does not list are left where they are.
+// Replace the whole database file with the backup's and put its media files
+// back, as the manifest lists them. Media files the backup does not list are
+// left where they are. The live file is set aside rather than deleted, so a
+// restore from the wrong backup is still recoverable. A file copy rather than
+// a write through the store, because this is the way back when the live
+// database is too damaged to open.
 function restoreSnapshot(reference, options = {}) {
   const paths = resolvePaths(options);
   const { databasePath } = paths;
   const snapshot = resolveBackup(paths, reference);
-  assertFolderVerifies(snapshot);
+  assertBackupVerifies(snapshot);
   const source = verifyDatabaseFile(snapshot.filePath, snapshot.expected);
-  const legacy = isSoundLegacy(source);
-  if (!source.ok && !legacy) {
-    throw new Error(`${snapshot.fileName} did not verify: ${source.problems.join("; ")}`);
+  if (!source.ok) {
+    throw new Error(`${snapshot.id} did not verify: ${source.problems.join("; ")}`);
   }
-  const sound = (report) => (legacy ? isSoundLegacy(report) && report.recordCount === source.recordCount : report.ok);
-  const expected = legacy ? {} : { expectedRevision: source.revision, expectedStateHash: source.stateHash };
+  const expected = { expectedRevision: source.revision, expectedStateHash: source.stateHash };
 
   fs.mkdirSync(path.dirname(databasePath), { recursive: true });
   const incomingPath = path.join(path.dirname(databasePath), `.${path.basename(databasePath)}.restoring-${process.pid}-${Date.now()}`);
@@ -347,8 +223,8 @@ function restoreSnapshot(reference, options = {}) {
   try {
     fs.copyFileSync(snapshot.filePath, incomingPath);
     const incoming = verifyDatabaseFile(incomingPath, expected);
-    if (!sound(incoming)) {
-      throw new Error(`The copy of ${snapshot.fileName} did not verify: ${incoming.problems.join("; ")}. Nothing was changed.`);
+    if (!incoming.ok) {
+      throw new Error(`The copy of ${snapshot.id} did not verify: ${incoming.problems.join("; ")}. Nothing was changed.`);
     }
     if (fs.existsSync(databasePath)) {
       replacedPath = replacedPathFor(databasePath);
@@ -364,40 +240,35 @@ function restoreSnapshot(reference, options = {}) {
     for (const suffix of ["", "-wal", "-shm"]) fs.rmSync(`${incomingPath}${suffix}`, { force: true });
   }
 
-  // Prove the live database now holds what the snapshot held, before reporting
+  // Prove the live database now holds what the backup held, before reporting
   // success. A restore that silently half-applied is the worst outcome here.
   const verification = verifyDatabaseFile(databasePath, expected);
-  if (!sound(verification)) {
+  if (!verification.ok) {
     throw new Error(
       `The restored database did not verify: ${verification.problems.join("; ")}. `
       + `The database as it was before this restore is at ${replacedPath}.`,
     );
   }
 
-  let media = null;
-  if (snapshot.type === "folder") {
-    try {
-      media = snapshot.manager.restoreMedia(snapshot.id);
-    } catch (error) {
-      throw new Error(
-        `The database was restored, but putting the media files back failed: ${error.message} `
-        + `The database as it was before this restore is at ${replacedPath}.`,
-      );
-    }
+  let media;
+  try {
+    media = snapshot.manager.restoreMedia(snapshot.id);
+  } catch (error) {
+    throw new Error(
+      `The database was restored, but putting the media files back failed: ${error.message} `
+      + `The database as it was before this restore is at ${replacedPath}.`,
+    );
   }
 
   return {
-    restored: snapshot.fileName,
-    kind: snapshot.type === "folder" ? snapshot.kind : "file",
+    restored: snapshot.id,
+    kind: snapshot.kind,
     databasePath,
     replacedPath,
-    legacy,
     revision: verification.revision,
-    startupCount: legacy ? 1 : verification.startupCount,
+    startupCount: verification.startupCount,
     recordCount: verification.recordCount,
-    media: media
-      ? { restored: media.restored, listed: media.listed, mediaDir: paths.mediaDir }
-      : { restored: 0, listed: 0, note: "This older backup file holds no media files." },
+    media: { restored: media.restored, listed: media.listed, mediaDir: paths.mediaDir },
   };
 }
 
@@ -412,17 +283,17 @@ function restoreRecord(reference, target, options = {}) {
   const { startupId, section, recordId } = parseRecordTarget(target, options.startupId);
 
   const snapshot = resolveBackup(paths, reference);
-  const state = readSnapshotStartupState(snapshot, startupId);
+  const { state } = readSnapshotStartup(snapshot, startupId);
   const collection = state[section];
   if (!Array.isArray(collection)) {
-    throw new Error(`${snapshot.fileName} has no collection named "${section}" in startup ${startupId}.`);
+    throw new Error(`${snapshot.id} has no collection named "${section}" in startup ${startupId}.`);
   }
   const record = collection.find((entry) => entry && String(entry.id) === recordId);
   if (!record) {
-    throw new Error(`${snapshot.fileName} has no record ${recordId} in "${section}" of startup ${startupId}.`);
+    throw new Error(`${snapshot.id} has no record ${recordId} in "${section}" of startup ${startupId}.`);
   }
 
-  assertCurrentFormat(databasePath);
+  assertLiveDatabase(databasePath);
   const store = new TrackerSqliteStore(databasePath);
   try {
     if (startupId !== GLOBAL_STARTUP_ID && !getStartup(store, startupId)) {
@@ -431,12 +302,12 @@ function restoreRecord(reference, target, options = {}) {
     const existing = store.getRecord(startupId, section, recordId);
     const result = store.upsertRecord(startupId, section, record, {
       origin: "restore",
-      label: `Restored from ${snapshot.fileName}`,
+      label: `Restored from ${snapshot.id}`,
     });
     return {
       restored: `${startupId}/${section}/${recordId}`,
       startupId,
-      from: snapshot.fileName,
+      from: snapshot.id,
       existed: Boolean(existing),
       revision: result.revision,
     };
@@ -449,7 +320,7 @@ function restoreRecord(reference, target, options = {}) {
 // from. Its cap is raised just enough for this run that the source stays;
 // the next prune by anyone else trims it back.
 function safetyCapKeeping(backup, manager) {
-  if (backup.type !== "folder" || backup.kind !== "safety") return undefined;
+  if (backup.kind !== "safety") return undefined;
   const position = manager.list().filter((entry) => entry.kind === "safety" && entry.complete).findIndex((entry) => entry.id === backup.id);
   return position + 2 > manager.limits.safety ? Math.min(position + 2, 1000) : undefined;
 }
@@ -476,15 +347,15 @@ function restoreStartup(reference, startupId, options = {}) {
   }
 
   const backup = resolveBackup(paths, reference);
-  assertFolderVerifies(backup);
+  assertBackupVerifies(backup);
   const { state, listEntry } = readSnapshotStartup(backup, id);
 
-  assertCurrentFormat(databasePath);
+  assertLiveDatabase(databasePath);
   const store = new TrackerSqliteStore(databasePath);
   try {
     const current = getStartup(store, id);
     if (!current && !listEntry) {
-      throw new Error(`Neither the live database nor ${backup.fileName} lists startup ${id}, so there is nowhere to put it back.`);
+      throw new Error(`Neither the live database nor ${backup.id} lists startup ${id}, so there is nowhere to put it back.`);
     }
     let safety;
     try {
@@ -494,24 +365,22 @@ function restoreStartup(reference, startupId, options = {}) {
     } catch (error) {
       throw new Error(`No safety backup could be taken, so nothing was restored: ${error.message}`);
     }
-    const options = { origin: "restore", label: `Restored from ${backup.fileName}` };
+    const options = { origin: "restore", label: `Restored from ${backup.id}` };
     const result = store.replaceState(id, state, options);
     // A startup deleted since the backup comes back into the list as it was,
     // the same as a startup restore through the API.
     if (!current) store.upsertRecord(GLOBAL_STARTUP_ID, STARTUPS_SECTION, listEntry, options);
-    const media = backup.type === "folder" ? backup.manager.restoreMedia(backup.id, { startupId: id }) : null;
+    const media = backup.manager.restoreMedia(backup.id, { startupId: id });
     return {
       restored: id,
-      from: backup.fileName,
+      from: backup.id,
       addedToStartupList: !current,
-      kind: backup.type === "folder" ? backup.kind : "file",
+      kind: backup.kind,
       safetyBackup: safety.id,
       safetySkipped: safety.skipped,
       revision: result.revision,
       unchanged: result.unchanged,
-      media: media
-        ? { restored: media.restored, listed: media.listed, mediaDir: paths.mediaDir }
-        : { restored: 0, listed: 0, note: "This older backup file holds no media files." },
+      media: { restored: media.restored, listed: media.listed, mediaDir: paths.mediaDir },
     };
   } finally {
     store.close();
@@ -524,10 +393,7 @@ function formatBytes(bytes) {
   return `${bytes} B`;
 }
 
-function formatStartups(description) {
-  if (description.error) return `unreadable: ${description.error}`;
-  if (description.legacy) return "1 startup (older format)";
-  const { startupCount, startups } = description;
+function formatStartups({ startupCount, startups }) {
   const label = `${startupCount} startup${startupCount === 1 ? "" : "s"}`;
   if (startupCount === 0) return label;
   const shown = startups.slice(0, LISTED_NAMES).join(", ");
@@ -535,17 +401,12 @@ function formatStartups(description) {
   return `${label}: ${shown}${more}`;
 }
 
-function formatMedia(entry) {
-  if (entry.mediaFiles === null) return "no media";
-  return `${entry.mediaFiles} media file${entry.mediaFiles === 1 ? "" : "s"}`;
-}
-
 function formatListLine(entry) {
-  const startups = entry.kind === "file" ? formatStartups(entry) : formatStartups({ startupCount: entry.startupCount, startups: entry.startups });
   const created = entry.createdAt || "unknown time";
   const broken = entry.complete ? "" : "  INCOMPLETE";
   return `  ${entry.id}  ${entry.kind.padEnd(9)}  label: ${entry.label || "-"}  ${created}  `
-    + `${formatBytes(entry.bytes).padStart(8)}  ${startups}  ${formatMedia(entry)}${broken}\n`;
+    + `${formatBytes(entry.bytes).padStart(8)}  ${formatStartups(entry)}  `
+    + `${entry.mediaFiles} media file${entry.mediaFiles === 1 ? "" : "s"}${broken}\n`;
 }
 
 function main() {
@@ -566,9 +427,6 @@ function main() {
     }
     process.stdout.write(`Backups in ${backupDir}:\n`);
     for (const entry of backups) process.stdout.write(formatListLine(entry));
-    if (backups.some((entry) => entry.kind === "file")) {
-      process.stdout.write("\n\"file\" entries are older single-file snapshots, without media.\n");
-    }
     process.stdout.write(
       "\nRestore everything (server stopped): node tools/restore-sqlite.js --snapshot <backup>\n"
       + "Restore one startup: node tools/restore-sqlite.js --snapshot <backup> --startup <startupId>\n"
@@ -608,12 +466,9 @@ if (require.main === module) {
 }
 
 module.exports = {
-  describeSnapshot,
   listBackups,
-  listSnapshots,
   parseRecordTarget,
   resolveBackup,
-  resolveSnapshot,
   restoreRecord,
   restoreSnapshot,
   restoreStartup,

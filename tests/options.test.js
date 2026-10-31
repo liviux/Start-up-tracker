@@ -15,7 +15,7 @@ const shipped = JSON.parse(fs.readFileSync(path.join(root, "content", "options.j
 const markup = fs.readFileSync(path.join(root, "public", "index.html"), "utf8");
 
 test("the shipped lists are valid, generic and complete", () => {
-  for (const name of Options.LIST_NAMES.filter((list) => list !== "documentChecklist")) {
+  for (const name of Options.LIST_NAMES) {
     assert.ok(Array.isArray(shipped[name]), `${name} ships`);
     assert.deepEqual(Options.validateList(name, shipped[name]).map((option) => option.id), shipped[name].map((option) => option.id), name);
   }
@@ -51,7 +51,7 @@ test("an edited list replaces the shipped one, and null brings the shipped one b
   const store = new TrackerSqliteStore(":memory:");
   const first = optionStore.readOptions(store);
   assert.deepEqual(first.lists.mediaTypes, shipped.mediaTypes);
-  assert.ok(first.lists.documentChecklist.some((entry) => entry.id === "pitch-deck"), "the checklist comes from the Programs fields");
+  assert.equal(first.lists.documentChecklist, undefined, "Programs have no documents checklist");
   const saved = optionStore.writeOptions(store, { mediaTypes: [{ label: "Banner" }, { id: "other", label: "Other" }] });
   assert.deepEqual(saved.lists.mediaTypes.map((option) => option.id), ["banner", "other"]);
   assert.deepEqual(Object.keys(saved.stored), ["mediaTypes"]);

@@ -176,7 +176,11 @@ test("tracker access: commands with the token for agents, a JSON reply for chats
   assert.match(agent, /Bearer sta_abc/);
   assert.match(agent, /api\/s\/acme-1\/state\/operations/);
   assert.match(agent, /stops working at 21 Oct 2026, 10:00/);
-  assert.match(agent, /MK: name is "platform", nextActionDate is "date"/, "stored key names are spelled out");
+  assert.match(agent, /"protocolVersion":3/);
+  assert.match(agent, /the basics under their names \(name, organization, link/, "every section stores the same key names");
+  assert.match(agent, /"customFields" as a list of \{"label": "\.\.\.", "value": "\.\.\."\}/);
+  assert.match(agent, /"timeline"[^\n]*"key-date"/);
+  assert.doesNotMatch(agent, /platform|opportunity|"custom"/, "no other names to learn");
   const preview = Page.trackerAccess("agent", { baseUrl: "x", startupId: "acme-1", startupName: "Acme" });
   assert.match(preview, /a new token is made when you copy/);
   const chat = Page.trackerAccess("chat", { formatExample: () => "{\"targets\":[]}" });

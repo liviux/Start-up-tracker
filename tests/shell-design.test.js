@@ -167,12 +167,12 @@ test("initial paint and application boot respect saved and system themes", () =>
   }
 });
 
-test("the first paint maps saved theme styles the same way as the appearance module", () => {
-  // Earlier variants were saved as letters, then by palette name. boot.js runs
-  // before anything else loads, so it carries its own copy of the table.
+test("the first paint picks the saved theme style the same way as the appearance module", () => {
+  // boot.js runs before anything else loads, so it carries its own copy of
+  // the theme list.
   const Appearance = require("../public/scripts/taste-switcher.js");
   const inline = fs.readFileSync(path.join(root, "js", "boot.js"), "utf8");
-  for (const saved of [null, "a", "b", "c", ...Object.keys(Appearance.LEGACY_TASTES), "nonsense", ...Appearance.THEMES]) {
+  for (const saved of [null, "", "nonsense", ...Appearance.THEMES]) {
     let painted;
     vm.runInNewContext(inline, {
       localStorage: { getItem: (key) => (key === "startup-tracker-taste" ? saved : null) },
@@ -181,24 +181,8 @@ test("the first paint maps saved theme styles the same way as the appearance mod
     });
     assert.equal(painted, Appearance.normalizeTaste(saved), `saved ${saved}`);
   }
-  assert.deepEqual(Appearance.LEGACY_TASTES, {
-    a: "meridian",
-    b: "studio",
-    c: "signal",
-    kinpaku: "lacquer",
-    paper: "broadsheet",
-    mirai: "shinjuku",
-    aurora: "fieldnotes",
-    cyber: "nightshift",
-    "soft-ui": "tactile",
-    linear: "meridian",
-    minimal: "signal",
-    classic: "studio",
-  });
-  // No style sheet still answers to the letters.
   const variants = fs.readFileSync(path.join(root, "styles", "taste-variants.css"), "utf8");
   const bundle = fs.readFileSync(path.join(root, "styles.css"), "utf8");
-  assert.doesNotMatch(variants, /data-taste="[abc]"/);
   assert.match(variants, /data-taste="studio"/, "the default theme keeps its styles");
   for (const theme of Appearance.THEMES.filter((id) => id !== "studio")) {
     const file = path.join(root, "styles", "themes", `${theme}.css`);

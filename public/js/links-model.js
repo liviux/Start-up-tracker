@@ -101,8 +101,8 @@
     return `${first}|${relation}|${second}`;
   }
 
-  // A short, stable id for a key (FNV-1a), so the same legacy field read on
-  // two devices makes the same link.
+  // A short, stable id for a key (FNV-1a), so the same pair and relation
+  // always make the same link, whoever adds it.
   function linkIdFor(key) {
     let hash = 0x811c9dc5;
     for (let index = 0; index < key.length; index += 1) {
@@ -166,82 +166,6 @@
     return next;
   }
 
-  // Links from the fields records used before links existed. The fields
-  // themselves are dropped from the records by the page once read.
-  function fromLegacy(state) {
-    const out = new Map();
-    const add = (a, b, relation, extra = {}) => {
-      if (!a.id || !b.id || (a.kind === b.kind && a.id === b.id)) return;
-      try {
-        const link = makeLink({ kind: a.kind, id: String(a.id) }, { kind: b.kind, id: String(b.id) }, relation, extra);
-        const known = out.get(link.id);
-        if (!known) out.set(link.id, link);
-        else {
-          // The same pair named in two old fields: keep what either one said.
-          for (const field of ["note", "context", "resultLink"]) if (!known[field] && link[field]) known[field] = link[field];
-        }
-      } catch {
-        // A field that does not name a record is left out.
-      }
-    };
-    const list = (value) => (Array.isArray(value) ? value.map(String).filter(Boolean) : []);
-    const records = (section) => [...(Array.isArray(state?.[KINDS[section].section]) ? state[KINDS[section].section] : []), ...(Array.isArray(state?.[KINDS[section].bin]) ? state[KINDS[section].bin] : [])];
-    const splitIds = (value) => String(value || "").split(/[,\n]/).map((part) => part.trim()).filter(Boolean);
-
-    for (const item of records("mk")) {
-      for (const id of list(item.linkedProgramIds)) add({ kind: "mk", id: item.id }, { kind: "po", id }, "related");
-      for (const id of list(item.linkedFundingIds)) add({ kind: "mk", id: item.id }, { kind: "fu", id }, "related");
-      for (const id of list(item.linkedMediaIds)) add({ kind: "mk", id: item.id }, { kind: "media", id }, "uses");
-      // An even older extra parameter that held media ids.
-      for (const id of splitIds(item.extraParams?.linkedMedia)) add({ kind: "mk", id: item.id }, { kind: "media", id }, "uses");
-      for (const id of splitIds(item.extraParams?.blockedBy)) add({ kind: "mk", id }, { kind: "mk", id: item.id }, "blocks");
-      for (const id of splitIds(item.extraParams?.blocks)) add({ kind: "mk", id: item.id }, { kind: "mk", id }, "blocks");
-    }
-    for (const program of records("po")) {
-      for (const id of list(program.linkedTargetIds)) add({ kind: "mk", id }, { kind: "po", id: program.id }, "related");
-      for (const id of list(program.linkedMediaIds)) add({ kind: "po", id: program.id }, { kind: "media", id }, "uses");
-    }
-    for (const funding of records("fu")) {
-      for (const id of list(funding.linkedTargetIds)) add({ kind: "mk", id }, { kind: "fu", id: funding.id }, "related");
-      for (const id of list(funding.linkedMediaIds)) add({ kind: "fu", id: funding.id }, { kind: "media", id }, "uses");
-      if (funding.linkedProgramId) add({ kind: "fu", id: funding.id }, { kind: "po", id: funding.linkedProgramId }, "funds");
-    }
-    for (const media of records("media")) {
-      for (const usage of Array.isArray(media.usedIn) ? media.usedIn : []) {
-        if (usage?.targetId) add({ kind: "mk", id: usage.targetId }, { kind: "media", id: media.id }, "uses", { context: usage.context, resultLink: usage.resultLink, createdAt: usage.usedAt });
-      }
-    }
-    for (const feedback of records("feedback")) {
-      if (feedback.targetId) add({ kind: "feedback", id: feedback.id }, { kind: "mk", id: feedback.targetId }, "feedback-about");
-    }
-    return [...out.values()];
-  }
-
-  // The records that still carry one of those old fields, as { section, id },
-  // so the page can save them once without it.
-  const LEGACY_FIELDS = Object.freeze({
-    mk: ["linkedProgramIds", "linkedFundingIds", "linkedMediaIds"],
-    po: ["linkedTargetIds", "linkedMediaIds"],
-    fu: ["linkedTargetIds", "linkedMediaIds", "linkedProgramId"],
-    media: ["usedIn"],
-    feedback: ["targetId"],
-  });
-  const LEGACY_EXTRA_PARAMS = Object.freeze(["linkedMedia", "blockedBy", "blocks"]);
-
-  function legacyRecords(state) {
-    const found = [];
-    for (const [kind, fields] of Object.entries(LEGACY_FIELDS)) {
-      for (const section of [KINDS[kind].section, KINDS[kind].bin]) {
-        for (const record of Array.isArray(state?.[section]) ? state[section] : []) {
-          const hasField = fields.some((field) => record && Object.prototype.hasOwnProperty.call(record, field));
-          const hasParam = kind === "mk" && LEGACY_EXTRA_PARAMS.some((param) => record?.extraParams && Object.prototype.hasOwnProperty.call(record.extraParams, param));
-          if ((hasField || hasParam) && record.id) found.push({ section, id: String(record.id) });
-        }
-      }
-    }
-    return found;
-  }
-
   // Merges links, keeping the first of each id.
   function mergeLinks(...lists) {
     const out = new Map();
@@ -262,8 +186,6 @@
     linksOf,
     othersOf,
     setOthers,
-    fromLegacy,
-    legacyRecords,
     mergeLinks,
   };
 });

@@ -431,7 +431,7 @@
         view.message = "";
         if (action === "cancel") await request(hooks.Api.urls.agentRunAction(run.id, "cancel"), { method: "POST", body: {} });
         else if (action === "undo") {
-          if (!root.confirm(t("agents.run.undoConfirm", { count: (run.changes || []).length }))) return;
+          if (!(await root.StartupTrackerDialog.confirm(t("agents.run.undoConfirm", { count: (run.changes || []).length }), { danger: true }))) return;
           await request(hooks.Api.urls.agentRunAction(run.id, "undo"), { method: "POST", body: {} });
         } else if (action === "answer") {
           await request(hooks.Api.urls.agentRunPermission(run.id, button.dataset.request), { method: "POST", body: { optionId: button.dataset.option } });
@@ -577,7 +577,7 @@
       }
       const action = event.target.closest("[data-agents-action]")?.dataset.agentsAction;
       if (action === "stop-all") {
-        if (!root.confirm(t("agents.stopAllConfirm", { count: page.counts.running }))) return;
+        if (!(await root.StartupTrackerDialog.confirm(t("agents.stopAllConfirm", { count: page.counts.running }), { danger: true }))) return;
         try {
           await request(hooks.Api.urls.agentRunsStopAll, { method: "POST", body: {} });
         } catch (error) {
@@ -641,7 +641,7 @@
     try {
       overview = await request(hooks.Api.urls.agents);
     } catch (error) {
-      root.alert(error.message);
+      root.StartupTrackerDialog.alert(error.message);
       return null;
     }
     const usable = overview.harnesses;

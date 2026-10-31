@@ -32,7 +32,7 @@ Search online for current documentation of frameworks and protocols instead of r
 
 - The data folder lives outside the repository: `~/.startup-tracker`, or `~/.startup-tracker-dev` in development (docs/development.md, "Where data lives"). Never commit data, media, backups, logs or secrets. `.gitignore` blocks the usual files, and `tools/check-leaks.js` refuses them.
 - Before bulk or destructive changes, take a pinned backup: `node tools/backup-sqlite.js --label <what>`.
-- Recovery: `node tools/restore-sqlite.js --list`, then with `--snapshot <backup>` (a backup id, or an older `tracker-*.sqlite` file name): `--record <startupId>/<section>/<id>` for one record, `--startup <id>` for one startup and its media, or nothing more for a whole-database restore with the server stopped.
+- Recovery: `node tools/restore-sqlite.js --list`, then with `--snapshot <backup>` (a backup id): `--record <startupId>/<section>/<id>` for one record, `--startup <id>` for one startup and its media, or nothing more for a whole-database restore with the server stopped.
 - `node tools/about.js` prints the data folder, database facts and integrity without changing anything.
 - Write through the API or the store's transactional methods. To read outside the app, open the database read-only with `new TrackerSqliteStore(path, { readOnly: true })` and call `readState(startupId)` (`listStartupIds()` lists them; `_global` holds shared settings and the startup list). Never edit the database with ad hoc SQL.
 - Tests and tools refuse the real data folder unless it is named: a test run stops when no data folder is given. Dev runs use port 57323, tests and checks a temporary data folder and a random free port (`PORT=0`), all with `NO_OPEN=1`, so they never reach a running tracker.
@@ -44,7 +44,7 @@ Search online for current documentation of frameworks and protocols instead of r
 - Locking is per record, not per database. Records carry `record_revision` and sections carry `section_revision`; an operation may include `baseRevision` and is rejected only when that record moved. Never reintroduce a whole-database revision check on the save path.
 - `applyOperations` returns an empty `stateHash` on purpose; `revision` is the sync token. Use `store.readStateHash()` when a hash is really needed.
 - A rejected edit waits in the outbox with `blockedByConflict` until the user picks "Keep mine" or "Use theirs". Never call `rebaseBlockedConflictBatches()` from `persist()` or any autosave path. Use `hasSendableOutboxBatch()` and `firstSendableOutboxIndex()`, never `pendingOutbox.length`, for the send queue.
-- `SCHEMA_VERSION` in `lib/tracker-sqlite-store.js` changes only with an upgrade path in `#initializeSchema` (version 3 to 4 is `#upgradeLegacyDatabase`) and a test that opening an older database keeps every record unchanged.
+- `SCHEMA_VERSION` in `lib/tracker-sqlite-store.js` changes only with an upgrade path in `#initializeSchema` and a test that opening an older database keeps every record unchanged.
 - `record_history` is written only through the store (`appendRecordHistory()` or the normal save path), and every write carries an origin (`ui`, `api`, `tool`, `agent`, `restore`, `import`). The history route sends no ETag.
 - Tool metadata lives under `tool:` keys (`readToolMetadata` / `writeToolMetadata`).
 - The server verifies the database before opening it and refuses to start on a damaged one. Never skip that check.

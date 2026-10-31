@@ -66,11 +66,11 @@ test("likely duplicates: same link or same name, in the tracker or earlier in th
   assert.deepEqual(rows.map((row) => row.duplicateOf && [row.duplicateOf.where, row.duplicateOf.reason]), [["tracker", "link"], ["tracker", "name"], null, ["import", "link"], null]);
 });
 
-test("a checked row becomes a record stored the section's way", () => {
+test("a checked row becomes a record under the common field names", () => {
   const [row] = AiImport.check([{ section: "mk", name: "Clinic newsletter", nextActionDate: "2026-11-02", link: "https://example.com/news", notes: "Weekly." }], context);
   const record = AiImport.toRecord(row, Fields, { id: "new-1", now: "2026-10-20T10:00:00.000Z" });
-  assert.equal(record.platform, "Clinic newsletter");
-  assert.equal(record.date, "2026-11-02");
+  assert.equal(record.name, "Clinic newsletter");
+  assert.equal(record.nextActionDate, "2026-11-02");
   assert.equal(record.link, "https://example.com/news");
   assert.equal(record.notes, "Weekly.");
   assert.equal(record.id, "new-1");

@@ -17,9 +17,9 @@
   // In the order the bin lists its groups. `title` names the field that
   // labels a record, `fallback` the next one to try.
   const KINDS = Object.freeze([
-    { kind: "target", group: "mk", live: "items", deleted: "deletedItems", title: "platform" },
+    { kind: "target", group: "mk", live: "items", deleted: "deletedItems", title: "name" },
     { kind: "program", group: "po", live: "programs", deleted: "deletedPrograms", title: "name" },
-    { kind: "funding", group: "fu", live: "funding", deleted: "deletedFunding", title: "funder", fallback: "opportunity" },
+    { kind: "funding", group: "fu", live: "funding", deleted: "deletedFunding", title: "name" },
     { kind: "campaign", group: "campaigns", live: "campaigns", deleted: "deletedCampaigns", title: "name" },
     { kind: "media", group: "media", live: "mediaItems", deleted: "deletedMediaItems", title: "title" },
     { kind: "feedback", group: "feedback", live: "feedbackItems", deleted: "deletedFeedbackItems", title: "title" },

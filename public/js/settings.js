@@ -1068,7 +1068,7 @@
         startup.archived ? "archive-restore" : "archive"
       );
       archiveButton.addEventListener("click", async () => {
-        if (!startup.archived && isCurrent && !root.confirm(t("settings.startups.archiveCurrentConfirm", { name: startup.name }))) return;
+        if (!startup.archived && isCurrent && !(await root.StartupTrackerDialog.confirm(t("settings.startups.archiveCurrentConfirm", { name: startup.name })))) return;
         try {
           await patchStartup(startup.id, { archived: !startup.archived });
           if (!startup.archived && isCurrent) {
@@ -1782,7 +1782,7 @@
         return;
       }
       const confirmKey = scope === "database" ? "settings.backups.confirmDatabase" : scope === "records" ? "settings.backups.confirmRecords" : "settings.backups.confirmStartup";
-      if (!root.confirm(t(confirmKey, { name: currentStartupName(), backup: backupTitle(backup), count: selection.size }))) return;
+      if (!(await root.StartupTrackerDialog.confirm(t(confirmKey, { name: currentStartupName(), backup: backupTitle(backup), count: selection.size }), { danger: true }))) return;
       submit.disabled = true;
       showStatus(status, t("settings.backups.restoring"));
       try {
@@ -1889,7 +1889,7 @@
 
     const deleteButton = el("button", { type: "button", className: "danger-button", text: t("settings.backups.delete") });
     deleteButton.addEventListener("click", async () => {
-      if (!root.confirm(t("settings.backups.confirmDelete", { backup: backupTitle(backup) }))) return;
+      if (!(await root.StartupTrackerDialog.confirm(t("settings.backups.confirmDelete", { backup: backupTitle(backup) }), { danger: true }))) return;
       deleteButton.disabled = true;
       try {
         await actions.remove(backup.id);
@@ -2103,7 +2103,7 @@
       const label = t(`settings.import.modes.${mode}`, { name: currentStartupName() });
       const control = el("button", { type: "button", className: mode === "new" ? "primary-button" : "danger-button", text: label });
       control.addEventListener("click", async () => {
-        if (mode !== "new" && !root.confirm(t(`settings.import.confirm.${mode}`, { name: currentStartupName() }))) return;
+        if (mode !== "new" && !(await root.StartupTrackerDialog.confirm(t(`settings.import.confirm.${mode}`, { name: currentStartupName() }), { danger: true }))) return;
         buttons.forEach((entry) => { entry.disabled = true; });
         showStatus(status, t("settings.import.applying"));
         try {
@@ -2143,8 +2143,8 @@
     });
 
     const emptyButton = el("button", { type: "button", className: "danger-button", disabled: total === 0 }, [icon("trash"), el("span", { text: t("settings.recycle.empty") })]);
-    emptyButton.addEventListener("click", () => {
-      if (!root.confirm(t("settings.recycle.confirmEmpty", { count: total, name: currentStartupName() }))) return;
+    emptyButton.addEventListener("click", async () => {
+      if (!(await root.StartupTrackerDialog.confirm(t("settings.recycle.confirmEmpty", { count: total, name: currentStartupName() }), { danger: true }))) return;
       bridge.emptyBin();
       showStatus(status, t("settings.recycle.emptied"), "ok");
     });
@@ -2177,8 +2177,8 @@
                 className: "danger-button",
                 text: t("settings.recycle.deleteForever"),
                 "aria-label": t("settings.recycle.deleteForeverNamed", { name: title }),
-                on: { click: () => {
-                  if (!root.confirm(t("settings.recycle.confirmDelete", { name: title }))) return;
+                on: { click: async () => {
+                  if (!(await root.StartupTrackerDialog.confirm(t("settings.recycle.confirmDelete", { name: title }), { danger: true }))) return;
                   bridge.deleteFromBin(record.section, record.id);
                   showStatus(status, t("settings.recycle.deletedForever", { name: title }), "ok");
                 } },

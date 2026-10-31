@@ -3,25 +3,6 @@
     "name": "Startup Tracker",
     "skipToContent": "Skip to content",
     "version": "v{version}",
-    "programActivityTypes": {
-      "verificationResearch": "Verification / research",
-      "applicationSubmission": "Application / submission",
-      "responseReceived": "Response received",
-      "followUp": "Follow-up",
-      "callOrMeeting": "Call or meeting",
-      "publishedOrLive": "Published or live",
-      "milestone": "Milestone",
-      "decision": "Decision",
-      "reapplyRenewal": "Reapply / renewal",
-      "other": "Other"
-    },
-    "programActivityPreviousActionStatuses": {
-      "completed": "Completed",
-      "deferred": "Deferred",
-      "cancelledNoLongerRelevant": "Cancelled / no longer relevant",
-      "stillOpen": "Still open",
-      "noCurrentAction": "No current action"
-    },
     "formatTagTooltip": {
       "whyThisTagBestPractice": "Why this tag & best practice",
       "noDescription": "No description."
@@ -33,34 +14,11 @@
     "getProgramQueueEntry": {
       "submissionTarget": "Submission target",
       "interview": "Interview",
-      "pitch": "Pitch",
-      "blocked": "Blocked: {blocker}",
-      "nextActionDue": "Next action due",
       "milestone": "Milestone",
-      "reviewFitAndRequirements": "Review fit and requirements.",
       "reviewOpportunity": "Review opportunity"
     },
     "getFundingQueueEntry": {
-      "owner": "· Owner: {owner}",
-      "qualifyFit": "Qualify fit",
-      "reachOut": "Reach out",
-      "bookDiscovery": "Book discovery",
-      "defineScope": "Define scope",
-      "sendProposal": "Send proposal",
-      "followUp": "Follow up",
-      "closeTerms": "Close terms",
-      "completeDueDiligence": "Complete due diligence",
-      "reviewTerms": "Review terms",
-      "confirmSigningAndPayment": "Confirm signing and payment",
-      "confirmPaymentSchedule": "Confirm payment schedule",
-      "reviewHold": "Review hold",
-      "collectBalance": "Collect balance",
-      "closeOut": "Close out",
-      "archiveNotes": "Archive notes",
-      "recordLearnings": "Record learnings",
       "collectExpectedPayment": "Collect expected payment",
-      "confirmTransferPlan": "Confirm transfer plan",
-      "reviewDeal": "Review deal.",
       "reviewConversation": "Review conversation"
     },
     "renderFundingRounds": {
@@ -93,13 +51,9 @@
     "buildGlobalSearchResults": {
       "updated": "Updated {updatedAt}",
       "category": "Category",
-      "subcategory": "Subcategory",
       "deadline": "Deadline: {deadline}",
       "next": "Next: {nextActionDate}",
-      "applied": "Applied: {appliedDate}",
-      "type": "Type",
       "close": "Close: {expectedCloseDate}",
-      "contacted": "Contacted: {lastContactDate}",
       "fundingRound": "Funding round",
       "launch": "Launch: {launchDate}",
       "start": "Start: {startDate}",
@@ -111,7 +65,6 @@
       "added": "Added: {createdAt}",
       "tagDefinition": "Tag definition",
       "due": "Due {dueDate}",
-      "fundingOpportunity": "Funding opportunity",
       "researchLinks": "Research links",
       "active": "Active",
       "inactive": "Inactive",
@@ -453,14 +406,12 @@
     },
     "openDailyLink": {
       "openedLinksBrowserBlockedPop": "Opened {openedCount}/{length} links - browser blocked pop-ups",
-      "3ClickDoneAndTry": "3. Click Done and try clicking \"Open all\" again.",
       "openedAllLinks": "Opened all {length} links",
       "linkOpened": "Link opened"
     },
     "openDailyGroup": {
       "researchLinksOpened": "Research links opened",
       "openedLinksBrowserBlockedPop": "Opened {openedCount}/{totalCount} links - browser blocked pop-ups",
-      "3ClickDoneAndTry": "3. Click Done and try clicking \"Open all\" again.",
       "openedAllLinks": "Opened all {totalCount} links"
     },
     "updateTheme": {
@@ -490,7 +441,6 @@
     "addTargetFromPage": {
       "targetAdded": "Target added"
     },
-    "top": {},
     "loadRecordHistory": {
       "requestFailed": "Request failed ({status})"
     },
@@ -543,13 +493,9 @@
       "nothingRecorded": "nothing recorded"
     },
     "renderHistoryActivityItem": {
-      "owner": "Owner: {owner}",
       "status": "Status: {statusAfter}",
-      "round": "Round: {round}",
-      "previousAction": "Previous action · {previousActionStatus}",
       "loggedByHand": "Logged by hand",
       "outcome": "Outcome",
-      "blocker": "Blocker",
       "note": "Note"
     },
     "renderHistoryFieldBlock": {
@@ -608,13 +554,6 @@
     "renderFeedbackTagFilters": {
       "text": "×",
       "removeTagFilter": "Remove tag filter"
-    },
-    "formatExtraParamTooltip": {
-      "whyTrackThis": "Why track this",
-      "type": "Type",
-      "examples": "Examples",
-      "defaultPossibilities": "Default possibilities",
-      "noDescription": "No description."
     },
     "formatAllCategoriesTooltip": {
       "allCategories": "All categories",
@@ -748,28 +687,13 @@
     "updateLoadingUi": {
       "loadingData": "Loading data..."
     },
-    "getProgramCategoryLabel": {
-      "uncategorized": "Uncategorized"
-    },
-    "getProgramTypeLabel": {
-      "unspecified": "Unspecified"
-    },
     "getProgramActivityTypeLabel": {
       "otherType": "Other"
-    },
-    "getProgramPreviousActionStatus": {
-      "noCurrentAction": "No current action"
-    },
-    "getFundingCategoryName": {
-      "uncategorized": "Uncategorized"
     },
     "buildCalendarDueByGroups": {
       "programOpportunity": "Program opportunity"
     },
     "formatGlobalSearchFieldLabel": {
-      "application": "Application",
-      "applicationLink": "Application link",
-      "sourceType": "Source type",
       "nextActionTime": "Next action time",
       "contact": "Contact",
       "contactRole": "Contact role",
@@ -948,7 +872,8 @@
     },
     "renderMediaDocumentPreview": {
       "empty": "No content to preview. Use the Edit tab to add Markdown."
-    }
+    },
+    "popupsBlocked": "Opened {opened} of {total} links; your browser blocked the other {blocked}. To open them all with one click, allow pop-ups for this site (the blocked pop-ups icon in the address bar), then try again."
   },
   "nav": {
     "views": "Tracker views",
@@ -2809,11 +2734,7 @@
       "search": "Search",
       "savedView": "Saved view",
       "perPage": "Per page",
-      "typeATagPressEnter": "Type a tag, press Enter",
       "filterByTag": "Filter by tag",
-      "yourFields": "Your fields",
-      "field": "Field",
-      "value": "Value...",
       "value2": "Value",
       "add": "Add",
       "noMatchingTargets": "No matching targets",
@@ -2880,7 +2801,6 @@
       "media": "Media",
       "feedback": "Feedback",
       "researchLinks": "Research links",
-      "fields": "Fields",
       "filterSubscriptionsAndApis": "Filter subscriptions and APIs",
       "addSubscriptionOrApi": "Add subscription or API",
       "filterResearchLinks": "Filter research links",
@@ -2895,7 +2815,6 @@
       "sharedWithAllStartups": "Shared with all startups",
       "description": "Description",
       "whatToLookForRules": "What to look for, rules, angle...",
-      "programsDocumentsChecklist": "Programs documents checklist",
       "filterMedia": "Filter media",
       "addMedia": "Add media",
       "options": "Options",
@@ -3032,7 +2951,11 @@
       "noCampaign": "No campaign"
     },
     "columns": {
-      "category": "Category"
+      "category": "Category",
+      "button": "Columns",
+      "search": "Search fields",
+      "reset": "Back to the standard columns",
+      "table": "Table"
     },
     "pageOf": {
       "showingOf": "Showing {value}-{value2} of {total}",
@@ -3057,80 +2980,17 @@
       "noDatedNextActions": "No dated next actions",
       "allPriorities": "All priorities",
       "allCampaigns": "All campaigns",
-      "removeTheTagFilter": "Remove the tag filter {tag}",
-      "removeTheFilter": "Remove the filter {label}",
       "noCampaign": "No campaign",
       "giveTheTargetAName": "Give the target a name first.",
       "added": "Added \"{name}\"."
     },
     "moreCategories": "{count} more"
   },
-  "fieldsEditor": {
-    "sectionLabels": {
-      "programs": "Programs"
-    },
-    "typeLabels": {
-      "shortText": "Short text",
-      "longText": "Long text",
-      "number": "Number",
-      "amountAndCurrency": "Amount and currency",
-      "percent": "Percent",
-      "date": "Date",
-      "dateAndTime": "Date and time",
-      "email": "Email",
-      "oneChoiceFromAList": "One choice from a list",
-      "severalChoicesFromAList": "Several choices from a list",
-      "yesNoOrUnknown": "Yes, no or unknown",
-      "person": "Person"
-    },
-    "sectionTabs": {
-      "section": "Section"
-    },
-    "form": {
-      "eGPartnerTier": "e.g. Partner tier",
-      "eGHowImportantThis": "e.g. How important this partner is for the next quarter.",
-      "eGGold": "e.g. Gold",
-      "eGPartnership": "e.g. Partnership",
-      "oneChoicePerLineAdd": "One choice per line. Add a description after a | if it helps.\ne.g. Gold | Our closest partners",
-      "choices": "Choices",
-      "added": "Added \"{value}\".",
-      "saved": "Saved \"{value}\".",
-      "label": "Label",
-      "type": "Type",
-      "helpText": "Help text",
-      "shownUnderTheFieldIn": "Shown under the field in the target window.",
-      "example": "Example",
-      "shownAsAPlaceholderNever": "Shown as a placeholder, never saved.",
-      "group": "Group",
-      "keyValuesAreStoredUnder": "Key: {key}. Values are stored under this key, which does not change when you rename the field.",
-      "primaryButtonCompact": "primary-button compact",
-      "addField": "Add field",
-      "saveField": "Save field",
-      "cancel": "Cancel"
-    },
-    "row": {
-      "edit": "Edit",
-      "edit2": "Edit {label}",
-      "delete": "Delete",
-      "delete2": "Delete {label}",
-      "deleted": "Deleted \"{label}\".",
-      "deleteConfirm": "Delete the field \"{label}\"? Targets keep their values; they show under \"Other fields\"."
-    },
-    "draw": {
-      "fieldsOfYourOwnFor": "Fields of your own for targets, shared by all your startups. They show in the Extras tab of the target window, after the built-in fields in Details.",
-      "noFieldsOfYourOwn": "No fields of your own for {value} yet.",
-      "addAField": "Add a {value} field"
-    },
-    "render": {
-      "couldNotReadTheFields": "Could not read the fields: {message}"
-    }
-  },
   "recordWindow": {
     "tabs": {
       "overview": "Overview",
       "edit": "Edit",
       "details": "Details",
-      "extras": "Extras",
       "history": "History"
     },
     "sectionLabels": {
@@ -3159,6 +3019,7 @@
     },
     "overviewHtml": {
       "allDetails": "All details",
+      "keyFacts": "Key facts",
       "noNotesYetWriteThem": "No notes yet. Write them in the Edit tab."
     },
     "allDetailsHtml": {
@@ -3166,9 +3027,6 @@
       "created": "Created {value}",
       "lastChanged": "last changed {value}",
       "nothingFilledInYetThe": "Nothing filled in yet. The Details tab has every field."
-    },
-    "documentLabel": {
-      "document": "Document"
     },
     "renderEdit": {
       "notes": "Notes",
@@ -3210,15 +3068,12 @@
       "cancel": "Cancel",
       "updateEntry": "Update entry",
       "addEntry": "Add entry",
-      "logUpdate": "Log update"
+      "logUpdate": "Log update",
+      "addKeyDate": "Add key date",
+      "none": "none"
     },
     "entryFieldHtml": {
       "unchanged": "Unchanged"
-    },
-    "documentsHtml": {
-      "status": "{activity}: status",
-      "document": "Document",
-      "noneTracked": "none tracked"
     },
     "saveEntry": {
       "fillInFirst": "Fill in {value} first."
@@ -3227,16 +3082,6 @@
       "addTheTargetFirstThen": "Add the target first, then link it to other records.",
       "createALinkedTarget": "Create a linked target",
       "in": "In {value}"
-    },
-    "renderExtras": {
-      "otherFields": "Other fields",
-      "valuesThisTargetHoldsThat": "Values this target holds that no field above describes, such as fields from an older version or an import. They are kept as they are when you save.",
-      "none": "None."
-    },
-    "otherFieldHtml": {
-      "extraParameter": "extra parameter",
-      "customField": "custom field",
-      "older": "Older {where}"
     },
     "renderHistory": {
       "addTheTargetFirstIts": "Add the target first. Its history starts once it exists."
@@ -3250,24 +3095,28 @@
       "addOrCancelTheEntry": "Add or cancel the entry you are writing first."
     },
     "requestClose": {
-      "discardTheChangesYouMade": "Discard the changes you made to this target?"
+      "discardTheChangesYouMade": "Discard the changes you made to this target?",
+      "title": "Unsaved changes",
+      "discard": "Discard changes",
+      "keepEditing": "Keep editing"
     },
     "historySummary": "{changes}. The History tab has every change.",
-    "noCustomFields": "No fields of your own yet. Add them in Extra > Fields; they show here for every {section} target."
+    "customFields": {
+      "title": "Custom fields",
+      "help": "Your own labels and values for this target only, such as a login, a reference or a figure no field covers.",
+      "noLabel": "(no label)",
+      "label": "Label",
+      "value": "Value",
+      "labelExample": "e.g. Account",
+      "valueExample": "e.g. team@example.com",
+      "remove": "Remove this field",
+      "add": "Add field"
+    },
+    "taxonomy": {
+      "nonePicked": "None picked yet. Open to pick categories, subcategories and types."
+    }
   },
   "fields": {
-    "validateCustomField": {
-      "aFieldMustBeAn": "A field must be an object.",
-      "sectionMustBeOneOf": "section must be one of {value}.",
-      "aFieldNeedsALabel": "A field needs a label.",
-      "aLabelCanBeUp": "A label can be up to 80 characters.",
-      "theKeyMustStartWith": "The key must start with a letter and hold only letters and digits.",
-      "isAlreadyAFieldOf": "\"{key}\" is already a field of this section.",
-      "anotherCustomFieldAlreadyUses": "Another custom field already uses \"{key}\".",
-      "typeMustBeOneOf": "type must be one of {value}.",
-      "aListFieldNeedsAt": "A list field needs at least one option.",
-      "twoOptionsHaveTheSame": "Two options have the same value."
-    },
     "formatValue": {
       "yes": "Yes",
       "no": "No",
@@ -3329,5 +3178,9 @@
       "unknownCategoryIsLeftOut": "Unknown category \"{id}\" is left out.",
       "categoryBelongsToAnotherSection": "Category \"{id}\" belongs to another section and is left out."
     }
+  },
+  "dialog": {
+    "ok": "OK",
+    "cancel": "Cancel"
   }
 }

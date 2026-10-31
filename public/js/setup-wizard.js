@@ -230,7 +230,7 @@
   async function writeSections(startupId, sections) {
     const { revisionMap } = await readStartupState(startupId);
     const operations = Object.entries(sections).map(([section, value]) => ({ type: "replaceSection", section, value, baseRevision: Number(revisionMap.sections?.[section] || 0) }));
-    await request(Api.startupApiUrl(startupId, "state/operations"), { method: "PATCH", body: { protocolVersion: 2, operations, origin: "ui", label: t("setup.saveLabel") } });
+    await request(Api.startupApiUrl(startupId, "state/operations"), { method: "PATCH", body: { protocolVersion: 3, operations, origin: "ui", label: t("setup.saveLabel") } });
   }
 
   // The favicon and the tab title while you edit the startup step, as they

@@ -3,24 +3,21 @@
 
 // Prints the facts GET /api/about answers, without a server and without
 // changing anything: version, where the data lives, the configured port, the
-// database's format, size and integrity, and how many startups and backups
-// there are.
+// database's schema version, size and integrity, and how many startups and
+// backups there are.
 //
 // Usage: node tools/about.js [--data-dir <folder>] [--dev] [--port <n>] [--json]
 //
-// The database is opened read-only. A database in the older one-startup
-// format is reported as such, never upgraded. The port is the one the server
-// would use with the same flags and environment; this does not check whether
-// a server is running on it.
+// The database is opened read-only. The port is the one the server would use
+// with the same flags and environment; this does not check whether a server
+// is running on it.
 
 const fs = require("fs");
 const path = require("path");
-const { DatabaseSync } = require("node:sqlite");
 const { resolveDataRoot, dataPaths, readFlag } = require("../lib/data-root");
 const { TrackerSqliteStore } = require("../lib/tracker-sqlite-store");
 const { listStartups } = require("../lib/startups");
 const { createBackupManager } = require("../lib/backups/manager");
-const { listSnapshots } = require("./restore-sqlite");
 
 const { readConfig, resolvePort } = require("../lib/cli/config");
 
@@ -50,28 +47,6 @@ function integrityProblems(report) {
   return problems;
 }
 
-// A file from before startups: the store refuses to open it read-only, so
-// its version and integrity are read with a plain read-only connection.
-function describeLegacyDatabase(databasePath, databaseBytes) {
-  const db = new DatabaseSync(databasePath, { readOnly: true });
-  try {
-    const userVersion = Number(db.prepare("PRAGMA user_version").get().user_version);
-    const integrity = db.prepare("PRAGMA integrity_check").all().map((row) => Object.values(row)[0]);
-    const foreignKeyErrors = db.prepare("PRAGMA foreign_key_check").all();
-    const problems = integrityProblems({ integrity, foreignKeyErrors });
-    return {
-      databaseFormat: "legacy",
-      databaseFormatNote: `Older format: one startup per file (schema ${userVersion}). The server upgrades it on its next start, after taking a copy.`,
-      schemaVersion: userVersion,
-      databaseBytes,
-      integrity: { ok: problems.length === 0, problems },
-      startupCount: 1,
-    };
-  } finally {
-    db.close();
-  }
-}
-
 function describeDatabase(databasePath) {
   if (!fs.existsSync(databasePath)) {
     return {
@@ -94,12 +69,7 @@ function describeDatabase(databasePath) {
   try {
     store = new TrackerSqliteStore(databasePath, { readOnly: true });
   } catch (error) {
-    if (error.code !== "SQLITE_TRACKER_LEGACY_SCHEMA") return unreadable(error);
-    try {
-      return describeLegacyDatabase(databasePath, databaseBytes);
-    } catch (legacyError) {
-      return unreadable(legacyError);
-    }
+    return unreadable(error);
   }
   try {
     const report = store.checkIntegrity();
@@ -126,11 +96,10 @@ function describeDatabase(databasePath) {
   }
 }
 
-// Backup folders, plus older flat tracker-*.sqlite files counted apart.
 function countBackups(paths) {
   // Listing needs no store; nothing here takes a backup.
   const manager = createBackupManager({ store: null, backupDir: paths.backupDir, mediaDir: paths.mediaDir });
-  return { backupCount: manager.list().length, olderBackupFiles: listSnapshots(paths.backupDir).length };
+  return manager.list().length;
 }
 
 function collectAbout({ argv = process.argv.slice(2), env = process.env, now = () => new Date() } = {}) {
@@ -149,11 +118,10 @@ function collectAbout({ argv = process.argv.slice(2), env = process.env, now = (
     port,
     schemaVersion: database.schemaVersion,
     databaseFormat: database.databaseFormat,
-    ...(database.databaseFormatNote ? { databaseFormatNote: database.databaseFormatNote } : {}),
     databaseBytes: database.databaseBytes,
     integrity: { checkedAt, ...database.integrity },
     startupCount: database.startupCount,
-    ...countBackups(paths),
+    backupCount: countBackups(paths),
   };
 }
 
@@ -170,11 +138,9 @@ function plural(count, word) {
 function formatAbout(about) {
   const database = {
     current: `${formatBytes(about.databaseBytes)}, schema ${about.schemaVersion}`,
-    legacy: `${formatBytes(about.databaseBytes)}, ${about.databaseFormatNote}`,
     missing: "not created yet",
     unreadable: `${formatBytes(about.databaseBytes)}, could not be read`,
   }[about.databaseFormat];
-  const older = about.olderBackupFiles ? `, ${plural(about.olderBackupFiles, "older backup file")}` : "";
   const integrity = about.integrity.ok
     ? `ok (checked ${about.integrity.checkedAt})`
     : `PROBLEMS (checked ${about.integrity.checkedAt})\n${about.integrity.problems.map((problem) => `                - ${problem}`).join("\n")}`;
@@ -183,7 +149,7 @@ function formatAbout(about) {
     `  Data folder   ${about.dataFolder} (${SOURCE_NAMES[about.dataFolderSource] || about.dataFolderSource})`,
     `  Database      ${about.databasePath} (${database})`,
     `  Media         ${about.mediaDir}`,
-    `  Backups       ${about.backupDir} (${plural(about.backupCount, "backup")}${older})`,
+    `  Backups       ${about.backupDir} (${plural(about.backupCount, "backup")})`,
     `  Port          ${about.port} (configured; whether a server is running is not checked)`,
     `  Startups      ${about.startupCount ?? "unknown"}`,
     `  Integrity     ${integrity}`,

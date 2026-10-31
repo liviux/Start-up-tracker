@@ -233,7 +233,7 @@ test("over HTTP: sensitive values have their own route, outside /state, agents, 
     const made = await (await sendJson(`${url}api/s/${startup.id}/agent-tokens`, "POST", { label: "Agent" })).json();
     const agent = { Authorization: `Bearer ${made.token}` };
     assert.equal((await fetch(route, { headers: agent })).status, 403, "an agent token cannot read them");
-    const agentWrite = await fetch(`${url}api/s/${startup.id}/state/operations`, { method: "PATCH", headers: { ...agent, "Content-Type": "application/json" }, body: JSON.stringify({ protocolVersion: 2, operations: [{ type: "upsert", section: "companySecrets", id: "x", value: { id: "x" } }] }) });
+    const agentWrite = await fetch(`${url}api/s/${startup.id}/state/operations`, { method: "PATCH", headers: { ...agent, "Content-Type": "application/json" }, body: JSON.stringify({ protocolVersion: 3, operations: [{ type: "upsert", section: "companySecrets", id: "x", value: { id: "x" } }] }) });
     assert.ok([400, 403].includes(agentWrite.status));
 
     const plain = await (await browserFetch(`${url}api/s/${startup.id}/export?format=json`)).text();

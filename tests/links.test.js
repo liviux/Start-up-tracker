@@ -8,7 +8,7 @@ const { TrackerSqliteStore, GLOBAL_STARTUP_ID } = require("../lib/tracker-sqlite
 const Links = require("../lib/links");
 const { purgeExpired } = require("../lib/recycle-bin");
 
-const { validateLink, linksOf, removeLinksTo, kindOfSection, makeLink, setOthers, othersOf, fromLegacy, mergeLinks, linkKey, linkIdFor } = Links;
+const { validateLink, linksOf, removeLinksTo, kindOfSection, makeLink, setOthers, othersOf, linkKey, linkIdFor } = Links;
 
 test("a link is checked and shows on both ends with each end's name", () => {
   const link = validateLink({ id: "l1", a: { kind: "po", id: "p1" }, b: { kind: "media", id: "m1" }, relation: "uses", context: "Pitch deck" });
@@ -62,40 +62,6 @@ test("links to a record in the recycle bin are hidden and come back with it", ()
   assert.deepEqual(visible(), ["p1", "f1"]);
 });
 
-test("the fields records used before links become links, once each", () => {
-  const state = {
-    items: [{ id: "t1", linkedProgramIds: ["p1"], linkedFundingIds: ["f1"], linkedMediaIds: ["m1"], extraParams: { linkedMedia: "m2", blockedBy: "t2", blocks: "t3, t2" } }],
-    deletedItems: [{ id: "t4", linkedProgramIds: ["p1"] }],
-    programs: [{ id: "p1", linkedTargetIds: ["t1"], linkedMediaIds: ["m1"] }],
-    funding: [{ id: "f1", linkedTargetIds: ["t1"], linkedProgramId: "p1" }],
-    mediaItems: [{ id: "m1", usedIn: [{ targetId: "t1", context: "Launch post", resultLink: "https://example.com/post", usedAt: "2026-01-02T00:00:00.000Z" }] }],
-    feedbackItems: [{ id: "fb1", targetId: "t1" }, { id: "fb2", targetId: "" }],
-  };
-  const links = fromLegacy(state);
-  const has = (a, b, relation) => links.some((link) => link.relation === relation && link.a.kind === a.split(":")[0] && link.a.id === a.split(":")[1] && link.b.kind === b.split(":")[0] && link.b.id === b.split(":")[1]);
-  assert.ok(has("mk:t1", "po:p1", "related") || has("po:p1", "mk:t1", "related"));
-  assert.ok(has("mk:t4", "po:p1", "related") || has("po:p1", "mk:t4", "related"), "records in the bin keep their links");
-  assert.ok(has("mk:t1", "media:m1", "uses"));
-  assert.ok(has("mk:t1", "media:m2", "uses"));
-  assert.ok(has("mk:t2", "mk:t1", "blocks"));
-  assert.ok(has("mk:t1", "mk:t3", "blocks"));
-  assert.ok(has("mk:t1", "mk:t2", "blocks"));
-  assert.ok(has("po:p1", "media:m1", "uses"));
-  assert.ok(has("fu:f1", "po:p1", "funds"));
-  assert.ok(has("feedback:fb1", "mk:t1", "feedback-about"));
-  // The program's and the target's own copy of the same pair make one link.
-  assert.equal(links.filter((link) => link.relation === "related" && [link.a.id, link.b.id].sort().join() === "p1,t1").length, 1);
-  const usage = links.find((link) => link.relation === "uses" && link.a.id === "t1" && link.b.id === "m1");
-  assert.equal(usage.context, "Launch post");
-  assert.equal(usage.resultLink, "https://example.com/post");
-  // Read twice (two devices), the same links with the same ids.
-  assert.deepEqual(fromLegacy(state).map((link) => link.id), links.map((link) => link.id));
-  // Stored links win over the ones read again from old fields.
-  const edited = { ...links[0], note: "edited" };
-  assert.equal(mergeLinks([edited], links).find((link) => link.id === edited.id).note, "edited");
-  assert.equal(mergeLinks([edited], links).length, links.length);
-});
-
 test("records deleted for good lose their links; others keep theirs", () => {
   const store = new TrackerSqliteStore(":memory:");
   store.replaceState("one-0001", {
@@ -130,21 +96,4 @@ test("the recycle bin purge drops the links of what it deletes, a shared campaig
   purgeExpired(store, { now });
   assert.deepEqual(store.readSection("one-0001", "links").map((link) => link.id), ["l3"]);
   assert.deepEqual(store.readSection("two-0002", "links").map((link) => link.id), []);
-});
-
-test("records still carrying an old link field are listed, so the page saves them once without it", () => {
-  const state = {
-    items: [{ id: "t1", linkedProgramIds: [] }, { id: "t2", extraParams: { blockedBy: "" } }, { id: "t3", extraParams: { budget: "1" } }],
-    deletedFeedbackItems: [{ id: "fb1", targetId: "t1" }],
-    funding: [{ id: "f1", linkedProgramId: "p1", extraParams: { blockedBy: "Waiting for the bank" } }],
-    mediaItems: [{ id: "m1", usedIn: [] }, { id: "m2" }],
-  };
-  assert.deepEqual(Links.legacyRecords(state), [
-    { section: "items", id: "t1" },
-    { section: "items", id: "t2" },
-    { section: "funding", id: "f1" },
-    { section: "mediaItems", id: "m1" },
-    { section: "deletedFeedbackItems", id: "fb1" },
-  ]);
-  assert.deepEqual(Links.legacyRecords({}), []);
 });

@@ -102,9 +102,12 @@ test("IndexedDB naming contract: one database per startup, shared by app.js and 
   assert.notEqual(api.cacheDbName("acme-7f3k"), api.cacheDbName("beta-0000"));
   assert.throws(() => api.cacheDbName(""), { name: "TypeError", message: /valid startup id/ });
   assert.equal(api.CACHE_STORE_NAME, "state");
-  assert.equal(api.CACHE_DB_VERSION, 1);
+  assert.equal(api.CACHE_DB_VERSION, 2);
   // app.js opens exactly that database and writes its outbox under sync:<tab>.
+  // A cache another version wrote holds another record shape: the upgrade
+  // drops it instead of replaying it.
   assert.match(appSource, /const CACHE_DB_NAME = STARTUP_ID \? Api\.cacheDbName\(STARTUP_ID\) : "";/);
+  assert.match(appSource, /if \(db\.objectStoreNames\.contains\(CACHE_STORE_NAME\)\) db\.deleteObjectStore\(CACHE_STORE_NAME\);\s*db\.createObjectStore\(CACHE_STORE_NAME\);/);
   assert.match(appSource, /const CACHE_SYNC_KEY = `sync:\$\{cacheTabId\}`/);
   assert.match(appSource, /outbox: clonePersistedState\(activeOutbox\)/);
   assert.doesNotMatch(appSource, /"startup-tracker-cache"/);
@@ -118,7 +121,7 @@ test("localStorage keys: startup choices are prefixed, global UI keys keep their
   assert.equal(api.startupStorageKey("beta-0000", "calendar-scope"), "startup-tracker:beta-0000:calendar-scope");
   assert.equal(api.globalStorageKey("theme"), "startup-tracker-theme");
   assert.equal(api.globalStorageKey("tab-id"), "startup-tracker-tab-id");
-  for (const name of ["cached-state", "cached-state-file-hash", "legacy-cache-owner", "search-scope", "calendar-scope"]) {
+  for (const name of ["search-scope", "calendar-scope", "calendar-filters"]) {
     assert.match(appSource, new RegExp(`STARTUP_ID \\? Api\\.storageKey\\("${name}"\\) : ""`), `${name} is per startup`);
   }
   assert.match(appSource, /const THEME_STORAGE_KEY = Api\.globalStorageKey\("theme"\);/);
@@ -212,11 +215,10 @@ for (const withDatabasesList of [true, false]) {
       ["current:tab-1", { state: {} }],
       ["sync:tab-1", { outbox: [{ operations: [] }, { blockedByConflict: true }] }],
       ["sync:tab-2", { outbox: [] }],
-      ["sync", { outbox: [{ operations: [] }] }],
     ])]]));
 
     const beta = await api.readOutboxStatus("beta-0000", idb);
-    assert.deepEqual({ ...beta }, { pending: 2, conflicted: 1, hasUnsynced: true });
+    assert.deepEqual({ ...beta }, { pending: 1, conflicted: 1, hasUnsynced: true });
 
     const gamma = await api.readOutboxStatus("gamma-1111", idb);
     assert.deepEqual({ ...gamma }, { pending: 0, conflicted: 0, hasUnsynced: false });

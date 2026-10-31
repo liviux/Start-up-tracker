@@ -1,18 +1,15 @@
 "use strict";
 
 // The HTTP side of several startups in one database: isolation, the startup
-// list, pages, media, the global scope, the combined views, deleting a startup
-// and the upgrade of a database from before startups existed. Backups,
-// restores, export and import are in backups-api.test.js.
+// list, pages, media, the global scope, the combined views and deleting a
+// startup. Backups, restores, export and import are in backups-api.test.js.
 
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const test = require("node:test");
-const { DatabaseSync } = require("node:sqlite");
-const { TrackerSqliteStore, verifyDatabaseFile } = require("../lib/tracker-sqlite-store");
-const { startServer, makeTempHome } = require("./helpers/server");
-const { writeLegacyDatabase } = require("./helpers/legacy-schema");
+const { TrackerSqliteStore } = require("../lib/tracker-sqlite-store");
+const { startServer } = require("./helpers/server");
 const { browserFetch, sendJson, createStartup, saveOperations, uploadFile } = require("./helpers/api");
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -189,7 +186,7 @@ test("unknown and archived startups answer 404 on the API and redirect on the pa
       ["GET", "state/changes?since=0", undefined],
       ["GET", "state/history?section=items&id=kept", undefined],
       ["GET", "state/records/items/kept", undefined],
-      ["PATCH", "state/operations", { protocolVersion: 2, operations: [{ type: "delete", section: "items", id: "kept", baseRevision: 1 }] }],
+      ["PATCH", "state/operations", { protocolVersion: 3, operations: [{ type: "delete", section: "items", id: "kept", baseRevision: 1 }] }],
       ["PUT", "media/document", { sourceType: "upload", storedName: "x.md", content: "" }],
     ];
     for (const [method, route, body] of archivedRoutes) {
@@ -298,7 +295,7 @@ test("startups are created, renamed, reordered and archived, and bad input is re
     await save(url, acme.id, [
       { type: "replaceSection", section: "profile", value: { pitch: "Robots for labs" }, baseRevision: 0 },
       { type: "replaceSection", section: "uiPreferences", value: { density: "compact" }, baseRevision: 0 },
-      { type: "replaceSection", section: "items", value: [{ id: "t1", platform: "Forum" }], baseRevision: 0 },
+      { type: "replaceSection", section: "items", value: [{ id: "t1", name: "Forum" }], baseRevision: 0 },
     ]);
     const settingsOnly = await createStartup(url, "Settings copy", { copySettingsFrom: acme.id });
     const settingsState = (await readState(url, settingsOnly.id)).payload.state;
@@ -306,9 +303,9 @@ test("startups are created, renamed, reordered and archived, and bad input is re
     assert.deepEqual(settingsState.uiPreferences, { density: "compact" });
     assert.equal(settingsState.items, undefined);
     const withRecords = await createStartup(url, "Full copy", { copySettingsFrom: acme.id, copyRecords: true });
-    assert.deepEqual((await readState(url, withRecords.id)).payload.state.items, [{ id: "t1", platform: "Forum" }]);
+    assert.deepEqual((await readState(url, withRecords.id)).payload.state.items, [{ id: "t1", name: "Forum" }]);
     // Copying leaves the source as it was.
-    assert.deepEqual((await readState(url, acme.id)).payload.state.items, [{ id: "t1", platform: "Forum" }]);
+    assert.deepEqual((await readState(url, acme.id)).payload.state.items, [{ id: "t1", name: "Forum" }]);
 
     // Renaming keeps the id.
     const renamed = await (await sendJson(`${url}api/startups/${acme.id}`, "PATCH", { name: "Acme Labs" })).json();
@@ -461,11 +458,11 @@ test("combined search and calendar cover every open startup and never write", as
     const beta = await createStartup(url, "Beta");
     const hidden = await createStartup(url, "Hidden");
     await save(url, alpha.id, [
-      { type: "replaceSection", section: "items", value: [{ id: "a1", platform: "Rocket launch post", date: "2026-11-02", status: "planned" }], baseRevision: 0 },
+      { type: "replaceSection", section: "items", value: [{ id: "a1", name: "Rocket launch post", nextActionDate: "2026-11-02", status: "planned" }], baseRevision: 0 },
       { type: "replaceSection", section: "programs", value: [{ id: "p1", name: "Rocket accelerator", nextActionDate: "2026-11-05" }], baseRevision: 0 },
     ]);
-    await fillSection(url, beta.id, "items", [{ id: "b1", platform: "Rocket fair", date: "2026-11-03", time: "10:00" }]);
-    await fillSection(url, hidden.id, "items", [{ id: "h1", platform: "Rocket secret", date: "2026-11-04" }]);
+    await fillSection(url, beta.id, "items", [{ id: "b1", name: "Rocket fair", nextActionDate: "2026-11-03", nextActionTime: "10:00" }]);
+    await fillSection(url, hidden.id, "items", [{ id: "h1", name: "Rocket secret", nextActionDate: "2026-11-04" }]);
     await sendJson(`${url}api/startups/${hidden.id}`, "PATCH", { archived: true });
 
     const search = async (query) => {
@@ -551,12 +548,8 @@ test("uploads go to the startup's folder and a document save cannot reach anothe
     assert.equal(served.headers.get("content-type"), "application/pdf");
     assert.equal(await served.text(), "%PDF-1.4 test");
 
-    // A link from before startups existed names only the file.
-    const oldLink = await noRedirect(`${url}media/${upload.storedName}`);
-    assert.equal(oldLink.status, 302);
-    assert.equal(oldLink.headers.get("location"), `/media/${alpha.id}/${upload.storedName}`);
-    assert.equal((await browserFetch(`${url}media/${upload.storedName}`)).status, 200, "the redirect leads to the file");
-    assert.equal((await noRedirect(`${url}media/not-there.pdf`)).status, 404);
+    // A media address names the startup.
+    assert.equal((await noRedirect(`${url}media/${upload.storedName}`)).status, 404);
 
     // Beta's document is out of Alpha's reach, whatever path is sent.
     const betaDoc = path.join(server.home, "media", beta.id, "plan.md");
@@ -580,79 +573,6 @@ test("uploads go to the startup's folder and a document save cannot reach anothe
     assert.equal(own.status, 200);
     assert.equal((await own.json()).path, `/media/${beta.id}/plan.md`);
     assert.equal(fs.readFileSync(betaDoc, "utf8"), "# Beta plan v2\n");
-  } finally {
-    await server.stop();
-  }
-});
-
-test("a database from before startups is upgraded on start into the Imported startup", async () => {
-  const home = makeTempHome();
-  const databasePath = path.join(home, "data", "tracker.sqlite");
-  fs.mkdirSync(path.dirname(databasePath), { recursive: true });
-  const legacyState = {
-    updatedAt: "2026-05-01T09:00:00.000Z",
-    items: [{ id: "old-1", platform: "Legacy forum", date: "2026-05-02" }, { id: "old-2", platform: "Legacy blog" }],
-    prompts: [{ id: "prompt-1", content: "Keep me." }],
-    profile: { pitch: "Before startups" },
-  };
-  const written = writeLegacyDatabase(databasePath, legacyState, {
-    version: 3,
-    revision: 7,
-    history: [{ section: "items", id: "old-1", event: "created", at: "2026-05-01T08:00:00.000Z" }],
-  });
-  const mediaDir = path.join(home, "media");
-  fs.mkdirSync(mediaDir, { recursive: true });
-  fs.writeFileSync(path.join(mediaDir, "old-photo.png"), "old image bytes");
-
-  let server = await startServer({ home });
-  try {
-    const url = server.url;
-    const backups = fs.readdirSync(path.join(home, "backups"));
-    const preUpgrade = backups.filter((name) => /^tracker-\d{8}-\d{6}-pre-upgrade-v3\.sqlite$/.test(name));
-    assert.equal(preUpgrade.length, 1);
-
-    // The copy is the old file as it was: still the old layout, same rows.
-    const copyPath = path.join(home, "backups", preUpgrade[0]);
-    const copyCheck = verifyDatabaseFile(copyPath);
-    assert.equal(copyCheck.legacy, true);
-    const copy = new DatabaseSync(copyPath, { readOnly: true });
-    try {
-      assert.deepEqual(
-        copy.prepare("SELECT section_name, record_id, value_json FROM state_records ORDER BY section_name, ordinal").all().map((row) => ({ ...row })),
-        written.records.map((row) => ({ ...row })),
-      );
-    } finally {
-      copy.close();
-    }
-
-    const list = await listStartups(url);
-    assert.equal(list.length, 1);
-    const imported = list[0];
-    assert.equal(imported.name, "Imported");
-    assert.match(imported.id, /^imported-[a-z0-9]{4}$/);
-
-    const { payload } = await readState(url, imported.id);
-    assert.deepEqual(payload.state, legacyState);
-    assert.equal(payload.revision, 7, "the startup keeps the file's revision");
-    const history = await (await browserFetch(`${url}api/s/${imported.id}/state/history?section=items&id=old-1`)).json();
-    assert.ok(history.entries.some((entry) => entry.event === "created" && entry.changedAt === "2026-05-01T08:00:00.000Z"));
-
-    // Loose uploads moved into the startup's folder; old links follow them.
-    assert.equal(fs.existsSync(path.join(mediaDir, "old-photo.png")), false);
-    assert.equal(fs.readFileSync(path.join(mediaDir, imported.id, "old-photo.png"), "utf8"), "old image bytes");
-    const oldLink = await noRedirect(`${url}media/old-photo.png`);
-    assert.equal(oldLink.status, 302);
-    assert.equal(oldLink.headers.get("location"), `/media/${imported.id}/old-photo.png`);
-    assert.equal(await (await browserFetch(`${url}media/old-photo.png`)).text(), "old image bytes");
-
-    assert.equal((await noRedirect(url)).headers.get("location"), `/s/${imported.id}/`);
-
-    // A second start finds an upgraded database and leaves it alone.
-    await server.stop({ keepHome: true });
-    server = await startServer({ home });
-    assert.equal(fs.readdirSync(path.join(home, "backups")).filter((name) => name.includes("pre-upgrade")).length, 1);
-    assert.deepEqual((await listStartups(server.url)).map((startup) => startup.id), [imported.id]);
-    assert.deepEqual((await readState(server.url, imported.id)).payload.state, legacyState);
   } finally {
     await server.stop();
   }
@@ -699,7 +619,7 @@ test("copyProfileFields copies only the listed profile fields", async () => {
     await save(url, source.id, [
       { type: "replaceSection", section: "profile", value: { pitch: "Robots for labs", website: "https://example.com", founders: "Ana and Bo" }, baseRevision: 0 },
       { type: "replaceSection", section: "uiPreferences", value: { density: "compact" }, baseRevision: 0 },
-      { type: "replaceSection", section: "items", value: [{ id: "t1", platform: "Forum" }], baseRevision: 0 },
+      { type: "replaceSection", section: "items", value: [{ id: "t1", name: "Forum" }], baseRevision: 0 },
     ]);
 
     const some = await createStartup(url, "Some fields", { copySettingsFrom: source.id, copyProfileFields: ["pitch", "website", "notThere"] });

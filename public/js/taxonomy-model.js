@@ -8,10 +8,6 @@
 // shows under a category when any of its nodes falls in that branch. Ids the
 // library does not know are kept as they are, never replaced.
 //
-// The older fields (`category`, `subcategory`, `subcategories`, `type`) are
-// kept on records as a mirror of the list, for the parts of the page that
-// still read them.
-//
 // UMD: browsers get window.StartupTrackerTaxonomy, Node gets module.exports.
 (function (root, factory) {
   const api = factory();
@@ -167,52 +163,6 @@
     return ids.some((id) => id === branchId || path(id).some((node) => node.id === branchId));
   }
 
-  function nodeAt(list, level) {
-    for (const id of Array.isArray(list) ? list : []) {
-      const node = path(id).find((entry) => entry.level === level);
-      if (node) return node;
-    }
-    return null;
-  }
-
-  // The older single-value fields, mirrored from the list: the primary
-  // category, subcategory and type, and every subcategory. A list of
-  // unknown ids keeps the record's older values.
-  function legacyFields(list, previous = {}) {
-    const ids = Array.isArray(list) ? list : [];
-    const known = ids.filter((id) => byId.has(id));
-    if (!known.length) {
-      return {
-        category: previous.category || ids[0] || "",
-        subcategory: previous.subcategory || "",
-        subcategories: Array.isArray(previous.subcategories) ? previous.subcategories : [],
-        type: previous.type || "",
-      };
-    }
-    const subcategories = [];
-    for (const id of known) {
-      const sub = path(id).find((node) => node.level === "subcategory");
-      if (sub && !subcategories.includes(sub.id)) subcategories.push(sub.id);
-    }
-    return {
-      category: nodeAt(known, "category")?.id || "",
-      subcategory: subcategories[0] || "",
-      subcategories,
-      type: nodeAt(known, "type")?.id || "",
-    };
-  }
-
-  // The list for a record: its own, or one built from the older fields.
-  function listFor(record) {
-    if (Array.isArray(record?.taxonomy) && record.taxonomy.length) return normalizeSelection(record.taxonomy);
-    const picks = [];
-    if (record?.type) picks.push(record.type);
-    if (Array.isArray(record?.subcategories)) picks.push(...record.subcategories);
-    if (record?.subcategory) picks.push(record.subcategory);
-    if (record?.category) picks.push(record.category);
-    return normalizeSelection(picks.filter((id) => typeof id === "string"));
-  }
-
   // Ids in the list this startup turned off, or that the library lacks.
   function disabledIn(list) {
     return (Array.isArray(list) ? list : []).filter((id) => byId.has(id) && !isEnabled(id));
@@ -252,32 +202,6 @@
       });
   }
 
-  // ---- the older nested shape -------------------------------------------------
-
-  // { id, name, shortName, description, subcategories: [{ id, name,
-  // description, types: [...] }] } per category, for the parts of the page
-  // built on it. onlyEnabled leaves out what the startup turned off.
-  function nestedCategories(section, options = {}) {
-    const pick = (node) => ({ id: node.id, name: node.name, description: node.description || "" });
-    return categories(section, options).map((category) => ({
-      ...pick(category),
-      shortName: category.shortName || category.name,
-      recommended: Boolean(category.recommended),
-      subcategories: children(category.id, section, options).map((sub) => ({
-        ...pick(sub),
-        types: children(sub.id, section, options).map(pick),
-      })),
-    }));
-  }
-
-  // A category in the nested shape, also for an id the library lacks (shown
-  // under its own id) so a record never moves to another category.
-  function nestedCategory(id, section) {
-    const node = byId.get(id);
-    if (node && node.level === "category") return nestedCategories(node.section).find((category) => category.id === id);
-    return { id: String(id || ""), name: String(id || ""), shortName: String(id || ""), description: "", unknown: true, section, subcategories: [] };
-  }
-
   return {
     SECTIONS,
     LEVELS,
@@ -297,8 +221,6 @@
     normalizeSelection,
     leaves,
     inBranch,
-    legacyFields,
-    listFor,
     disabledIn,
     unknownIn,
     name,
@@ -306,7 +228,5 @@
     description,
     pathLabel,
     search,
-    nestedCategories,
-    nestedCategory,
   };
 });

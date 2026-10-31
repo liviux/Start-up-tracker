@@ -132,25 +132,3 @@ test("the picker names and describes every theme in English", () => {
   assert.ok(en.settings.appearance.themeCredit.includes("{skill}"));
   assert.ok(en.settings.appearance.themeHint.length > 40);
 });
-
-test("an old palette id opens a new theme instead of the default by accident", () => {
-  assert.deepEqual({ ...Settings.THEME_ALIASES }, { ...Appearance.LEGACY_TASTES });
-  for (const [oldId, next] of Object.entries(Appearance.LEGACY_TASTES)) {
-    assert.ok(!THEMES.includes(oldId), `${oldId} is no longer listed`);
-    assert.ok(THEMES.includes(next), `${oldId} maps to a listed theme`);
-    assert.equal(Appearance.normalizeTaste(oldId), next);
-  }
-});
-
-test("saved settings from before the collection keep their idea", () => {
-  for (const [oldId, next] of Object.entries(Settings.THEME_ALIASES)) {
-    const resolved = Settings.resolveSettings({ appearance: { mode: "dark", theme: oldId } });
-    assert.deepEqual(resolved.appearance, { mode: "dark", theme: next }, oldId);
-  }
-  // A client that still sends an old id (an open tab, an old backup) is mapped
-  // instead of having its appearance rejected.
-  const current = Settings.defaults();
-  const merged = Settings.mergeSettings(current, { appearance: { theme: "cyber" } });
-  assert.equal(merged.appearance.theme, "nightshift");
-  assert.throws(() => Settings.mergeSettings(current, { appearance: { theme: "nonsense" } }));
-});

@@ -41,7 +41,10 @@
   ]);
 
   // Columns in the same order everywhere; "value" only where a section has
-  // amounts (FU asks, PO cash on offer).
+  // amounts (FU asks, PO cash on offer). These show until other columns are
+  // picked; any other field of the section can be shown as a column too,
+  // under the id "field:<key>".
+  const FIELD_COLUMN = "field:";
   const COLUMNS = Object.freeze([
     { id: "priority", get label() { return t("ui.common.priority"); }, sort: true },
     { id: "name", get label() { return t("ui.common.name"); }, sort: true },
@@ -82,9 +85,10 @@
     }
   }
 
-  // The rows a filter keeps. `filters` holds { view, search, statuses (a Set
-  // or null for all), priority, campaign, tags [], facets [{ key, value }],
-  // today }; `extra(row)` may add a check (category tabs, custom fields).
+  // The rows a filter keeps. `filters` holds { view, search, statuses (a
+  // test of a status, or null for all), priority, campaign, today }; the
+  // search reads every word in names, notes, tags, links and the rest of
+  // row.search. `extra(row)` may add a check (the category tabs).
   function filterRows(rows, filters, extra = () => true) {
     const words = String(filters.search || "").toLowerCase().split(/\s+/).filter(Boolean);
     return rows.filter((row) => {
@@ -92,7 +96,6 @@
       if (filters.statuses && !filters.statuses(row.status)) return false;
       if (filters.priority && filters.priority !== "all" && row.priority !== filters.priority) return false;
       if (filters.campaign && filters.campaign !== "all" && (row.campaignId || "") !== filters.campaign) return false;
-      if ((filters.tags || []).length && !filters.tags.every((tag) => (row.tags || []).includes(tag))) return false;
       if (words.length) {
         const text = String(row.search || "").toLowerCase();
         if (!words.every((word) => text.includes(word))) return false;
@@ -103,7 +106,18 @@
 
   const PRIORITY_RANK = new Map(PRIORITIES.map((priority, index) => [priority, index]));
 
-  function compareBy(column, a, b) {
+  const isBlank = (value) => value === null || value === undefined || value === "";
+
+  // A field column's values: numbers by size, text in alphabetical order.
+  // Empty values are put last by sortRows, whichever way it sorts.
+  function compareValues(left, right) {
+    if (isBlank(left) || isBlank(right)) return isBlank(left) - isBlank(right);
+    if (typeof left === "number" && typeof right === "number") return left - right;
+    return String(left).localeCompare(String(right), undefined, { numeric: true });
+  }
+
+  function compareBy(column, a, b, valueOf) {
+    if (column.startsWith(FIELD_COLUMN)) return compareValues(valueOf?.(a, column), valueOf?.(b, column));
     switch (column) {
       case "priority": return (PRIORITY_RANK.get(a.priority) ?? 2) - (PRIORITY_RANK.get(b.priority) ?? 2);
       case "name": return String(a.name).localeCompare(String(b.name));
@@ -122,12 +136,15 @@
   }
 
   // Sorted by the chosen column, or by default open first, then the next
-  // action date, then priority.
-  function sortRows(rows, sort) {
+  // action date, then priority. `valueOf(row, column)` reads a field column.
+  function sortRows(rows, sort, valueOf) {
     const list = rows.slice();
     if (sort?.column) {
       const direction = sort.direction === "desc" ? -1 : 1;
-      return list.sort((a, b) => direction * compareBy(sort.column, a, b) || compareBy("date", a, b));
+      const field = sort.column.startsWith(FIELD_COLUMN);
+      return list.sort((a, b) => (field ? isBlank(valueOf?.(a, sort.column)) - isBlank(valueOf?.(b, sort.column)) : 0)
+        || direction * compareBy(sort.column, a, b, valueOf)
+        || compareBy("date", a, b));
     }
     return list.sort((a, b) => (Number(b.open) - Number(a.open)) || compareBy("date", a, b) || compareBy("priority", a, b) || compareBy("name", a, b));
   }
@@ -157,27 +174,61 @@
     return priority ? `<span class="priority-pill" data-priority="${escapeHtml(priority)}">${escapeHtml(priority)}</span>` : "";
   }
 
-  // A read-only table row. The name is a button, so the row opens from the
-  // keyboard too; an external link inside the row opens that link only.
-  function rowHtml(row, { showValue = false, statusHtml = (status) => escapeHtml(status), formatDate = (date) => date } = {}) {
+  // The standard columns a section shows: all but "value" in Marketing.
+  function defaultColumns(showValue) {
+    return COLUMNS.filter((column) => column.id !== "value" || showValue).map((column) => column.id);
+  }
+
+  // A read-only table row with the columns asked for, standard ones and
+  // field columns (`fieldText(row, id)`, named by `fieldLabel(id)` where a
+  // narrow screen shows each row as a card). The name is a button, so the row
+  // opens from the keyboard too; an external link inside the row opens that
+  // link only.
+  function rowHtml(row, { showValue = false, statusHtml = (status) => escapeHtml(status), formatDate = (date) => date, columns = null, fieldText = () => "", fieldLabel = () => "" } = {}) {
     const when = row.nextActionDate ? `${formatDate(row.nextActionDate)}${row.nextActionTime ? ` ${row.nextActionTime}` : ""}` : "";
-    const cells = [
-      `<td class="sp-priority">${priorityPill(row.priority)}</td>`,
-      `<td class="sp-name">
+    const cells = {
+      priority: `<td class="sp-priority">${priorityPill(row.priority)}</td>`,
+      name: `<td class="sp-name">
         <div class="sp-name-line">
           <button type="button" class="sp-open" data-sp-open="${escapeHtml(row.id)}">${escapeHtml(row.name || "Untitled target")}</button>
           ${row.link ? `<a class="sp-external" href="${escapeHtml(row.link)}" target="_blank" rel="noreferrer noopener" data-sp-external aria-label="${tHtml("sectionPage.rowHtml.openTheLinkOf", { name: escapeHtml(row.name) })}" title="${escapeHtml(row.link)}">↗</a>` : ""}
         </div>
         ${row.organization ? `<span class="sp-organization">${escapeHtml(row.organization)}</span>` : ""}
       </td>`,
-      `<td class="sp-category">${row.categoryPath ? `<span>${escapeHtml(row.categoryPath)}</span>` : `<span class="sp-muted">${escapeHtml(t("sectionPage.rowHtml.uncategorized"))}</span>`}${row.categoryFlag ? ` <span class="taxonomy-flag">${escapeHtml(row.categoryFlag)}</span>` : ""}${row.categoryCount > 1 ? ` <span class="sp-more" title="${escapeHtml(t("sectionPage.moreCategories", { count: row.categoryCount - 1 }))}">+${row.categoryCount - 1}</span>` : ""}</td>`,
-      `<td class="sp-status">${statusHtml(row.status)}</td>`,
-      `<td class="sp-date">${when ? `<span>${escapeHtml(when)}</span>` : ""}${row.nextAction ? `<span class="sp-next">${escapeHtml(row.nextAction)}</span>` : ""}</td>`,
-      `<td class="sp-campaign">${escapeHtml(row.campaignName || "")}</td>`,
-      `<td class="sp-tags">${(row.tags || []).map((tag) => `<span class="tag-pill">${escapeHtml(tag)}</span>`).join("")}</td>`,
-      showValue ? `<td class="sp-value">${escapeHtml(row.value?.text || "")}</td>` : "",
-    ];
-    return `<tr class="sp-row" data-sp-row="${escapeHtml(row.id)}" data-status-group="${escapeHtml(row.statusGroup || "")}">${cells.join("")}</tr>`;
+      category: `<td class="sp-category">${row.categoryPath ? `<span>${escapeHtml(row.categoryPath)}</span>` : `<span class="sp-muted">${escapeHtml(t("sectionPage.rowHtml.uncategorized"))}</span>`}${row.categoryFlag ? ` <span class="taxonomy-flag">${escapeHtml(row.categoryFlag)}</span>` : ""}${row.categoryCount > 1 ? ` <span class="sp-more" title="${escapeHtml(t("sectionPage.moreCategories", { count: row.categoryCount - 1 }))}">+${row.categoryCount - 1}</span>` : ""}</td>`,
+      status: `<td class="sp-status">${statusHtml(row.status)}</td>`,
+      date: `<td class="sp-date">${when ? `<span>${escapeHtml(when)}</span>` : ""}${row.nextAction ? `<span class="sp-next">${escapeHtml(row.nextAction)}</span>` : ""}</td>`,
+      campaign: `<td class="sp-campaign">${escapeHtml(row.campaignName || "")}</td>`,
+      tags: `<td class="sp-tags">${(row.tags || []).map((tag) => `<span class="tag-pill">${escapeHtml(tag)}</span>`).join("")}</td>`,
+      value: `<td class="sp-value">${escapeHtml(row.value?.text || "")}</td>`,
+    };
+    const fieldCell = (id) => {
+      const text = fieldText(row, id);
+      return `<td class="sp-field" data-label="${escapeHtml(fieldLabel(id))}">${text ? `<div class="sp-field-text" title="${escapeHtml(text)}">${escapeHtml(text)}</div>` : ""}</td>`;
+    };
+    const shown = (columns || defaultColumns(showValue)).map((id) => cells[id] ?? fieldCell(id));
+    return `<tr class="sp-row" data-sp-row="${escapeHtml(row.id)}" data-status-group="${escapeHtml(row.statusGroup || "")}">${shown.join("")}</tr>`;
+  }
+
+  // The Columns dropdown: a search box, then a checkbox per column, grouped.
+  // `groups` is [{ label, columns: [{ id, label }] }].
+  function columnPickerHtml(groups, visible) {
+    const on = new Set(visible);
+    return `
+      <details class="sp-columns" data-sp-columns-menu>
+        <summary class="secondary-button">${escapeHtml(t("sectionPage.columns.button"))} <span class="tab-count">${visible.length}</span></summary>
+        <div class="sp-columns-panel">
+          <input type="search" data-sp-columns-search placeholder="${escapeHtml(t("sectionPage.columns.search"))}" aria-label="${escapeHtml(t("sectionPage.columns.search"))}">
+          <div class="sp-columns-groups">
+            ${groups.map((group) => `
+              <fieldset class="sp-columns-group">
+                <legend>${escapeHtml(group.label)}</legend>
+                <div class="sp-columns-choices">${group.columns.map((column) => `<label class="sp-columns-choice" data-sp-column-label="${escapeHtml(column.label.toLowerCase())}"><input type="checkbox" data-sp-column="${escapeHtml(column.id)}"${on.has(column.id) ? " checked" : ""}> <span>${escapeHtml(column.label)}</span></label>`).join("")}</div>
+              </fieldset>`).join("")}
+          </div>
+          <button type="button" class="text-button" data-sp-columns-reset>${escapeHtml(t("sectionPage.columns.reset"))}</button>
+        </div>
+      </details>`;
   }
 
   function focusCardHtml(row, { statusHtml = (status) => escapeHtml(status), formatDate = (date) => date } = {}) {
@@ -214,8 +265,9 @@
   // hooks: records(), describe(record), today(), statusHtml(id),
   // statusOptionsHtml(selected), defaultStatus(), formatDate(date),
   // campaigns() [{ id, name }], metrics(records) [{ label, value, help }],
-  // matchesTabs(record), customFields() [{ key, label }],
-  // customValue(record, key), open(id), add(values, { openDetails }),
+  // matchesTabs(record), fieldColumns() [{ label, columns: [{ id, label }] }]
+  // (the fields that can be added as columns, grouped), fieldText(record, id)
+  // and fieldSort(record, id), open(id), add(values, { openDetails }),
   // taxonomyValue(), resetTaxonomy(), statusFilter (StartupTrackerStatusFilter),
   // statusSelection: { defaults(), all(), matches(selection, id), restore(list) },
   // loadUi(), saveUi(ui), changed() after a filter change.
@@ -229,8 +281,8 @@
       priority: "all",
       campaign: "all",
       statuses: null,
-      tags: [],
-      facets: [],
+      // The columns picked in the Columns dropdown; null shows the standard ones.
+      columns: null,
       page: 1,
       pageSize: 10,
       sort: { column: "", direction: "asc" },
@@ -243,6 +295,8 @@
     if (!ui.pageSizePicked && hooks.defaultPageSize) ui.pageSize = Number(hooks.defaultPageSize()) || 10;
     if (ui.focus.date === undefined || ui.focus.date === "") ui.focus.date = hooks.today();
     const selection = (list) => (Array.isArray(list) ? hooks.statusSelection.restore(list) : hooks.statusSelection.defaults());
+    const fieldText = (row, id) => hooks.fieldText?.(row.record, id.slice(FIELD_COLUMN.length)) ?? "";
+    const sortValue = (row, id) => hooks.fieldSort?.(row.record, id.slice(FIELD_COLUMN.length));
     let lastRows = [];
 
     function save() {
@@ -346,30 +400,63 @@
           renderTable(lastRows);
         },
       });
-      const tagList = q("[data-sp-tag-list]");
-      if (tagList) tagList.innerHTML = ui.tags.map((tag) => `<span class="tag-pill">${escapeHtml(tag)} <button type="button" class="tag-remove" data-sp-tag-remove="${escapeHtml(tag)}" aria-label="${tHtml("sectionPage.create.removeTheTagFilter", { tag: escapeHtml(tag) })}">×</button></span>`).join("");
-      const custom = hooks.customFields?.() || [];
-      const facetRow = q("[data-sp-facet-row]");
-      if (facetRow) facetRow.hidden = !custom.length;
-      fillSelect(q("[data-sp-facet-key]"), custom.map((field) => ({ value: field.key, label: field.label })), q("[data-sp-facet-key]")?.value || custom[0]?.key || "");
-      const facetList = q("[data-sp-facet-list]");
-      if (facetList) {
-        facetList.innerHTML = ui.facets.map((facet, index) => {
-          const label = custom.find((field) => field.key === facet.key)?.label || facet.key;
-          return `<span class="tag-pill">${escapeHtml(label)}: ${escapeHtml(facet.value)} <button type="button" class="tag-remove" data-sp-facet-remove="${index}" aria-label="${tHtml("sectionPage.create.removeTheFilter", { label: escapeHtml(label) })}">×</button></span>`;
-        }).join("");
+      renderColumnPicker();
+    }
+
+    // ---- columns --------------------------------------------------------------
+
+    // Every column the table can show, grouped: the standard ones first.
+    function columnGroups() {
+      const standard = COLUMNS.filter((column) => column.id !== "value" || showValue)
+        .map((column) => ({ id: column.id, label: column.id === "value" ? hooks.valueLabel || column.label : column.label, sort: column.sort }));
+      const fields = (hooks.fieldColumns?.() || []).map((group) => ({ ...group, columns: group.columns.map((column) => ({ ...column, sort: true })) }));
+      return [{ label: t("sectionPage.columns.table"), columns: standard }, ...fields];
+    }
+
+    // The columns shown, in the order of the dropdown. A picked column that
+    // the section no longer has is left out.
+    function visibleColumns() {
+      const all = columnGroups().flatMap((group) => group.columns);
+      if (!Array.isArray(ui.columns)) return all.filter((column) => defaultColumns(showValue).includes(column.id));
+      const picked = new Set(ui.columns);
+      const shown = all.filter((column) => picked.has(column.id));
+      return shown.length ? shown : all.filter((column) => column.id === "name");
+    }
+
+    // Drawn once; later renders only tick the boxes, so a box keeps the focus
+    // while the table changes behind it.
+    function renderColumnPicker() {
+      const holder = q("[data-sp-columns]");
+      if (!holder) return;
+      const groups = columnGroups();
+      const visible = visibleColumns().map((column) => column.id);
+      const signature = JSON.stringify(groups.map((group) => [group.label, group.columns.map((column) => column.id)]));
+      if (holder.dataset.signature !== signature) {
+        holder.dataset.signature = signature;
+        holder.innerHTML = columnPickerHtml(groups, visible);
+        return;
       }
+      for (const box of holder.querySelectorAll("[data-sp-column]")) box.checked = visible.includes(box.dataset.spColumn);
+      const count = holder.querySelector("summary .tab-count");
+      if (count) count.textContent = String(visible.length);
+    }
+
+    function filterColumnChoices(text) {
+      const query = String(text || "").trim().toLowerCase();
+      for (const choice of page.querySelectorAll("[data-sp-column-label]")) choice.hidden = Boolean(query) && !choice.dataset.spColumnLabel.includes(query);
+      for (const group of page.querySelectorAll(".sp-columns-group")) group.hidden = ![...group.querySelectorAll("[data-sp-column-label]")].some((choice) => !choice.hidden);
     }
 
     function renderHead() {
       const head = q("[data-sp-head]");
       if (!head) return;
-      head.innerHTML = COLUMNS.filter((column) => column.id !== "value" || showValue).map((column) => {
+      head.innerHTML = visibleColumns().map((column) => {
         const sorted = ui.sort.column === column.id;
         const aria = sorted ? (ui.sort.direction === "desc" ? "descending" : "ascending") : "none";
+        const css = column.id.startsWith(FIELD_COLUMN) ? "sp-col-field" : `sp-col-${column.id}`;
         return column.sort
-          ? `<th scope="col" class="sp-col-${column.id}" aria-sort="${aria}"><button type="button" class="sp-sort" data-sp-sort="${column.id}">${escapeHtml(column.id === "value" ? hooks.valueLabel || column.label : column.label)}<span class="sp-sort-mark" aria-hidden="true">${sorted ? (ui.sort.direction === "desc" ? "▼" : "▲") : ""}</span></button></th>`
-          : `<th scope="col" class="sp-col-${column.id}">${escapeHtml(column.label)}</th>`;
+          ? `<th scope="col" class="${css}" aria-sort="${aria}"><button type="button" class="sp-sort" data-sp-sort="${escapeHtml(column.id)}">${escapeHtml(column.label)}<span class="sp-sort-mark" aria-hidden="true">${sorted ? (ui.sort.direction === "desc" ? "▼" : "▲") : ""}</span></button></th>`
+          : `<th scope="col" class="${css}">${escapeHtml(column.label)}</th>`;
       }).join("");
     }
 
@@ -381,10 +468,8 @@
         statuses: statuses ? (status) => hooks.statusSelection.matches(statuses, status) : null,
         priority: ui.priority,
         campaign: ui.campaign,
-        tags: ui.tags,
         today: hooks.today(),
-      }, (row) => (!hooks.matchesTabs || hooks.matchesTabs(row.record))
-        && ui.facets.every((facet) => String(hooks.customValue?.(row.record, facet.key) ?? "").toLowerCase().includes(String(facet.value).toLowerCase())));
+      }, (row) => !hooks.matchesTabs || hooks.matchesTabs(row.record));
     }
 
     function renderTable(all) {
@@ -392,9 +477,15 @@
       renderHead();
       const body = q("[data-sp-rows]");
       if (!body) return;
-      const info = pageOf(sortRows(filtered(all), ui.sort), ui.page, ui.pageSize);
+      const info = pageOf(sortRows(filtered(all), ui.sort, sortValue), ui.page, ui.pageSize);
       ui.page = info.page;
-      body.innerHTML = info.items.map((row) => rowHtml(row, { showValue, statusHtml: hooks.statusHtml, formatDate: hooks.formatDate })).join("");
+      const visible = visibleColumns();
+      const columns = visible.map((column) => column.id);
+      const labels = new Map(visible.map((column) => [column.id, column.label]));
+      // The standard columns share the width between them; added fields let
+      // every column take the room it needs.
+      body.closest("table")?.classList.toggle("has-field-columns", columns.some((id) => id.startsWith(FIELD_COLUMN)));
+      body.innerHTML = info.items.map((row) => rowHtml(row, { showValue, statusHtml: hooks.statusHtml, formatDate: hooks.formatDate, columns, fieldText, fieldLabel: (id) => labels.get(id) || "" })).join("");
       const empty = q("[data-sp-empty]");
       if (empty) empty.hidden = info.total > 0;
       const pages = q("[data-sp-pages]");
@@ -553,24 +644,10 @@
         renderFocus(lastRows);
         return;
       }
-      if (target.dataset.spTagRemove) {
-        ui.tags = ui.tags.filter((tag) => tag !== target.dataset.spTagRemove);
-        changed();
-        return;
-      }
-      if (target.dataset.spFacetRemove !== undefined) {
-        ui.facets.splice(Number(target.dataset.spFacetRemove), 1);
-        changed();
-        return;
-      }
-      if (target.matches("[data-sp-facet-add]")) {
-        const key = q("[data-sp-facet-key]")?.value;
-        const input = q("[data-sp-facet-value]");
-        if (key && input?.value.trim()) {
-          ui.facets.push({ key, value: input.value.trim() });
-          input.value = "";
-          changed();
-        }
+      if (target.matches("[data-sp-columns-reset]")) {
+        ui.columns = null;
+        save();
+        renderTable(lastRows);
         return;
       }
       if (target.matches("[data-sp-add-open]")) {
@@ -597,16 +674,11 @@
         hooks.open(card.dataset.spOpen);
         return;
       }
-      if (event.target.matches("[data-sp-tag-input]") && (event.key === "Enter" || event.key === ",")) {
+      const menu = event.target.closest("[data-sp-columns-menu]");
+      if (menu?.open && event.key === "Escape") {
         event.preventDefault();
-        const tag = event.target.value.trim().toLowerCase();
-        if (tag && !ui.tags.includes(tag)) ui.tags.push(tag);
-        event.target.value = "";
-        changed();
-      }
-      if (event.target.matches("[data-sp-facet-value]") && event.key === "Enter") {
-        event.preventDefault();
-        q("[data-sp-facet-add]")?.click();
+        menu.open = false;
+        menu.querySelector("summary")?.focus();
       }
     });
 
@@ -614,11 +686,25 @@
       if (event.target.matches("[data-sp-search]")) {
         ui.search = event.target.value;
         changed();
+      } else if (event.target.matches("[data-sp-columns-search]")) {
+        filterColumnChoices(event.target.value);
       }
+    });
+
+    // The Columns dropdown closes on a click anywhere else.
+    root.document?.addEventListener("click", (event) => {
+      const menu = q("[data-sp-columns-menu]");
+      if (menu?.open && !menu.contains(event.target)) menu.open = false;
     });
 
     page.addEventListener("change", (event) => {
       const target = event.target;
+      if (target.matches("[data-sp-column]")) {
+        ui.columns = [...page.querySelectorAll("[data-sp-column]:checked")].map((box) => box.dataset.spColumn);
+        save();
+        renderTable(lastRows);
+        return;
+      }
       if (target.matches("[data-sp-view]")) ui.view = target.value;
       else if (target.matches("[data-sp-priority]")) ui.priority = target.value;
       else if (target.matches("[data-sp-campaign]")) ui.campaign = target.value;
@@ -651,10 +737,10 @@
     // Shows one target in the table: clears the filters that hide it and
     // pages to it.
     function showRecord(id) {
-      Object.assign(ui, { search: "", view: "all", priority: "all", campaign: "all", statuses: null, tags: [], facets: [] });
+      Object.assign(ui, { search: "", view: "all", priority: "all", campaign: "all", statuses: null });
       ui.collapsed.table = false;
       const all = rows();
-      const ordered = sortRows(filtered(all), ui.sort);
+      const ordered = sortRows(filtered(all), ui.sort, sortValue);
       const index = ordered.findIndex((row) => row.id === id);
       ui.page = index >= 0 ? Math.floor(index / ui.pageSize) + 1 : 1;
       save();
@@ -689,6 +775,8 @@
     pageOf,
     focusRows,
     rowHtml,
+    defaultColumns,
+    columnPickerHtml,
     focusCardHtml,
     paginationHtml,
     create,

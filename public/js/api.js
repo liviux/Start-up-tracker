@@ -17,14 +17,15 @@
   "use strict";
 
   // Kept in step with package.json by tests/client-api.test.js.
-  const APP_VERSION = "0.4.0";
+  const APP_VERSION = "1.0.0";
   // Same rule as the server's ids: a slug plus a random suffix.
   const STARTUP_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,62}$/;
   const STORAGE_PREFIX = "startup-tracker";
   // The object store inside each startup's cache database. Keys in it:
-  // `current[:<tabId>]` (the state) and `sync[:<tabId>]` (revision and outbox).
+  // `current[:<tabId>]` (the state) and `sync:<tabId>` (revision and outbox).
+  // A new version drops what an older one cached.
   const CACHE_STORE_NAME = "state";
-  const CACHE_DB_VERSION = 1;
+  const CACHE_DB_VERSION = 2;
 
   function isStartupId(value) {
     return typeof value === "string" && STARTUP_ID_PATTERN.test(value);
@@ -66,8 +67,7 @@
     return `${STORAGE_PREFIX}:${requireStartupId(startupId)}:${name}`;
   }
 
-  // Global keys predate startups and keep their old names, so a saved theme
-  // survives the upgrade.
+  // Keys shared by every startup of this browser, such as the theme.
   function globalStorageKey(name) {
     return `${STORAGE_PREFIX}-${name}`;
   }
@@ -271,7 +271,7 @@
         const found = [];
         keysRequest.onsuccess = () => {
           (keysRequest.result || [])
-            .filter((key) => typeof key === "string" && (key === "sync" || key.startsWith("sync:")))
+            .filter((key) => typeof key === "string" && key.startsWith("sync:"))
             .forEach((key) => {
               const request = store.get(key);
               request.onsuccess = () => found.push(request.result);

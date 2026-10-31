@@ -26,7 +26,7 @@
   const MAX_TARGETS = 200;
   const DATE = /^\d{4}-\d{2}-\d{2}$/;
   // Keys outside the registry that every entry may carry.
-  const EXTRA_KEYS = Object.freeze(["section", "notes", "categories", "details", "custom"]);
+  const EXTRA_KEYS = Object.freeze(["section", "notes", "categories", "details"]);
   // Basics that are set elsewhere, never from an import.
   const IGNORED_CORE = Object.freeze(["id", "taxonomy", "repeat", "campaignId"]);
 
@@ -86,7 +86,6 @@
     };
     Fields.coreFields(section).forEach(add);
     Fields.detailGroups(section).forEach((group) => group.fields.forEach(add));
-    Fields.customFields(section).forEach(add);
     return map;
   }
 
@@ -115,7 +114,7 @@
       }
       row.section = section;
       const known = fieldsBySection(Fields, section);
-      const flat = { ...(entry.details && typeof entry.details === "object" ? entry.details : {}), ...(entry.custom && typeof entry.custom === "object" ? entry.custom : {}), ...entry };
+      const flat = { ...(entry.details && typeof entry.details === "object" ? entry.details : {}), ...entry };
       for (const [key, raw] of Object.entries(flat)) {
         if (EXTRA_KEYS.includes(key) || raw === null || raw === undefined || raw === "") continue;
         const field = known.get(key);

@@ -151,7 +151,7 @@
   box-shadow: none;
 }
 
-/* The legacy selected state uses !important, including its descendants. */
+/* The base selected state uses !important, including its descendants. */
 #calendarView .calendar-day-card.selected {
   background: var(--accent) !important;
   border-color: var(--accent) !important;
@@ -344,6 +344,19 @@
 #calendarView .calendar-detail-sections {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
+}
+
+/* A hidden section gives its share of the row to the sections that remain. */
+#calendarView .calendar-detail-sections[data-visible-sections="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#calendarView .calendar-detail-sections[data-visible-sections="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#calendarView .calendar-detail-sections[data-visible-sections="1"] {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 #calendarView .calendar-detail-section {
@@ -609,6 +622,14 @@
   #calendarView .calendar-detail-sections {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  #calendarView .calendar-detail-sections[data-visible-sections="3"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #calendarView .calendar-detail-sections[data-visible-sections="3"] > .calendar-detail-section:not([hidden]):not(:has(~ .calendar-detail-section:not([hidden]))) {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -675,7 +696,10 @@
     padding-bottom: 16px;
   }
 
-  #calendarView .calendar-detail-sections {
+  #calendarView .calendar-detail-sections,
+  #calendarView .calendar-detail-sections[data-visible-sections="1"],
+  #calendarView .calendar-detail-sections[data-visible-sections="2"],
+  #calendarView .calendar-detail-sections[data-visible-sections="3"] {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }

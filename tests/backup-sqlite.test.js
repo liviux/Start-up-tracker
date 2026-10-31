@@ -9,17 +9,10 @@ const { spawnSync } = require("node:child_process");
 const { GLOBAL_STARTUP_ID, TrackerSqliteStore, stableSerialize, verifyDatabaseFile } = require("../lib/tracker-sqlite-store");
 const { createStartup, deleteStartup, getStartup } = require("../lib/startups");
 const { MANIFEST_FILE, DATABASE_FILE, MEDIA_STORE } = require("../lib/backups/manager");
-const { writeLegacyDatabase } = require("./helpers/legacy-schema");
+const { createBackup } = require("../tools/backup-sqlite");
 const {
-  ROTATING_SNAPSHOT_PATTERN,
-  createBackup,
-  listRotatingSnapshots,
-} = require("../tools/backup-sqlite");
-const {
-  describeSnapshot,
   listBackups,
   parseRecordTarget,
-  resolveSnapshot,
   restoreRecord,
   restoreSnapshot,
   restoreStartup,
@@ -98,13 +91,6 @@ function readManifest(folder) {
   return JSON.parse(fs.readFileSync(path.join(folder, MANIFEST_FILE), "utf8"));
 }
 
-// An older flat backup file, as the tool wrote them before backup folders.
-function writeFlatSnapshot(env, name) {
-  const filePath = path.join(env.backupDir, name);
-  withStore(env.databasePath, (store) => store.createSnapshot(filePath));
-  return name;
-}
-
 test("without a label the tool takes a safety backup folder, and unchanged data is not backed up twice", () => {
   const env = makeEnv("tracker-backup-safety-");
   try {
@@ -112,7 +98,6 @@ test("without a label the tool takes a safety backup folder, and unchanged data 
     const first = createBackup({ ...env.backup, date: new Date(Date.UTC(2026, 7, 19, 12, 0, 0)) });
     assert.equal(first.kind, "safety");
     assert.equal(first.skipped, false);
-    assert.equal(first.legacy, false);
     assert.equal(first.startupCount, 1);
     assert.equal(first.folder, path.join(env.backupDir, first.id));
     assert.match(first.id, /^20260819-120000-000-safety$/);
@@ -268,7 +253,7 @@ test("a whole-database restore from a backup folder brings the media back and ke
     assert.deepEqual({ restored: result.media.restored, listed: result.media.listed }, { restored: 2, listed: 2 });
 
     assert.deepEqual(readStartupState(env.databasePath, startupId).items.map((item) => item.title), ["Good", "Also good"]);
-    assert.deepEqual(describeSnapshot(env.databasePath).startups, ["Acme"]);
+    assert.deepEqual(readStartupState(env.databasePath, GLOBAL_STARTUP_ID).startups.map((startup) => startup.name), ["Acme"]);
     assert.equal(readMedia(env.mediaDir, `${startupId}/deck.pdf`), "deck v1");
     assert.equal(readMedia(env.mediaDir, `${startupId}/logo.png`), "logo v1");
     assert.equal(readMedia(env.mediaDir, `${startupId}/added-later.txt`), "kept", "files the backup does not list stay");
@@ -286,34 +271,17 @@ test("a whole-database restore from a backup folder brings the media back and ke
   }
 });
 
-test("an older flat backup file can still be listed, verified and restored", () => {
-  const env = makeEnv("tracker-restore-flat-");
+test("the restore tool lists and verifies backup folders", () => {
+  const env = makeEnv("tracker-restore-list-");
   try {
-    const startupId = seedStartup(env.databasePath, { items: [{ id: "a", title: "Good" }] });
-    fs.mkdirSync(env.backupDir, { recursive: true });
-    const flat = writeFlatSnapshot(env, "tracker-20260101-000000-before-folders.sqlite");
-    createBackup({ ...env.backup, label: "folder" });
-
-    const listed = listBackups(env.restore);
-    assert.deepEqual(listed.map((entry) => entry.kind).sort(), ["file", "pinned"]);
-    const file = listed.find((entry) => entry.kind === "file");
-    assert.equal(file.id, flat);
-    assert.equal(file.startupCount, 1);
-    assert.equal(file.mediaFiles, null);
-    assert.equal(verifySnapshot(flat, env.restore).ok, true);
-
-    upsert(env.databasePath, startupId, "items", { id: "a", title: "WIPED" });
-    const result = restoreSnapshot(flat, env.restore);
-    assert.equal(result.kind, "file");
-    assert.equal(result.media.restored, 0);
-    assert.equal(readStartupState(env.databasePath, startupId).items[0].title, "Good");
-    assert.equal(fs.existsSync(result.replacedPath), true);
+    seedStartup(env.databasePath, { items: [{ id: "a", title: "Good" }] });
+    const backup = createBackup({ ...env.backup, label: "folder" });
+    assert.equal(verifySnapshot(backup.id, env.restore).ok, true);
 
     const run = spawnSync(process.execPath, [
       RESTORE_TOOL, "--list", "--database", env.databasePath, "--backup-dir", env.backupDir, "--media-dir", env.mediaDir,
     ], { encoding: "utf8" });
     assert.equal(run.status, 0, run.stderr);
-    assert.match(run.stdout, new RegExp(`${flat.replaceAll(".", "\\.")}\\s+file\\s+label: -`));
     assert.match(run.stdout, /-pinned-folder\s+pinned\s+label: folder .* 1 startup: Acme\s+0 media files/);
   } finally {
     env.cleanup();
@@ -343,13 +311,6 @@ test("a single record can be restored from a backup folder without rolling back 
     // The same restore, naming the startup with --startup instead.
     upsert(env.databasePath, startupId, "items", { id: "a", title: "MANGLED AGAIN" });
     restoreRecord(backup.id, "items/a", { ...env.restore, startupId });
-    assert.equal(readStartupState(env.databasePath, startupId).items.find((item) => item.id === "a").title, "Original A");
-
-    // And from an older flat file.
-    fs.mkdirSync(env.backupDir, { recursive: true });
-    const flat = writeFlatSnapshot(env, "tracker-20260101-000000-flat.sqlite");
-    upsert(env.databasePath, startupId, "items", { id: "a", title: "MANGLED ONCE MORE" });
-    restoreRecord(flat, `${startupId}/items/a`, env.restore);
     assert.equal(readStartupState(env.databasePath, startupId).items.find((item) => item.id === "a").title, "Original A");
 
     assert.throws(
@@ -562,50 +523,19 @@ test("the safety backup before a startup restore does not rotate out the backup 
   }
 });
 
-test("resolveSnapshot edge cases and error handling", () => {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "tracker-resolve-snapshot-"));
+test("a backup is named by its folder id, and nothing else is taken", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "tracker-resolve-backup-"));
   try {
     const backupDir = path.join(tempDir, "backup");
     const options = { backupDir, databasePath: path.join(tempDir, "tracker.sqlite"), mediaDir: path.join(tempDir, "media") };
     fs.mkdirSync(backupDir, { recursive: true });
 
-    for (const value of ["", null, undefined]) {
-      assert.throws(() => resolveSnapshot(backupDir, value), /Not a backup id or a tracker backup file name/);
+    for (const value of ["", null, undefined, "invalid-backup.txt", "tracker.js", "../../etc/passwd"]) {
+      assert.throws(() => verifySnapshot(value, options), /Not a backup id/, String(value));
     }
-    assert.throws(
-      () => resolveSnapshot(backupDir, "invalid-backup.txt"),
-      /Not a backup id or a tracker backup file name: invalid-backup\.txt/,
-    );
-    assert.throws(
-      () => resolveSnapshot(backupDir, "tracker.js"),
-      /Not a backup id or a tracker backup file name: tracker\.js/,
-    );
-    assert.throws(
-      () => resolveSnapshot(backupDir, "../../etc/passwd"),
-      /Not a backup id or a tracker backup file name: \.\.\/\.\.\/etc\/passwd/,
-    );
-    assert.throws(
-      () => resolveSnapshot(backupDir, "tracker-2026-01-01T00-00-00-000Z.sqlite"),
-      /Backup not found/,
-    );
-
-    // A name that matches, but is a directory instead of a regular file.
-    const dirName = "tracker-fake-dir.sqlite";
-    fs.mkdirSync(path.join(backupDir, dirName));
-    assert.throws(() => resolveSnapshot(backupDir, dirName), /Backup not found/);
-
-    const validFileName = "tracker-2026-08-19T12-00-00-000Z.sqlite";
-    const validFilePath = path.join(backupDir, validFileName);
-    fs.writeFileSync(validFilePath, "dummy content");
-    const resolved = resolveSnapshot(backupDir, validFileName);
-    assert.equal(resolved.fileName, validFileName);
-    assert.equal(resolved.filePath, validFilePath);
-
-    // Higher-level functions fail cleanly on a bad name or an unknown folder.
-    assert.throws(() => verifySnapshot("bad-name.txt", options), /Not a backup id or a tracker backup file name/);
-    assert.throws(() => restoreSnapshot("bad-name.txt", options), /Not a backup id or a tracker backup file name/);
-    assert.throws(() => restoreRecord("bad-name.txt", "acme-0000/items/a", options), /Not a backup id or a tracker backup file name/);
-    assert.throws(() => restoreStartup("bad-name.txt", "acme-0000", options), /Not a backup id or a tracker backup file name/);
+    assert.throws(() => restoreSnapshot("bad-name.txt", options), /Not a backup id: bad-name\.txt/);
+    assert.throws(() => restoreRecord("bad-name.txt", "acme-0000/items/a", options), /Not a backup id/);
+    assert.throws(() => restoreStartup("bad-name.txt", "acme-0000", options), /Not a backup id/);
     assert.throws(() => verifySnapshot("20260101-000000-000-safety", options), /Backup not found/);
     assert.throws(() => restoreSnapshot("../20260101-000000-000-safety", options), /Backup not found/);
 
@@ -616,52 +546,6 @@ test("resolveSnapshot edge cases and error handling", () => {
     assert.throws(() => restoreSnapshot("20260101-000000-000-pinned", options), /is incomplete/);
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
-  }
-});
-
-test("backing up a legacy database copies it to a flat file without upgrading it", () => {
-  const env = makeEnv("tracker-backup-legacy-");
-  try {
-    fs.mkdirSync(path.dirname(env.databasePath), { recursive: true });
-    writeLegacyDatabase(env.databasePath, {
-      items: [{ id: "a", title: "Old A" }, { id: "b", title: "Old B" }],
-      profile: { name: "Old profile" },
-    });
-    writeMedia(env.mediaDir, "old/deck.pdf", "deck");
-    const before = fs.readFileSync(env.databasePath);
-
-    const result = createBackup({ ...env.backup, limit: 5 });
-    assert.equal(result.legacy, true);
-    assert.equal(result.kind, "file");
-    assert.match(result.note, /older one-startup format/);
-    assert.match(result.note, /not upgraded/);
-    assert.equal(result.startupCount, 1);
-    assert.equal(result.recordCount, 2);
-    assert.equal(result.verified, true);
-    assert.equal(result.mediaFiles, 0);
-    assert.match(path.basename(result.outputPath), ROTATING_SNAPSHOT_PATTERN);
-    assert.equal(listRotatingSnapshots(env.backupDir).length, 1);
-
-    // Opening the source with the store would have rewritten every table.
-    assert.ok(fs.readFileSync(env.databasePath).equals(before), "the source file is byte-identical");
-    assert.deepEqual(fs.readdirSync(path.dirname(env.databasePath)), ["tracker.sqlite"]);
-    assert.deepEqual(fs.readdirSync(env.backupDir), [path.basename(result.outputPath)]);
-    const source = verifyDatabaseFile(env.databasePath);
-    assert.equal(source.legacy, true);
-    assert.equal(source.problems.length, 1);
-
-    // The copy is the same old-format database, ready for a restore.
-    const copy = verifyDatabaseFile(result.outputPath);
-    assert.equal(copy.legacy, true);
-    assert.equal(copy.problems.length, 1);
-    assert.equal(copy.recordCount, 2);
-    assert.deepEqual(describeSnapshot(result.outputPath), { legacy: true, startupCount: 1, startups: [] });
-
-    const labelled = createBackup({ ...env.backup, label: "pre-upgrade" });
-    assert.equal(labelled.label, "pre-upgrade");
-    assert.equal(labelled.rotates, false);
-  } finally {
-    env.cleanup();
   }
 });
 
@@ -692,25 +576,6 @@ test("a record restore writes only into the named startup", () => {
   }
 });
 
-test("a record restore from a legacy snapshot reads its one startup and leaves the snapshot alone", () => {
-  const env = makeEnv("tracker-restore-legacy-");
-  try {
-    fs.mkdirSync(env.backupDir);
-    const snapshotPath = path.join(env.backupDir, "tracker-20260101-000000-pre-upgrade-v3.sqlite");
-    writeLegacyDatabase(snapshotPath, { items: [{ id: "a", title: "From the old file" }] });
-    const before = fs.readFileSync(snapshotPath);
-
-    const startupId = seedStartup(env.databasePath, { items: [{ id: "a", title: "Mangled" }] });
-    restoreRecord(path.basename(snapshotPath), `${startupId}/items/a`, env.restore);
-
-    assert.equal(readStartupState(env.databasePath, startupId).items[0].title, "From the old file");
-    assert.ok(fs.readFileSync(snapshotPath).equals(before), "the snapshot is not upgraded");
-    assert.deepEqual(fs.readdirSync(env.backupDir), [path.basename(snapshotPath)]);
-  } finally {
-    env.cleanup();
-  }
-});
-
 test("--record without a startup fails and says how to name one", () => {
   assert.throws(() => parseRecordTarget("items/a"), /--record needs the startup: --record <startupId>\/<section>\/<id>/);
   assert.throws(() => parseRecordTarget("Not An Id/items/a"), /Not a startup id: Not An Id/);
@@ -724,7 +589,7 @@ test("--record without a startup fails and says how to name one", () => {
       "--database", path.join(tempDir, "tracker.sqlite"),
       "--backup-dir", tempDir,
       "--media-dir", path.join(tempDir, "media"),
-      "--snapshot", "tracker-x.sqlite",
+      "--snapshot", "20260101-000000-000-pinned",
       "--record", "items/a",
     ], { encoding: "utf8" });
     assert.equal(run.status, 1);

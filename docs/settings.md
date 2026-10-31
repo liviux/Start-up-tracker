@@ -34,8 +34,6 @@ The default is **Studio**. Ten more were built with five design skills, two them
 
 **Coda** is the closing theme: a backstage rail on the right, warm ivory paper, a serif voice and one chartreuse cue.
 
-An older saved theme id opens the new theme that carries its idea, so nobody drops back to Studio after an update.
-
 **Section colours**: Marketing, Programs, Funding and Company each have a colour, used for the sidebar dots, the stripe above each section's title, chips, search results and the calendar's counts. Pick the standard palette or the colour-blind friendly one (Okabe and Ito's hues), or set your own colour per section. For each colour the tracker works out a soft tint and a text shade that reads at 4.5:1 or better on it, in light and dark mode. A colour you pick that would read worse than that as text gets a note, and the tracker uses a darker or lighter shade for its text. **Reset colours** goes back to the standard palette. The section code (MK, PO, FU, COMP) always shows next to the colour.
 
 ## General

@@ -188,23 +188,6 @@ test("time zone names are checked", () => {
   assert.ok(Dates.isValidTimeZone(Dates.defaultTimeZone()));
 });
 
-test("backup names are read as UTC stamps", () => {
-  const unlabelled = Dates.parseBackupStamp("tracker-20261017-223000-123456789.sqlite");
-  assert.equal(unlabelled.instant.toISOString(), "2026-10-17T22:30:00.000Z");
-  assert.equal(unlabelled.label, "");
-  const labelled = Dates.parseBackupStamp("tracker-20261017-223000-before-import.sqlite");
-  assert.equal(labelled.label, "before-import");
-  assert.equal(Dates.parseBackupStamp("tracker-20261017-223000.json").instant.toISOString(), "2026-10-17T22:30:00.000Z");
-  assert.equal(Dates.parseBackupStamp("tracker-20260230-120000.sqlite"), null);
-  assert.equal(Dates.parseBackupStamp("notes.sqlite"), null);
-  // Shown in the reader's zone: 22:30 UTC is 07:30 the next morning in Tokyo.
-  const shown = Dates.formatInstant(unlabelled.instant, "en", "Asia/Tokyo", {
-    day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
-  });
-  assert.match(shown, /Oct 18, 2026/);
-  assert.match(shown, /07:30/);
-});
-
 test("dates follow the chosen format (Settings > General)", () => {
   assert.deepEqual([...Dates.DATE_FORMATS], ["system", "d MMM yyyy", "MMM d, yyyy", "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "dd.MM.yyyy"]);
   // The server accepts the same formats and week starts.

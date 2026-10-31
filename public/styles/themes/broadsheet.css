@@ -1120,6 +1120,18 @@ html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections {
   gap: 0;
 }
 
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections[data-visible-sections="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections[data-visible-sections="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections[data-visible-sections="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section {
   min-width: 0;
   gap: 4px;
@@ -1748,6 +1760,14 @@ html[data-taste="broadsheet"] .settings-nav button[aria-selected="true"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections[data-visible-sections="3"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections[data-visible-sections="3"] > .calendar-detail-section:not([hidden]):not(:has(~ .calendar-detail-section:not([hidden]))) {
+    grid-column: 1 / -1;
+  }
+
   html:root[data-taste="broadsheet"] #calendarView .calendar-detail-section {
     padding: 0 16px 14px;
     border-top: 1px solid var(--border);
@@ -1939,7 +1959,10 @@ html[data-taste="broadsheet"] .settings-nav button[aria-selected="true"] {
     align-items: flex-start;
   }
 
-  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections {
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections,
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections[data-visible-sections="1"],
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections[data-visible-sections="2"],
+  html:root[data-taste="broadsheet"] #calendarView .calendar-detail-sections[data-visible-sections="3"] {
     grid-template-columns: minmax(0, 1fr);
   }
 

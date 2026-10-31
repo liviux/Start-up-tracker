@@ -65,12 +65,12 @@ test("counts per status and per group", () => {
   assert.deepEqual(model.countByGroup(records), { planned: 2, in_progress: 1, done: 0, closed: 0, unmapped: 1 });
 });
 
-test("priorities have stable ids and read old labels", () => {
-  assert.equal(model.normalizePriority("Very High"), "very_high");
-  assert.equal(model.normalizePriority("high"), "high");
-  assert.equal(model.normalizePriority(""), "medium");
+test("priorities are the values targets store, written any case", () => {
+  assert.equal(model.normalizePriority("Very High"), "Very High");
+  assert.equal(model.normalizePriority("very high"), "Very High");
+  assert.equal(model.normalizePriority(""), "Medium");
   assert.equal(model.normalizePriority("Urgent!"), "Urgent!", "unknown values are kept");
   assert.equal(model.priorityLabel("Very Low"), "Very low");
-  assert.ok(model.priorityRank("very_high") < model.priorityRank("low"));
-  assert.match(model.priorityOptionsHtml("High"), /<option value="high" selected>High<\/option>/);
+  assert.ok(model.priorityRank("Very High") < model.priorityRank("Low"));
+  assert.match(model.priorityOptionsHtml("High"), /<option value="High" selected>High<\/option>/);
 });

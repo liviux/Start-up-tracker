@@ -24,7 +24,7 @@ The same fields everywhere: name, organization, link, categories, status (New), 
 
 ## Targets
 
-A read-only table with the same columns in every section: priority, name and organization, category (the primary one, with "+N" when there are more), status, next action, campaign and tags. Programs add the cash on offer and Funding the ask. Click a row, or its name, to open the target; a link in the row opens that link instead. Column headers sort.
+A read-only table with the same standard columns in every section: priority, name and organization, category (the primary one, with "+N" when there are more), status, next action, campaign and tags. Programs add the cash on offer and Funding the ask; the Columns menu adds any other field. Click a row, or its name, to open the target; a link in the row opens that link instead. Column headers sort.
 
 ![The Programs & Opportunities targets table, with category tabs, filters and the cash on offer](assets/screenshot-programs.png)
 
@@ -32,11 +32,13 @@ A read-only table with the same columns in every section: priority, name and org
 
 Filters:
 
-- the category tabs above the table, and a search box that reads names, organizations, links, notes, next actions, owners, tags, links to other records and your own fields;
+- the category tabs above the table, and a search box that reads names, organizations, links, notes, next actions, owners, tags, links to other records and each target's custom fields;
 - saved views: All targets, Overdue, Due this week, Due this month, Waiting for an answer, No next action, High and very high, No campaign;
-- priority, campaign, status (the same status filter as the Focus queue), tags and your own fields (Extra > Fields);
+- priority, campaign and status (the same status filter as the Focus queue);
 - rows per page, which starts at the size set in Settings > General until you pick one here.
+
+**Columns** opens a list of every field the section has, grouped like the target window's Details, with a search box: tick a field to add it as a column, untick one to hide it. The standard columns are ticked to start with, and **Back to the standard columns** returns to them. Every column sorts; empty values go last. An added field shows up to three lines (point at it for the rest), and the table scrolls sideways when the columns no longer fit. On a narrow screen, where each target is a card, an added field is a labelled line on the card.
 
 Funding keeps its **Funding rounds** below the targets.
 
-The filters each page shows are remembered in this browser, per startup.
+The filters and columns each page shows are remembered in this browser, per startup.

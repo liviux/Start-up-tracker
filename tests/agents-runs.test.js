@@ -322,7 +322,7 @@ test("the run token reaches the tracker tools of its own run only; agents change
     const withPromptToken = await fetch(`${url}api/s/${one.id}/agent-tools/get_startup_context`, { method: "POST", headers: { Authorization: `Bearer ${prompt.token}`, "Content-Type": "application/json" }, body: "{}" });
     assert.equal(withPromptToken.status, 403, "a copied prompt's token cannot either");
 
-    const harnessWrite = await json(await sendJson(`${url}api/global/operations`, "PATCH", { protocolVersion: 2, operations: [{ type: "upsert", section: "agentHarnesses", id: "x", value: { id: "x", kind: "custom", command: "rm" } }] }));
+    const harnessWrite = await json(await sendJson(`${url}api/global/operations`, "PATCH", { protocolVersion: 3, operations: [{ type: "upsert", section: "agentHarnesses", id: "x", value: { id: "x", kind: "custom", command: "rm" } }] }));
     assert.equal(harnessWrite.status, 400);
     assert.equal(harnessWrite.code, "agentHarnessesSection");
 

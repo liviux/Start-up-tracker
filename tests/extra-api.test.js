@@ -39,7 +39,7 @@ test("option lists, tags across startups and campaign targets", async () => {
 
     // Tags and a shared campaign used in both startups.
     assert.equal((await sendJson(`${url}api/global/operations`, "PATCH", { operations: [upsert("campaigns", { id: "c1", name: "Spring", tags: ["launch"] }), upsert("tags", { id: "launch", label: "launch", description: "Day one." })] })).status, 200);
-    await save(url, one.id, [upsert("items", { id: "t1", platform: "Forum post", tags: ["launch"], campaignId: "c1" })]);
+    await save(url, one.id, [upsert("items", { id: "t1", name: "Forum post", tags: ["launch"], campaignId: "c1" })]);
     await save(url, two.id, [upsert("programs", { id: "p1", name: "Accelerator", tags: ["launch", "paid"], campaignId: "c1", status: "planned" })]);
 
     const targets = await (await browserFetch(`${url}api/all/campaign-targets?campaign=c1`)).json();

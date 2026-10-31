@@ -1443,6 +1443,14 @@ html:root[data-taste="coda"] #calendarView .calendar-detail-sections {
   gap: 16px;
 }
 
+html:root[data-taste="coda"] #calendarView .calendar-detail-sections[data-visible-sections="3"] > .calendar-detail-section:not([hidden]):not(:has(~ .calendar-detail-section:not([hidden]))) {
+  grid-column: 1 / -1;
+}
+
+html:root[data-taste="coda"] #calendarView .calendar-detail-sections[data-visible-sections="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 html:root[data-taste="coda"] #calendarView .calendar-detail-section {
   gap: 8px;
   padding: 12px 13px 11px;

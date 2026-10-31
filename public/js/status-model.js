@@ -18,24 +18,15 @@
   const OPEN_GROUPS = new Set(["planned", "in_progress"]);
 
   let config = { defaultStatus: "new", groups: [], statuses: [], waitingStatuses: [], campaignStatuses: [] };
-  let priorities = { defaultPriority: "medium", priorities: [] };
+  let priorities = { defaultPriority: "Medium", priorities: [] };
   let byId = new Map();
-  let legacyPriority = new Map();
 
   function setConfig(statusConfig, priorityConfig) {
     if (statusConfig && Array.isArray(statusConfig.statuses)) {
       config = statusConfig;
       byId = new Map(config.statuses.map((status) => [status.id, status]));
     }
-    if (priorityConfig && Array.isArray(priorityConfig.priorities)) {
-      priorities = priorityConfig;
-      legacyPriority = new Map();
-      for (const priority of priorities.priorities) {
-        legacyPriority.set(priority.id, priority.id);
-        legacyPriority.set(String(priority.label).toLowerCase(), priority.id);
-        for (const legacy of priority.legacy || []) legacyPriority.set(String(legacy).toLowerCase(), priority.id);
-      }
-    }
+    if (priorityConfig && Array.isArray(priorityConfig.priorities)) priorities = priorityConfig;
   }
 
   // The server's list, or the shipped one when the server cannot answer
@@ -218,15 +209,17 @@
     return counts;
   }
 
-  // Priorities: a fixed list with stable ids. Values saved before ids existed
-  // ("Very High") are read as their id.
+  // Priorities: a fixed list; a target stores the id ("Very High"). A value
+  // written another way ("very high") is read as the id it names; an unknown
+  // one is kept as it is.
   function priorityList() {
     return priorities.priorities;
   }
 
   function normalizePriority(value) {
     if (value === undefined || value === null || value === "") return priorities.defaultPriority;
-    return legacyPriority.get(String(value).toLowerCase()) || String(value);
+    const text = String(value);
+    return priorities.priorities.find((priority) => priority.id.toLowerCase() === text.toLowerCase())?.id || text;
   }
 
   function priorityLabel(id) {

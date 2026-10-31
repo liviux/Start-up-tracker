@@ -13,8 +13,8 @@ function setup() {
   const store = new TrackerSqliteStore(":memory:");
   const one = createStartup(store, { name: "One" }, { origin: "tool" }).id;
   const two = createStartup(store, { name: "Two" }, { origin: "tool" }).id;
-  store.replaceState(one, { items: [{ id: "t1", platform: "Spring post", date: "2026-10-20", status: "scheduled", campaignId: "c1" }] }, { origin: "tool" });
-  store.replaceState(two, { funding: [{ id: "f1", opportunity: "Spring seed", nextActionDate: "2026-10-21", status: "planned", campaignId: "c1" }] }, { origin: "tool" });
+  store.replaceState(one, { items: [{ id: "t1", name: "Spring post", nextActionDate: "2026-10-20", status: "scheduled", campaignId: "c1" }] }, { origin: "tool" });
+  store.replaceState(two, { funding: [{ id: "f1", name: "Spring seed", nextActionDate: "2026-10-21", status: "planned", campaignId: "c1" }] }, { origin: "tool" });
   store.replaceSection(GLOBAL_STARTUP_ID, "campaigns", [{ id: "c1", name: "Spring launch", status: "active", startDate: "2026-10-20", endDate: "2026-11-20" }], { origin: "tool" });
   return { store, one, two };
 }

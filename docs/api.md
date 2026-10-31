@@ -28,7 +28,7 @@ Everything below lives under `/api/s/:startupId`. An unknown or archived id answ
 | Route | What it does |
 |---|---|
 | `GET …/state` | The startup's whole state with `revision` and `revisionMap`. Sends `ETag: W/"rev-<revision>"`; `If-None-Match` gets a 304 while nothing changed. `state` is `null` for a startup with no data yet. |
-| `PATCH …/state/operations` | Writes. Body: `protocolVersion: 2`, `operations`, optional `mutationId`, `origin`, `label`, `updatedAt`. Every operation except `replaceSection` carries the `baseRevision` of the record it changes; `replaceSection` and `reorder` carry it too, except for the `updatedAt` section. A record that moved since its `baseRevision` answers 409 `recordConflict` with the `conflicts`. Send `knownRevision`, the startup revision the page last loaded: after a restore or import replaced the startup, a write from before it answers 409 `restored` and changes nothing. |
+| `PATCH …/state/operations` | Writes. Body: `protocolVersion: 3`, `operations`, optional `mutationId`, `origin`, `label`, `updatedAt`. Every operation except `replaceSection` carries the `baseRevision` of the record it changes; `replaceSection` and `reorder` carry it too, except for the `updatedAt` section. A record that moved since its `baseRevision` answers 409 `recordConflict` with the `conflicts`. Send `knownRevision`, the startup revision the page last loaded: after a restore or import replaced the startup, a write from before it answers 409 `restored` and changes nothing. |
 | `GET …/state/changes?since=<revision>` | Records changed after a revision, or `complete: false` when the gap is too old and the state must be loaded again. |
 | `GET …/state/history?section=&id=&limit=&offset=` | One record's timeline, merged across the record's section and its recycle-bin section. Sends no ETag. |
 | `GET …/state/records/:section/:id` | One record with its `recordRevision`. |
@@ -94,7 +94,7 @@ See [AI agents](agents.md) for what these do.
 
 ## Option lists
 
-The lists people edit in Extra: `mediaTypes`, `feedbackTypes` (each with a `block`: `person`, `journey`, `assumption` or empty), `feedbackSources`, `feedbackStages`, `feedbackAreas`, `feedbackEvidence`, `feedbackRelationships`, `feedbackJourneySteps`, `feedbackVerdicts`, `researchGroups` (each with a `linkType` for its icon) and `documentChecklist`. The shipped lists are in `content/options.json` (the documents checklist in `content/fields/po.json`); an edited list is kept whole in the global `optionLists` section.
+The lists people edit in Extra: `mediaTypes`, `feedbackTypes` (each with a `block`: `person`, `journey`, `assumption` or empty), `feedbackSources`, `feedbackStages`, `feedbackAreas`, `feedbackEvidence`, `feedbackRelationships`, `feedbackJourneySteps`, `feedbackVerdicts` and `researchGroups` (each with a `linkType` for its icon). The shipped lists are in `content/options.json`; an edited list is kept whole in the global `optionLists` section.
 
 | Route | What it does |
 |---|---|
@@ -156,10 +156,17 @@ The target window draws its fields from `content/fields/*.json` (see [The target
 
 | Route | What it does |
 |---|---|
-| `GET /api/fields` | `{ registry: { common, mk, po, fu }, custom: [...] }`: the shipped field registry and the custom fields. |
-| `PUT /api/fields/custom` | Body: `{ fields: [{ section, label, key?, type, description, example, group, options }] }`. Replaces the custom field list after checking every definition; a key that clashes with a built-in field or another custom field answers 400 `keyTaken`. Custom fields are global; each target keeps its values under `custom`. |
+| `GET /api/fields` | `{ registry: { common, mk, po, fu } }`: the shipped field registry. |
 
-On a target, core fields are flat, the section's fields are under `details` and custom fields under `custom`. Keys no field claims are kept as they are.
+Every target, in every section, keeps the same keys:
+
+- the basics flat: `id`, `name`, `organization`, `link`, `taxonomy` (category ids, the primary first), `status`, `priority`, `nextActionDate`, `nextActionTime`, `nextAction`, `deadline`, `owner`, `campaignId`, `tags`, `repeatInterval`, `repeatUnit`, `notes` (Markdown), and `roundId` in Funding;
+- the section's fields under `details`, by their keys in the registry (an amount as `{ amount, currency }`);
+- `customFields`: the target's own `[{ label, value }]`, both text;
+- `timeline`: dated entries `{ id, date, time, type, title, outcome, nextAction, nextActionDate, statusAfter, sourceUrl, notes }`, where `type` is `key-date` for a date ahead (it shows on the calendar) or what happened (`research`, `sent`, `follow-up`, `reply`, `meeting`, `published`, `decision`, `other`);
+- in Funding, `commitments` and `payments`, whose `state` and `status` take the option values of the registry.
+
+Keys no field claims are kept as they are.
 
 ## Links
 
@@ -222,7 +229,7 @@ The Company records live in the startup's own sections: `companyProfile` (one ob
 | `GET /api/s/:id/export?format=zip` | One startup as a zip: JSON per section, its media files and a manifest. `format=json` leaves the media out. Sensitive company values are left out unless `includeSensitive=1`. |
 | `GET /api/export?format=zip&startups=<id>,<id>` | Several startups (all open ones when `startups` is left out). `format=sqlite` downloads a verified copy of the whole database instead. |
 | `POST /api/import` | The file as the request body (`application/zip`, `application/json` or `application/octet-stream`, up to 512 MB). Nothing changes yet: the answer is `{ token, kind, preview }`. `kind` is `export` (with record counts per startup and section, and `unmappedStatuses`: the status values in each startup's records that this tracker's list does not know, as `{ id, count }`; the import keeps them unchanged) or `database` (a `.sqlite` backup, with its startup count). |
-| `POST /api/import/:token/apply` | Body: `{ mode: "new" }` adds every startup in the export as a new startup, `{ mode: "replace", startupId }` replaces that startup with the export's only one, `{ mode: "database" }` restores a `.sqlite` file over the whole database. A safety backup comes first. A database from an older version is upgraded on a copy, never in place. Tokens expire after 15 minutes. |
+| `POST /api/import/:token/apply` | Body: `{ mode: "new" }` adds every startup in the export as a new startup, `{ mode: "replace", startupId }` replaces that startup with the export's only one, `{ mode: "database" }` restores a `.sqlite` file over the whole database. A safety backup comes first. Tokens expire after 15 minutes. |
 
 Zip entries with `..`, absolute paths or symbolic links are refused, as are archives with more than 20,000 entries or more than 2 GB of content. The `secrets/` folder is never exported.
 
@@ -251,7 +258,7 @@ The setup's progress is kept in the global `setupState` section.
 
 - `/s/<startupId>/` is the page for one startup. `?open=<type>:<id>` opens that record after the page loads. An unknown or archived id redirects to `/`.
 - `/` redirects to the startup opened last. With no startups it shows the page that creates the first one.
-- `/media/<startupId>/<file>` serves an upload. A link from before startups existed, `/media/<file>`, redirects to the startup folder that holds the file.
+- `/media/<startupId>/<file>` serves an upload.
 - `POST /api/s/<startupId>/media/copy` with `{ mediaId, to }` copies a media item, and its file when it is an upload, to another open startup: `{ media, to }`. The copy gets a new id and `copiedFrom: { startupId, id }`; its links stay behind.
 - `GET /api/health` answers `{ ok, filePath, mediaDir, version, revision, startupCount }`.
 - `GET /api/changelog` answers the text of `CHANGELOG.md` as `text/markdown`, uncached. The version at the bottom of the sidebar reads it.

@@ -148,16 +148,3 @@ test("shipped presets only name nodes that exist in the library", () => {
     for (const id of preset.scope?.taxonomy || []) assert.ok(ids.has(id), `${preset.id} names ${id}`);
   }
 });
-
-test("the old-to-new category map points at library nodes of the right section", () => {
-  const { MAPS, mapCategory } = require("../lib/migrations/taxonomy-map");
-  const shipped = loadLibrary();
-  for (const [section, map] of Object.entries(MAPS)) {
-    const ids = new Set(shipped[section].nodes.map((entry) => entry.id));
-    for (const [oldId, targets] of Object.entries(map)) {
-      assert.ok(targets.length, `${section}/${oldId} has a home`);
-      for (const target of targets) assert.ok(ids.has(target), `${section}/${oldId} -> ${target}`);
-    }
-  }
-  assert.deepEqual(mapCategory("mk", "nothing-like-it"), [], "unknown values stay unmapped");
-});

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "defaultPriority": "medium",
+  "defaultPriority": "Medium",
   "priorities": [
-    { "id": "very_high", "label": "Very high", "legacy": ["Very High"] },
-    { "id": "high", "label": "High", "legacy": ["High"] },
-    { "id": "medium", "label": "Medium", "legacy": ["Medium"] },
-    { "id": "low", "label": "Low", "legacy": ["Low"] },
-    { "id": "very_low", "label": "Very low", "legacy": ["Very Low"] }
+    { "id": "Very High", "label": "Very high" },
+    { "id": "High", "label": "High" },
+    { "id": "Medium", "label": "Medium" },
+    { "id": "Low", "label": "Low" },
+    { "id": "Very Low", "label": "Very low" }
   ]
 }

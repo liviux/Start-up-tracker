@@ -88,6 +88,15 @@
   --section-border: var(--section-comp-border);
 }
 
+/* Campaigns are not a section and have no colour of their own; where they
+   sit next to the sections (the calendar's columns), they take the accent. */
+[data-section="campaign"] {
+  --section: var(--accent);
+  --section-bg: var(--accent-soft);
+  --section-fg: var(--text);
+  --section-border: var(--accent);
+}
+
 /* A chip with the section code, for search results, the calendar and lists. */
 .section-chip {
   display: inline-flex;
