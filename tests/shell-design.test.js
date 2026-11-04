@@ -12,7 +12,7 @@ const shellStyles = fs.readFileSync(path.join(root, "styles/shell.css"), "utf8")
 const api = require("../public/js/api.js");
 const ids = [...markup.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
 
-test("shell navigation preserves all seven views and readable button names", () => {
+test("shell navigation preserves all six views and readable button names", () => {
   const nav = markup.match(/<nav\b[^>]*id="appTabs"[^>]*>([\s\S]*?)<\/nav>/);
   assert.ok(nav, "the existing delegated navigation root must remain");
   const buttons = [...nav[1].matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)];
@@ -23,7 +23,6 @@ test("shell navigation preserves all seven views and readable button names", () 
     funding: "Funding",
     company: "Company",
     extra: "Extra",
-    agents: "Agents",
   };
   assert.equal(buttons.length, Object.keys(names).length);
   const seen = new Set();
@@ -294,7 +293,7 @@ test("shell fonts and decorative navigation icons are bundled locally", () => {
   assert.ok(preload);
   assert.ok(fontPaths.some((fontPath) => path.resolve(root, "styles", fontPath) === path.join(root, preload[1])));
   const icons = [...markup.matchAll(/<img\b[^>]*src="(\/assets\/icons\/[^"\n]+)"[^>]*>/g)];
-  assert.equal(icons.length, 7);
+  assert.equal(icons.length, 6);
   for (const [tag, iconPath] of icons) {
     assert.match(tag, /alt=""/);
     assert.match(tag, /aria-hidden="true"/);

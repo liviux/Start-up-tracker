@@ -15,7 +15,7 @@ Startup Tracker keeps track of a startup's marketing (MK), programs and opportun
 | | |
 |---|---|
 | ![The calendar with dated work across every section](assets/screenshot-calendar.png) | ![The company setup steps with their official sources](assets/screenshot-company.png) |
-| ![A prompt filled with the startup's profile, ready to copy or run](assets/screenshot-prompts.png) | ![An agent run and the target it saved](assets/screenshot-agents.png) |
+| ![The preset library and a prompt filled with the startup's profile](assets/screenshot-prompts.png) | ![An agent run: the list, the conversation and the target it saved](assets/screenshot-agents.png) |
 
 ## Your data stays on your computer
 

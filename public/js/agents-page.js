@@ -1,6 +1,6 @@
-// Agent runs (window.StartupTrackerAgentsPage): the "Agents" page in the
-// sidebar, the run view, the "Run with..." dialog of the Prompts page and the
-// overlay a new run opens in.
+// Agent runs (window.StartupTrackerAgentsPage): the runs list and run view in
+// the Prompts page's Runs tab, the "Run with..." dialog, and a standalone run
+// view helper. The runs themselves live on the server (lib/agents/runs.js).
 //
 // A run's updates arrive as Server-Sent Events from
 // /api/agent-runs/<runId>/events, each with a sequence number. The view keeps
@@ -33,6 +33,13 @@
 
   function isActive(status) {
     return ACTIVE.includes(status);
+  }
+
+  // The Runs tab on the Prompts page can narrow the list to the runs started
+  // with the selected preset. A run without a preset id belongs to no preset.
+  function runsForPreset(runs, presetId) {
+    const list = Array.isArray(runs) ? runs : [];
+    return presetId ? list.filter((run) => (run.presetId || "") === presetId) : list;
   }
 
   function emptyConversation() {
@@ -200,7 +207,7 @@
     }
   }
 
-  const pure = { ACTIVE, STATUSES, TABS, EVENT_TYPES, escapeHtml, isActive, emptyConversation, applyEvent, conversation, duration, routingParts, effortChoices, modelChoices, dialogChecks, logLine };
+  const pure = { ACTIVE, STATUSES, TABS, EVENT_TYPES, escapeHtml, isActive, runsForPreset, emptyConversation, applyEvent, conversation, duration, routingParts, effortChoices, modelChoices, dialogChecks, logLine };
 
   if (!root.document) return Object.freeze(pure);
 
@@ -503,19 +510,27 @@
   }
 
   // The Agents page: runs of this startup (or of all startups), one open.
-  // hooks: as createRunView, plus startupId, onCounts(counts).
+  // hooks: as createRunView, plus startupId, onCounts(counts), and optionally
+  // presetId (show one preset's runs) with emptyTitle/emptyHint for a page
+  // that shows one prompt's runs only (the Prompts page's Runs tab).
   function create(container, hooks) {
     const t = hooks.t;
     const page = { runs: [], counts: { running: 0, waiting: 0 }, all: false, message: "", loaded: false, timer: 0 };
     let runView = null;
 
+    function visibleRuns() {
+      if (hooks.presetId) return runsForPreset(page.runs, hooks.presetId);
+      return typeof hooks.filterRuns === "function" ? page.runs.filter(hooks.filterRuns) : page.runs;
+    }
+
     function listHtml() {
       if (!page.loaded) return `<p class="settings-hint">${escapeHtml(t("agents.loading"))}</p>`;
-      if (!page.runs.length) return `<div class="empty-state compact"><h3>${escapeHtml(t("agents.emptyTitle"))}</h3><p>${escapeHtml(t("agents.emptyHint"))}</p></div>`;
+      const runs = visibleRuns();
+      if (!runs.length) return `<div class="empty-state compact"><h3>${escapeHtml(hooks.emptyTitle || t("agents.emptyTitle"))}</h3><p>${escapeHtml(hooks.emptyHint || t("agents.emptyHint"))}</p></div>`;
       return `
         <table class="agent-runs-table">
           <thead><tr><th scope="col">${escapeHtml(t("agents.columns.run"))}</th><th scope="col">${escapeHtml(t("agents.columns.agent"))}</th><th scope="col">${escapeHtml(t("agents.columns.status"))}</th><th scope="col">${escapeHtml(t("agents.columns.started"))}</th><th scope="col">${escapeHtml(t("agents.columns.duration"))}</th></tr></thead>
-          <tbody>${page.runs.map((run) => `
+          <tbody>${runs.map((run) => `
             <tr class="${runView?.runId === run.id ? "is-open" : ""}">
               <td><button type="button" class="text-button" data-open-run="${escapeHtml(run.id)}">${escapeHtml(run.title || t("agents.run.untitled"))}</button>${page.all ? ` <span class="settings-hint">${escapeHtml(run.startupId)}</span>` : ""}</td>
               <td>${escapeHtml(run.harness?.name || "")}${run.model ? `<br><span class="settings-hint">${escapeHtml(run.model)}</span>` : ""}</td>
@@ -550,7 +565,7 @@
       drawList();
       const holder = container.querySelector(".agents-run-holder");
       const openId = runView?.runId;
-      runView = createRunView(holder, { ...hooks, onClose: () => drawList(), onChange: () => load({ quiet: true }) });
+      runView = createRunView(holder, { ...hooks, onClose: hooks.standalone ? null : () => drawList(), onChange: () => load({ quiet: true }) });
       if (openId) runView.open(openId);
     }
 
@@ -571,8 +586,12 @@
     container.addEventListener("click", async (event) => {
       const open = event.target.closest("[data-open-run]");
       if (open) {
-        runView?.open(open.dataset.openRun);
+        const opening = runView?.open(open.dataset.openRun);
         drawList();
+        Promise.resolve(opening).then(() => {
+          const behavior = root.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+          container.querySelector(".agents-run-holder")?.scrollIntoView?.({ block: "nearest", behavior });
+        });
         return;
       }
       const action = event.target.closest("[data-agents-action]")?.dataset.agentsAction;
@@ -608,28 +627,6 @@
       },
       load,
     };
-  }
-
-  // The overlay a run opens in from the Prompts page.
-  function openOverlay(runId, hooks) {
-    let dialog = root.document.querySelector("#agentRunOverlay");
-    if (!dialog) {
-      dialog = root.document.createElement("dialog");
-      dialog.id = "agentRunOverlay";
-      dialog.className = "agent-run-overlay";
-      dialog.setAttribute("aria-label", hooks.t("agents.overlayLabel"));
-      dialog.innerHTML = "<div class=\"agent-run-overlay-body\"></div>";
-      root.document.body.appendChild(dialog);
-    }
-    const holder = dialog.querySelector(".agent-run-overlay-body");
-    if (dialog.runView) dialog.runView.close();
-    const fresh = holder.cloneNode(false);
-    holder.replaceWith(fresh);
-    dialog.runView = createRunView(fresh, { ...hooks, onClose: () => dialog.close() });
-    dialog.addEventListener("close", () => dialog.runView?.close(), { once: true });
-    if (!dialog.open) dialog.showModal();
-    dialog.runView.open(runId);
-    return dialog.runView;
   }
 
   // "Run with...": startup, agent, model and the prompt as it will be sent.
@@ -787,5 +784,5 @@
     };
   }
 
-  return Object.freeze({ ...pure, createRunView, create, openOverlay, openRunDialog, watchCounts });
+  return Object.freeze({ ...pure, createRunView, create, openRunDialog, watchCounts });
 });

@@ -124,21 +124,6 @@
 .agent-registry-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .agent-permissions li { display: grid; gap: 2px; }
 
-.agent-run-overlay {
-  width: min(980px, calc(100vw - 32px));
-  max-width: none;
-  max-height: calc(100vh - 48px);
-  padding: 0;
-  border: 1px solid var(--border-strong);
-  border-radius: 16px;
-  /* Several themes use see-through surfaces; the overlay stays opaque. */
-  background-color: var(--bg);
-  background-image: linear-gradient(var(--surface), var(--surface));
-  color: var(--text);
-}
-.agent-run-overlay::backdrop { background: rgb(10 20 15 / 45%); }
-.agent-run-overlay .agent-run { border: 0; }
-
 .agent-run-dialog {
   width: min(720px, calc(100vw - 32px));
   max-width: none;

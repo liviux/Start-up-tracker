@@ -322,8 +322,6 @@
     const t = hooks.t;
     let shipped = null;
     let loadError = "";
-    let picker = null;
-    let pickerSection = "";
     const saved = hooks.loadUi?.() || {};
     const ui = {
       presetId: saved.presetId || "",
@@ -335,14 +333,19 @@
       fills: saved.fills && typeof saved.fills === "object" ? saved.fills : {},
       mode: saved.mode === "chat" ? "chat" : "agent",
       view: "preview",
+      runsScope: saved.runsScope === "all" ? "all" : "preset",
+      presetQuery: "",
+      openGroups: saved.openGroups && typeof saved.openGroups === "object" ? saved.openGroups : {},
+      openRunId: "",
       showAll: false,
+      presetDirty: Boolean(saved.presetDirty),
       draft: null,
       message: "",
       importRows: null,
       importText: "",
     };
 
-    const remember = () => hooks.saveUi?.({ presetId: ui.presetId, promptId: ui.promptId, section: ui.section, picks: ui.picks, selections: ui.selections, extra: ui.extra, fills: ui.fills, mode: ui.mode });
+    const remember = () => hooks.saveUi?.({ presetId: ui.presetId, promptId: ui.promptId, section: ui.section, picks: ui.picks, selections: ui.selections, extra: ui.extra, fills: ui.fills, mode: ui.mode, runsScope: ui.runsScope, openGroups: ui.openGroups, presetDirty: ui.presetDirty });
 
     function lib() {
       return library({ shipped: shipped || {}, stored: hooks.shared() });
@@ -379,146 +382,300 @@
       ui.extra = {};
       ui.draft = null;
       ui.view = "preview";
+      ui.presetQuery = "";
+      ui.presetDirty = false;
+      ui.message = "";
       remember();
       draw();
     }
 
     // ---- drawing ----
 
-    function presetBar(all) {
-      const visible = all.presets.filter((preset) => ui.showAll || presetVisible(preset, (id) => hooks.Taxonomy.isEnabled(id)));
-      const hidden = all.presets.length - visible.length;
+    function presetMatches(preset, query) {
+      if (!query) return true;
+      return [preset.name, preset.code, preset.description, preset.whenToUse]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(query);
+    }
+
+    function visiblePresets(all) {
+      const query = ui.presetQuery.trim().toLowerCase();
+      return all.presets.filter((preset) => (ui.showAll || presetVisible(preset, (id) => hooks.Taxonomy.isEnabled(id))) && presetMatches(preset, query));
+    }
+
+    function hiddenPresetCount(all) {
+      return all.presets.filter((preset) => !presetVisible(preset, (id) => hooks.Taxonomy.isEnabled(id))).length;
+    }
+
+    function libraryGroups(all) {
+      const visible = new Set(visiblePresets(all).map((preset) => preset.id));
       const groups = PRESET_GROUPS.map((group) => {
-        const list = visible.filter((preset) => (preset.section || "general") === group);
+        const list = all.presets.filter((preset) => (preset.section || "general") === group && visible.has(preset.id));
         if (!list.length) return "";
         return `
-          <div class="prompt-preset-group" data-section="${group}">
-            <h4><span class="section-dot" aria-hidden="true"></span>${escapeHtml(t(`prompts.groups.${group}`))}</h4>
-            <div class="prompt-preset-list">
+          <div class="prompt-library-group" data-section="${group}">
+            <h4><span class="prompt-library-dot" aria-hidden="true"></span>${escapeHtml(t(`prompts.groups.${group}`))}<span class="prompt-library-group-count">${list.length}</span></h4>
+            <div class="prompt-library-list">
               ${list.map((preset) => `
-                <button type="button" class="prompt-preset${preset.id === ui.presetId ? " is-active" : ""}" data-preset="${escapeHtml(preset.id)}" aria-pressed="${preset.id === ui.presetId}" title="${escapeHtml([preset.description, preset.whenToUse ? `${t("prompts.whenToUse")}: ${preset.whenToUse}` : ""].filter(Boolean).join("\n"))}">
-                  ${preset.code ? `<span class="prompt-preset-code">${escapeHtml(preset.code)}</span>` : ""}
-                  <span class="prompt-preset-name">${escapeHtml(preset.name)}</span>
-                  ${preset.builtIn ? "" : `<span class="prompt-preset-own">${escapeHtml(t("prompts.yours"))}</span>`}
+                <button type="button" class="prompt-library-item${preset.id === ui.presetId ? " is-active" : ""}" data-preset="${escapeHtml(preset.id)}" aria-pressed="${preset.id === ui.presetId}" title="${escapeHtml([preset.name, preset.description, preset.whenToUse ? `${t("prompts.whenToUse")}: ${preset.whenToUse}` : ""].filter(Boolean).join("\n"))}">
+                  ${preset.code ? `<span class="prompt-code">${escapeHtml(preset.code)}</span>` : ""}
+                  <span class="prompt-library-name">${escapeHtml(preset.name)}</span>
+                  ${preset.builtIn ? "" : `<span class="prompt-library-own">${escapeHtml(t("prompts.yours"))}</span>`}
                 </button>`).join("")}
             </div>
           </div>`;
       }).join("");
-      const active = all.presets.find((preset) => preset.id === ui.presetId);
+      const query = ui.presetQuery.trim();
+      return groups || `<p class="prompt-library-empty">${escapeHtml(query ? t("prompts.noSearchResults", { query }) : t("prompts.noPresets"))}</p>`;
+    }
+
+    function libraryRail(all) {
+      const count = visiblePresets(all).length;
+      const hidden = hiddenPresetCount(all);
       return `
-        <section class="prompt-presets" aria-label="${escapeHtml(t("prompts.presets"))}">
-          <div class="prompt-preset-groups">${groups || `<p class="settings-hint">${escapeHtml(t("prompts.noPresets"))}</p>`}</div>
-          <div class="prompt-preset-footer">
-            ${active ? `<p class="prompt-preset-about"><strong>${escapeHtml(active.name)}.</strong> ${escapeHtml(active.description || "")}${active.whenToUse ? ` <span class="prompt-preset-when">${escapeHtml(t("prompts.whenToUse"))}: ${escapeHtml(active.whenToUse)}.</span>` : ""}${active.note ? ` <span class="settings-hint">${escapeHtml(active.note)}</span>` : ""}</p>` : `<p class="settings-hint">${escapeHtml(t("prompts.pickPreset"))}</p>`}
+        <aside class="prompt-library" aria-label="${escapeHtml(t("prompts.presets"))}">
+          <div class="prompt-library-head">
+            <div class="prompt-library-title"><h4>${escapeHtml(t("prompts.presets"))}</h4><span class="prompt-library-count">${count}</span></div>
+            <label class="prompt-library-search">
+              <svg aria-hidden="true"><use href="#icon-search"></use></svg>
+              <input type="search" data-preset-search value="${escapeHtml(ui.presetQuery)}" placeholder="${escapeHtml(t("prompts.searchPresets"))}" aria-label="${escapeHtml(t("prompts.searchPresets"))}">
+            </label>
+          </div>
+          <div class="prompt-library-body">${libraryGroups(all)}</div>
+          <div class="prompt-library-foot">
             ${hidden > 0 || ui.showAll ? `<button type="button" class="text-button" data-prompt-action="toggle-all">${escapeHtml(ui.showAll ? t("prompts.hideOff") : t("prompts.showAll", { count: hidden }))}</button>` : ""}
-            ${active && !active.builtIn ? `<button type="button" class="text-button danger-text" data-prompt-action="delete-preset">${escapeHtml(t("prompts.deletePreset"))}</button>` : ""}
           </div>
-        </section>`;
+        </aside>`;
     }
 
-    function variablesPanel(all) {
+    function selectedExampleTotal() {
+      return EXAMPLE_VARIABLES.reduce((total, name) => total + (Array.isArray(ui.selections[name]) ? ui.selections[name].length : 0), 0);
+    }
+
+    function metaChips(all) {
       const prompt = currentPrompt(all);
-      const used = new Set(prompt ? hooks.PromptRender.variablesIn(ui.draft !== null ? ui.draft.body : prompt.body) : []);
-      const profile = profileValues(hooks.profile() || {}, { startupName: hooks.startupName(), timeZone: hooks.timeZone(), today: hooks.today(), linkLabel: hooks.linkLabel });
-      const exampleBlocks = EXAMPLE_VARIABLES.filter((name) => used.has(name)).map((name) => {
-        const selected = new Set(ui.selections[name] || []);
-        const options = all.examples.filter((example) => example.variable === name);
-        const description = (shipped?.variables || []).find((entry) => entry.name === name)?.description || "";
-        return `
-          <fieldset class="prompt-var-group" data-variable="${name}">
-            <legend><code>{{${name}}}</code></legend>
-            ${description ? `<p class="settings-hint">${escapeHtml(description)}</p>` : ""}
-            <div class="prompt-example-list">
-              ${options.map((example) => `
-                <div class="prompt-example">
-                  <label title="${escapeHtml(example.text)}">
-                    <input type="checkbox" data-example="${escapeHtml(example.id)}" data-variable="${name}" ${selected.has(example.id) ? "checked" : ""}>
-                    <span>${example.code ? `<span class="prompt-example-code">${escapeHtml(example.code)}</span> ` : ""}${escapeHtml(example.label || example.text.slice(0, 60))}</span>
-                  </label>
-                  ${example.builtIn ? "" : `<button type="button" class="icon-button" data-prompt-action="delete-example" data-id="${escapeHtml(example.id)}" aria-label="${escapeHtml(t("prompts.deleteExample", { name: example.label || "" }))}">×</button>`}
-                  ${selected.has(example.id) && HAS_PLACEHOLDER.test(example.text) ? `<label class="prompt-example-fill">${escapeHtml(t("prompts.fillIn"))}<input type="text" data-fill="${escapeHtml(example.id)}" value="${escapeHtml(ui.fills[example.id] || "")}"></label>` : ""}
-                </div>`).join("") || `<p class="settings-hint">${escapeHtml(t("prompts.noExamples"))}</p>`}
-            </div>
-            <label class="prompt-extra">${escapeHtml(t("prompts.extraForRun"))}
-              <textarea rows="2" data-extra="${name}">${escapeHtml(ui.extra[name] || "")}</textarea>
-            </label>
-            <button type="button" class="text-button" data-prompt-action="save-example" data-variable="${name}">${escapeHtml(t("prompts.saveExample"))}</button>
-          </fieldset>`;
-      }).join("");
-      const profileRows = Object.entries(profile).filter(([name]) => used.has(name)).map(([name, value]) => `
-        <li class="${value ? "" : "is-missing"}"><code>{{${name}}}</code> ${value ? `<span>${escapeHtml(value.length > 80 ? `${value.slice(0, 80)}…` : value)}</span>` : `<span class="prompt-var-missing">${escapeHtml(t("prompts.notSet"))}</span>`}</li>`).join("");
+      const scope = scopeValues(ui.section, ui.picks, hooks.Taxonomy);
+      const items = [
+        `<span class="prompt-meta-chip prompt-meta-section" data-section="${ui.section}"><span class="prompt-library-dot" aria-hidden="true"></span>${escapeHtml(t(`prompts.groups.${ui.section}`))}</span>`,
+        `<span class="prompt-meta-chip" title="${escapeHtml(scope.CATEGORY)}">${escapeHtml(scope.CATEGORY)}</span>`,
+      ];
+      const examples = selectedExampleTotal();
+      if (examples) items.push(`<span class="prompt-meta-chip">${escapeHtml(t("prompts.metaExamples", { count: examples }))}</span>`);
+      if (ui.presetId && ui.presetDirty) items.push(`<span class="prompt-meta-chip prompt-meta-edited">${escapeHtml(t("prompts.editedPreset"))}</span>`);
+      if (prompt?.edited) items.push(`<span class="prompt-meta-chip prompt-meta-yours">${escapeHtml(t("prompts.yours"))}</span>`);
+      return items.join("");
+    }
+
+    function workbenchHeader(all) {
+      const preset = all.presets.find((entry) => entry.id === ui.presetId);
+      const prompt = currentPrompt(all);
+      const title = preset?.name || prompt?.name || t("prompts.untitled");
+      const sentence = (text) => {
+        const value = String(text || "").trim();
+        return value && !/[.!?]$/.test(value) ? `${value}.` : value;
+      };
+      const about = preset
+        ? [sentence(preset.description), preset.whenToUse ? `${t("prompts.whenToUse")}: ${sentence(preset.whenToUse)}` : "", sentence(preset.note)].filter(Boolean).join(" ")
+        : t("prompts.customSetupHint");
+      const eyebrow = preset
+        ? `<p class="prompt-eyebrow" data-section="${preset.section || "general"}"><span class="prompt-library-dot" aria-hidden="true"></span>${escapeHtml(t("prompts.presetEyebrow", { section: t(`prompts.groups.${preset.section || "general"}`) }))}</p>`
+        : `<p class="prompt-eyebrow">${escapeHtml(t("prompts.customSetup"))}</p>`;
       return `
-        <details class="prompt-vars" open>
-          <summary>${escapeHtml(t("prompts.variables"))}</summary>
-          <div class="prompt-vars-body">
-            <label class="prompt-pick">${escapeHtml(t("prompts.prompt"))}
-              <select data-prompt-select>${all.prompts.map((entry) => `<option value="${escapeHtml(entry.id)}" ${entry.id === prompt?.id ? "selected" : ""}>${escapeHtml(entry.name)}${entry.builtIn ? "" : ` (${escapeHtml(t("prompts.yours"))})`}</option>`).join("")}</select>
-            </label>
-            ${prompt?.description ? `<p class="settings-hint">${escapeHtml(prompt.description)}</p>` : ""}
-            <fieldset class="prompt-section-pick">
-              <legend>${escapeHtml(t("prompts.section"))}</legend>
-              ${SECTIONS.map((section) => `<label data-section="${section}"><input type="radio" name="promptSection" value="${section}" ${section === ui.section ? "checked" : ""}> ${escapeHtml(t(`prompts.groups.${section}`))}</label>`).join("")}
-            </fieldset>
-            <div class="prompt-scope">
-              <span class="label-title" id="promptScopeLabel">${escapeHtml(t("prompts.categories"))}</span>
-              <div id="promptScopePicker" aria-labelledby="promptScopeLabel"></div>
-            </div>
-            ${exampleBlocks}
-            ${profileRows ? `<div class="prompt-profile-vars"><h4>${escapeHtml(t("prompts.fromProfile"))}</h4><ul>${profileRows}</ul><button type="button" class="text-button" data-prompt-action="open-profile">${escapeHtml(t("prompts.editProfile"))}</button></div>` : ""}
+        <header class="prompt-workbench-head">
+          <div class="prompt-workbench-title">
+            ${eyebrow}
+            <h3>${escapeHtml(title)}</h3>
+            <p class="prompt-workbench-about">${escapeHtml(about)}</p>
           </div>
-        </details>`;
+          <div class="prompt-workbench-actions">
+            <button type="button" class="secondary-button compact" data-prompt-action="save-preset">${escapeHtml(t("prompts.savePreset"))}</button>
+            ${preset && !preset.builtIn ? `<button type="button" class="text-button danger-text" data-prompt-action="delete-preset">${escapeHtml(t("prompts.deletePreset"))}</button>` : ""}
+          </div>
+        </header>`;
     }
 
-    function outputPanel(all) {
-      const prompt = currentPrompt(all);
+    function promptTabs() {
+      const entries = [["preview", "prompts.preview"], ["edit", "prompts.edit"], ["setup", "prompts.setup"], ["runs", "prompts.runs"]];
+      return `
+        <div class="prompt-tabs" role="tablist" aria-label="${escapeHtml(t("prompts.pageTabs"))}">
+          ${entries.map(([id, key]) => `
+            <button type="button" role="tab" id="promptTab-${id}" aria-controls="promptPanel" aria-selected="${ui.view === id}" class="${ui.view === id ? "active" : ""}" data-prompt-view="${id}">
+              ${escapeHtml(t(key))}${id === "runs" ? `<span class="prompt-tab-badge" data-agent-run-count hidden></span>` : ""}
+            </button>`).join("")}
+        </div>`;
+    }
+
+    function previewPanel(all) {
       const result = rendered(all);
       const placeholderLeft = HAS_PLACEHOLDER.test(result.text);
       const warnings = [
         ...(result.unresolved.length ? [t("prompts.unresolved", { names: result.unresolved.map((name) => `{{${name}}}`).join(", ") })] : []),
         ...(placeholderLeft ? [t("prompts.placeholderLeft")] : []),
       ];
-      const editing = ui.view === "edit";
       return `
-        <section class="prompt-output" aria-label="${escapeHtml(t("prompts.output"))}">
-          <div class="prompt-toolbar">
-            <div class="prompt-view-tabs" role="tablist">
-              <button type="button" role="tab" aria-selected="${!editing}" class="${editing ? "" : "active"}" data-prompt-view="preview">${escapeHtml(t("prompts.preview"))}</button>
-              <button type="button" role="tab" aria-selected="${editing}" class="${editing ? "active" : ""}" data-prompt-view="edit">${escapeHtml(t("prompts.edit"))}</button>
-            </div>
-            <label class="prompt-mode">${escapeHtml(t("prompts.mode"))}
-              <select data-prompt-mode>
+        <div class="prompt-panel-inner prompt-preview-panel">
+          <div class="prompt-preview-bar">
+            <label class="prompt-mode-inline"><span>${escapeHtml(t("prompts.mode"))}</span>
+              <select data-prompt-mode aria-label="${escapeHtml(t("prompts.mode"))}">
                 <option value="agent" ${ui.mode === "agent" ? "selected" : ""}>${escapeHtml(t("prompts.modeAgent"))}</option>
                 <option value="chat" ${ui.mode === "chat" ? "selected" : ""}>${escapeHtml(t("prompts.modeChat"))}</option>
               </select>
             </label>
             <div class="prompt-actions">
-              <button type="button" class="primary-button compact" data-prompt-action="copy">${escapeHtml(t("prompts.copy"))}</button>
+              <button type="button" class="text-button" data-prompt-action="import-results">${escapeHtml(t("prompts.importResults"))}</button>
               <button type="button" class="secondary-button compact" data-prompt-action="copy-markdown">${escapeHtml(t("prompts.copyMarkdown"))}</button>
-              ${hooks.runWith ? `<button type="button" class="secondary-button compact" data-prompt-action="run-with">${escapeHtml(t("prompts.runWith"))}</button>` : ""}
-              <button type="button" class="secondary-button compact" data-prompt-action="import-results">${escapeHtml(t("prompts.importResults"))}</button>
+              <button type="button" class="secondary-button compact" data-prompt-action="copy">${escapeHtml(t("prompts.copy"))}</button>
+              ${hooks.runWith ? `<button type="button" class="primary-button compact" data-prompt-action="run-with">${escapeHtml(t("prompts.runWith"))}</button>` : ""}
             </div>
           </div>
-          ${ui.message ? `<p class="prompt-message" role="status">${escapeHtml(ui.message)}</p>` : `<p class="prompt-message" role="status"></p>`}
-          ${warnings.length ? `<ul class="prompt-warnings">${warnings.map((text) => `<li>${escapeHtml(text)}</li>`).join("")}</ul>` : ""}
-          ${editing ? `
-            <div class="prompt-editor">
-              <label>${escapeHtml(t("prompts.name"))}<input type="text" data-draft-name maxlength="120" value="${escapeHtml(ui.draft?.name ?? prompt?.name ?? "")}"></label>
-              <label>${escapeHtml(t("prompts.body"))}<textarea data-draft-body rows="24" spellcheck="false">${escapeHtml(ui.draft?.body ?? prompt?.body ?? "")}</textarea></label>
-              <p class="settings-hint">${escapeHtml(t("prompts.editHint"))}</p>
-              <div class="settings-row-actions">
-                <button type="button" class="primary-button compact" data-prompt-action="save-prompt">${escapeHtml(prompt?.builtIn ? t("prompts.saveEdit") : t("prompts.save"))}</button>
-                <button type="button" class="secondary-button compact" data-prompt-action="cancel-edit">${escapeHtml(t("prompts.cancel"))}</button>
-              </div>
-            </div>` : `<div class="prompt-preview markdown-rendered">${hooks.renderMarkdown(result.text) || `<p class="settings-hint">${escapeHtml(t("prompts.nothing"))}</p>`}</div>`}
-          <div class="prompt-manage settings-row-actions">
-            <button type="button" class="text-button" data-prompt-action="new-prompt">${escapeHtml(t("prompts.newPrompt"))}</button>
-            <button type="button" class="text-button" data-prompt-action="save-preset">${escapeHtml(t("prompts.savePreset"))}</button>
-            ${prompt?.builtIn && prompt.edited ? `<button type="button" class="text-button" data-prompt-action="reset-prompt">${escapeHtml(t("prompts.reset"))}</button>` : ""}
-            ${prompt && !prompt.builtIn ? `<button type="button" class="text-button danger-text" data-prompt-action="delete-prompt">${escapeHtml(t("prompts.deletePrompt"))}</button>` : ""}
-            <button type="button" class="text-button" data-prompt-action="export-pack">${escapeHtml(t("prompts.exportPack"))}</button>
-            <label class="text-button prompt-import-pack">${escapeHtml(t("prompts.importPack"))}<input type="file" accept="application/json,.json" data-prompt-pack hidden></label>
+          <div class="prompt-warnings" data-prompt-warnings ${warnings.length ? "" : "hidden"}>${warnings.map((text) => `<p>${escapeHtml(text)}</p>`).join("")}</div>
+          <div class="prompt-preview markdown-rendered" data-preview-content>${hooks.renderMarkdown(result.text) || `<p class="settings-hint">${escapeHtml(t("prompts.nothing"))}</p>`}</div>
+          <p class="prompt-preview-foot">${escapeHtml(t("prompts.characterCount", { count: result.text.length.toLocaleString() }))}</p>
+          ${importDialog()}
+        </div>`;
+    }
+
+    function editorPanel(all) {
+      const prompt = currentPrompt(all);
+      if (!prompt) return `<p class="settings-hint">${escapeHtml(t("prompts.nothing"))}</p>`;
+      return `
+        <div class="prompt-panel-inner prompt-edit-panel">
+          <div class="prompt-editor">
+            <label>${escapeHtml(t("prompts.name"))}<input type="text" data-draft-name maxlength="120" value="${escapeHtml(ui.draft?.name ?? prompt.name ?? "")}"></label>
+            <label>${escapeHtml(t("prompts.body"))}<textarea data-draft-body rows="22" spellcheck="false">${escapeHtml(ui.draft?.body ?? prompt.body ?? "")}</textarea></label>
+            <p class="settings-hint">${escapeHtml(t("prompts.editHint"))}</p>
+            <div class="settings-row-actions">
+              <button type="button" class="primary-button compact" data-prompt-action="save-prompt">${escapeHtml(prompt.builtIn ? t("prompts.saveEdit") : t("prompts.save"))}</button>
+              <button type="button" class="secondary-button compact" data-prompt-action="cancel-edit">${escapeHtml(t("prompts.cancel"))}</button>
+            </div>
           </div>
-        </section>`;
+        </div>`;
+    }
+
+    function exampleRow(name, example, selected) {
+      const checked = selected.has(example.id);
+      return `
+        <div class="prompt-example">
+          <label class="prompt-example-option" title="${escapeHtml(example.text)}">
+            <input type="checkbox" data-example="${escapeHtml(example.id)}" data-variable="${name}" ${checked ? "checked" : ""}>
+            <span class="prompt-example-label">${example.code ? `<span class="prompt-code">${escapeHtml(example.code)}</span>` : ""}<span>${escapeHtml(example.label || example.text.slice(0, 60))}</span></span>
+          </label>
+          ${example.builtIn ? "" : `<button type="button" class="icon-button" data-prompt-action="delete-example" data-id="${escapeHtml(example.id)}" aria-label="${escapeHtml(t("prompts.deleteExample", { name: example.label || "" }))}">×</button>`}
+          ${checked && HAS_PLACEHOLDER.test(example.text) ? `<label class="prompt-example-fill"><span>${escapeHtml(t("prompts.fillIn"))}</span><input type="text" data-fill="${escapeHtml(example.id)}" value="${escapeHtml(ui.fills[example.id] || "")}"></label>` : ""}
+        </div>`;
+    }
+
+    function exampleCard(name, all) {
+      const selected = new Set(ui.selections[name] || []);
+      const options = all.examples.filter((example) => example.variable === name);
+      const description = (shipped?.variables || []).find((entry) => entry.name === name)?.description || "";
+      const open = Boolean(ui.openGroups[`example:${name}`]);
+      return `
+        <details class="prompt-card prompt-example-card" data-example-group="${name}" ${open ? "open" : ""}>
+          <summary>
+            <span class="prompt-example-heading"><code>{{${name}}}</code><span class="prompt-example-description">${escapeHtml(description)}</span></span>
+            <span class="prompt-example-count">${escapeHtml(t("prompts.selected", { count: selected.size }))}</span>
+          </summary>
+          <div class="prompt-example-body">
+            <div class="prompt-example-list">
+              ${options.map((example) => exampleRow(name, example, selected)).join("") || `<p class="settings-hint">${escapeHtml(t("prompts.noExamples"))}</p>`}
+            </div>
+            <label class="prompt-extra"><span>${escapeHtml(t("prompts.extraForRun"))}</span><textarea rows="2" data-extra="${name}">${escapeHtml(ui.extra[name] || "")}</textarea></label>
+            <button type="button" class="text-button" data-prompt-action="save-example" data-variable="${name}">${escapeHtml(t("prompts.saveExample"))}</button>
+          </div>
+        </details>`;
+    }
+
+    function profileCard(all, used) {
+      const profile = profileValues(hooks.profile() || {}, { startupName: hooks.startupName(), timeZone: hooks.timeZone(), today: hooks.today(), linkLabel: hooks.linkLabel });
+      const rows = Object.entries(profile).filter(([name]) => used.has(name));
+      if (!rows.length) return "";
+      const missing = rows.filter(([, value]) => !value).length;
+      return `
+        <details class="prompt-card prompt-profile-card" data-profile-details ${missing ? "open" : ""}>
+          <summary>
+            <span>${escapeHtml(t("prompts.fromProfile"))}</span>
+            <span class="prompt-example-count">${escapeHtml(t("prompts.valuesUsed", { count: rows.length }))}</span>
+          </summary>
+          <ul class="prompt-profile-list">
+            ${rows.map(([name, value]) => `
+              <li class="${value ? "" : "is-missing"}"><code>{{${name}}}</code> ${value ? `<span>${escapeHtml(value.length > 80 ? `${value.slice(0, 80)}…` : value)}</span>` : `<span class="prompt-var-missing">${escapeHtml(t("prompts.notSet"))}</span>`}</li>`).join("")}
+          </ul>
+          <div><button type="button" class="text-button" data-prompt-action="open-profile">${escapeHtml(t("prompts.editProfile"))}</button></div>
+        </details>`;
+    }
+
+    function setupPanel(all) {
+      const prompt = currentPrompt(all);
+      const used = new Set(prompt ? hooks.PromptRender.variablesIn(ui.draft !== null ? ui.draft.body : prompt.body) : []);
+      const scope = scopeValues(ui.section, ui.picks, hooks.Taxonomy);
+      const exampleCards = EXAMPLE_VARIABLES.filter((name) => used.has(name)).map((name) => exampleCard(name, all)).join("");
+      return `
+        <div class="prompt-panel-inner prompt-setup">
+          <section class="prompt-card">
+            <header class="prompt-card-head">
+              <h4>${escapeHtml(t("prompts.promptCard"))}</h4>
+              <p class="settings-hint">${escapeHtml(t("prompts.promptCardHint"))}</p>
+            </header>
+            <div class="prompt-setup-grid">
+              <label class="prompt-field">${escapeHtml(t("prompts.prompt"))}
+                <select data-prompt-select>${all.prompts.map((entry) => `<option value="${escapeHtml(entry.id)}" ${entry.id === prompt?.id ? "selected" : ""}>${escapeHtml(entry.name)}${entry.builtIn ? "" : ` (${escapeHtml(t("prompts.yours"))})`}</option>`).join("")}</select>
+              </label>
+              <fieldset class="prompt-section-pick">
+                <legend>${escapeHtml(t("prompts.section"))}</legend>
+                ${SECTIONS.map((section) => `<label data-section="${section}"><input type="radio" name="promptSection" value="${section}" ${section === ui.section ? "checked" : ""}> ${escapeHtml(t(`prompts.groups.${section}`))}</label>`).join("")}
+              </fieldset>
+            </div>
+            ${prompt?.description ? `<p class="settings-hint">${escapeHtml(prompt.description)}</p>` : ""}
+          </section>
+          <section class="prompt-card">
+            <header class="prompt-card-head">
+              <h4>${escapeHtml(t("prompts.categories"))}</h4>
+              <p class="settings-hint" data-prompt-scope-summary>${escapeHtml(scope.CATEGORY)}</p>
+            </header>
+            <div id="promptScopePicker" aria-label="${escapeHtml(t("prompts.categories"))}"></div>
+          </section>
+          ${exampleCards}
+          ${profileCard(all, used)}
+          <section class="prompt-card prompt-manage">
+            <header class="prompt-card-head">
+              <h4>${escapeHtml(t("prompts.managePrompts"))}</h4>
+              <p class="settings-hint">${escapeHtml(t("prompts.managePromptsHint"))}</p>
+            </header>
+            <div class="prompt-manage-actions">
+              <button type="button" class="secondary-button compact" data-prompt-action="new-prompt">${escapeHtml(t("prompts.newPrompt"))}</button>
+              ${prompt?.builtIn && prompt.edited ? `<button type="button" class="secondary-button compact" data-prompt-action="reset-prompt">${escapeHtml(t("prompts.reset"))}</button>` : ""}
+              ${prompt && !prompt.builtIn ? `<button type="button" class="secondary-button compact danger-text" data-prompt-action="delete-prompt">${escapeHtml(t("prompts.deletePrompt"))}</button>` : ""}
+              <button type="button" class="text-button" data-prompt-action="export-pack">${escapeHtml(t("prompts.exportPack"))}</button>
+              <label class="text-button prompt-import-pack">${escapeHtml(t("prompts.importPack"))}<input type="file" accept="application/json,.json" data-prompt-pack hidden></label>
+            </div>
+          </section>
+        </div>`;
+    }
+
+    function runsPanel(all) {
+      const preset = all.presets.find((entry) => entry.id === ui.presetId);
+      const scoped = Boolean(preset) && ui.runsScope !== "all";
+      return `
+        <div class="prompt-panel-inner prompt-runs">
+          <div class="prompt-runs-bar">
+            <div class="prompt-segmented" role="group" aria-label="${escapeHtml(t("prompts.runsScope"))}">
+              <button type="button" data-runs-scope="preset" aria-pressed="${scoped}" ${preset ? "" : "disabled"}>${escapeHtml(t("prompts.thisPreset"))}</button>
+              <button type="button" data-runs-scope="all" aria-pressed="${!scoped}">${escapeHtml(t("prompts.allRuns"))}</button>
+            </div>
+            <p class="settings-hint">${escapeHtml(scoped ? t("prompts.runsPresetHint", { name: preset.name }) : t("prompts.runsAllHint"))}</p>
+          </div>
+          <div id="promptRunsMount" class="prompt-runs-mount"></div>
+        </div>`;
+    }
+
+    function activePanel(all) {
+      if (ui.view === "edit") return editorPanel(all);
+      if (ui.view === "setup") return setupPanel(all);
+      if (ui.view === "runs") return runsPanel(all);
+      return previewPanel(all);
     }
 
     function importDialog() {
@@ -552,8 +709,7 @@
     function mountPicker() {
       const holder = container.querySelector("#promptScopePicker");
       if (!holder || !hooks.TaxonomyPicker) return;
-      pickerSection = ui.section;
-      picker = hooks.TaxonomyPicker.create(holder, {
+      hooks.TaxonomyPicker.create(holder, {
         section: ui.section,
         value: ui.picks,
         primary: false,
@@ -561,10 +717,39 @@
         label: t("prompts.categories"),
         onChange: (list) => {
           ui.picks = hooks.Taxonomy.leaves(list);
+          ui.presetDirty = Boolean(ui.presetId);
           remember();
-          drawOutput();
+          const summary = container.querySelector("[data-prompt-scope-summary]");
+          if (summary) summary.textContent = scopeValues(ui.section, ui.picks, hooks.Taxonomy).CATEGORY;
+          updateMeta();
         },
       });
+    }
+
+    function mountRuns() {
+      const holder = container.querySelector("#promptRunsMount");
+      if (!holder || !hooks.mountRuns) return;
+      const presetId = ui.runsScope !== "all" && ui.presetId ? ui.presetId : "";
+      const openRunId = ui.openRunId || "";
+      ui.openRunId = "";
+      hooks.mountRuns(holder, {
+        presetId,
+        openRunId,
+        emptyTitle: presetId ? t("prompts.runsEmptyTitle") : t("agents.emptyTitle"),
+        emptyHint: presetId ? t("prompts.runsEmptyHint") : t("agents.emptyHint"),
+      });
+    }
+
+    function mountActivePanel() {
+      if (ui.view === "setup") mountPicker();
+      if (ui.view === "runs") mountRuns();
+    }
+
+    function updateMeta(all = lib()) {
+      const node = container.querySelector("[data-prompt-meta]");
+      if (node) node.innerHTML = metaChips(all);
+      const message = container.querySelector("[data-prompt-message]");
+      if (message) message.textContent = ui.message || "";
     }
 
     function draw() {
@@ -576,23 +761,51 @@
       const all = lib();
       const focus = document.activeElement && container.contains(document.activeElement) ? document.activeElement.dataset : null;
       container.innerHTML = `
-        ${presetBar(all)}
-        <div class="prompt-workspace">
-          ${variablesPanel(all)}
-          <div class="prompt-main">${outputPanel(all)}${importDialog()}</div>
+        <div class="prompts-layout">
+          ${libraryRail(all)}
+          <section class="prompt-workbench">
+            ${workbenchHeader(all)}
+            <div class="prompt-workbench-meta" data-prompt-meta>${metaChips(all)}</div>
+            <p class="prompt-message prompt-workbench-message" data-prompt-message role="status">${ui.message ? escapeHtml(ui.message) : ""}</p>
+            ${promptTabs()}
+            <div class="prompt-panel" id="promptPanel" role="tabpanel" aria-labelledby="promptTab-${ui.view}" tabindex="0">${activePanel(all)}</div>
+          </section>
         </div>`;
-      mountPicker();
-      hooks.counted?.(all.prompts.length);
+      mountActivePanel();
+      hooks.counted?.(all.presets.length);
       if (focus?.extra) container.querySelector(`[data-extra="${focus.extra}"]`)?.focus();
       if (focus?.fill) container.querySelector(`[data-fill="${focus.fill}"]`)?.focus();
     }
 
-    // Only the output changes while typing in the panel.
     function drawOutput() {
-      const holder = container.querySelector(".prompt-main");
-      if (!holder) return draw();
-      const all = lib();
-      holder.innerHTML = `${outputPanel(all)}${importDialog()}`;
+      const panel = container.querySelector("[data-prompt-panel]");
+      if (!panel) return draw();
+      panel.innerHTML = activePanel(lib());
+      mountActivePanel();
+      updateMeta();
+    }
+
+    // A sync from the server redraws the rail and the open preview, but leaves
+    // the setup form and a live run alone.
+    function refreshPreview() {
+      if (ui.view !== "preview" || ui.importRows !== null) return;
+      const panel = container.querySelector("[data-prompt-panel]");
+      if (!panel) return draw();
+      if (panel.contains(document.activeElement)) return;
+      const pane = panel.querySelector("[data-preview-content]");
+      const top = pane?.scrollTop || 0;
+      panel.innerHTML = previewPanel(lib());
+      const next = panel.querySelector("[data-preview-content]");
+      if (next) next.scrollTop = top;
+    }
+
+    function setView(view) {
+      if (!["preview", "edit", "setup", "runs"].includes(view)) return;
+      ui.view = view;
+      if (view === "preview") ui.draft = null;
+      ui.message = "";
+      remember();
+      draw();
     }
 
     // ---- actions ----
@@ -697,6 +910,7 @@
         const preset = { id, name, section: ui.section, description: "", whenToUse: "", promptId: currentPrompt(all)?.id || "target-research", scope: ui.picks.length ? { coverage: "nodes", taxonomy: [...ui.picks] } : { coverage: "allEnabled", taxonomy: [] }, examples: JSON.parse(JSON.stringify(ui.selections)) };
         hooks.saveShared({ presets: [...lists.presets, preset] }, t("prompts.presetSaved"));
         ui.presetId = id;
+        ui.presetDirty = false;
         ui.message = t("prompts.presetSaved");
         remember();
         draw();
@@ -705,6 +919,7 @@
         if (!preset || preset.builtIn || !(await root.StartupTrackerDialog.confirm(t("prompts.deletePresetConfirm", { name: preset.name }), { danger: true }))) return;
         hooks.saveShared({ presets: lists.presets.filter((entry) => entry.id !== preset.id) }, t("prompts.presetDeleted"));
         ui.presetId = "";
+        ui.presetDirty = false;
         remember();
         draw();
       } else if (action === "save-example") {
@@ -720,6 +935,7 @@
         hooks.saveShared({ examples: [...lists.examples, { id, variable, label, text }] }, t("prompts.exampleSaved"));
         ui.extra[variable] = "";
         ui.selections[variable] = [...(ui.selections[variable] || []), id];
+        ui.presetDirty = Boolean(ui.presetId);
         remember();
         draw();
       } else if (action === "delete-example") {
@@ -728,6 +944,7 @@
         if (!example || !(await root.StartupTrackerDialog.confirm(t("prompts.deleteExampleConfirm", { name: example.label || "" }), { danger: true }))) return;
         hooks.saveShared({ examples: lists.examples.filter((entry) => entry.id !== id) }, t("prompts.exampleDeleted"));
         for (const name of EXAMPLE_VARIABLES) ui.selections[name] = (ui.selections[name] || []).filter((entry) => entry !== id);
+        ui.presetDirty = Boolean(ui.presetId);
         remember();
         draw();
       } else if (action === "export-pack") {
@@ -773,14 +990,26 @@
       }
       const view = event.target.closest("[data-prompt-view]");
       if (view) {
-        ui.view = view.dataset.promptView;
-        if (ui.view === "preview") ui.draft = null;
-        drawOutput();
+        setView(view.dataset.promptView);
+        return;
+      }
+      const scope = event.target.closest("[data-runs-scope]");
+      if (scope) {
+        ui.runsScope = scope.dataset.runsScope === "all" ? "all" : "preset";
+        remember();
+        draw();
         return;
       }
       const action = event.target.closest("[data-prompt-action]");
       if (action) handleAction(action.dataset.promptAction, action);
     });
+
+    container.addEventListener("toggle", (event) => {
+      const group = event.target.closest?.("[data-example-group]");
+      if (group) ui.openGroups[`example:${group.dataset.exampleGroup}`] = group.open;
+      const profile = event.target.closest?.("[data-profile-details]");
+      if (profile) ui.openGroups.profile = profile.open;
+    }, true);
 
     container.addEventListener("change", async (event) => {
       const target = event.target;
@@ -791,11 +1020,13 @@
         else list.delete(target.dataset.example);
         // Keep the library's order.
         ui.selections[name] = lib().examples.filter((example) => list.has(example.id)).map((example) => example.id);
+        ui.presetDirty = Boolean(ui.presetId);
         remember();
         draw();
       } else if (target.matches("[data-prompt-select]")) {
         ui.promptId = target.value;
         ui.draft = null;
+        ui.presetDirty = Boolean(ui.presetId);
         remember();
         draw();
       } else if (target.matches("input[name=promptSection]")) {
@@ -803,6 +1034,7 @@
         ui.picks = [];
         const preset = lib().presets.find((entry) => entry.id === ui.presetId);
         if (preset && preset.section === "general") ui.selections = presetExamples(preset, ui.section);
+        ui.presetDirty = Boolean(ui.presetId);
         remember();
         draw();
       } else if (target.matches("[data-prompt-mode]")) {
@@ -830,14 +1062,18 @@
 
     container.addEventListener("input", (event) => {
       const target = event.target;
-      if (target.matches("[data-extra]")) {
+      if (target.matches("[data-preset-search]")) {
+        ui.presetQuery = target.value;
+        const body = container.querySelector(".prompt-library-body");
+        if (body) body.innerHTML = libraryGroups(lib());
+        const count = container.querySelector(".prompt-library-count");
+        if (count) count.textContent = String(visiblePresets(lib()).length);
+      } else if (target.matches("[data-extra]")) {
         ui.extra[target.dataset.extra] = target.value;
         remember();
-        drawOutput();
       } else if (target.matches("[data-fill]")) {
         ui.fills[target.dataset.fill] = target.value;
         remember();
-        drawOutput();
       } else if (target.matches("[data-draft-body], [data-draft-name]")) {
         const prompt = currentPrompt();
         ui.draft = {
@@ -864,14 +1100,21 @@
           load();
           return;
         }
-        // The picker keeps its own state; the rest follows the data.
-        if (picker && pickerSection === ui.section && container.querySelector(".prompt-workspace")) {
-          const holder = container.querySelector(".prompt-presets");
-          if (holder) holder.outerHTML = presetBar(lib());
-          drawOutput();
-          return;
+        const all = lib();
+        const rail = container.querySelector(".prompt-library");
+        if (!rail) return draw();
+        const search = container.querySelector("[data-preset-search]");
+        if (document.activeElement === search) {
+          const body = rail.querySelector(".prompt-library-body");
+          if (body) body.innerHTML = libraryGroups(all);
+          const count = rail.querySelector(".prompt-library-count");
+          if (count) count.textContent = String(visiblePresets(all).length);
+        } else {
+          rail.outerHTML = libraryRail(all);
         }
-        draw();
+        updateMeta(all);
+        if (ui.view === "preview") refreshPreview();
+        hooks.counted?.(all.presets.length);
       },
       tips: () => shipped?.tips || null,
       // "Import AI results" with a text already in it (a run's final JSON).
@@ -880,8 +1123,23 @@
         const parsed = hooks.AiImport.parse(ui.importText);
         ui.importError = parsed.error;
         ui.importRows = parsed.error ? [] : hooks.checkImport(parsed.entries).map((row) => ({ ...row, picked: row.ok && !row.duplicateOf }));
-        if (shipped) drawOutput();
+        if (shipped) {
+          ui.view = "preview";
+          draw();
+        }
         container.querySelector(".prompt-import")?.scrollIntoView?.({ block: "nearest" });
+      },
+      // A run opens in the Runs tab, next to the prompt it belongs to. With
+      // "all" (a link from another window) every run is listed instead of the
+      // current preset's.
+      openRun(runId, { all = false } = {}) {
+        if (!runId) return;
+        ui.view = "runs";
+        ui.message = "";
+        if (all || !ui.presetId) ui.runsScope = "all";
+        ui.openRunId = String(runId);
+        remember();
+        draw();
       },
       ui,
     };

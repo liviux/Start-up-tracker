@@ -2310,6 +2310,43 @@
         "other": "Added {count} targets."
       }
     },
+    "setup": "Setup",
+    "runs": "Runs",
+    "pageTabs": "Prompt page tabs",
+    "presetCount": {
+      "one": "{count} preset",
+      "other": "{count} presets"
+    },
+    "searchPresets": "Search presets",
+    "noSearchResults": "No preset matches \"{query}\".",
+    "customSetup": "Custom setup",
+    "customSetupHint": "Pick a preset on the left to fill the prompt, the scope and the examples, or set each one yourself in Setup.",
+    "presetEyebrow": "{section} preset",
+    "metaExamples": {
+      "one": "{count} example",
+      "other": "{count} examples"
+    },
+    "editedPreset": "edited",
+    "characterCount": "{count} characters",
+    "selected": {
+      "one": "1 selected",
+      "other": "{count} selected"
+    },
+    "valuesUsed": {
+      "one": "1 value",
+      "other": "{count} values"
+    },
+    "promptCard": "Prompt and section",
+    "promptCardHint": "The prompt decides what the agent looks for. The section decides where new targets are saved.",
+    "managePrompts": "Manage prompts",
+    "managePromptsHint": "Prompts, presets and examples are shared by all your startups.",
+    "runsScope": "Runs to show",
+    "thisPreset": "This preset",
+    "allRuns": "All runs",
+    "runsPresetHint": "Runs started with \"{name}\".",
+    "runsAllHint": "Every run of this startup, whatever prompt started it.",
+    "runsEmptyTitle": "No runs for this preset yet",
+    "runsEmptyHint": "Open Preview and use \"Run with…\" to start this prompt with one of your agents.",
     "runWith": "Run with…"
   },
   "company": {

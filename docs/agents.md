@@ -4,7 +4,7 @@ You can run a prompt from the Prompts page with an AI coding agent installed on 
 
 The tracker talks to agents over the [Agent Client Protocol](https://agentclientprotocol.com) (ACP), version 1. It starts the agent as a program on your computer and exchanges messages with it; there is no cloud service in between. What the agent itself sends to its model provider is between you and that provider.
 
-![An agent run on the Agents page: the conversation and plan on the right, the run list on the left, and the target it saved](assets/screenshot-agents.png)
+![An agent run in the Runs tab of Prompts: the run list above and the conversation and plan below](assets/screenshot-agents.png)
 
 *An agent run in the demo startup. The conversation, plan and tool calls are saved with the run; the target it created is already in the tracker.*
 
@@ -90,7 +90,7 @@ If the agent saved nothing through the tools but its last message holds targets 
 
 ## Watching runs
 
-The **Agents** page in the sidebar lists the runs of this startup (tick **All startups** to see every run). Its badge counts the runs going; it turns amber when one waits for you. Select a run to open it. **Open in its own window** shows one run at `/s/<startup>/agents/<run>`.
+The **Runs** tab of Extra > Prompts lists the runs of this startup (**All startups** shows every run). The badge on **Extra** in the sidebar counts the runs going; it turns amber when one waits for you. Select a run to open it below the list. **Open in its own window** shows one run at `/s/<startup>/agents/<run>`.
 
 A run has five tabs:
 
@@ -105,7 +105,7 @@ Controls:
 - **Cancel** asks the agent to stop. If it has not stopped after 10 seconds, the tracker ends it and every program it started.
 - **Send a follow-up message** sends another prompt in the same session. The agent stays available for 10 minutes after it finishes.
 - **Run again** starts a new run with the same prompt, agent and model.
-- **Stop all agents** on the Agents page cancels every run.
+- **Stop all agents** in the Runs tab cancels every run.
 
 A run with no update for the idle time shows a notice; you decide whether to cancel it. If the tracker stops while runs are going, they show as **Interrupted** afterwards.
 

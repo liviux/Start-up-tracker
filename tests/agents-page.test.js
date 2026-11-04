@@ -51,6 +51,17 @@ test("idle until the next update", () => {
   assert.equal(model.idle, false);
 });
 
+test("the Runs tab can show one preset's runs or all of them", () => {
+  const runs = [
+    { id: "a", presetId: "mk1" },
+    { id: "b", presetId: "po1" },
+    { id: "c" },
+  ];
+  assert.deepEqual(Page.runsForPreset(runs, "mk1").map((run) => run.id), ["a"]);
+  assert.deepEqual(Page.runsForPreset(runs, "").map((run) => run.id), ["a", "b", "c"]);
+  assert.deepEqual(Page.runsForPreset(null, "mk1"), []);
+});
+
 test("durations, model choices and the run dialog's checks", () => {
   assert.equal(Page.duration("2026-10-20T10:00:00Z", "2026-10-20T10:00:12Z"), "12 s");
   assert.equal(Page.duration("2026-10-20T10:00:00Z", "2026-10-20T10:03:05Z"), "3 min 5 s");

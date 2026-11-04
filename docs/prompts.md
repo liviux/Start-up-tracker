@@ -2,21 +2,30 @@
 
 Extra > Prompts builds the prompt you give an AI agent or chat to find and add targets. It fills in your startup's details, the scope you pick and the instructions you choose, so the same prompt works for every startup.
 
-![Prompts: the variables panel on the left and the prompt preview on the right, filled with the startup profile](assets/screenshot-prompts.png)
+![Prompts: the preset library on the left and the prompt preview on the right, filled with the startup profile](assets/screenshot-prompts.png)
 
-*The variables panel and the prompt preview. The startup context comes from Settings > Startup profile and the AI context text.*
+*The preset library, the prompt preview and the tabs for editing, setting the scope and watching runs. The startup context comes from Settings > Startup profile and the AI context text.*
 
 ## Presets
 
-The presets sit at the top of the page, grouped by section: Marketing, Programs, Funding and General. Each says what it does and when to use it (hover or focus it to read both). Picking one sets the prompt, the section, the categories and the examples. You can change any of them before you copy.
+The preset library sits on the left, grouped by section: Marketing, Programs, Funding and General. Search it by name or code. Each preset says what it does and when to use it under its name once you pick it. Picking one sets the prompt, the section, the categories and the examples. You can change any of them before you copy or run it.
 
-A preset whose categories are all turned off for this startup is hidden. **Show all** brings them back.
+A preset whose categories are all turned off for this startup is hidden. **Show all** at the bottom of the library brings them back.
 
 The app ships 21 presets, for example "Events: conferences in the next 6 months", "Launches and listings", "Angels and early-stage funds", "Weekly review" (re-checks the targets already in the tracker) and "Research a topic" (type the topic in the variables before you copy). **Save as preset** keeps your own choices as a new preset, shared by all your startups.
 
+## Tabs
+
+The workbench has four tabs:
+
+- **Preview**: the prompt as it will be sent, with the button to copy it or run it with an agent.
+- **Edit**: the prompt text, for your own prompts or a changed version of a built-in one.
+- **Setup**: the prompt, the section, the categories, the examples and the values that come from the startup profile.
+- **Runs**: the agent runs you started from the Prompts page.
+
 ## Variables
 
-The variables panel is open on the left. Only double braces are variables: `{{STARTUP_NAME}}` is filled in, `{section}` in a web address is left alone.
+**Setup** changes what fills the prompt. Only double braces are variables: `{{STARTUP_NAME}}` is filled in, `{section}` in a web address is left alone.
 
 | Filled from | Variables |
 |---|---|
@@ -28,7 +37,7 @@ The variables panel is open on the left. Only double braces are variables: `{{ST
 
 Each ticked example becomes one bullet. "More for this run" adds a bullet for this copy only; **Save this text as an example** keeps it in the library for every startup. Examples can mention variables too, such as `{{SECTOR}}`; they are filled in the same way.
 
-A variable with no value takes its line with it, and a block such as `{{CONSTRAINTS}}` or `{{SEARCH_FOCUS}}` also takes the heading line above it. The panel lists the profile values the prompt uses and marks the empty ones; fill them in Settings > Startup profile.
+A variable with no value takes its line with it, and a block such as `{{CONSTRAINTS}}` or `{{SEARCH_FOCUS}}` also takes the heading line above it. **From the startup profile** lists the profile values the prompt uses and marks the empty ones; fill them in Settings > Startup profile.
 
 ## Copying
 
@@ -37,9 +46,15 @@ Pick who the prompt is for:
 - **An agent that runs commands** (Claude Code, Codex and the like). `{{TRACKER_ACCESS}}` explains how to read and write the tracker over its local API. **Copy prompt** makes a new token for this startup at that moment and puts it in the prompt. The token can add and update targets of this startup and link records, nothing else, and stops working after 24 hours. The master token in `secrets/api-token` is never put in a prompt.
 - **A chat without tools.** The prompt asks for the targets as a JSON block at the end of the reply.
 
-**Run with…** sends the prompt to one of your AI agents instead of copying it, and shows the run as it goes. There `{{TRACKER_ACCESS}}` points the agent to the tracker tools of the run, with no token in the text. See [AI agents](agents.md).
+**Run with…** sends the prompt to one of your AI agents instead of copying it. The run opens in the **Runs** tab next to the prompt, and the page follows it live: conversation, changes, permissions and the log. There `{{TRACKER_ACCESS}}` points the agent to the tracker tools of the run, with no token in the text. See [AI agents](agents.md).
 
 **Copy prompt** copies plain text; **Copy Markdown** keeps the Markdown. The page warns when something is left unfilled.
+
+## Runs
+
+**Runs** lists the runs of this startup, newest first. **This preset** shows only the runs started with the selected preset; **All runs** shows every run. **All startups** includes the other startups in the same tracker. Select a run to open it below the list. **AI agent settings** opens Settings > AI agents, and **Stop all agents** cancels every run that is going.
+
+Each run has five tabs: the conversation, the exact prompt, the record changes, the permission requests and the log. The controls are the same as on the run's own page: cancel, send a follow-up message, run again and undo the run's changes. **Open in its own window** shows one run at `/s/<startup>/agents/<run>`.
 
 ## Import AI results
 

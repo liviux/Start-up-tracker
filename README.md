@@ -47,7 +47,7 @@ The same fictional startup, Northwind Robotics, in Programs & Opportunities, Fun
 |---|---|
 | ![Programs & Opportunities: the category tabs and the targets table with the cash on offer](docs/assets/screenshot-programs.png) | ![Funding: pipeline, committed and received money, and the deals due next](docs/assets/screenshot-funding.png) |
 | ![Company: the UK Ltd setup steps with their authorities, dates and official sources](docs/assets/screenshot-company.png) | ![The target window: status, dates and every filled field by group under All details](docs/assets/screenshot-target.png) |
-| ![Prompts: the variables filled from the startup profile and the prompt as it will be sent](docs/assets/screenshot-prompts.png) | ![An AI agent run: the conversation, its plan and the target it saved](docs/assets/screenshot-agents.png) |
+| ![Prompts: the preset library and the prompt as it will be sent](docs/assets/screenshot-prompts.png) | ![An AI agent run: the run list, the conversation, its plan and the target it saved](docs/assets/screenshot-agents.png) |
 
 ## Your data stays on your computer
 

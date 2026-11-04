@@ -1518,13 +1518,15 @@
 
     // The sidebar badge counts runs going and runs waiting for you.
     agentRunCounts = AgentsPage?.watchCounts({ Api }, updateAgentBadge) || null;
-    // /s/<id>/agents/<runId> shows one run in its own window.
+    // /s/<id>/agents/<runId> shows one run in its own window. Runs live in
+    // the Prompts page now, so the link lands in the Runs tab.
     const ownWindowRun = Api.parseRunId(window.location.pathname);
     if (ownWindowRun) {
       document.documentElement.setAttribute("data-run-window", "");
-      state.selectedAppTab = "agents";
+      state.selectedAppTab = "extra";
+      state.selectedExtraSubTab = "prompts";
       renderAppTabs();
-      agentsPage()?.openRun(ownWindowRun);
+      promptsPage()?.openRun(ownWindowRun, { all: true });
     }
 
     try {
@@ -6032,8 +6034,6 @@
       renderCalendarTab();
     } else if (activeTab === "company") {
       companyPage()?.render();
-    } else if (activeTab === "agents") {
-      agentsPage()?.render();
     } else if (activeTab === "extra" || ["ai", "media", "feedback", "campaigns", "tags", "research", "prompts"].includes(activeTab)) {
       renderExtraTab();
     }
@@ -6091,8 +6091,7 @@
 
   // The pages whose count is not set by their own list.
   const EXTRA_COUNTS = Object.freeze({
-    // Built-in prompts and yours; the page reports the number once loaded.
-    prompts: () => state.prompts.length,
+    // The Prompts page reports its preset count once the shipped prompts load.
     categories: () => ["mk", "po", "fu"].reduce((sum, section) => sum + Taxonomy.categories(section).length, 0),
   });
 
@@ -14437,13 +14436,30 @@
       linkLabel: (type) => (I18n.has?.(`linkTypes.types.${type}`) ? t(`linkTypes.types.${type}`) : type),
       openProfile: () => window.StartupTrackerSettingsPanel?.open?.("profile"),
       formatTimestamp: (value) => value || "",
-      counted: (count) => setExtraCount("prompts", count),
-      // "Run with...": the run dialog, then the run in an overlay.
+      counted: (count) => {
+        const node = document.querySelector('[data-extra-count="prompts"]');
+        if (node) node.textContent = t("prompts.presetCount", { count });
+      },
+      // "Run with...": the run dialog, then the run in the Prompts page's
+      // Runs tab.
       runWith: async (spec) => {
         const run = await AgentsPage.openRunDialog({ ...spec, startupName: currentStartupName() }, agentHooks());
         if (!run) return;
         agentRunCounts?.now();
-        AgentsPage.openOverlay(run.id, agentHooks());
+        promptsPage()?.openRun(run.id);
+      },
+      // The Runs tab mounts the same runs list and conversation view the
+      // Agents page used to hold, filtered to the selected preset.
+      mountRuns: (holder, options = {}) => {
+        const page = AgentsPage.create(holder, {
+          ...agentHooks(),
+          presetId: options.presetId || "",
+          emptyTitle: options.emptyTitle,
+          emptyHint: options.emptyHint,
+        });
+        page.render();
+        if (options.openRunId) page.openRun(options.openRunId);
+        return page;
       },
       loadUi: () => {
         try {
@@ -14463,12 +14479,12 @@
     return promptsPageInstance;
   }
 
-  // ---- Agents (js/agents-page.js) ------------------------------------------------
+  // ---- Agent runs (js/agents-page.js) --------------------------------------------
   //
-  // The Agents page, the run overlay of the Prompts page and the sidebar
-  // badge. The runs themselves live on the server (lib/agents/runs.js).
+  // The runs list and conversation view in the Prompts page's Runs tab, the
+  // run dialog and the badge. The runs themselves live on the server
+  // (lib/agents/runs.js).
 
-  let agentsPageInstance = null;
   let agentRunCounts = null;
 
   function currentStartupName() {
@@ -14476,13 +14492,13 @@
   }
 
   function updateAgentBadge(counts) {
-    const badge = document.querySelector("[data-agent-run-count]");
-    if (!badge) return;
     const count = Number(counts?.running) || 0;
-    badge.textContent = count ? String(count) : "";
-    badge.hidden = !count;
-    badge.toggleAttribute("data-waiting", Boolean(counts?.waiting));
-    badge.title = counts?.waiting ? t("agents.badgeWaiting", { count: counts.waiting }) : "";
+    for (const badge of document.querySelectorAll("[data-agent-run-count]")) {
+      badge.textContent = count ? String(count) : "";
+      badge.hidden = !count;
+      badge.toggleAttribute("data-waiting", Boolean(counts?.waiting));
+      badge.title = counts?.waiting ? t("agents.badgeWaiting", { count: counts.waiting }) : "";
+    }
   }
 
   function agentHooks() {
@@ -14496,12 +14512,10 @@
       openSettings: () => window.StartupTrackerSettingsPanel?.open?.("agents"),
       onCounts: updateAgentBadge,
       openRecord: (kind, id) => {
-        document.querySelector("#agentRunOverlay")?.close?.();
         if (!openTargetWindow(kind, id)) Dialog.alert(t("agents.run.recordGone"));
       },
       // The run's final JSON block, in "Import AI results" on the Prompts page.
       openImport: (text) => {
-        document.querySelector("#agentRunOverlay")?.close?.();
         state.selectedAppTab = "extra";
         state.selectedExtraSubTab = "prompts";
         render();
@@ -14518,20 +14532,12 @@
           const body = await response.json().catch(() => ({}));
           if (!response.ok || body.ok === false) throw new Error(body.error || `HTTP ${response.status}`);
           agentRunCounts?.now();
-          if (document.querySelector("#agentRunOverlay")?.open) AgentsPage.openOverlay(body.run.id, agentHooks());
-          else agentsPage()?.openRun(body.run.id);
+          promptsPage()?.openRun(body.run.id, { all: true });
         } catch (error) {
           Dialog.alert(t("agents.run.againFailed", { message: error.message }));
         }
       },
     };
-  }
-
-  function agentsPage() {
-    const holder = document.querySelector("#agentsPage");
-    if (agentsPageInstance || !holder || !AgentsPage) return agentsPageInstance;
-    agentsPageInstance = AgentsPage.create(holder, agentHooks());
-    return agentsPageInstance;
   }
 
   // ---- Company (js/company-page.js) ----------------------------------------------

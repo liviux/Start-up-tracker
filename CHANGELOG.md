@@ -2,6 +2,20 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-11-04
+
+### Added
+- Prompts has a searchable preset library and a workbench with Preview, Edit, Setup and Runs tabs.
+- Agent runs live in Prompts > Runs, with **This preset** and **All runs** filters. A run link opens in the Runs tab.
+
+### Changed
+- The separate Agents page is gone; its run list and conversation view are part of Prompts, and the run badge moved to Extra.
+- Setup groups the prompt, section, categories, examples and startup values into cards, with the examples folded until you need them.
+
+### Fixed
+- A run opened in its own window shows only the run, without the page around it.
+- The Prompts page count shows the number of presets, not prompts.
+
 ## [1.1.0] - 2026-10-31
 
 ### Added
