@@ -2,6 +2,13 @@
 
 All notable changes to this project are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.2.1] - 2026-11-19
+
+### Fixed
+- Agent run views close their streams when leaving or redrawing Prompts.
+- Oversized uploads return an error without closing the connection prematurely.
+- Stored JSON retains keys named `__proto__` when calculating its hash.
+
 ## [1.2.0] - 2026-11-04
 
 ### Added

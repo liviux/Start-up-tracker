@@ -382,7 +382,9 @@
 
     async function refresh() {
       if (!view.runId) return;
-      const body = await request(hooks.Api.urls.agentRun(view.runId));
+      const runId = view.runId;
+      const body = await request(hooks.Api.urls.agentRun(runId));
+      if (view.runId !== runId) return;
       view.run = body.run;
       view.live = body.live;
       view.canMessage = body.canMessage;
@@ -422,6 +424,7 @@
       draw();
       try {
         await refresh();
+        if (view.runId !== runId) return;
         draw();
         stream();
       } catch (error) {
@@ -625,6 +628,10 @@
         runView.open(runId);
         load({ quiet: true });
       },
+      destroy() {
+        runView?.close();
+      },
+      get runId() { return runView?.runId || ""; },
       load,
     };
   }

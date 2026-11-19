@@ -62,7 +62,7 @@ const DEV_PORT = 57323;
 const requestedPort = readRequestedPort();
 const shouldOpenBrowser = process.env.NO_OPEN !== "1" && !cliArgs.includes("--no-open") && !isDevMode;
 const allowedHosts = security.parseAllowedHosts(process.env.ALLOWED_HOSTS);
-const MAX_UPLOAD_BYTES = Number(process.env.MAX_UPLOAD_BYTES || 100 * 1024 * 1024);
+const MAX_UPLOAD_BYTES = readPositiveIntegerEnv("MAX_UPLOAD_BYTES", 100 * 1024 * 1024);
 const DEFAULT_JSON_BODY_BYTES = 10 * 1024 * 1024;
 const MAX_STATE_BODY_BYTES = readPositiveIntegerEnv("MAX_STATE_BODY_BYTES", 50 * 1024 * 1024);
 // Whoever is at the browser on this machine. Every edit made in the UI is a
@@ -1473,18 +1473,43 @@ function readRawBody(req, limitBytes) {
   return new Promise((resolve, reject) => {
     const chunks = [];
     let size = 0;
+    let settled = false;
+
+    const rejectTooLarge = () => {
+      if (settled) return;
+      settled = true;
+      chunks.length = 0;
+      reject(new security.HttpError(413, `Upload is too large. Limit is ${formatBytes(limitBytes)}.`, "tooLarge"));
+      req.resume();
+    };
+
+    req.on("error", (error) => {
+      if (!settled) {
+        settled = true;
+        reject(error);
+      }
+    });
+
+    const contentLength = Number(req.headers["content-length"]);
+    if (Number.isFinite(contentLength) && contentLength > limitBytes) {
+      rejectTooLarge();
+      return;
+    }
 
     req.on("data", (chunk) => {
+      if (settled) return;
       size += chunk.length;
       if (size > limitBytes) {
-        reject(new security.HttpError(413, `Upload is too large. Limit is ${formatBytes(limitBytes)}.`, "tooLarge"));
-        req.destroy();
+        rejectTooLarge();
         return;
       }
       chunks.push(chunk);
     });
-    req.on("end", () => resolve(Buffer.concat(chunks)));
-    req.on("error", reject);
+    req.on("end", () => {
+      if (settled) return;
+      settled = true;
+      resolve(Buffer.concat(chunks));
+    });
   });
 }
 

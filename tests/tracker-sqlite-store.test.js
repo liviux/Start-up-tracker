@@ -114,6 +114,21 @@ test("canonical upsert payload validates IDs and honors position", () => {
   }
 });
 
+test("upsert preserves JSON fields named __proto__", () => {
+  const store = new TrackerSqliteStore(":memory:");
+  try {
+    store.replaceState(SID, { items: [{ id: "a" }] });
+    const record = JSON.parse('{"id":"a","__proto__":{"label":"kept"}}');
+
+    const result = store.upsertRecord(SID, "items", record);
+
+    assert.equal(result.unchanged, false);
+    assert.deepEqual(store.getRecord(SID, "items", "a"), record);
+  } finally {
+    store.close();
+  }
+});
+
 test("membership changes lock ordering and existing upserts cannot move records implicitly", () => {
   const store = new TrackerSqliteStore(":memory:");
   try {

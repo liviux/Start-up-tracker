@@ -3,10 +3,71 @@
 // The pure parts of the run view (js/agents-page.js) and of Settings > AI
 // agents (js/agents-settings.js).
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 const test = require("node:test");
+const vm = require("node:vm");
 const Page = require("../public/js/agents-page.js");
 const SettingsUi = require("../public/js/agents-settings.js");
 const Api = require("../public/js/api.js");
+
+function browserPage(fetch) {
+  const sources = [];
+  const sandbox = {
+    module: { exports: {} },
+    document: { activeElement: null },
+    fetch,
+    EventSource: class {
+      constructor(url) {
+        this.url = url;
+        this.closed = false;
+        sources.push(this);
+      }
+      addEventListener() {}
+      close() { this.closed = true; }
+    },
+    setTimeout,
+    clearTimeout,
+  };
+  sandbox.globalThis = sandbox;
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, "../public/js/agents-page.js"), "utf8"), sandbox);
+  return { Page: sandbox.module.exports, sources };
+}
+
+function runHolder() {
+  return { innerHTML: "", querySelector: () => null, addEventListener() {} };
+}
+
+function agentContainer(holder) {
+  let html = "";
+  return {
+    addEventListener() {},
+    querySelector(selector) {
+      if (selector === ".agents-page") return html.includes('class="agents-page"') ? {} : null;
+      if (selector === ".agents-run-holder") return holder;
+      return null;
+    },
+    set innerHTML(value) { html = value; },
+  };
+}
+
+function agentHooks() {
+  return {
+    t: (key) => key,
+    Api: {
+      urls: {
+        agentRuns: () => "/runs",
+        agentRun: (id) => `/runs/${id}`,
+        agentRunEvents: (id) => `/runs/${id}/events`,
+        agentRunLog: () => "/log",
+      },
+      runPageUrl: () => "/run",
+    },
+    startupId: "startup-1",
+    renderMarkdown: (text) => text,
+    formatTimestamp: (text) => text || "",
+  };
+}
 
 test("the conversation joins chunks, merges tool call updates and drops repeated events", () => {
   const events = [
@@ -60,6 +121,33 @@ test("the Runs tab can show one preset's runs or all of them", () => {
   assert.deepEqual(Page.runsForPreset(runs, "mk1").map((run) => run.id), ["a"]);
   assert.deepEqual(Page.runsForPreset(runs, "").map((run) => run.id), ["a", "b", "c"]);
   assert.deepEqual(Page.runsForPreset(null, "mk1"), []);
+});
+
+test("a destroyed run page closes its stream, and a late load stays closed", async () => {
+  let finishRequest;
+  const pending = browserPage(() => new Promise((resolve) => {
+    finishRequest = () => resolve({ ok: true, json: async () => ({ run: { id: "late", status: "running" }, live: true, canMessage: false }) });
+  }));
+  const view = pending.Page.createRunView(runHolder(), agentHooks());
+  const opening = view.open("late");
+  view.close();
+  finishRequest();
+  await opening;
+  assert.equal(pending.sources.length, 0, "closing while the run loads cannot open its stream afterwards");
+
+  const browser = browserPage(async (url) => ({
+    ok: true,
+    json: async () => url === "/runs"
+      ? { runs: [], counts: { running: 1, waiting: 0 } }
+      : { run: { id: "live", status: "running", title: "Live run", startupId: "startup-1", harness: { name: "Fake" }, changes: [], permissions: [] }, live: true, canMessage: false },
+  }));
+  const page = browser.Page.create(agentContainer(runHolder()), agentHooks());
+  page.render();
+  page.openRun("live");
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(browser.sources.length, 1);
+  page.destroy();
+  assert.equal(browser.sources[0].closed, true, "destroying the Runs tab closes its active stream");
 });
 
 test("durations, model choices and the run dialog's checks", () => {

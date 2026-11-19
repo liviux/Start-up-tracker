@@ -6236,6 +6236,7 @@
     const activeTab = state.selectedAppTab || "calendar";
     const activeAttr = activeTab === "extra" ? (state.selectedExtraSubTab || "ai") : activeTab;
     document.documentElement.setAttribute("data-active-app-tab", activeAttr);
+    if (activeTab !== "extra" || activeAttr !== "prompts") promptsPageInstance?.deactivate?.();
 
     elements.appTabs.querySelectorAll("[data-app-tab]").forEach((button) => {
       const isActive = button.dataset.appTab === activeTab;

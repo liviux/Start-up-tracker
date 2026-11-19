@@ -322,6 +322,7 @@
     const t = hooks.t;
     let shipped = null;
     let loadError = "";
+    let runsPage = null;
     const saved = hooks.loadUi?.() || {};
     const ui = {
       presetId: saved.presetId || "",
@@ -732,12 +733,18 @@
       const presetId = ui.runsScope !== "all" && ui.presetId ? ui.presetId : "";
       const openRunId = ui.openRunId || "";
       ui.openRunId = "";
-      hooks.mountRuns(holder, {
+      runsPage = hooks.mountRuns(holder, {
         presetId,
         openRunId,
         emptyTitle: presetId ? t("prompts.runsEmptyTitle") : t("agents.emptyTitle"),
         emptyHint: presetId ? t("prompts.runsEmptyHint") : t("agents.emptyHint"),
       });
+    }
+
+    function unmountRuns() {
+      if (!ui.openRunId && runsPage?.runId) ui.openRunId = runsPage.runId;
+      runsPage?.destroy?.();
+      runsPage = null;
     }
 
     function mountActivePanel() {
@@ -754,6 +761,7 @@
 
     function draw() {
       if (!container) return;
+      unmountRuns();
       if (!shipped) {
         container.innerHTML = `<p class="settings-hint">${escapeHtml(loadError ? t("prompts.loadFailed", { message: loadError }) : t("prompts.loading"))}</p>`;
         return;
@@ -768,7 +776,7 @@
             <div class="prompt-workbench-meta" data-prompt-meta>${metaChips(all)}</div>
             <p class="prompt-message prompt-workbench-message" data-prompt-message role="status">${ui.message ? escapeHtml(ui.message) : ""}</p>
             ${promptTabs()}
-            <div class="prompt-panel" id="promptPanel" role="tabpanel" aria-labelledby="promptTab-${ui.view}" tabindex="0">${activePanel(all)}</div>
+            <div class="prompt-panel" id="promptPanel" data-prompt-panel role="tabpanel" aria-labelledby="promptTab-${ui.view}" tabindex="0">${activePanel(all)}</div>
           </section>
         </div>`;
       mountActivePanel();
@@ -780,6 +788,7 @@
     function drawOutput() {
       const panel = container.querySelector("[data-prompt-panel]");
       if (!panel) return draw();
+      unmountRuns();
       panel.innerHTML = activePanel(lib());
       mountActivePanel();
       updateMeta();
@@ -1101,6 +1110,7 @@
           return;
         }
         const all = lib();
+        if (ui.view === "runs" && !runsPage) return draw();
         const rail = container.querySelector(".prompt-library");
         if (!rail) return draw();
         const search = container.querySelector("[data-preset-search]");
@@ -1141,6 +1151,7 @@
         remember();
         draw();
       },
+      deactivate: unmountRuns,
       ui,
     };
   }

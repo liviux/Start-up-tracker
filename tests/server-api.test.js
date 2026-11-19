@@ -484,6 +484,30 @@ test("media upload API handles multipart file upload asynchronously", async () =
   }
 });
 
+test("oversized import and upload bodies receive a 413 response", async () => {
+  const server = await startServer({
+    home: makeTempHome("tracker-body-limit-"),
+    env: { MAX_UPLOAD_BYTES: "128", MAX_IMPORT_BYTES: "128" },
+  });
+
+  try {
+    const startup = await createStartup(server.url, "Body limit");
+    const upload = await uploadFile(server.url, startup.id, "too-large.bin", Buffer.alloc(1024));
+    assert.equal(upload.status, 413);
+    assert.equal((await upload.json()).code, "tooLarge");
+
+    const imported = await browserFetch(`${server.url}api/import`, {
+      method: "POST",
+      headers: { "Content-Type": "application/zip" },
+      body: Buffer.alloc(1024),
+    });
+    assert.equal(imported.status, 413);
+    assert.equal((await imported.json()).code, "tooLarge");
+  } finally {
+    await server.stop();
+  }
+});
+
 test("a damaged database is refused instead of served", async () => {
   const home = makeTempHome("tracker-integrity-");
   const databasePath = defaultDatabasePath(home);
